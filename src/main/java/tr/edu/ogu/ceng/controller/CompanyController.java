@@ -19,7 +19,7 @@ public class CompanyController {
     CompanyService companyService;
      
     @PutMapping("/{id}")
-	public ResponseEntity<Company> updatePerson(@RequestBody Company company, @PathVariable(name="id") int id) {
+	public ResponseEntity<Company> updateCompany(@RequestBody Company company, @PathVariable(name="id") int id) {
 		Company newCompany = companyService.updateCompany(company, id);
 		
     	return ResponseEntity.ok(newCompany);
