@@ -1,7 +1,5 @@
 package tr.edu.ogu.ceng.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import tr.edu.ogu.ceng.dao.StudentRepository;
@@ -17,16 +15,12 @@ public class StudentService {
 		this.studentRepository = studentRepository;
 	}
 
-	public List<Student> getStudent() {
-		return studentRepository.findAll();
-	}
-
 	public Student getStudent(int id) {
 		return studentRepository.findById(id).orElse(null);
 	}
 
-	public int addStudent(Student student) {
-		return studentRepository.save(student).getId();
+	public Student addStudent(Student student) {
+		return studentRepository.save(student);
 	}
 
 }
