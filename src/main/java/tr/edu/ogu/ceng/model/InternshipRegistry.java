@@ -1,15 +1,11 @@
 package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
@@ -40,7 +36,7 @@ public class InternshipRegistry {
     @Column(name = "update_date", nullable = true)
     private Timestamp update_date;
 
-    @Column(name = "internship_id", nullable = false)
-    private Long internship_id;
-
+    @ManyToOne
+    @JoinColumn(name = "internship_id", nullable = false)
+    private Long internship_id;  //This field will change after internship entity class added to project.
 }
