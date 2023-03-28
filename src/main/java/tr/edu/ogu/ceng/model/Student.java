@@ -51,7 +51,7 @@ public class Student {
 	@Column(name = "boulevard", nullable = false)
 	private String boulevard;
 
-	@Column(name = "main_stret", nullable = false)
+	@Column(name = "main_street", nullable = false)
 	private String main_street;
 
 	@Column(name = "street", nullable = false)
@@ -111,10 +111,10 @@ public class Student {
 	@Column(name = "id_register_serial_no", nullable = false)
 	private String id_register_serial_no;
 
-	@Column(name = "id_register_office", nullable = false)
+	@Column(name = "id_registry_office", nullable = false)
 	private String id_register_office;
 
-	@Column(name = "id_register_reason", nullable = false)
+	@Column(name = "id_registry_reason", nullable = false)
 	private String id_register_reason;
 
 	@Column(name = "sgk_family", nullable = false)
