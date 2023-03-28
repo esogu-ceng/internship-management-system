@@ -11,6 +11,10 @@ public class InternshipRegistryService {
     private InternshipRegistryRepository internshipRegistryRepository;
 
     public boolean deleteInternshipRegistry(long id){
-        return internshipRegistryRepository.deleteInternshipRegistry(id);
+        if (!internshipRegistryRepository.existsById(id)){
+            return false;
+        }
+        internshipRegistryRepository.deleteById(id);
+        return true;
     }
 }

@@ -1,19 +1,8 @@
 package tr.edu.ogu.ceng.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import tr.edu.ogu.ceng.model.InternshipRegistry;
 
-@Repository
-public class InternshipRegistryRepository {
+public interface InternshipRegistryRepository extends JpaRepository<InternshipRegistry, Long> {
 
-    @Autowired
-    private InternshipRegistryJpaRepositoryInterface repository;
-
-    public boolean deleteInternshipRegistry(long id){
-        if (!repository.existsById(id)){
-            return false;
-        }
-        repository.deleteById(id);
-        return true;
-    }
 }
