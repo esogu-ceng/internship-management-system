@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class InternshipRegistries {
 	private Long id;
 	
 	@Column(name = "file_path", nullable = false)
-	private String file_path;
+	private String filePath;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -35,12 +36,9 @@ public class InternshipRegistries {
 	private Timestamp date;
 	
 	@Column(name = "create_date", nullable = true)
-	private Timestamp create_date;
+	private Timestamp createDate;
 	
 	@Column(name = "update_date", nullable = true)
-	private Timestamp update_date;
-	
-	@Column(name = "internship_id", nullable = false)
-	private Long internship_id;
+	private Timestamp updateDate;
 	
 }

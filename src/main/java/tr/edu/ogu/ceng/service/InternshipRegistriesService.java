@@ -12,10 +12,9 @@ public class InternshipRegistriesService {
 	@Autowired
 	private InternshipRegistriesRepository internshipRegistriesRepository;
 	
-	public InternshipRegistries updateInternshipRegistries(InternshipRegistries internshipRegistries, Long id) {
-		if (!internshipRegistriesRepository.existsById(id)) throw new EntityNotFoundException("Internship Registry not found!");
+	public InternshipRegistries updateInternshipRegistries(InternshipRegistries internshipRegistries) {
+		if (!internshipRegistriesRepository.existsById(internshipRegistries.getId())) throw new EntityNotFoundException("Internship Registry not found!");
 
-		internshipRegistries.setId(id);
 		return internshipRegistriesRepository.save(internshipRegistries);
 	}
 	

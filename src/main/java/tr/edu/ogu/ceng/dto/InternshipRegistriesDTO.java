@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 public class InternshipRegistriesDTO {
 
 	private Long id;
-	private String file_path;
+	private String filePath;
 	private String name;
 	private String type;
 	private Timestamp date;
-	private Timestamp create_date;
-	private Timestamp update_date;
-	private Long internship_id;
+	private Timestamp createDate;
+	private Timestamp updateDate;
 	
 }
