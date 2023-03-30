@@ -38,5 +38,5 @@ public class InternshipRegistry {
 
     @ManyToOne
     @JoinColumn(name = "internship_id", nullable = false)
-    private Long internship_id;  //This field will change after internship entity class added to project.
+    private Long internship_id;  //FIXME This field will change after internship entity class added to project.
 }
