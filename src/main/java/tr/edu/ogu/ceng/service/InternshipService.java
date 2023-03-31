@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
@@ -18,7 +19,8 @@ public class InternshipService {
 	public Internship updateInternship(Internship internship) {
 		if (!internshipRepository.existsById(internship.getId())) throw new EntityNotFoundException("Internship not found!");
 		
-		internship.setId(internship.getId());
+		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		internship.setUpdateDate(localDateTime);
 		
 		return internshipRepository.save(internship);
 	}

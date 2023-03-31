@@ -24,8 +24,8 @@ public class InternshipController {
 	@PutMapping
 	public ResponseEntity<Internship> updateInternship(@RequestBody Internship internship) {
 		
-		internshipService.updateInternship(internship);
-		return ResponseEntity.ok(internship);
+		Internship updatedInternship = internshipService.updateInternship(internship);
+		return ResponseEntity.ok(updatedInternship);
 	}
 	
 	@GetMapping("/{id}")

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.model.User;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Service
@@ -13,7 +14,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user){
-        LocalDateTime localDateTime = LocalDateTime.now();
+    	Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
         user.setCreateDate(localDateTime);
         user.setUpdateDate(localDateTime);
         return userRepository.save(user);

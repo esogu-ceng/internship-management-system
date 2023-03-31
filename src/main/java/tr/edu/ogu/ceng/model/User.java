@@ -2,6 +2,8 @@ package tr.edu.ogu.ceng.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -21,6 +23,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = UserType.class)
     @JoinColumn(name = "user_type_id", nullable = false)
     private UserType userType;

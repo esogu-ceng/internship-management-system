@@ -1,10 +1,6 @@
 package tr.edu.ogu.ceng.model;
 
-<<<<<<< HEAD
 import java.sql.Timestamp;
-=======
-import java.time.LocalDateTime;
->>>>>>> 85e19e45025e3ca7acb353485cb841f26874f099
 
 import javax.persistence.*;
 
