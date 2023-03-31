@@ -21,7 +21,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = UserType.class)
     @JoinColumn(name = "user_type_id", nullable = false)
     private UserType userType;
 
