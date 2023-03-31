@@ -1,11 +1,14 @@
 package tr.edu.ogu.ceng.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import javax.persistence.*;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "ims_faculties")
+@Data
 public class Faculty {
 	
 	@Id
@@ -16,40 +19,9 @@ public class Faculty {
     private String name;
     
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Timestamp createDate;
     
     @Column(name = "update_date")
-    private LocalDateTime updateDate;
-    public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
-	}
-
-	public LocalDateTime getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(LocalDateTime updateDate) {
-		this.updateDate = updateDate;
-	}
+    private Timestamp updateDate;
 
 }

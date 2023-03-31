@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,14 +16,21 @@ import tr.edu.ogu.ceng.service.InternshipService;
 
 
 @RestController
-@RequestMapping("/api/internships")
+@RequestMapping("/api/internship")
 public class InternshipController {
 	@Autowired
 	InternshipService internshipService;
 	
-	@PutMapping("/{id}")
-	public Internship updateInternship(@RequestBody Internship internship, @PathVariable(name="id") Long id) {
-		return internshipService.updateInternship(internship, id);
+	@PutMapping
+	public ResponseEntity<Internship> updateInternship(@RequestBody Internship internship) {
+		
+		internshipService.updateInternship(internship);
+		return ResponseEntity.ok(internship);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Optional<Internship>> getInternship(@PathVariable(name="id") long id){
+		return ResponseEntity.ok(internshipService.getInternship(id));
 	}
 	
 
