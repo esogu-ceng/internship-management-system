@@ -35,7 +35,5 @@ public class Faculty {
 	@Column(name = "update_date")
 	private Timestamp updateDate;
 
-
-
 	
 }
