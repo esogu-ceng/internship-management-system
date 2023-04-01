@@ -1,5 +1,8 @@
 package tr.edu.ogu.ceng.dao;
 
-public class StudentRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-}
+import tr.edu.ogu.ceng.model.Student;
+
+
+public interface StudentRepository extends JpaRepository<Student,Long> {}
