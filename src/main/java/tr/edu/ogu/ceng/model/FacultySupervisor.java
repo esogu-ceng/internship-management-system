@@ -1,10 +1,13 @@
 package tr.edu.ogu.ceng.model;
 
+
 import java.sql.Timestamp;
+
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 import lombok.Data;
 
@@ -14,6 +17,7 @@ import lombok.Data;
 public class FacultySupervisor {
 	
 	@Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -44,7 +48,7 @@ public class FacultySupervisor {
     private User user;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "faculty_id", nullable = false)
     private Faculty faculty;
 }
