@@ -5,13 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.UserService;
 
 @RestController
+
 @RequestMapping("/api/user")
+
 public class UserController {
     @Autowired
     private UserService userService;
