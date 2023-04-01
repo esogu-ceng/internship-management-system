@@ -13,12 +13,12 @@ import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.service.InternshipService;
 
 @RestController
-@RequestMapping("/api/v1/internship")
+@RequestMapping("/api/internship")
 public class InternshipController {
 	@Autowired
 	InternshipService internshipService;
-	@PostMapping("")
-	public ResponseEntity<Internship> AddInternship(@RequestBody Internship internship) {
-		return ResponseEntity.ok(internshipService.AddInternship(internship));
+	@PostMapping()
+	public ResponseEntity<Internship> addInternship(@RequestBody Internship internship) {
+		return ResponseEntity.ok(internshipService.addInternship(internship));
 	}
 }

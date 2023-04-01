@@ -36,8 +36,4 @@ public class Internship {
 	private Long company_id;
 	@Column(name="faculty_supervisor_id", nullable=false)
 	private Long faculty_supervisor_id;
-	
-	public Long GetId() {
-		return id;
-	}
 }

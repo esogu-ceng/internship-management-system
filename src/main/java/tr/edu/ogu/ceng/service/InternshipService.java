@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.model.Internship;
 
-@Service("InternshipService")
+@Service()
 public class InternshipService {
 	@Autowired
 	private InternshipRepository InternshipRepo;
-	public Internship AddInternship(Internship internship) {
+	public Internship addInternship(Internship internship) {
 		return InternshipRepo.save(internship);
 	}
 }

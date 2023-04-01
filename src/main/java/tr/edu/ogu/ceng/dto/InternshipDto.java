@@ -2,6 +2,8 @@ package tr.edu.ogu.ceng.dto;
 
 import java.sql.Date;
 
+import lombok.Data;
+@Data
 public class InternshipDto {
 	public InternshipDto() {}
 	private Long id;
