@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.model;
 
+
 import java.sql.Timestamp;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import lombok.*;
 @Entity
 @Table(name = "ims_internships")
 @Data
+
 public class Internship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
