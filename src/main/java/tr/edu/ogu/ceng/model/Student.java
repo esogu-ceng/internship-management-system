@@ -4,10 +4,15 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -112,10 +117,10 @@ public class Student {
 	private String id_register_serial_no;
 
 	@Column(name = "id_registry_office", nullable = false)
-	private String id_register_office;
+	private String id_registry_office;
 
 	@Column(name = "id_registry_reason", nullable = false)
-	private String id_register_reason;
+	private String id_registry_reason;
 
 	@Column(name = "sgk_family", nullable = false)
 	private Boolean sgk_family;
@@ -129,10 +134,14 @@ public class Student {
 	@Column(name = "update_date", nullable = false)
 	private Timestamp update_date;
 
-	@Column(name = "faculty_id", nullable = false)
-	private int faculty_id;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-	@Column(name = "user_id", nullable = false)
-	private int user_id;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "faculty_id", nullable = false)
+	private Faculty faculty;
 
 }
