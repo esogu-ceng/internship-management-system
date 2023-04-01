@@ -22,6 +22,9 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+    
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = UserType.class)
