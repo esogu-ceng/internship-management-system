@@ -1,9 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
-import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,16 +18,8 @@ public class ForgotPasswordController {
 	ForgotPasswordService forgotPasswordService; 
 	
 	 @PostMapping()
-	 public ResponseEntity<String> sendPasswordResetEmail(@RequestBody EmailReceiverDto email) {
-		 try {
+	 public ResponseEntity<String> sendPasswordResetEmail(@RequestBody EmailReceiverDto email) throws Exception{
 			 forgotPasswordService.sendResetPasswordEmail(email);
 			 return ResponseEntity.ok("Reset password e-mail sent successfully!");
-		 }
-		 catch (MessagingException e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong while sending e-mail!");
-	     }
-		 catch(Exception ex) {
-			  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-		 }
 	 } 
 }
