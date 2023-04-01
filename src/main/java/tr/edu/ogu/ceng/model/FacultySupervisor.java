@@ -1,18 +1,19 @@
 package tr.edu.ogu.ceng.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Entity
-@Data
 @Table(name = "ims_faculty_supervisors")
+@Data
 public class FacultySupervisor {
-
-    @Id
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -32,10 +33,10 @@ public class FacultySupervisor {
     private String supervisorNo;
 
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Timestamp createDate;
 
     @Column(name = "update_date")
-    private LocalDateTime updateDate;
+    private Timestamp updateDate;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)

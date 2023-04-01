@@ -1,16 +1,17 @@
 package tr.edu.ogu.ceng.model;
 
+import javax.persistence.*;
+
 import lombok.Data;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
-@Data
 @Table(name = "ims_user_types")
+@Data
 public class UserType {
-
-    @Id
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -18,10 +19,9 @@ public class UserType {
     private String type;
 
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Timestamp createDate;
 
     @Column(name = "update_date")
-    private LocalDateTime updateDate;
-
+    private Timestamp updateDate;
 
 }
