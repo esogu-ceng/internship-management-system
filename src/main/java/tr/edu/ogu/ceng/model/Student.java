@@ -14,15 +14,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ims_students")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Student {
 
 	@Id
