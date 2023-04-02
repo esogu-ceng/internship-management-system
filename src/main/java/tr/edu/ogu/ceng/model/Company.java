@@ -3,15 +3,12 @@ package tr.edu.ogu.ceng.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.Data;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
+
+import lombok.Data;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "ims_companies")
