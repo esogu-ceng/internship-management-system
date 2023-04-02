@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import lombok.Data;
 import java.sql.Timestamp;
 
-
 @Entity
 @Table(name = "ims_companies")
 @Data
@@ -48,4 +47,3 @@ public class Company {
     private Timestamp updateDate;
 
 }
-
