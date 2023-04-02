@@ -30,4 +30,15 @@ public class InternshipRegistryService {
 		return internshipRegistryRepository.save(internshipRegistry);
 	}
     
+    public InternshipRegistry addInternshipRegistry(InternshipRegistry internshipRegistry) {
+    	internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
+	    if (internshipRegistry == null) throw new 
+		EntityNotFoundException("Internship Registry cannot found!");
+	    
+	    Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		internshipRegistry.setCreateDate(localDateTime);
+	    
+	    return internshipRegistry;
+	}
+    
 }

@@ -24,4 +24,9 @@ public class InternshipRegistryController {
 		return ResponseEntity.ok(internshipRegistryService.updateInternshipRegistry(internshipRegistry));
 	}
     
+    @PostMapping
+	public ResponseEntity<InternshipRegistry> addInternshipRegistries(@RequestBody InternshipRegistry internshipRegistries) {
+		return ResponseEntity.ok(internshipRegistryService.addInternshipRegistry(internshipRegistries));
+	}
+    
 }
