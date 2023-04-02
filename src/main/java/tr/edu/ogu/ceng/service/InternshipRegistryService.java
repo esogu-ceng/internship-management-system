@@ -31,11 +31,11 @@ public class InternshipRegistryService {
 	}
     
     public InternshipRegistry addInternshipRegistry(InternshipRegistry internshipRegistry) {
-    	internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
-	    
 	    Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		internshipRegistry.setCreateDate(localDateTime);
-	    
+		
+    	internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
+	   
 	    return internshipRegistry;
 	}
     
