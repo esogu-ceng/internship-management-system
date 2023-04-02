@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.model;
 import java.sql.Timestamp;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class InternshipRegistry {
     private Long id;
 
     @Column(name = "file_path", nullable = false)
-    private String file_path;
+    private String filePath;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -31,12 +32,14 @@ public class InternshipRegistry {
     private Timestamp date;
 
     @Column(name = "create_date", nullable = true)
-    private Timestamp create_date;
+    private Timestamp createDate;
 
     @Column(name = "update_date", nullable = true)
-    private Timestamp update_date;
-
-    @ManyToOne
+    private Timestamp updateDate;
+    
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "internship_id", nullable = false)
     private Internship internship;
+
 }

@@ -7,18 +7,22 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "ims_students")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-	@Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "surname", nullable = false)
@@ -134,3 +138,4 @@ public class Student {
     private Faculty faculty;
     
 }
+

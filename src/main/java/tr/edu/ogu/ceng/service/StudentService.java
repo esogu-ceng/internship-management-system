@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
+
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -20,4 +21,14 @@ public class StudentService {
 		return studentRepository.save(student);
 	}
 
+	
+	public boolean deleteStudent(long id) {
+		
+		if(!studentRepository.existsById(id)) 
+			throw new EntityNotFoundException("Student Not Found!");
+		
+		studentRepository.deleteById(id);
+		return true;
+	}
+  
 }
