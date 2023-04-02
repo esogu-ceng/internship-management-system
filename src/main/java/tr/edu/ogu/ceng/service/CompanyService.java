@@ -18,6 +18,7 @@ public class CompanyService {
     	if (company == null) {
     		throw new EntityNotFoundException();
     	}
+    	
 		return company;
     }
 }
