@@ -25,16 +25,16 @@ public class StudentController {
 
 
 	@Autowired
-	StudentService service;
+	StudentService studentService;
 
 	@GetMapping("/{id}")
 	public Student getStudent(@PathVariable(name = "id") int id) {
-		return service.getStudent(id);
+		return studentService.getStudent(id);
 	}
 
 	@PostMapping()
 	public Student addStudent(@RequestBody Student student) {
-		return service.addStudent(student);
+		return studentService.addStudent(student);
 	}
 
 	@DeleteMapping("/{id}")
