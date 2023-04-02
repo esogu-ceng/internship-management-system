@@ -19,4 +19,8 @@ public class UserService {
         user.setUpdateDate(localDateTime);
         return userRepository.save(user);
     }
+    
+    public User findByEmail(String email) {
+    	return userRepository.findByEmail(email);
+    }
 }
