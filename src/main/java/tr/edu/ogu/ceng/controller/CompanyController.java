@@ -20,13 +20,8 @@ public class CompanyController {
     
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDto> getCompany(@PathVariable(name="id") long id) throws Exception {
-    	try {
-	    	Company company = companyService.getCompany(id);
-	        CompanyDto companydto = new CompanyDto(company);
-	        return ResponseEntity.ok(companydto);
-    	} 
-    	catch (Exception ex) {
-            throw new Exception(ex);
-        }
+    	Company company = companyService.getCompany(id);
+        CompanyDto companydto = new CompanyDto(company);
+        return ResponseEntity.ok(companydto);
     }
 }
