@@ -30,4 +30,13 @@ public class InternshipRegistryService {
 		return internshipRegistryRepository.save(internshipRegistry);
 	}
     
+    public InternshipRegistry addInternshipRegistry(InternshipRegistry internshipRegistry) {
+	    Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		internshipRegistry.setCreateDate(localDateTime);
+		
+    	internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
+	   
+	    return internshipRegistry;
+	}
+    
 }
