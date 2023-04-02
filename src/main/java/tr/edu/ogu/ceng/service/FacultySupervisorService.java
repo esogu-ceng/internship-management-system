@@ -20,4 +20,16 @@ public class FacultySupervisorService {
         facultySupervisor.setUpdateDate(localDateTime);
         return facultySupervisorRepository.save(facultySupervisor);
     }
+
+    public FacultySupervisor updateFacultySupervisor(FacultySupervisor facultySupervisor){
+        if(!facultySupervisorRepository.existsById(facultySupervisor.getId())) throw new EntityNotFoundException("Faculty supervisor not found!");
+        Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+        facultySupervisor.setUpdateDate(localDateTime);
+        return facultySupervisorRepository.save(facultySupervisor);
+    }
+
+    public Optional<FacultySupervisor> getFacultySupervisor(Long id) {
+        if (!facultySupervisorRepository.existsById(id)) throw new EntityNotFoundException("Faculty supervisor not found!");
+        return facultySupervisorRepository.findById(id);
+    }
 }
