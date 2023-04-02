@@ -2,7 +2,8 @@ package tr.edu.ogu.ceng.service;
 
 
 import org.springframework.stereotype.Service;
-
+import javax.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.model.Student;
