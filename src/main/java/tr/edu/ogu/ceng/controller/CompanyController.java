@@ -8,17 +8,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.CompanyService;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/api/company")
 public class CompanyController {
+	
 	@Autowired
     CompanyService companyService;
     
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyDto> getCompany(@PathVariable(name="id") long id) {
-        CompanyDto company = companyService.getCompany(id);
-        return ResponseEntity.ok(company);
+    public ResponseEntity<CompanyDto> getCompany(@PathVariable(name="id") long id) throws Exception {
+    	try {
+	    	Company company = companyService.getCompany(id);
+	        CompanyDto companydto = new CompanyDto(company);
+	        return ResponseEntity.ok(companydto);
+    	} 
+    	catch (Exception ex) {
+            throw new Exception(ex);
+        }
     }
 }

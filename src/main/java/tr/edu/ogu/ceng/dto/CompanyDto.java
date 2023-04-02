@@ -1,8 +1,25 @@
 package tr.edu.ogu.ceng.dto;
 
+import tr.edu.ogu.ceng.model.Company;
+
+import lombok.Data;
+
+@Data
 public class CompanyDto {
 	
 	public CompanyDto() { }
+	
+	public CompanyDto(Company company) {
+		super();
+		this.id = company.getId();
+		this.name = company.getName();
+		this.address = company.getAddress();
+		this.phone_number = company.getPhoneNumber();
+		this.fax_number = company.getFaxNumber();
+		this.email = company.getEmail();
+		this.scope = company.getScope();
+		this.description = company.getDescription();
+	}
 	
 	public CompanyDto(Long id, String name, String address, String phone_number, String fax_number, String email,
 			String scope, String description) {
@@ -24,55 +41,5 @@ public class CompanyDto {
 	private String email;
 	private String scope;
 	private String description;
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getPhone_number() {
-		return phone_number;
-	}
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
-	}
-	public String getFax_number() {
-		return fax_number;
-	}
-	public void setFax_number(String fax_number) {
-		this.fax_number = fax_number;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getScope() {
-		return scope;
-	}
-	public void setScope(String scope) {
-		this.scope = scope;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
 	
 }
