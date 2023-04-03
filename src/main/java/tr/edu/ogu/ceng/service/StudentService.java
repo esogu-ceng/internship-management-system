@@ -14,9 +14,9 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 
-	public Student getStudent(long id) {
-		return studentRepository.findById(id).orElse(null);
-	}
+    public Student getStudent(long id) {
+    	return studentRepository.findById(id).orElse(null);
+    }
 
 	public Student addStudent(Student student) {
 		return studentRepository.save(student);
