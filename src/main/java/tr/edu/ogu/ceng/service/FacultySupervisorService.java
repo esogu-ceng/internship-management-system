@@ -1,12 +1,14 @@
 package tr.edu.ogu.ceng.service;
 
+import java.sql.Timestamp;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 @Service
 public class FacultySupervisorService {

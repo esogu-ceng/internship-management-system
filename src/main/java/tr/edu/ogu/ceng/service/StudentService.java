@@ -14,7 +14,7 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 
-	public Student getStudent(int id) {
+	public Student getStudent(long id) {
 		return studentRepository.findById(id).orElse(null);
 	}
 
