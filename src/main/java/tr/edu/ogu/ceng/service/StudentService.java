@@ -3,7 +3,7 @@ package tr.edu.ogu.ceng.service;
 
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.model.Student;
@@ -14,8 +14,12 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 
-    public Student getStudent(long id) {
-    	return studentRepository.findById(id).orElse(null);
+    public Student getStudent(long id) throws EntityNotFoundException {
+    	Student student = studentRepository.findById(id).orElse(null);
+		if (student == null) {
+    		throw new EntityNotFoundException();
+    	}
+        return student;
     }
 
 	public Student addStudent(Student student) {
