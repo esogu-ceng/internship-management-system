@@ -26,4 +26,15 @@ public class FactorySupervisorController {
         FacultySupervisor facultySupervisor1 = facultySupervisorService.saveFacultySupervisor(facultySupervisor);
         return new ResponseEntity<>(facultySupervisor1, HttpStatus.CREATED);
     }
+
+    @PutMapping
+    public ResponseEntity<FacultySupervisor> updateFacultySupervisor(@RequestBody FacultySupervisor facultySupervisor){
+        FacultySupervisor updatedFacultySupervisor = facultySupervisorService.updateFacultySupervisor(facultySupervisor);
+        return ResponseEntity.ok(updatedFacultySupervisor);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<FacultySupervisor>> getFacultySupervisor(@PathVariable(name="id") long id){
+        return ResponseEntity.ok(facultySupervisorService.getFacultySupervisor(id));
+    }
 }
