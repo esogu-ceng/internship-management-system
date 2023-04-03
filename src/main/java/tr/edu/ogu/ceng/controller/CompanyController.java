@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,5 +25,10 @@ public class CompanyController {
     	Company company = companyService.getCompany(id);
         CompanyDto companydto = new CompanyDto(company);
         return ResponseEntity.ok(companydto);
+    }
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<Company>> searchCompanies(@PathVariable String name) {
+        List<Company> companies = companyService.searchCompanies(name);
+        return ResponseEntity.ok(companies);
     }
 }

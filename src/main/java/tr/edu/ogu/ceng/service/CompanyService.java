@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,11 @@ public class CompanyService {
     		throw new EntityNotFoundException();
     	}
         return company;
+    }
+    public List<Company> searchCompanies(String name) {
+        if (name.length() < 3) {
+            throw new IllegalArgumentException("Name should be at least 3 characters long.");
+        }
+        return companyRepository.findByNameContainingIgnoreCase(name);
     }
 }
