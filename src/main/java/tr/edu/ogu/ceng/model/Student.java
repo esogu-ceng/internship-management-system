@@ -2,12 +2,18 @@ package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
@@ -36,9 +42,6 @@ public class Student {
 
     @Column(name = "grade", nullable = false)
     private String grade;
-
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
