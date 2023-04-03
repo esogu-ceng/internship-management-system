@@ -21,35 +21,35 @@ import java.sql.Timestamp;
 @Table(name = "ims_companies")
 public class Company {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+	@Column(name = "name", nullable = false)
+	private String name;
 
-    @Column(name = "address", nullable = false)
-    private String address;
+	@Column(name = "address", nullable = false)
+	private String address;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+	@Column(name = "phone_number", nullable = false)
+	private String phoneNumber;
 
-    @Column(name = "fax_number", nullable = false)
-    private String faxNumber;
+	@Column(name = "fax_number", nullable = false)
+	private String faxNumber;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+	@Column(name = "email", nullable = false)
+	private String email;
 
-    @Column(name = "scope", nullable = false)
-    private String scope;
+	@Column(name = "scope", nullable = false)
+	private String scope;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "description")
+	private String description;
 
-    @Column(name = "create_date")
-    private Timestamp createDate;
+	@Column(name = "create_date")
+	private Timestamp createDate;
 
-    @Column(name = "update_date")
-    private Timestamp updateDate;
+	@Column(name = "update_date")
+	private Timestamp updateDate;
 
 }

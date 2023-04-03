@@ -19,19 +19,18 @@ import tr.edu.ogu.ceng.service.CompanyService;
 public class CompanyController {
 
 	@Autowired
-    CompanyService companyService;
-     
-    @PutMapping
-	  public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
-		  Company newCompany = companyService.updateCompany(company);
-    	return ResponseEntity.ok(newCompany);
-	  }
+	CompanyService companyService;
 
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<CompanyDto> getCompany(@PathVariable(name="id") long id) throws Exception {
-    	Company company = companyService.getCompany(id);
-        CompanyDto companydto = new CompanyDto(company);
-        return ResponseEntity.ok(companydto);
-    }
+	@PutMapping
+	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
+		Company newCompany = companyService.updateCompany(company);
+		return ResponseEntity.ok(newCompany);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<CompanyDto> getCompany(@PathVariable(name = "id") long id) throws Exception {
+		Company company = companyService.getCompany(id);
+		CompanyDto companydto = new CompanyDto(company);
+		return ResponseEntity.ok(companydto);
+	}
 }
