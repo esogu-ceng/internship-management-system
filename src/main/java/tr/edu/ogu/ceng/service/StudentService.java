@@ -1,15 +1,27 @@
 package tr.edu.ogu.ceng.service;
 
-import javax.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.model.Student;
 
 @Service
+@AllArgsConstructor
 public class StudentService {
-	@Autowired
-	private StudentRepository studentRepository;
+
+	private final StudentRepository studentRepository;
+
+	public Student getStudent(int id) {
+		return studentRepository.findById(id).orElse(null);
+	}
+
+	public Student addStudent(Student student) {
+		return studentRepository.save(student);
+	}
+
 	
 	public boolean deleteStudent(long id) {
 		
@@ -19,4 +31,5 @@ public class StudentService {
 		studentRepository.deleteById(id);
 		return true;
 	}
+  
 }
