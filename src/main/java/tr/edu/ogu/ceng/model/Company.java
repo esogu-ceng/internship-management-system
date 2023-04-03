@@ -7,19 +7,18 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 
-@Entity
-@Table(name = "ims_companies")
+import lombok.Data;
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "ims_companies")
 public class Company {
 
     @Id
@@ -52,5 +51,5 @@ public class Company {
 
     @Column(name = "update_date")
     private Timestamp updateDate;
-    
+
 }
