@@ -13,9 +13,8 @@ public class CompanyService {
 	@Autowired
     private CompanyRepository companyRepository;
     
-    public Company updateCompany(Company company, long id) {
-    	if(!companyRepository.existsById(id)) throw new EntityNotFoundException("Company not found!");
-    	company.setId(id);
+    public Company updateCompany(Company company) {
+    	if(!companyRepository.existsById(company.getId())) throw new EntityNotFoundException("Company not found!");
     	return companyRepository.save(company);
     }
 

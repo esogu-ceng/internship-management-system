@@ -18,10 +18,9 @@ public class CompanyController {
 	@Autowired
     CompanyService companyService;
      
-    @PutMapping("/{id}")
-	public ResponseEntity<Company> updateCompany(@RequestBody Company company, @PathVariable(name="id") int id) {
-		Company newCompany = companyService.updateCompany(company, id);
-		
+    @PutMapping
+	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
+		Company newCompany = companyService.updateCompany(company);
     	return ResponseEntity.ok(newCompany);
 	}
 }
