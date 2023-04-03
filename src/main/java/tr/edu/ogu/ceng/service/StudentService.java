@@ -1,9 +1,13 @@
 package tr.edu.ogu.ceng.service;
 
-
-import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.model.Student;
@@ -22,14 +26,18 @@ public class StudentService {
 		return studentRepository.save(student);
 	}
 
-	
 	public boolean deleteStudent(long id) {
-		
-		if(!studentRepository.existsById(id)) 
+
+		if (!studentRepository.existsById(id))
 			throw new EntityNotFoundException("Student Not Found!");
-		
+
 		studentRepository.deleteById(id);
 		return true;
 	}
-  
+
+	public Page<Student> getStudents(@RequestParam Integer pageSize, @RequestParam Integer page) {
+
+		Pageable pageable = PageRequest.of(page, pageSize);
+		return studentRepository.findAll(pageable);
+	}
 }
