@@ -24,7 +24,7 @@ import tr.edu.ogu.ceng.service.CompanyService;
 public class CompanyController {
 
 	@Autowired
-<<<<<<< HEAD
+
 	CompanyService companyService;
 
 	@PutMapping
@@ -39,19 +39,13 @@ public class CompanyController {
 		CompanyDto companydto = new CompanyDto(company);
 		return ResponseEntity.ok(companydto);
 	}
-=======
-    CompanyService companyService;
+
     
-    @GetMapping("/{id}")
-    public ResponseEntity<CompanyDto> getCompany(@PathVariable(name="id") long id) throws Exception {
-    	Company company = companyService.getCompany(id);
-        CompanyDto companydto = new CompanyDto(company);
-        return ResponseEntity.ok(companydto);
-    }
+
     @GetMapping("/search/{name}")
     public ResponseEntity<List<Company>> searchCompanies(@PathVariable String name) {
         List<Company> companies = companyService.searchCompanies(name);
         return ResponseEntity.ok(companies);
     }
->>>>>>> 3214bb714e14965564d640148bf9da9f55beb429
+
 }

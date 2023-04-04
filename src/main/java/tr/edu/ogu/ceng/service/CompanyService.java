@@ -12,7 +12,6 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 public class CompanyService {
 
 	@Autowired
-<<<<<<< HEAD
 	private CompanyRepository companyRepository;
 
 	public Company updateCompany(Company company) {
@@ -28,21 +27,15 @@ public class CompanyService {
 		}
 		return company;
 	}
-=======
-    private CompanyRepository companyRepository;
+
+
   
-    public Company getCompany(long id) throws EntityNotFoundException {
-    	Company company = companyRepository.findById(id).orElse(null);
-    	if (company == null) {
-    		throw new EntityNotFoundException();
-    	}
-        return company;
-    }
+
     public List<Company> searchCompanies(String name) {
         if (name.length() < 3) {
             throw new IllegalArgumentException("Name should be at least 3 characters long.");
         }
         return companyRepository.findByNameContainingIgnoreCase(name);
     }
->>>>>>> 3214bb714e14965564d640148bf9da9f55beb429
+
 }
