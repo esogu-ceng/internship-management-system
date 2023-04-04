@@ -1,13 +1,13 @@
 package tr.edu.ogu.ceng.controller;
 
-<<<<<<< HEAD
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-=======
+
 import java.util.List;
 
->>>>>>> 3214bb714e14965564d640148bf9da9f55beb429
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
