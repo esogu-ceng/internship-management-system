@@ -34,4 +34,12 @@ public class FacultySupervisorService {
         if (!facultySupervisorRepository.existsById(id)) throw new EntityNotFoundException("Faculty supervisor not found!");
         return facultySupervisorRepository.findById(id);
     }
+    
+    public boolean deleteFacultySupervisor(long id){
+        if(!facultySupervisorRepository.existsById(id))
+          throw new EntityNotFoundException("Faculty Supervisor Not Found!");
+        
+        facultySupervisorRepository.deleteById(id);
+        return true;
+      }
 }
