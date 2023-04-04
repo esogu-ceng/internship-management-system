@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
+import java.sql.Timestamp;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.data.domain.Page;
@@ -23,6 +25,14 @@ public class StudentService {
 	}
 
 	public Student addStudent(Student student) {
+		return studentRepository.save(student);
+	}
+
+	public Student updateStudent(Student student) {
+		if (!studentRepository.existsById(student.getId()))
+			throw new EntityNotFoundException("Student not found!");
+		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		student.setUpdateDate(localDateTime);
 		return studentRepository.save(student);
 	}
 
