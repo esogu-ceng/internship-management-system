@@ -3,6 +3,9 @@ package tr.edu.ogu.ceng.service;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,11 +43,9 @@ public class InternshipRegistryService {
 	   
 	    return internshipRegistry;
 	}
-    
-  
-    
-   
-    
-    
+
+    public Page<InternshipRegistry> findAllRegistiriesByUserId(Long userId, PageRequest pageRequest) {
+        return internshipRegistryRepository.findAllByUserId(userId, pageRequest);
+    }
     
 }
