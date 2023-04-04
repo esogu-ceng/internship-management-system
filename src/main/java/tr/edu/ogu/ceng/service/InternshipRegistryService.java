@@ -2,6 +2,9 @@ package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.ArrayList;
+import org.springframework.data.domain.PageImpl;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,7 +48,8 @@ public class InternshipRegistryService {
 	}
 
     public Page<InternshipRegistry> findAllRegistiriesByUserId(Long userId, PageRequest pageRequest) {
-        return internshipRegistryRepository.findAllByUserId(userId, pageRequest);
+        Page<InternshipRegistry> registries = internshipRegistryRepository.findAllByUserId(userId, pageRequest);
+        return registries.isEmpty() ? new PageImpl<>(new ArrayList<>()) : registries;
     }
     
 }

@@ -35,15 +35,11 @@ public class InternshipRegistryController {
 	}
     @GetMapping("/{userId}")
     public ResponseEntity<Page<InternshipRegistry>> listAllInternshipRegistiries(@PathVariable Long userId,
-                                                                                        @RequestParam(defaultValue = "0") int page,
-                                                                                        @RequestParam(defaultValue = "10") int size,
-                                                                                        @RequestParam(defaultValue = "id") String sortBy) {
+                                                                                @RequestParam(defaultValue = "0") int page,
+                                                                                @RequestParam(defaultValue = "10") int size,
+                                                                                @RequestParam(defaultValue = "id") String sortBy) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sortBy));
         Page<InternshipRegistry> internshipRegistries = internshipRegistryService.findAllRegistiriesByUserId(userId, pageRequest);
-        
-        if (internshipRegistries.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
 
         return ResponseEntity.ok(internshipRegistries);
     }
