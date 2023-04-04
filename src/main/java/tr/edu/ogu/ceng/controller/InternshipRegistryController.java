@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +30,14 @@ public class InternshipRegistryController {
 	public ResponseEntity<InternshipRegistry> addInternshipRegistries(@RequestBody InternshipRegistry internshipRegistries) {
 		return ResponseEntity.ok(internshipRegistryService.addInternshipRegistry(internshipRegistries));
 	}
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<InternshipRegistry>> getAllInternshipRegistriesByUserId(@PathVariable Long userId) {
+        List<InternshipRegistry> internshipRegistries = internshipRegistryService.findAllByUserId(userId);
+        if (internshipRegistries.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(internshipRegistries);
+    }
+
     
 }

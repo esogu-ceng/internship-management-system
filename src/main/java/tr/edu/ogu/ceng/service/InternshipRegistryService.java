@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +40,11 @@ public class InternshipRegistryService {
 	   
 	    return internshipRegistry;
 	}
+    
+  
+    
+   
+    
+    
     
 }
