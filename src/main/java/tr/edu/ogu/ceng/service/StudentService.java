@@ -1,15 +1,33 @@
 package tr.edu.ogu.ceng.service;
 
-import javax.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.sql.Timestamp;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.model.Student;
 
 @Service
+@AllArgsConstructor
 public class StudentService {
-	@Autowired
-	private StudentRepository studentRepository;
+
+	private final StudentRepository studentRepository;
+
+	public Student getStudent(long id) {
+		return studentRepository.findById(id).orElse(null);
+	}
+
+	public Student addStudent(Student student) {
+		return studentRepository.save(student);
+	}
+	
+    public Student updateStudent(Student student){
+        if(!studentRepository.existsById(student.getId())) throw new EntityNotFoundException("Student not found!");
+        Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+        student.setUpdateDate(localDateTime);
+        return studentRepository.save(student);
+    }
 	
 	public boolean deleteStudent(long id) {
 		
@@ -19,4 +37,5 @@ public class StudentService {
 		studentRepository.deleteById(id);
 		return true;
 	}
+  
 }

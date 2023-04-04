@@ -32,4 +32,11 @@ public class InternshipService {
 		return internshipRepository.findById(id);
 	}
 	
+	public boolean deleteInternship(Long id) {
+		if (!internshipRepository.existsById(id)) return false;
+		internshipRepository.deleteById(id);
+		return true;
+	}
+
+	
 }
