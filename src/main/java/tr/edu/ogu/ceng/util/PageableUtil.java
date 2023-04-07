@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class PageableUtil {
-	public static Pageable createPageRequest(Integer pageNo, Integer pageSize, String sortBy) {
+	public static Pageable createPageRequest(Integer pageNo, Integer limit, String sortBy) {
 		Sort sort = Sort.by(sortBy);
-		return PageRequest.of(pageNo, pageSize, sort);
+		return PageRequest.of(pageNo, limit, sort);
 	}
 }
