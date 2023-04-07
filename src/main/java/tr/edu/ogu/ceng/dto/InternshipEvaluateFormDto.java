@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.dto;
 
 import lombok.Data;
+import tr.edu.ogu.ceng.model.Company;
+import tr.edu.ogu.ceng.model.Internship;
 
 @Data
 public class InternshipEvaluateFormDto {
@@ -8,6 +10,6 @@ public class InternshipEvaluateFormDto {
 	private String name;
 	private String surname;
 	private String filePath;
-	private Long internshipId;
-	private Long companyId;
+	private Internship internship;
+	private Company company;
 }
