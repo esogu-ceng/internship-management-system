@@ -133,6 +133,7 @@ public class Student {
 	@Column(name = "update_date")
 	private Timestamp updateDate;
 
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")
 	private User user;

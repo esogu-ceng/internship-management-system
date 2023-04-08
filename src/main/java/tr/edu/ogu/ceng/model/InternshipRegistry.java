@@ -17,7 +17,7 @@ public class InternshipRegistry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(name = "file_path", nullable = false)
     private String filePath;

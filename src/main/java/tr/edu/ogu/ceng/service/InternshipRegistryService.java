@@ -2,6 +2,12 @@ package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
 
+import java.util.List;
+import java.util.ArrayList;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +47,5 @@ public class InternshipRegistryService {
 		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
 		return internshipRegistry;
-	}
+	}    
 }

@@ -2,10 +2,10 @@ package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.model.Student;
@@ -17,7 +17,15 @@ public class StudentService {
 	private final StudentRepository studentRepository;
 
 	public Student getStudent(long id) {
-		return studentRepository.findById(id).orElse(null);
+		try {
+			Student student = studentRepository.findById(id).orElse(null);
+			if (student == null) {
+				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+			}
+			return student;
+		} catch (EntityNotFoundException e) {
+			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+		}
 	}
 
 	public List<Student> getAllStudents() {
@@ -31,6 +39,7 @@ public class StudentService {
 	}
 
 	public Student updateStudent(Student student) {
+
 		Student dbStudent = studentRepository.findById(student.getId()).orElse(null);
 		if (dbStudent == null)
 			return null;
@@ -44,8 +53,9 @@ public class StudentService {
 	public boolean deleteStudent(long id) {
 		if (!studentRepository.existsById(id))
 			return false;
-		studentRepository.deleteById(id);
+	 studentRepository.deleteById(id);
 		return true;
 	}
+
 
 }
