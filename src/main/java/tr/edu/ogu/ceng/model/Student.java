@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -132,7 +133,7 @@ public class Student {
 	@Column(name = "update_date")
 	private Timestamp updateDate;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")
 	private User user;
 
