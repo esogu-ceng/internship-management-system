@@ -2,7 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
 import java.util.List;
-
+import java.util.ArrayList; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
@@ -29,4 +29,10 @@ public class FacultyService {
 		facultyRepository.deleteById(id);
 		return true;
 	}
+    
+    public List<Faculty> getAllFaculties(){
+        List<Faculty> faculties = new ArrayList<Faculty>();  
+        facultyRepository.findAll().forEach(faculty1 -> faculties.add(faculty1));  
+        return faculties;
+    }
 }

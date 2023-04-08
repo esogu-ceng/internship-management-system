@@ -39,5 +39,11 @@ public class FacultyController {
 	public ResponseEntity<Boolean> deleteFaculty(@PathVariable(name="id") long id) {
 		return ResponseEntity.ok(facultyService.deleteFaculty(id));
 	}
+	
+	@PostMapping("/getAllFaculties")
+    public ResponseEntity<List<Faculty>> getAllFaculties (){
+     List<Faculty> faculties=facultyService.getAllFaculties();
+        return new ResponseEntity<>(faculties, HttpStatus.OK);
+    }
 }
  
