@@ -1,12 +1,18 @@
 package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
@@ -32,28 +38,37 @@ public class StudentService {
 		}
 	}
 
+	public List<Student> getAllStudents() {
+		if (studentRepository.findAll() == null)
+			return null;
+		return studentRepository.findAll();
+	}
+
 	public Student addStudent(Student student) {
 		return studentRepository.save(student);
 	}
 
 	public Student updateStudent(Student student) {
-		if (!studentRepository.existsById(student.getId()))
-			throw new EntityNotFoundException("Student not found!");
+
+		Student dbStudent = studentRepository.findById(student.getId()).orElse(null);
+		if (dbStudent == null)
+			return null;
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
-		student.setUpdateDate(localDateTime);
-		return studentRepository.save(student);
+		dbStudent = student;
+		dbStudent.setUpdateDate(localDateTime);
+		return studentRepository.save(dbStudent);
 	}
 
+	@Transactional
 	public boolean deleteStudent(long id) {
-
 		if (!studentRepository.existsById(id))
-			throw new EntityNotFoundException("Student Not Found!");
-
-		studentRepository.deleteById(id);
+			return false;
+	 studentRepository.deleteById(id);
 		return true;
 	}
 	
 	public StudentDto registerAsStudent(StudentDto request) {
+		
 		checkIfPasswordsMatchingValidation(request);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -61,8 +76,10 @@ public class StudentService {
 		Student student = new Student();
 		Faculty faculty = new Faculty();
 		User user = new User();
+		
 		student.setUser(user);
 		student.setFaculty(faculty);
+		
 		student.setId(0);
 		student.setName(request.getName());
 		student.setSurname(request.getSurname());
@@ -76,9 +93,9 @@ public class StudentService {
 		student.setMotherName(request.getMotherName());
 		student.setFatherName(request.getFatherName());
 		student.setBirthPlace(request.getBirthPlace());
-		student.getUser().setId(request.getUserId());
+		//student.getUser().setId(request.getUserId());
 		student.getUser().setPassword(request.getPassword());
-		student.getFaculty().setId(request.getFacultyId());
+		//student.getFaculty().setId(request.getFacultyId());
 		student.setBirthDate(Timestamp.valueOf(request.getBirthDate()));
 		student.setIdCardSerialNo(request.getIdCardSerialNo());
 		student.setIdRegisterProvince(request.getIdRegisterProvince());
