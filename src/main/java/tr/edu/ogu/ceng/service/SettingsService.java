@@ -17,8 +17,8 @@ public class SettingsService {
     		throw new EntityNotFoundException("Settings not found!");
     	return settingsRepository.save(settings);
     }
-    public Settings getSettings(long id) throws EntityNotFoundException {
-    	Settings settings = settingsRepository.findById(id).orElse(null);
+    public Settings getSettings(String key) throws EntityNotFoundException {
+    	Settings settings = settingsRepository.findByKey(key);
     	if (settings == null) {
     		throw new EntityNotFoundException();
     	}
