@@ -22,9 +22,9 @@ public class SettingsController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Settings> getSettings(@PathVariable(name = "id") long id) throws Exception {
-		Settings settings = settingsService.getSettings(id);
+	@GetMapping("/{key}")
+	public ResponseEntity<Settings> getSettings(@PathVariable(name = "key") String key) throws Exception {
+		Settings settings = settingsService.getSettings(key);
 		if(settings!=null) {
 			return ResponseEntity.ok(settings);
 		}
