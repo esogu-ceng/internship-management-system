@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 
 @Service
@@ -41,15 +40,6 @@ public class UserService {
 
 		userRepository.deleteById(id);
 		return true;
-	}
-
-	/******** Accessing student via user **********/
-
-	public Student getStudent(long id) {
-		User user = userRepository.findById(id).orElse(null);
-		if (user == null)
-			return null;
-		return user.getStudent();
 	}
 
 }

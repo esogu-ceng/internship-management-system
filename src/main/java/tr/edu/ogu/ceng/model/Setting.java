@@ -17,33 +17,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ims_companies")
-public class Company {
+@Table(name = "ims_settings")
+public class Setting {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long Id;
 
-	@Column(name = "name", nullable = false, unique = true)
-	private String name;
+	@Column(name = "key", nullable = false, unique = true)
+	private String key;
 
-	@Column(name = "address", nullable = false)
-	private String address;
-
-	@Column(name = "phone_number", nullable = false)
-	private String phoneNumber;
-
-	@Column(name = "fax_number", nullable = false)
-	private String faxNumber;
-
-	@Column(name = "email", nullable = false)
-	private String email;
-
-	@Column(name = "scope", nullable = false)
-	private String scope;
-
-	@Column(name = "description")
-	private String description;
+	@Column(name = "value")
+	private String value;
 
 	@Column(name = "create_date")
 	private Timestamp createDate;

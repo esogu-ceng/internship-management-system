@@ -29,7 +29,7 @@ public class Student {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long Id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -132,7 +132,6 @@ public class Student {
 
 	@Column(name = "update_date")
 	private Timestamp updateDate;
-
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")
