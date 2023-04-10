@@ -2,13 +2,15 @@ package tr.edu.ogu.ceng.dto;
 
 import tr.edu.ogu.ceng.model.Company;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyDto {
-	
-	public CompanyDto() { }
-	
+
 	public CompanyDto(Company company) {
 		super();
 		this.id = company.getId();
@@ -20,19 +22,7 @@ public class CompanyDto {
 		this.scope = company.getScope();
 		this.description = company.getDescription();
 	}
-	
-	public CompanyDto(Long id, String name, String address, String phone_number, String fax_number, String email,
-			String scope, String description) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.phone_number = phone_number;
-		this.fax_number = fax_number;
-		this.email = email;
-		this.scope = scope;
-		this.description = description;
-	}
+
 	private Long id;
 	private String name;
 	private String address;
@@ -41,5 +31,5 @@ public class CompanyDto {
 	private String email;
 	private String scope;
 	private String description;
-	
+
 }

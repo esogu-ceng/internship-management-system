@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +26,30 @@ public class StudentController {
 	StudentService studentService;
 
 	@GetMapping("/{id}")
-	public Student getStudent(@PathVariable(name = "id") long id) {
-		return studentService.getStudent(id);
+	public ResponseEntity<Student> getStudent(@PathVariable(name = "id") long id) {
+		Student student = studentService.getStudent(id);
+		return ResponseEntity.ok(student);
 	}
 
-	@PostMapping()
+	@GetMapping("/getAll")
+	public List<Student> getAll() {
+		return studentService.getAllStudents();
+	}
+
+	@PostMapping("")
 	public Student addStudent(@RequestBody Student student) {
 		return studentService.addStudent(student);
 	}
 
-	@PutMapping()
-	public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-		return ResponseEntity.ok(student);
+	@PutMapping("/{id}")
+	public Student updateStudent(@RequestBody Student student, @PathVariable(name = "id") long id) {
+		student.setId(id);
+		return studentService.updateStudent(student);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteStudent(@PathVariable(name = "id") long id) {
-		return ResponseEntity.ok(studentService.deleteStudent(id));
+	public boolean deleteInternship(@PathVariable(name = "id") Long id) {
+		return studentService.deleteStudent(id);
 	}
 
 	@GetMapping

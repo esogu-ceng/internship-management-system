@@ -12,10 +12,11 @@ import tr.edu.ogu.ceng.model.Internship;
 
 @Service
 public class InternshipService {
-
 	@Autowired
 	private InternshipRepository internshipRepository;
-	
+	public Internship addInternship(Internship internship) {
+		return internshipRepository.save(internship);
+	}
 	public Internship updateInternship(Internship internship) {
 		if (!internshipRepository.existsById(internship.getId())) throw new EntityNotFoundException("Internship not found!");
 		
