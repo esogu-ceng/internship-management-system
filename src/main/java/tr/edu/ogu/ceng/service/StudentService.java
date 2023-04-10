@@ -7,10 +7,9 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
@@ -63,9 +62,10 @@ public class StudentService {
 		return true;
 	}
 
-	public Page<Student> getStudents(@RequestParam Integer pageSize, @RequestParam Integer page) {
+	public Page<Student> listStudents(int page, int pageSize, String field) {
 
-		Pageable pageable = PageRequest.of(page, pageSize);
-		return studentRepository.findAll(pageable);
+		Page<Student> students = studentRepository.findAllStudent(PageRequest.of(page, pageSize).withSort(Sort.by(field)));
+		return students;
+
 	}
 }

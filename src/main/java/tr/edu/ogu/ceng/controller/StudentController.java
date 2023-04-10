@@ -52,9 +52,11 @@ public class StudentController {
 		return studentService.deleteStudent(id);
 	}
 
-	@GetMapping
-	public Page<Student> studentList(@RequestParam Integer pageSize, @RequestParam Integer page) {
+	@GetMapping("/list")
+	public Page<Student> studentList(@RequestParam int page,
+			@RequestParam int pageSize,
+			@RequestParam String field) {
 
-		return studentService.getStudents(pageSize, page);
+		return studentService.listStudents(page, pageSize, field);
 	}
 }
