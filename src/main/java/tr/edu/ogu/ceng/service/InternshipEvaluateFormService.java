@@ -2,8 +2,6 @@ package tr.edu.ogu.ceng.service;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,22 +28,4 @@ public class InternshipEvaluateFormService {
 		return internshipEvaluateFormRepository.findAll();
 	}
 
-	public InternshipEvaluateForm updateInternshipEvaluateForm(Long id, InternshipEvaluateForm updatedForm) {
-		if (!internshipEvaluateFormRepository.existsById(id))
-			throw new EntityNotFoundException("Internship Evaluate Form not found!");
-		InternshipEvaluateForm form = getInternshipEvaluateFormById(id);
-		form.setName(updatedForm.getName());
-		form.setSurname(updatedForm.getSurname());
-		form.setFilePath(updatedForm.getFilePath());
-		form.setInternship(updatedForm.getInternship());
-		form.setCompany(updatedForm.getCompany());
-		return internshipEvaluateFormRepository.save(form);
-	}
-
-	public boolean deleteInternshipEvaluateForm(Long id) {
-		if (!internshipEvaluateFormRepository.existsById(id))
-			return false;
-		internshipEvaluateFormRepository.deleteById(id);
-		return true;
-	}
 }

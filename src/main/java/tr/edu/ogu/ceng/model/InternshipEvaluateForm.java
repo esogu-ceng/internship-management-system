@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,8 +29,9 @@ public class InternshipEvaluateForm {
 	@Column(name = "surname", nullable = false)
 	private String surname;
 
-	@Column(name = "file_path", nullable = false)
-	private String filePath;
+	@Lob
+	@Column(name = "file_content", nullable = false)
+	private byte[] fileContent;
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
