@@ -25,6 +25,14 @@ public class CompanyController {
 
 	CompanyService companyService;
 
+	@GetMapping("/getAll")
+	public ResponseEntity<Page<Company>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<Company> companies = companyService.getAllCompanies(pageable);
+		return ResponseEntity.ok(companies);
+	}
+
 	@PutMapping
 	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
 		Company newCompany = companyService.updateCompany(company);

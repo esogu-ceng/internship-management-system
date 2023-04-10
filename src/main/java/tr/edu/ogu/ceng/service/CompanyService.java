@@ -15,6 +15,10 @@ public class CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	public Page<Company> getAllCompanies(Pageable pageable) {
+		return companyRepository.findAll(pageable);
+	}
+
 	public Company updateCompany(Company company) {
 		if (!companyRepository.existsById(company.getId()))
 			throw new EntityNotFoundException("Company not found!");
