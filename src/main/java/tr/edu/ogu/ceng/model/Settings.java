@@ -1,7 +1,9 @@
 package tr.edu.ogu.ceng.model;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
 @Entity
 @AllArgsConstructor
 @Table(name= "Settings")
