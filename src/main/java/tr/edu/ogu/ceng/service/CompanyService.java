@@ -37,4 +37,11 @@ public class CompanyService {
 
 	}
 
+	public boolean deleteCompany(long id) {
+		if (!companyRepository.existsById(id))
+			return false;
+		companyRepository.deleteById(id);
+		return true;
+	}
+
 }
