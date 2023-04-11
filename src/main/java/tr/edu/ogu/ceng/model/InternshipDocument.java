@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ims_internship_registries")
-public class InternshipRegistry {
+@Table(name = "ims_internship_documents")
+public class InternshipDocument {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,17 +38,14 @@ public class InternshipRegistry {
 	@Column(name = "type", nullable = false)
 	private String type;
 
-	@Column(name = "date", nullable = false)
-	private Timestamp date;
-
-	@Column(name = "create_date", nullable = true)
+	@Column(name = "create_date")
 	private Timestamp createDate;
 
-	@Column(name = "update_date", nullable = true)
+	@Column(name = "update_date")
 	private Timestamp updateDate;
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "internship_id", nullable = false)
 	private Internship internship;
 

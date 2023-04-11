@@ -62,8 +62,12 @@ public class StudentService {
 		return true;
 	}
 
-	public Page<Student> listStudents(int page, int pageSize, String field) {
+	// TODO
+	public Student getStudentByUserId() {
+		return null;
+	}
 
+	public Page<Student> listStudents(int page, int pageSize, String field) {
 		Page<Student> students = studentRepository.findAllStudent(PageRequest.of(page, pageSize).withSort(Sort.by(field)));
 		return students;
 
