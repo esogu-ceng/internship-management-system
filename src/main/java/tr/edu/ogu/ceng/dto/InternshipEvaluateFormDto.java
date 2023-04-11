@@ -9,7 +9,7 @@ public class InternshipEvaluateFormDto {
 	private Long id;
 	private String name;
 	private String surname;
-	private byte[] fileContent;
+	private String filePath;
 	private Internship internship;
 	private Company company;
 }
