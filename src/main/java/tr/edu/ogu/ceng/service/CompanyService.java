@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
+import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 
 @Service
 public class CompanyService {
@@ -31,7 +32,7 @@ public class CompanyService {
 
 	public Page<Company> searchCompanies(String name, Pageable pageable) {
 		if (name.length() < 3) {
-			throw new IllegalArgumentException("Name should be at least 3 characters long.");
+			throw new InvalidArgumentException("Name should be at least 3 characters long.");
 		}
 		return companyRepository.findByNameContainingIgnoreCase(name, pageable);
 
