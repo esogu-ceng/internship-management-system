@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.UserService;
 
@@ -41,10 +40,4 @@ public class UserController {
 		return new ResponseEntity<>(user1, HttpStatus.CREATED);
 	}
 
-	/******** get student over user *************/
-	/// Get the student of a user using user's id
-	@GetMapping("/{id}/student")
-	public Student getStudent(@PathVariable(name = "id") long id) {
-		return userService.getStudent(id);
-	}
 }
