@@ -1,4 +1,6 @@
 package tr.edu.ogu.ceng.controller;
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,8 @@ public class SettingsController {
 	}
 
 	@GetMapping("/{key}")
-	public ResponseEntity<Settings> getSettings(@PathVariable(name = "key") String key) throws Exception {
-		Settings settings = settingsService.getSettings(key);
-		if(settings!=null) {
-			return ResponseEntity.ok(settings);
-		}
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<Settings> getSettings(@PathVariable(name = "key") String key) throws EntityNotFoundException {
+	    Settings settings = settingsService.getSettings(key);
+	    return ResponseEntity.ok(settings);
 	}
 }
