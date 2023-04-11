@@ -8,11 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tr.edu.ogu.ceng.dto.InternshipEvaluateFormDto;
 import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
 import tr.edu.ogu.ceng.service.InternshipEvaluateFormService;
 
@@ -24,10 +26,10 @@ public class InternshipEvaluateFormController {
 	@Autowired
 	private final InternshipEvaluateFormService internshipEvaluateFormService;
 
-	@PostMapping
-	public ResponseEntity<InternshipEvaluateForm> createInternshipEvaluateForm(@RequestBody InternshipEvaluateForm internshipEvaluateForm) {
-		InternshipEvaluateForm createdForm = internshipEvaluateFormService.createInternshipEvaluateForm(internshipEvaluateForm);
-		return new ResponseEntity<>(createdForm, HttpStatus.CREATED);
+	@PostMapping("/upload")
+	public ResponseEntity<String> formFileUpload(@RequestParam("file") MultipartFile file, InternshipEvaluateFormDto dto) {
+		internshipEvaluateFormService.formFileUpload(file, dto);
+		return ResponseEntity.ok("Dosya yüklendi ve kaydedildi.");
 	}
 
 	@GetMapping("/{id}")
