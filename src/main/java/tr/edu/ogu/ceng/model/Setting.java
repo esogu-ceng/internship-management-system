@@ -22,7 +22,7 @@ public class Setting {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 
 	@Column(name = "key", nullable = false, unique = true)
 	private String key;
