@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +25,14 @@ public class CompanyController {
 	@Autowired
 
 	CompanyService companyService;
+
+	@GetMapping("/getAll")
+	public ResponseEntity<Page<Company>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<Company> companies = companyService.getAllCompanies(pageable);
+		return ResponseEntity.ok(companies);
+	}
 
 	@PutMapping
 	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
@@ -48,4 +57,8 @@ public class CompanyController {
 		return ResponseEntity.ok(companies);
 	}
 
+	@DeleteMapping("/{id}")
+	public boolean deleteCompany(@PathVariable(name = "id") Long id) {
+		return companyService.deleteCompany(id);
+	}
 }

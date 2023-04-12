@@ -1,9 +1,10 @@
 package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tr.edu.ogu.ceng.dao.FacultyRepository;
@@ -14,8 +15,8 @@ public class FacultyService {
 	@Autowired
 	private FacultyRepository facultyRepository;
 
-	public List<Faculty> getFaculties() {
-		return facultyRepository.findAll();
+	public Page<Faculty> getFaculties(Pageable pageable) {
+		return facultyRepository.findAll(pageable);
 	}
 
 	public Faculty addFaculty(Faculty faculty) {
