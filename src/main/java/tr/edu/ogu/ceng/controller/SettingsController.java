@@ -17,11 +17,16 @@ public class SettingsController {
 
 	@PutMapping
 	public ResponseEntity<Settings> updateSettings(@RequestBody Settings settings) {
-		Settings newSettings = settingsService.updateSettings(settings);
-		if(newSettings!=null ) {
-			return ResponseEntity.ok(newSettings);
-		}
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    try {
+	        Settings updatedSettings = settingsService.updateSettings(settings);
+	        return ResponseEntity.ok(updatedSettings);
+	    } 
+	    catch (EntityNotFoundException ex) {
+	        return ResponseEntity.notFound().build();
+	    } 
+	    catch (Exception ex) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
 	}
 
 	@GetMapping("/{key}")
