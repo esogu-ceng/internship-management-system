@@ -8,3 +8,4 @@ CREATE TABLE public.ims_internship_evaluate_form (
     CONSTRAINT ims_internship_evaluate_form_internships_fk FOREIGN KEY (internship_id) REFERENCES public.ims_internships(id),
     CONSTRAINT ims_internship_evaluate_form_companies_fk FOREIGN KEY (company_id) REFERENCES public.ims_companies(id)
 );
+INSERT INTO ims_settings (key) VALUES ('upload_directory');

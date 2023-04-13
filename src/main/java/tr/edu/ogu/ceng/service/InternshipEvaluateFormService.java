@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.InternshipEvaluateFormRepository;
+import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.InternshipEvaluateFormDto;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Internship;
@@ -23,14 +26,17 @@ import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
 public class InternshipEvaluateFormService {
 	@Autowired
 	private InternshipEvaluateFormRepository internshipEvaluateFormRepository;
-	private final InternshipService internshipService;
-	private final CompanyService companyService;
+	private final InternshipRepository internshipRepository;
+	private final CompanyRepository companyRepository;
+	// private final SettingsRepository settingsRepository;
 
-	public void formFileUpload(MultipartFile file, InternshipEvaluateFormDto dto) {
-		InternshipEvaluateForm internshipEvaluateFormForm = new InternshipEvaluateForm();
-
+	public InternshipEvaluateForm formFileUpload(MultipartFile file, InternshipEvaluateFormDto dto) {
+		InternshipEvaluateForm internshipEvaluateForm = new InternshipEvaluateForm();
+		// String key = "upload_directory";
+		// Setting setting = settingsRepository.findByKey(key);
 		String fileName = new File(file.getOriginalFilename()).getName();
-		String filePath = "C:/uploads/" + fileName;
+		// String filePath = setting.getValue()+fileName;
+		String filePath = "C:/uploads/" + fileName; // temporary
 
 		try {
 			Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
@@ -38,20 +44,21 @@ public class InternshipEvaluateFormService {
 			e.printStackTrace();
 		}
 
-		internshipEvaluateFormForm.setName(dto.getName());
-		internshipEvaluateFormForm.setSurname(dto.getSurname());
-		internshipEvaluateFormForm.setFilePath(filePath);
+		internshipEvaluateForm.setName(dto.getName());
+		internshipEvaluateForm.setSurname(dto.getSurname());
+		internshipEvaluateForm.setFilePath(filePath);
 
-		Internship internship = internshipService.getInternship(dto.getInternship().getId()).orElse(null);
-		Company company = companyService.getCompany(dto.getCompany().getId());
+		Internship internship = internshipRepository.findById(dto.getInternship().getId()).orElse(null);
+		Company company = companyRepository.findById(dto.getCompany().getId()).orElse(null);
 
 		if (internship != null && company != null) {
-			internshipEvaluateFormForm.setInternship(internship);
-			internshipEvaluateFormForm.setCompany(company);
-			internshipEvaluateFormRepository.save(internshipEvaluateFormForm);
+			internshipEvaluateForm.setInternship(internship);
+			internshipEvaluateForm.setCompany(company);
+			internshipEvaluateFormRepository.save(internshipEvaluateForm);
 		} else {
 			throw new IllegalArgumentException("Hatalı internship ID veya company ID");
 		}
+		return internshipEvaluateForm;
 	}
 
 	public InternshipEvaluateForm getInternshipEvaluateFormById(Long id) {
@@ -59,8 +66,10 @@ public class InternshipEvaluateFormService {
 		return intershipEvaluateForm;
 	}
 
-	public List<InternshipEvaluateForm> getAllInternshipEvaluateForms() {
-		return internshipEvaluateFormRepository.findAll();
+	public Page<InternshipEvaluateForm> getAllInternshipEvaluateForms(Pageable pageable) {
+		if (internshipEvaluateFormRepository.findAll() == null)
+			return null;
+		return internshipEvaluateFormRepository.findAll(pageable);
 	}
 
 }

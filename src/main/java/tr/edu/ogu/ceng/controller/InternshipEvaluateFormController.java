@@ -1,8 +1,8 @@
 package tr.edu.ogu.ceng.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.InternshipEvaluateFormDto;
 import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
 import tr.edu.ogu.ceng.service.InternshipEvaluateFormService;
+import tr.edu.ogu.ceng.util.PageableUtil;
 
 @AllArgsConstructor
 @RestController
@@ -27,9 +28,9 @@ public class InternshipEvaluateFormController {
 	private final InternshipEvaluateFormService internshipEvaluateFormService;
 
 	@PostMapping("/upload")
-	public ResponseEntity<String> formFileUpload(@RequestParam("file") MultipartFile file, InternshipEvaluateFormDto dto) {
-		internshipEvaluateFormService.formFileUpload(file, dto);
-		return ResponseEntity.ok("Dosya yüklendi ve kaydedildi.");
+	public ResponseEntity<InternshipEvaluateForm> formFileUpload(@RequestParam("file") MultipartFile file, InternshipEvaluateFormDto dto) {
+		InternshipEvaluateForm newForm = internshipEvaluateFormService.formFileUpload(file, dto);
+		return new ResponseEntity<>(newForm, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
@@ -38,9 +39,14 @@ public class InternshipEvaluateFormController {
 		return new ResponseEntity<>(form, HttpStatus.OK);
 	}
 
-	@GetMapping
-	public ResponseEntity<List<InternshipEvaluateForm>> getAllInternshipEvaluateForms() {
-		List<InternshipEvaluateForm> forms = internshipEvaluateFormService.getAllInternshipEvaluateForms();
-		return new ResponseEntity<>(forms, HttpStatus.OK);
+	@GetMapping("/getAll")
+	public Page<InternshipEvaluateForm> getAllInternshipEvaluateForms(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "name") String sortBy) {
+
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<InternshipEvaluateForm> forms = internshipEvaluateFormService.getAllInternshipEvaluateForms(pageable);
+
+		return forms;
 	}
 }
