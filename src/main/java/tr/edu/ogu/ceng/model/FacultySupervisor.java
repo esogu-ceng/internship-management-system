@@ -35,6 +35,9 @@ public class FacultySupervisor {
 	@Column(name = "phone_number", nullable = false)
 	private String phoneNumber;
 
+	@Column(name = "email", nullable = false)
+	private String email;
+	
 	@Column(name = "supervisor_no")
 	private String supervisorNo;
 
