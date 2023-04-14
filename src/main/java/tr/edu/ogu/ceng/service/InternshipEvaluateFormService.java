@@ -16,10 +16,12 @@ import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.InternshipEvaluateFormRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
+import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dto.InternshipEvaluateFormDto;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
+import tr.edu.ogu.ceng.model.Setting;
 
 @Service
 @AllArgsConstructor
@@ -28,15 +30,14 @@ public class InternshipEvaluateFormService {
 	private InternshipEvaluateFormRepository internshipEvaluateFormRepository;
 	private final InternshipRepository internshipRepository;
 	private final CompanyRepository companyRepository;
-	// private final SettingsRepository settingsRepository;
+	private final SettingRepository settingsRepository;
 
 	public InternshipEvaluateForm formFileUpload(MultipartFile file, InternshipEvaluateFormDto dto) {
 		InternshipEvaluateForm internshipEvaluateForm = new InternshipEvaluateForm();
-		// String key = "upload_directory";
-		// Setting setting = settingsRepository.findByKey(key);
+		String key = "upload_directory";
+		Setting setting = settingsRepository.findByKey(key);
 		String fileName = new File(file.getOriginalFilename()).getName();
-		// String filePath = setting.getValue()+fileName;
-		String filePath = "C:/uploads/" + fileName; // temporary
+		String filePath = setting.getValue() + fileName;
 
 		try {
 			Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
