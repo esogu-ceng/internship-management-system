@@ -1,4 +1,5 @@
 package tr.edu.ogu.ceng.model;
+
 import java.sql.Timestamp;
 
 import javax.persistence.*;
