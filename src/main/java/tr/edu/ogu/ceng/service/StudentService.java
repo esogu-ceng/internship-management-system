@@ -84,6 +84,16 @@ public class StudentService {
 		return true;
 	}
 
+	public Page<Student> getStudentsByName(Pageable pageable, String name) {
+		// TODO Exception and Logging
+		return studentRepository.findByName(name, pageable);
+	}
+
+	// TODO
+	public Student getStudentByUserId() {
+		return null;
+	}
+
 	public StudentDto registerAsStudent(StudentDto request) {
 
 		checkIfPasswordsMatchingValidation(request);
@@ -166,6 +176,7 @@ public class StudentService {
 	private void checkIfPasswordsMatchingValidation(StudentDto request) {
 		if (!request.getPassword().equals(request.getConfirmPassword()))
 			throw new RuntimeException("Passwords do not match!");
+
 	}
 
 }
