@@ -24,4 +24,12 @@ public class SettingService {
     	}
     	return setting;
     }
+    
+    public String findValueByKey(String key) {
+    	Setting setting = settingRepository.findByKey(key);
+    	if (setting == null) {
+    		throw new EntityNotFoundException("Setting with "+ key +" not found!");
+    	}
+    	return setting.getValue();
+    }
 }
