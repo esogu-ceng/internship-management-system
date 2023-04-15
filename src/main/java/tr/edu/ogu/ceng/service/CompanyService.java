@@ -1,18 +1,24 @@
 package tr.edu.ogu.ceng.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
+import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 
 @Service
 public class CompanyService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
+
+	public Page<Company> getAllCompanies(Pageable pageable) {
+		return companyRepository.findAll(pageable);
+	}
 
 	public Company updateCompany(Company company) {
 		if (!companyRepository.existsById(company.getId()))
@@ -28,14 +34,19 @@ public class CompanyService {
 		return company;
 	}
 
+	public Page<Company> searchCompanies(String name, Pageable pageable) {
+		if (name.length() < 3) {
+			throw new InvalidArgumentException("Name should be at least 3 characters long.");
+		}
+		return companyRepository.findByNameContainingIgnoreCase(name, pageable);
 
-  
+	}
 
-    public List<Company> searchCompanies(String name) {
-        if (name.length() < 3) {
-            throw new IllegalArgumentException("Name should be at least 3 characters long.");
-        }
-        return companyRepository.findByNameContainingIgnoreCase(name);
-    }
+	public boolean deleteCompany(long id) {
+		if (!companyRepository.existsById(id))
+			return false;
+		companyRepository.deleteById(id);
+		return true;
+	}
 
 }

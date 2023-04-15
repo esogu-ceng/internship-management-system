@@ -1,15 +1,15 @@
 package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 
 @Service
@@ -17,10 +17,10 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<User> getAllUsers() {
-		if (userRepository.findAll() == null)
+	public Page<User> getAllUsers(Pageable pageable) {
+		if (userRepository.findAll(pageable) == null)
 			return null;
-		return userRepository.findAll();
+		return userRepository.findAll(pageable);
 	}
 
 	public User saveUser(User user) {
@@ -41,15 +41,6 @@ public class UserService {
 
 		userRepository.deleteById(id);
 		return true;
-	}
-
-	/******** Accessing student via user **********/
-
-	public Student getStudent(long id) {
-		User user = userRepository.findById(id).orElse(null);
-		if (user == null)
-			return null;
-		return user.getStudent();
 	}
 
 }

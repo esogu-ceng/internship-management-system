@@ -2,12 +2,6 @@ package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
 
-import java.util.List;
-import java.util.ArrayList;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +25,7 @@ public class InternshipRegistryService {
 	}
 
 	public InternshipRegistry updateInternshipRegistry(InternshipRegistry internshipRegistry) {
-		if (!internshipRegistryRepository.existsById(internshipRegistry.getUserId()))
+		if (!internshipRegistryRepository.existsById(internshipRegistry.getId()))
 			throw new EntityNotFoundException("Internship Registry not found!");
 
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
@@ -47,5 +41,5 @@ public class InternshipRegistryService {
 		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
 		return internshipRegistry;
-	}    
+	}
 }
