@@ -71,7 +71,7 @@ public class StudentService {
 	}
 	
 	public Page<Student> getStudentsByName(Pageable pageable, String name) {
-		// To-do Exception and Logging
+		// TODO Exception and Logging
 		return studentRepository.findByName(name, pageable);
 	}
 	
