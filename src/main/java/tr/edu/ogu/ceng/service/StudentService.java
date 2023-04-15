@@ -69,7 +69,12 @@ public class StudentService {
 		log.info("Girdiğiniz id'ye sahip öğrenci silindi.");
 		return true;
 	}
-
+	
+	public Page<Student> getStudentsByName(Pageable pageable, String name) {
+		// TODO Exception and Logging
+		return studentRepository.findByName(name, pageable);
+	}
+	
 	// TODO
 	public Student getStudentByUserId() {
 		return null;

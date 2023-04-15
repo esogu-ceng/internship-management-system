@@ -38,7 +38,15 @@ public class StudentController {
 		Page<Student> students = studentService.getAllStudents(pageable);
 		return students;
 	}
-
+	
+	@GetMapping("/getByName/{studentName}")
+	public Page<Student> getStudentsByName(@PathVariable(name = "studentName") String studentName,@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<Student> students = studentService.getStudentsByName(pageable, studentName);
+		return students;
+	}
+	
 	@PostMapping()
 	public Student addStudent(@RequestBody Student student) {
 		return studentService.addStudent(student);
