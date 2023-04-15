@@ -2,16 +2,7 @@ package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -35,9 +26,6 @@ public class FacultySupervisor {
 	@Column(name = "phone_number", nullable = false)
 	private String phoneNumber;
 
-	@Column(name = "email", nullable = false)
-	private String email;
-	
 	@Column(name = "supervisor_no")
 	private String supervisorNo;
 
@@ -48,7 +36,7 @@ public class FacultySupervisor {
 	private Timestamp updateDate;
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
