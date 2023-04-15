@@ -44,5 +44,4 @@ public class FacultySupervisor {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "faculty_id", nullable = false)
 	private Faculty faculty;
-	
 }
