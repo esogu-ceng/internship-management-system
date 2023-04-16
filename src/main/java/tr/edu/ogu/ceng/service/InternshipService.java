@@ -50,4 +50,18 @@ public class InternshipService {
 		return true;
 	}
 
+	public Internship approveInternship(Long id) {
+
+		if (!internshipRepository.existsById(id))
+			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+
+		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		Internship internship = internshipRepository.findById(id).orElse(null);
+		internship.setStatus("Approved");
+		internship.setUpdateDate(localDateTime);
+
+		return internshipRepository.save(internship);
+
+	}
+
 }

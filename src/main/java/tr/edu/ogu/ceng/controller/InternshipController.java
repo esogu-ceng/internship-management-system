@@ -44,4 +44,9 @@ public class InternshipController {
 	public boolean deleteInternship(@PathVariable(name = "id") Long id) {
 		return internshipService.deleteInternship(id);
 	}
+
+	@PutMapping("/approve/{id}")
+	public Internship approveInternship(@PathVariable(name = "id") long id) {
+		return internshipService.approveInternship(id);
+	}
 }
