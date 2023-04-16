@@ -45,8 +45,13 @@ public class CompanyService {
 	}
 	
 	public Company addCompany(Company company) {
+		Company newCompany = companyRepository.save(company);
+		if (newCompany == null) {
+			log.error("Şirket eklenirken bir hata oluştu.");
+			throw new EntityNotFoundException("Şirket eklenirken bir hata oluştu.");
+		}
 		log.info("Şirket başarılı bir şekilde eklendi.");
-		return companyRepository.save(company);
+		return newCompany;
 	}
 
 	public boolean deleteCompany(long id) {
