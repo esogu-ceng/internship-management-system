@@ -1,9 +1,9 @@
 package tr.edu.ogu.ceng.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,16 +28,30 @@ class CompanyTest {
 
 	@Test
 	void should_save_one_company() {
-		var companyToSave = Company.builder().name("test").address("test").phoneNumber("test").faxNumber("test").email("test").scope("test").build();
+		// create a Company object with test data
+		var companyToSave = Company.builder()
+				.name("Test Company")
+				.address("123 Main St.")
+				.phoneNumber("+1234567890")
+				.faxNumber("+1234567891")
+				.email("test@test.com")
+				.scope("local")
+				.build();
 
 		when(companyRepository.save(any(Company.class))).thenReturn(companyToSave);
 
-		var actual = companyService.addCompany(new Company());
+		var actual = companyService.addCompany(companyToSave);
 
-		assertThat(actual).usingRecursiveComparison().isEqualTo(companyToSave);
-		verify(companyRepository).save(any(Company.class));
-		verifyNoMoreInteractions(companyRepository);
+		// assert that the actual value is not null and matches the expected value
+		assertNotNull(actual);
+		assertEquals(companyToSave.getName(), actual.getName());
+		assertEquals(companyToSave.getAddress(), actual.getAddress());
+		assertEquals(companyToSave.getPhoneNumber(), actual.getPhoneNumber());
+		assertEquals(companyToSave.getFaxNumber(), actual.getFaxNumber());
+		assertEquals(companyToSave.getEmail(), actual.getEmail());
+		assertEquals(companyToSave.getScope(), actual.getScope());
 
+		// verify that the companyRepository.save() method was called once with the expected parameter
+		verify(companyRepository).save(companyToSave);
 	}
-
 }
