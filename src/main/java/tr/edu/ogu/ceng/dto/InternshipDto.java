@@ -1,20 +1,25 @@
 package tr.edu.ogu.ceng.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class InternshipDto {
-	public InternshipDto() {}
+
 	private Long id;
 	private String status;
-	private Date start_date;
-	private Date end_date;
+	private Timestamp startDate;
+	private Timestamp endDate;
 	private int days;
-	private Date create_date;
-	private Date update_date;
-	private Long student_id;
-	private Long company_id;
-	private Long faculty_supervisor_id;
-	
+	private Timestamp createDate;
+	private Timestamp updateDate;
+	private Long studentId;
+	private Long companyId;
+	private Long facultySupervisorId;
+
 }

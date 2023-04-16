@@ -55,6 +55,16 @@ public class CompanyService {
 		log.info("Company is found successfully.");
 		return companyRepository.findByNameContainingIgnoreCase(name, pageable);
 	}
+	
+	public Company addCompany(Company company) {
+		Company newCompany = companyRepository.save(company);
+		if (newCompany == null) {
+			log.error("Şirket eklenirken bir hata oluştu.");
+			throw new EntityNotFoundException("Şirket eklenirken bir hata oluştu.");
+		}
+		log.info("Şirket başarılı bir şekilde eklendi.");
+		return newCompany;
+	}
 
 	public boolean deleteCompany(long id) {
 		if (!companyRepository.existsById(id)) {
