@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.model.Company;
@@ -13,6 +14,7 @@ import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class CompanyService {
 
 	@Autowired
@@ -43,7 +45,7 @@ public class CompanyService {
 		return companyRepository.findByNameContainingIgnoreCase(name, pageable);
 
 	}
-	
+
 	public Company addCompany(Company company) {
 		Company newCompany = companyRepository.save(company);
 		if (newCompany == null) {
