@@ -1,27 +1,28 @@
 package tr.edu.ogu.ceng.service;
 
-
 import java.sql.Timestamp;
 
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.RegisterAsCompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.RegisterAsCompanySupervisorDto;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
 
+@Slf4j
 @Service
 @AllArgsConstructor
-public class RegisterAsCompanySupervisorService{
+public class RegisterAsCompanySupervisorService {
 
 	private final RegisterAsCompanySupervisorRepository repository;
-	
+
 	public RegisterAsCompanySupervisorDto register(RegisterAsCompanySupervisorDto request) {
 
 		checkIfPasswordsMatchingValidation(request);
-		CompanySupervisor companySupervisor=new CompanySupervisor();
+		CompanySupervisor companySupervisor = new CompanySupervisor();
 		User user = new User();
 		Company company = new Company();
 		companySupervisor.setUser(user);
@@ -35,9 +36,10 @@ public class RegisterAsCompanySupervisorService{
 		companySupervisor.getCompany().setId(request.getCompanyId());
 		companySupervisor.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		companySupervisor.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		log.info("New company supervisor registered: {}", companySupervisor.getName());
 		repository.save(companySupervisor);
-		
-		RegisterAsCompanySupervisorDto response=new RegisterAsCompanySupervisorDto();
+
+		RegisterAsCompanySupervisorDto response = new RegisterAsCompanySupervisorDto();
 		response.setName(companySupervisor.getName());
 		response.setSurname(companySupervisor.getSurname());
 		response.setPhoneNumber(companySupervisor.getPhoneNumber());
@@ -47,13 +49,13 @@ public class RegisterAsCompanySupervisorService{
 		response.setCompanyId(companySupervisor.getCompany().getId());
 		response.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		response.setCreateDate(new Timestamp(System.currentTimeMillis()));
-		
 		return response;
 	}
 
 	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorDto request) {
-		if(!request.getPassword().toString().equals(request.getConfirmPassword().toString())) 
-			throw new RuntimeException("Şifreler uyuşmuyor!");
+		if (!request.getPassword().toString().equals(request.getConfirmPassword().toString()))
+			log.warn("This password and confirm password do not match.");
+		throw new RuntimeException("Şifreler uyuşmuyor!");
 	}
 
 }
