@@ -28,21 +28,19 @@ class CompanyTest {
 
 	@Test
 	void should_save_one_company() {
-		// create a Company object with test data
 		var companyToSave = Company.builder()
-				.name("Test Company")
-				.address("123 Main St.")
-				.phoneNumber("+1234567890")
-				.faxNumber("+1234567891")
-				.email("test@test.com")
-				.scope("local")
+				.name("Test")
+				.address("Test")
+				.phoneNumber("Test")
+				.faxNumber("Test")
+				.email("Test")
+				.scope("Test")
 				.build();
 
 		when(companyRepository.save(any(Company.class))).thenReturn(companyToSave);
 
 		var actual = companyService.addCompany(companyToSave);
 
-		// assert that the actual value is not null and matches the expected value
 		assertNotNull(actual);
 		assertEquals(companyToSave.getName(), actual.getName());
 		assertEquals(companyToSave.getAddress(), actual.getAddress());
@@ -51,7 +49,6 @@ class CompanyTest {
 		assertEquals(companyToSave.getEmail(), actual.getEmail());
 		assertEquals(companyToSave.getScope(), actual.getScope());
 
-		// verify that the companyRepository.save() method was called once with the expected parameter
 		verify(companyRepository).save(companyToSave);
 	}
 }
