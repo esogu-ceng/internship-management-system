@@ -52,7 +52,7 @@ public class StudentTest {
 
 		when(studentRepository.save(any(Student.class))).thenReturn(studentToSave);
 
-		final var actual = studentService.addStudent(new Student());
+		var actual = studentService.addStudent(new Student());
 
 		assertThat(actual).usingRecursiveComparison().isEqualTo(studentToSave);
 		verify(studentRepository).save(any(Student.class));
