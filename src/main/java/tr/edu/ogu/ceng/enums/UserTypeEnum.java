@@ -2,8 +2,8 @@ package tr.edu.ogu.ceng.enums;
 
 public enum UserTypeEnum {
     STUDENT(1),
-    COMPANYSUPERVISORS(2),
-    FACULTYSUPERVISORS(3);
+    COMPANYSUPERVISOR(2),
+    FACULTYSUPERVISOR(3);
 
     private long id;
 
