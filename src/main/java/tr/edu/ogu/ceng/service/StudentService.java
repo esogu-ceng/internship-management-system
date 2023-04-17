@@ -4,15 +4,27 @@ import java.sql.Timestamp;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
+import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.enums.UserTypeEnum;
+import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
+import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.model.UserType;
 
 @Slf4j
 @Service
@@ -20,6 +32,8 @@ import tr.edu.ogu.ceng.model.Student;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
+	private final UserRepository userRepository;
+	private final UserTypeService userTypeService;
 
 	public Student getStudent(long id) {
 		try {
@@ -28,7 +42,8 @@ public class StudentService {
 				log.warn("Girdiğiniz id'ye ait öğrenci bulunmamaktadır.");
 				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 			}
-			log.info("{} id'ye sahip öğrenci {} numaralı ,{} {}. ", student.getId(), student.getStudentNo(), student.getName(), student.getSurname());
+			log.info("{} id'ye sahip öğrenci {} numaralı ,{} {}. ", student.getId(), student.getStudentNo(),
+					student.getName(), student.getSurname());
 			return student;
 		} catch (EntityNotFoundException e) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
@@ -69,15 +84,58 @@ public class StudentService {
 		log.info("Girdiğiniz id'ye sahip öğrenci silindi.");
 		return true;
 	}
-	
+
 	public Page<Student> getStudentsByName(Pageable pageable, String name) {
 		// TODO Exception and Logging
 		return studentRepository.findByName(name, pageable);
 	}
-	
+
 	// TODO
 	public Student getStudentByUserId() {
 		return null;
+	}
+
+	public StudentDto registerAsStudent(StudentDto request) {
+
+		checkIfPasswordsMatchingValidation(request);
+
+		Faculty faculty = new Faculty();
+
+		UserType userType = userTypeService.getUserTypeId(UserTypeEnum.STUDENT);
+
+		User user = new User();
+		user.setUsername(request.getUsername());
+		user.setEmail(request.getEmail());
+		user.setPassword(request.getPassword());
+		user.setUserType(userType);
+		user = userRepository.save(user);
+
+		ModelMapper modelMapper = new ModelMapper();
+		Student student = modelMapper.map(request, Student.class);
+		
+		
+
+		student.setUser(user);
+		student.setFaculty(faculty);
+
+		student.getFaculty().setId(request.getFacultyId());
+		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+		student.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		studentRepository.save(student);
+		log.info("Kayıt başarılı");
+
+		
+		StudentDto response = modelMapper.map(student, StudentDto.class);
+		return response;
+
+	}
+
+	// This method checks if the entered password and confirmed password are the
+	// same. If not, it throws a runtime exception.
+	private void checkIfPasswordsMatchingValidation(StudentDto request) {
+		if (!request.getPassword().equals(request.getConfirmPassword()))
+			throw new RuntimeException("Passwords do not match!");
+
 	}
 
 }

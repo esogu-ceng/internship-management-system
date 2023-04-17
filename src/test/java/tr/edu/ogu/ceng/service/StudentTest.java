@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -25,11 +26,13 @@ public class StudentTest {
 	StudentRepository studentRepository;
 
 	StudentService studentService;
+	UserRepository userRepository;
+	UserTypeService userTypeService;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository);
+		studentService = new StudentService(studentRepository, userRepository, userTypeService);
 	}
 
 	@Test
