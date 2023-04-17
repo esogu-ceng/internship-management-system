@@ -19,7 +19,7 @@ public class UserTypeController {
 	@Autowired
 	private UserTypeService userTypeService;
 
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<UserTypeDto> addUser(@RequestBody UserTypeDto userType) {
 		UserTypeDto savedUserType = userTypeService.saveUsertype(userType);
 		return new ResponseEntity<>(savedUserType, HttpStatus.CREATED);
