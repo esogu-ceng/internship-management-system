@@ -9,13 +9,18 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.UserTypeDto;
+import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.UserType;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
-@Slf4j
 @Service
 public class UserTypeService {
 	@Autowired
 	private UserTypeRepository userTypeRepository;
+
 
 	public UserTypeDto saveUsertype(UserTypeDto userTypeDto) {
 		try {
@@ -32,4 +37,12 @@ public class UserTypeService {
 			throw e;
 		}
 	}
+
+    
+    public UserType getUserTypeId(UserTypeEnum userTypeEnum) {
+        Optional<UserType> optionalUserType = userTypeRepository.findById(userTypeEnum.getId());
+        UserType userType = optionalUserType.orElse(null);
+        return userType;
+    }
+
 }
