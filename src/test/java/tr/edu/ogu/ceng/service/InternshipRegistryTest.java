@@ -30,7 +30,7 @@ public class InternshipRegistryTest {
 	}
 
 	@Test
-	public void should_save_oneValid_internshipRegistry() {
+	public void should_save_one_internshipRegistry() {
 		var internshipRegistryToSave = InternshipRegistry.builder().id(1L).filePath("C:/Users/root/test")
 				.name("internshipRegistry1").type("pdf").date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
 				.createDate(new Timestamp(2023, 04, 17, 0, 0, 0, 0)).internship(new Internship()).build();
@@ -50,4 +50,7 @@ public class InternshipRegistryTest {
 
 		verify(internshipRegistryRepository).save(internshipRegistryToSave);
 	}
+
+	// TODO Not Null olarak belirlenmiş alanların ayrıca tek tek kontrolü
+	// yapılabilir.
 }

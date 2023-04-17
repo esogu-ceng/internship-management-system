@@ -48,4 +48,6 @@ public class Internship {
     @JoinColumn(name = "faculty_supervisor_id", nullable = false)
     private FacultySupervisor facultySupervisor;
     
+    //TODO Bu sınıfın internship registry sınıfıyla ilişkide olması sebebiyle 
+    //buraya internship registry listesi eklenebilir.
 }
