@@ -16,8 +16,6 @@ public class InternshipRegistryDto {
     private String name;
     private String type;
     private Timestamp date;
-    private Timestamp createDate;
-    private Timestamp updateDate;
     private Internship internship;
 
 }

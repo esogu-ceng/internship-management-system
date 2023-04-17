@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 import tr.edu.ogu.ceng.service.InternshipRegistryService;
 
@@ -27,13 +29,15 @@ public class InternshipRegistryController {
 	}
 
 	@PutMapping
-	public ResponseEntity<InternshipRegistry> updateInternshipRegistry(@RequestBody InternshipRegistry internshipRegistry) {
-		return ResponseEntity.ok(internshipRegistryService.updateInternshipRegistry(internshipRegistry));
+	public ResponseEntity<InternshipRegistryDto> updateInternshipRegistry(@RequestBody InternshipRegistryDto internshipRegistryDto) {
+		InternshipRegistryDto updatedInternshipRegistry = internshipRegistryService.updateInternshipRegistry(internshipRegistryDto);
+		return ResponseEntity.ok(updatedInternshipRegistry);
 	}
 
 	@PostMapping
-	public ResponseEntity<InternshipRegistry> addInternshipRegistries(@RequestBody InternshipRegistry internshipRegistries) {
-		return ResponseEntity.ok(internshipRegistryService.addInternshipRegistry(internshipRegistries));
+	public ResponseEntity<InternshipRegistryDto> addInternshipRegistries(@RequestBody InternshipRegistryDto internshipRegistriesDto) {
+		InternshipRegistryDto addedInternshipRegistry = internshipRegistryService.addInternshipRegistry(internshipRegistriesDto);
+		return ResponseEntity.ok(addedInternshipRegistry);
 	}
 
 }

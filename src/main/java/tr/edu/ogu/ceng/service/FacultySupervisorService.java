@@ -4,11 +4,11 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
