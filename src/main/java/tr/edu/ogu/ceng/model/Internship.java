@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 
 @Entity
 @Table(name = "ims_internships")
@@ -15,7 +16,8 @@ public class Internship {
     private Long id;
     
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InternshipStatus status;
     
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
