@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.stereotype.Service;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -110,62 +110,22 @@ public class StudentService {
 		user.setUserType(userType);
 		user = userRepository.save(user);
 
-		Student student = new Student();
+		ModelMapper modelMapper = new ModelMapper();
+		Student student = modelMapper.map(request, Student.class);
+		
+		
+
 		student.setUser(user);
 		student.setFaculty(faculty);
 
-		student.setName(request.getName());
-		student.setSurname(request.getSurname());
-		student.setTckn(request.getTckn());
-		student.setStudentNo(request.getStudentNo());
-		student.setGrade(request.getGrade());
-		student.setPhoneNumber(request.getPhoneNumber());
-		student.setProvince(request.getProvince());
-		student.setSubprovince(request.getSubprovince());
-		student.setZipCode(request.getZipCode());
-		student.setMotherName(request.getMotherName());
-		student.setFatherName(request.getFatherName());
-		student.setBirthPlace(request.getBirthPlace());
 		student.getFaculty().setId(request.getFacultyId());
-		student.setBirthDate(Timestamp.valueOf(request.getBirthDate()));
-		student.setIdCardSerialNo(request.getIdCardSerialNo());
-		student.setIdRegisterProvince(request.getIdRegisterProvince());
-		student.setIdRegisterSubprovince(request.getIdRegisterSubprovince());
-		student.setIdRegisterStreetVillage(request.getIdRegisterStreetVillage());
-		student.setIdRegisterVolumeNo(request.getIdRegisterVolumeNo());
-		student.setIdRegisterFamilySerialNo(request.getIdRegisterFamilySerialNo());
-		student.setIdRegisterSerialNo(request.getIdRegisterSerialNo());
-		student.setIdRegistryOffice(request.getIdRegistryOffice());
-		student.setIdRegistryReason(request.getIdRegistryReason());
 		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		student.setCreateDate(new Timestamp(System.currentTimeMillis()));
 		studentRepository.save(student);
 		log.info("Kayıt başarılı");
 
-		StudentDto response = new StudentDto();
-		response.setName(student.getName());
-		response.setSurname(student.getSurname());
-		response.setTckn(student.getTckn());
-		response.setStudentNo(student.getStudentNo());
-		response.setGrade(student.getGrade());
-		response.setPhoneNumber(student.getPhoneNumber());
-		response.setProvince(student.getProvince());
-		response.setSubprovince(student.getSubprovince());
-		response.setZipCode(student.getZipCode());
-		response.setMotherName(student.getMotherName());
-		response.setFatherName(student.getFatherName());
-		response.setBirthPlace(student.getBirthPlace());
-		response.setBirthDate(student.getBirthDate().toString());
-		response.setIdCardSerialNo(student.getIdCardSerialNo());
-		response.setIdRegisterProvince(student.getIdRegisterProvince());
-		response.setIdRegisterSubprovince(student.getIdRegisterSubprovince());
-		response.setIdRegisterStreetVillage(student.getIdRegisterStreetVillage());
-		response.setIdRegisterVolumeNo(student.getIdRegisterVolumeNo());
-		response.setIdRegisterFamilySerialNo(student.getIdRegisterFamilySerialNo());
-		response.setIdRegisterSerialNo(student.getIdRegisterSerialNo());
-		response.setIdRegistryOffice(student.getIdRegistryOffice());
-		response.setIdRegistryReason(student.getIdRegistryReason());
-
+		
+		StudentDto response = modelMapper.map(student, StudentDto.class);
 		return response;
 
 	}
