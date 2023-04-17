@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.service;
 import java.sql.Timestamp;
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @Slf4j
 @Service
+@AllArgsConstructor
 public class FacultySupervisorService {
 
     @Autowired
