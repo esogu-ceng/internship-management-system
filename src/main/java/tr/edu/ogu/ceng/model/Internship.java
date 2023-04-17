@@ -8,6 +8,8 @@ import lombok.*;
 @Entity
 @Table(name = "ims_internships")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Internship {
     @Id
@@ -47,4 +49,6 @@ public class Internship {
     @JoinColumn(name = "faculty_supervisor_id", nullable = false)
     private FacultySupervisor facultySupervisor;
     
+    //TODO Bu sınıfın internship registry sınıfıyla ilişkide olması sebebiyle 
+    //buraya internship registry listesi eklenebilir.
 }

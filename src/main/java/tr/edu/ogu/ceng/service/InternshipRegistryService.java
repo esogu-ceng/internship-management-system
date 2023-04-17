@@ -7,10 +7,12 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
 @Service
+@AllArgsConstructor
 public class InternshipRegistryService {
 
 	@Autowired
