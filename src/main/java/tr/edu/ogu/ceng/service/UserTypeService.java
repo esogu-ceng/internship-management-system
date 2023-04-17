@@ -16,29 +16,41 @@ import tr.edu.ogu.ceng.model.UserType;
 @Slf4j
 @Service
 public class UserTypeService {
-	@Autowired
-	private UserTypeRepository userTypeRepository;
+    @Autowired
+    private UserTypeRepository userTypeRepository;
 
-	public UserTypeDto saveUsertype(UserTypeDto userTypeDto) {
-		try {
-			ModelMapper modelMapper = new ModelMapper();
-			UserType userType = modelMapper.map(userTypeDto, UserType.class);
-			userType.setCreateDate(new Timestamp(System.currentTimeMillis()));
-			userType.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-			userType.setId((long) 0);
-			UserType savedUserType = userTypeRepository.save(userType);
-			log.info("UserType saved successfully with id: {}", savedUserType.getId());
-			return modelMapper.map(savedUserType, UserTypeDto.class);
-		} catch (Exception e) {
-			log.error("An error occurred while saving userType: {}", e.getMessage());
-			throw e;
-		}
-	}
+    public UserTypeDto saveUsertype(UserTypeDto userTypeDto) {
+        try {
+            ModelMapper modelMapper = new ModelMapper();
+            UserType userType = modelMapper.map(userTypeDto, UserType.class);
+            userType.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            userType.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+            userType.setId((long) 0);
+            UserType savedUserType = userTypeRepository.save(userType);
+            log.info("UserType saved successfully with id: {}", savedUserType.getId());
+            return modelMapper.map(savedUserType, UserTypeDto.class);
+        } catch (Exception e) {
+            log.error("An error occurred while saving userType: {}", e.getMessage());
+            throw e;
+        }
+    }
 
-	public UserType getUserTypeId(UserTypeEnum userTypeEnum) {
-		Optional<UserType> optionalUserType = userTypeRepository.findById(userTypeEnum.getId());
-		UserType userType = optionalUserType.orElse(null);
-		return userType;
-	}
+
+    public UserType getUserTypeId(UserTypeEnum userTypeEnum) {
+        try {
+            Optional<UserType> optionalUserType = userTypeRepository.findById(userTypeEnum.getId());
+            UserType userType = optionalUserType.orElse(null);
+            if (userType == null) {
+                log.warn("User type not found with id: {}", userTypeEnum.getId());
+            } else {
+                log.info("User type retrieved successfully with id: {}", userTypeEnum.getId());
+            }
+            return userType;
+        } catch (Exception e) {
+            log.error("An error occurred while retrieving userType with id: {}: {}", userTypeEnum.getId(), e.getMessage());
+            throw e;
+        }
+
+    }
 
 }
