@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.model.Internship;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
