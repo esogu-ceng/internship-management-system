@@ -1,12 +1,8 @@
 package tr.edu.ogu.ceng.model;
 
-
 import java.sql.Timestamp;
-
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.*;
 
 @Entity
