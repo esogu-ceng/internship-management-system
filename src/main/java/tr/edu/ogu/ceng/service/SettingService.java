@@ -13,6 +13,7 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 @Service
 public class SettingService {
+
 	@Autowired
 	private SettingRepository settingRepository;
 	private ModelMapper modelMapper;
@@ -42,4 +43,5 @@ public class SettingService {
 		}
 		return setting.getValue();
 	}
+
 }
