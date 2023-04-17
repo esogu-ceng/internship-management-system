@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,12 @@ import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.UserTypeDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.UserType;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserTypeService {
 	@Autowired
 	private UserTypeRepository userTypeRepository;
-
 
 	public UserTypeDto saveUsertype(UserTypeDto userTypeDto) {
 		try {
@@ -38,11 +35,10 @@ public class UserTypeService {
 		}
 	}
 
-    
-    public UserType getUserTypeId(UserTypeEnum userTypeEnum) {
-        Optional<UserType> optionalUserType = userTypeRepository.findById(userTypeEnum.getId());
-        UserType userType = optionalUserType.orElse(null);
-        return userType;
-    }
+	public UserType getUserTypeId(UserTypeEnum userTypeEnum) {
+		Optional<UserType> optionalUserType = userTypeRepository.findById(userTypeEnum.getId());
+		UserType userType = optionalUserType.orElse(null);
+		return userType;
+	}
 
 }
