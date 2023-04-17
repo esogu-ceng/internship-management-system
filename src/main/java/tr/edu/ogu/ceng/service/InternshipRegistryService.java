@@ -9,13 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
+import lombok.NoArgsConstructor;
+
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class InternshipRegistryService {
 
 	@Autowired
@@ -35,11 +37,11 @@ public class InternshipRegistryService {
 		if (!internshipRegistryRepository.existsById(internshipRegistry.getId()))
 			throw new EntityNotFoundException("Internship Registry not found!");
 
-		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
-		internshipRegistry.setCreateDate(internshipRegistry.getCreateDate());
-		internshipRegistry.setUpdateDate(localDateTime);
+		internshipRegistry.setCreateDate(internshipRegistryRepository.getById(internshipRegistry.getId()).getCreateDate());
+		internshipRegistry.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 
-		return modelMapper.map(internshipRegistryRepository.save(internshipRegistry), InternshipRegistryDto.class);
+		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
+		return modelMapper.map(internshipRegistry, InternshipRegistryDto.class);
 	}
 
 	public InternshipRegistryDto addInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
@@ -51,6 +53,6 @@ public class InternshipRegistryService {
 
 		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
-		return modelMapper.map(internshipRegistryRepository.save(internshipRegistry), InternshipRegistryDto.class);
+		return modelMapper.map(internshipRegistry, InternshipRegistryDto.class);
 	}
 }
