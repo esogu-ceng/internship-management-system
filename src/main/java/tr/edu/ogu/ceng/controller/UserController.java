@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -27,22 +27,22 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping("/getAll")
-	public Page<User> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<UserDto> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "username") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<User> users = userService.getAllUsers(pageable);
+		Page<UserDto> users = userService.getAllUsers(pageable);
 		return users;
+	}
+
+	@PostMapping
+	public ResponseEntity<UserDto> addUser(@RequestBody UserDto user) {
+		UserDto savedUser = userService.saveUser(user);
+		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Boolean> deleteUser(@PathVariable(name = "id") long id) {
 		return ResponseEntity.ok(userService.deleteUser(id));
-	}
-
-	@PostMapping("")
-	public ResponseEntity<User> addUser(@RequestBody User user) {
-		User user1 = userService.saveUser(user);
-		return new ResponseEntity<>(user1, HttpStatus.CREATED);
 	}
 
 }
