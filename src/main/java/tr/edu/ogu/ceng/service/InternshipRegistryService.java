@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
-
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
@@ -18,6 +18,7 @@ import tr.edu.ogu.ceng.model.InternshipRegistry;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class InternshipRegistryService {
 
 	@Autowired
@@ -49,7 +50,6 @@ public class InternshipRegistryService {
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		internshipRegistry.setCreateDate(localDateTime);
 		internshipRegistry.setUpdateDate(localDateTime);
-		
 
 		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
