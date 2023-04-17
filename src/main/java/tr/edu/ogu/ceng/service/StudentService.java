@@ -85,9 +85,16 @@ public class StudentService {
 		return true;
 	}
 
-	public Page<Student> getStudentsByName(Pageable pageable, String name) {
-		// TODO Exception and Logging
-		return studentRepository.findByName(name, pageable);
+	public Page<Student> searchStudent(Pageable pageable, String name, String surname) {
+		Page<Student> students_page = studentRepository.searchStudent(name,surname, pageable);
+		
+		if(students_page.hasContent() == false) {
+			log.warn("Aranan öğrenci bulunamadı!");
+			throw new EntityNotFoundException("Aranan özelliklere sahip öğrenci bulunamadı!");
+		}
+		log.info("Öğrenciler bulundu. Aranan İsim: " + name + " Aranan Soyisim: " + surname);
+		
+		return students_page;
 	}
 
 	// TODO
