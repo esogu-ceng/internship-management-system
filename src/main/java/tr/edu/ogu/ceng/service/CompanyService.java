@@ -5,12 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 
+@Slf4j
 @Service
+@AllArgsConstructor
 public class CompanyService {
 
 	@Autowired
@@ -40,6 +44,16 @@ public class CompanyService {
 		}
 		return companyRepository.findByNameContainingIgnoreCase(name, pageable);
 
+	}
+
+	public Company addCompany(Company company) {
+		Company newCompany = companyRepository.save(company);
+		if (newCompany == null) {
+			log.error("Şirket eklenirken bir hata oluştu.");
+			throw new EntityNotFoundException("Şirket eklenirken bir hata oluştu.");
+		}
+		log.info("Şirket başarılı bir şekilde eklendi.");
+		return newCompany;
 	}
 
 	public boolean deleteCompany(long id) {

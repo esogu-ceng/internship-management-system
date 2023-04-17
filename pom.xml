@@ -64,7 +64,13 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		<!--ModelMapper -->
+		<dependency>
+		  <groupId>org.modelmapper</groupId>
+		  <artifactId>modelmapper</artifactId>
+		  <version>3.0.0</version>
+		</dependency>
 
 		<!-- Runtime -->
 		<dependency>
