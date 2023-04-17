@@ -36,6 +36,7 @@ public class InternshipRegistryService {
 			throw new EntityNotFoundException("Internship Registry not found!");
 
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		internshipRegistry.setCreateDate(internshipRegistry.getCreateDate());
 		internshipRegistry.setUpdateDate(localDateTime);
 
 		return modelMapper.map(internshipRegistryRepository.save(internshipRegistry), InternshipRegistryDto.class);
@@ -45,6 +46,8 @@ public class InternshipRegistryService {
 		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		internshipRegistry.setCreateDate(localDateTime);
+		internshipRegistry.setUpdateDate(localDateTime);
+		
 
 		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
