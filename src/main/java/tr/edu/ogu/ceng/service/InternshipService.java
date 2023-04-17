@@ -9,10 +9,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
 
+@Slf4j
 @Service
 public class InternshipService {
 	@Autowired
@@ -57,10 +60,12 @@ public class InternshipService {
 
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		Internship internship = internshipRepository.findById(id).orElse(null);
-		internship.setStatus("Approved");
+		internship.setStatus(InternshipStatus.Approved);
 		internship.setUpdateDate(localDateTime);
+		internshipRepository.save(internship);
 
-		return internshipRepository.save(internship);
+		log.info("Internship Approved!");
+		return internship;
 
 	}
 

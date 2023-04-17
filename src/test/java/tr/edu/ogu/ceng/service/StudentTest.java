@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -25,11 +26,13 @@ public class StudentTest {
 	StudentRepository studentRepository;
 
 	StudentService studentService;
+	UserRepository userRepository;
+	UserTypeService userTypeService;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository);
+		studentService = new StudentService(studentRepository, userRepository, userTypeService);
 	}
 
 	@Test
@@ -44,31 +47,13 @@ public class StudentTest {
 
 	@Test
 	void should_save_one_student() {
-		var studentToSave = Student.builder()
-				.name("test")
-				.surname("test")
-				.id(6L)
-				.tckn("test")
-				.studentNo("test")
-				.grade("test")
-				.phoneNumber("test")
-				.province("test")
-				.subprovince("test")
-				.zipCode("test")
-				.motherName("test")
-				.fatherName("test")
-				.birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.idCardSerialNo("test")
-				.idRegisterProvince("test")
-				.idRegisterSubprovince("test")
-				.idRegisterStreetVillage("test")
-				.idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test")
-				.idRegistryOffice("test")
-				.idRegistryReason("test")
-				.faculty(new Faculty())
-				.build();
+		var studentToSave = Student.builder().name("test").surname("test").id(6L).tckn("test").studentNo("test")
+				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
+				.motherName("test").fatherName("test").birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
+				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test")
+				.faculty(new Faculty()).build();
 
 		when(studentRepository.save(any(Student.class))).thenReturn(studentToSave);
 
