@@ -4,10 +4,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
+import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
 @Service
@@ -15,6 +17,7 @@ public class InternshipRegistryService {
 
 	@Autowired
 	private InternshipRegistryRepository internshipRegistryRepository;
+	private ModelMapper modelMapper;
 
 	public boolean deleteInternshipRegistry(long id) {
 		if (!internshipRegistryRepository.existsById(id)) {
@@ -24,22 +27,24 @@ public class InternshipRegistryService {
 		return true;
 	}
 
-	public InternshipRegistry updateInternshipRegistry(InternshipRegistry internshipRegistry) {
+	public InternshipRegistryDto updateInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
+		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
 		if (!internshipRegistryRepository.existsById(internshipRegistry.getId()))
 			throw new EntityNotFoundException("Internship Registry not found!");
 
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		internshipRegistry.setUpdateDate(localDateTime);
 
-		return internshipRegistryRepository.save(internshipRegistry);
+		return modelMapper.map(internshipRegistryRepository.save(internshipRegistry), InternshipRegistryDto.class);
 	}
 
-	public InternshipRegistry addInternshipRegistry(InternshipRegistry internshipRegistry) {
+	public InternshipRegistryDto addInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
+		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		internshipRegistry.setCreateDate(localDateTime);
 
 		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
-		return internshipRegistry;
+		return modelMapper.map(internshipRegistryRepository.save(internshipRegistry), InternshipRegistryDto.class);
 	}
 }
