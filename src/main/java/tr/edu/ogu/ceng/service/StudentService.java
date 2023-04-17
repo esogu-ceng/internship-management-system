@@ -20,6 +20,7 @@ import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
@@ -32,7 +33,7 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
-	private final UserTypeRepository userTypeRepository;
+	private final UserTypeService userTypeService;
 
 	public Student getStudent(long id) {
 		try {
@@ -100,9 +101,7 @@ public class StudentService {
 
 		Faculty faculty = new Faculty();
 
-		Long userTypeId = 1L;
-		UserType userType = userTypeRepository.findById(userTypeId)
-				.orElseThrow(() -> new RuntimeException("User type not found"));
+		UserType userType = userTypeService.getUserTypeId(UserTypeEnum.STUDENT);
 
 		User user = new User();
 		user.setUsername(request.getUsername());
