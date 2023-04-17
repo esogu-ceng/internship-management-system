@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import tr.edu.ogu.ceng.model.User;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
