@@ -15,8 +15,13 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @AllArgsConstructor
 public class SettingService {
 
+<<<<<<< Updated upstream
 	private final SettingRepository settingRepository;
 	private final ModelMapper modelMapper;
+=======
+	private SettingRepository settingRepository;
+	private ModelMapper modelMapper;
+>>>>>>> Stashed changes
 
 	public SettingDto updateSetting(SettingDto settingDto) {
 		Setting setting = modelMapper.map(settingDto, Setting.class);
