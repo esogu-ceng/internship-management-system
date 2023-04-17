@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SettingDto {
 
-	private Long id;
 	private String key;
 	private String value;
 
