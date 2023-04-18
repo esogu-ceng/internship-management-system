@@ -2,16 +2,17 @@ package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
+import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.model.Faculty;
-import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 @Slf4j
@@ -20,9 +21,18 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 public class FacultyService {
 	@Autowired
 	private FacultyRepository facultyRepository;
-	public Page<Faculty> getFaculties(Pageable pageable) {
-		log.info("Getting faculties with pageable: {}", pageable);
-		return facultyRepository.findAll(pageable);
+
+	public Page<FacultyDto> getFaculties(Pageable pageable) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting faculties with pageable: {}", pageable);
+			Page<Faculty> faculties = facultyRepository.findAll(pageable);
+			Page<FacultyDto> facultyDtos = faculties.map(faculty -> modelMapper.map(faculty, FacultyDto.class));
+			return facultyDtos;
+		} catch (Exception e) {
+			log.error("An error occurred while getting faculties: {}", e.getMessage());
+			throw e;
+		}
 	}
 
 	public Faculty addFaculty(Faculty faculty) {
@@ -40,7 +50,7 @@ public class FacultyService {
 	}
 
 	public Faculty updateFaculty(Faculty faculty) {
-		if(!facultyRepository.existsById(faculty.getId()))
+		if (!facultyRepository.existsById(faculty.getId()))
 			throw new EntityNotFoundException("Faculty not found!");
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		faculty.setUpdateDate(localDateTime);
