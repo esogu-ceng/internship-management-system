@@ -1,60 +1,58 @@
 package tr.edu.ogu.ceng.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.sql.Timestamp;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
+import tr.edu.ogu.ceng.dto.UserTypeDto;
+import tr.edu.ogu.ceng.model.UserType;
 
-import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dto.UserDto;
-import tr.edu.ogu.ceng.model.User;
+import java.sql.Timestamp;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UserTypeTest {
-	@Mock
-	UserRepository userRepository;
-	UserService userService;
-	ModelMapper modelMapper;
 
-	@BeforeEach
-	public void init() {
-		MockitoAnnotations.initMocks(this);
-		userService = new UserService(userRepository);
-	}
+    @Mock
+    UserTypeRepository userTypeRepository;
+    UserTypeService userTypeService;
+    
 
-	@Test
-	void is_user_saved_successfully() {
-		var userToSave = UserDto.builder()
-				.id(1002L)
-				.username("TEST")
-				.password("Test")
-				.email("Test@test.com")
-				.userTypeId(6L)
-				.createDate(new Timestamp(2023, 04, 17, 0, 0, 0, 0))
-				.updateDate(new Timestamp(2023, 04, 17, 1, 0, 0, 0))
-				.build();
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+        
+        userTypeService = new UserTypeService(userTypeRepository);
+    }
+    
 
-		when(userRepository.save(any(User.class))).thenReturn(modelMapper.map(userToSave, User.class));
+    @Test
+    void is_user_type_saved_successfully() {
+        var userTypeDtoToSave = UserTypeDto.builder()
+                .id(1L)
+                .name("Student")
+                .build();
 
-		var actual = userService.saveUser(userToSave);
+        var userTypeToSave = UserType.builder()
+                .id(0L)
+                .name("Student")
+                .createDate(new Timestamp(System.currentTimeMillis()))
+                .updateDate(new Timestamp(System.currentTimeMillis()))
+                .build();
 
-		assertNotNull(actual);
-		assertEquals(userToSave.getId(), actual.getId());
-		assertEquals(userToSave.getUsername(), actual.getUsername());
-		assertEquals(userToSave.getPassword(), actual.getPassword());
-		assertEquals(userToSave.getEmail(), actual.getEmail());
-		assertEquals(userToSave.getUserTypeId(), actual.getUserTypeId());
-		assertEquals(userToSave.getCreateDate(), actual.getCreateDate());
-		assertEquals(userToSave.getUpdateDate(), actual.getUpdateDate());
+        when(userTypeRepository.save(any(UserType.class))).thenReturn(userTypeToSave);
 
-		verify(userRepository).save(modelMapper.map(userToSave, User.class));
-	}
+        var actual = userTypeService.saveUsertype(userTypeDtoToSave);
+
+        assertEquals(userTypeToSave.getId(), actual.getId());
+        assertEquals(userTypeToSave.getName(), actual.getName());
+        assertEquals(userTypeToSave.getCreateDate(), actual.getCreateDate());
+        assertEquals(userTypeToSave.getUpdateDate(), actual.getUpdateDate());
+
+        verify(userTypeRepository).save(userTypeToSave);
+    }
 }
