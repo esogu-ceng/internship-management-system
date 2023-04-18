@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
-import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.CompanyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -57,8 +56,8 @@ public class CompanyController {
 	}
 
 	@PostMapping
-	public Company addCompany(@RequestBody Company company) {
-		return companyService.addCompany(company);
+	public CompanyDto addCompany(@RequestBody CompanyDto companyDto) {
+		return companyService.addCompany(companyDto);
 	}
 
 	@DeleteMapping("/{id}")

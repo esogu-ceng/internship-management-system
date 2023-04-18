@@ -35,23 +35,27 @@ public class FacultyService {
 		}
 	}
 
-	public Faculty addFaculty(Faculty faculty) {
+	public FacultyDto addFaculty(FacultyDto facultyDto) {
 		try {
+			ModelMapper modelMapper = new ModelMapper();
+			Faculty faculty = modelMapper.map(facultyDto, Faculty.class);
 			Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 			faculty.setCreateDate(localDateTime);
 			faculty.setUpdateDate(localDateTime);
 			facultyRepository.save(faculty);
 			log.info("Faculty saved: {}", faculty);
+			return modelMapper.map(faculty, FacultyDto.class);
 		} catch (Exception e) {
 			log.error("Failed to add faculty. Error message: {}", e.getMessage());
 			throw e;
 		}
-		return faculty;
 	}
 
-	public Faculty updateFaculty(Faculty faculty) {
-		if (!facultyRepository.existsById(faculty.getId()))
-			throw new EntityNotFoundException("Faculty not found!");
+	public FacultyDto updateFaculty(FacultyDto facultyDto) {
+		Faculty faculty = facultyRepository.findById(facultyDto.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Faculty not found!"));
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.map(facultyDto, faculty);
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		faculty.setUpdateDate(localDateTime);
 		Faculty updatedFaculty;
@@ -62,7 +66,7 @@ public class FacultyService {
 			log.error("Error occurred while updating faculty : {}", e.getMessage());
 			throw e;
 		}
-		return updatedFaculty;
+		return modelMapper.map(updatedFaculty, FacultyDto.class);
 	}
 
 	public boolean deleteFaculty(Long id) {

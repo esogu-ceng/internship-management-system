@@ -65,14 +65,16 @@ public class CompanyService {
 		return companyDtos;
 	}
 
-	public Company addCompany(Company company) {
+	public CompanyDto addCompany(CompanyDto companyDto) {
+		ModelMapper modelMapper = new ModelMapper();
+		Company company = modelMapper.map(companyDto, Company.class);
 		Company newCompany = companyRepository.save(company);
 		if (newCompany == null) {
-			log.error("Şirket eklenirken bir hata oluştu.");
-			throw new EntityNotFoundException("Şirket eklenirken bir hata oluştu.");
+			log.error("An error occurred while adding the company.");
+			throw new EntityNotFoundException();
 		}
-		log.info("Şirket başarılı bir şekilde eklendi.");
-		return newCompany;
+		log.info("The company has been added successfully.");
+		return modelMapper.map(newCompany, CompanyDto.class);
 	}
 
 	public boolean deleteCompany(long id) {

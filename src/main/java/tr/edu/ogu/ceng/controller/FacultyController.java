@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.FacultyDto;
-import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.service.FacultyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -35,14 +34,14 @@ public class FacultyController {
 	}
 
 	@PostMapping()
-	public Faculty addFaculty(@RequestBody Faculty faculty) {
-		return facultyService.addFaculty(faculty);
+	public FacultyDto addFaculty(@RequestBody FacultyDto facultyDto) {
+		return facultyService.addFaculty(facultyDto);
 	}
 
 	@PutMapping("/{id}")
-	public Faculty updateFaculty(@RequestBody Faculty faculty, @PathVariable(name = "id") long id) {
-		faculty.setId(id);
-		return facultyService.updateFaculty(faculty);
+	public FacultyDto updateFaculty(@RequestBody FacultyDto facultyDto, @PathVariable(name = "id") long id) {
+		facultyDto.setId(id);
+		return facultyService.updateFaculty(facultyDto);
 	}
 
 	@DeleteMapping("/{id}")
