@@ -28,36 +28,34 @@ public class CompanyController {
 	CompanyService companyService;
 
 	@GetMapping("/getAll")
-	public ResponseEntity<Page<Company>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<CompanyDto>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<Company> companies = companyService.getAllCompanies(pageable);
+		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
 
 	@PutMapping
-	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
-		Company newCompany = companyService.updateCompany(company);
-		return ResponseEntity.ok(newCompany);
+	public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyDto companyDto) {
+		CompanyDto updatedCompanyDto = companyService.updateCompany(companyDto);
+		return ResponseEntity.ok(updatedCompanyDto);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyDto> getCompany(@PathVariable(name = "id") long id) throws Exception {
-		Company company = companyService.getCompany(id);
-		CompanyDto companydto = new CompanyDto(company);
-		return ResponseEntity.ok(companydto);
+		CompanyDto companyDto = companyService.getCompany(id);
+		return ResponseEntity.ok(companyDto);
 	}
 
 	@GetMapping("/search/{name}")
-	public ResponseEntity<Page<Company>> searchCompanies(@PathVariable String name,
+	public ResponseEntity<Page<CompanyDto>> searchCompanies(@PathVariable String name,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
 			@RequestParam(defaultValue = "name") String sortBy) {
-
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<Company> companies = companyService.searchCompanies(name, pageable);
-		return ResponseEntity.ok(companies);
+		Page<CompanyDto> companyDtos = companyService.searchCompanies(name, pageable);
+		return ResponseEntity.ok(companyDtos);
 	}
-	
+
 	@PostMapping
 	public Company addCompany(@RequestBody Company company) {
 		return companyService.addCompany(company);
