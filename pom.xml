@@ -64,12 +64,12 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!--ModelMapper -->
+    
+		<!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
 		<dependency>
-		  <groupId>org.modelmapper</groupId>
-		  <artifactId>modelmapper</artifactId>
-		  <version>3.0.0</version>
+  		    <groupId>org.modelmapper</groupId>
+   			<artifactId>modelmapper</artifactId>
+    		<version>3.1.1</version>
 		</dependency>
 
 		<!-- Runtime -->
