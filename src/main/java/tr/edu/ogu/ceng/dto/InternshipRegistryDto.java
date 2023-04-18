@@ -19,6 +19,6 @@ public class InternshipRegistryDto {
 	private String name;
 	private String type;
 	private Timestamp date;
-	private Internship internship;
+	private Long internshipId;
 
 }
