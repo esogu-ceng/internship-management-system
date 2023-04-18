@@ -21,13 +21,8 @@ public class CompanyService {
 	private CompanyRepository companyRepository;
 
 	public Page<Company> getAllCompanies(Pageable pageable) {
-		Page<Company> pageResult = companyRepository.findAll(pageable);
-		if (!pageResult.hasContent()) {
-			log.warn("Company list is empty.");
-			return null;
-		}
-		log.info("Company list is retrieved successfully.");
-		return pageResult;
+		log.info("Getting companies with pageable{}", pageable);
+		return companyRepository.findAll(pageable);
 	}
 
 	public Company updateCompany(Company company) {

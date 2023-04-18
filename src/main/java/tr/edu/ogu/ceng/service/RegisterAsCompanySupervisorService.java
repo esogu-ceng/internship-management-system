@@ -11,6 +11,7 @@ import tr.edu.ogu.ceng.dto.RegisterAsCompanySupervisorDto;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.Exception.passwordsDontMatch;
 
 @Slf4j
 @Service
@@ -36,8 +37,8 @@ public class RegisterAsCompanySupervisorService {
 		companySupervisor.getCompany().setId(request.getCompanyId());
 		companySupervisor.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		companySupervisor.setCreateDate(new Timestamp(System.currentTimeMillis()));
-		log.info("New company supervisor registered: {}", companySupervisor.getName());
 		repository.save(companySupervisor);
+		log.info("New company supervisor registered: {}", companySupervisor.getName());
 
 		RegisterAsCompanySupervisorDto response = new RegisterAsCompanySupervisorDto();
 		response.setName(companySupervisor.getName());
@@ -55,7 +56,7 @@ public class RegisterAsCompanySupervisorService {
 	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorDto request) {
 		if (!request.getPassword().toString().equals(request.getConfirmPassword().toString()))
 			log.warn("This password and confirm password do not match.");
-		throw new RuntimeException("Şifreler uyuşmuyor!");
+		throw new passwordsDontMatch();
 	}
 
 }
