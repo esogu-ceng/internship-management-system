@@ -4,15 +4,16 @@ import java.sql.Timestamp;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dto.SettingDto;
 import tr.edu.ogu.ceng.model.Setting;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 @Service
+@AllArgsConstructor
 @Slf4j
 public class SettingService {
 
