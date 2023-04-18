@@ -4,21 +4,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.util.List;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -60,6 +55,15 @@ public class StudentService {
 	}
 
 	public Student addStudent(Student student) {
+		String tcNo = student.getTckn();
+		String studentNo = student.getStudentNo();
+		if (tcNo != null && studentNo != null) {
+			Student existingStudent = studentRepository.findByTcknOrStudentNo(tcNo, studentNo);
+			if (existingStudent != null) {
+				throw new IllegalArgumentException("Bu TC kimlik numarası veya öğrenci numarası zaten kayıtlı.");
+			}
+		}
+
 		log.info("Öğrenci başarılı bir şekilde eklendi.");
 		return studentRepository.save(student);
 	}
@@ -112,8 +116,6 @@ public class StudentService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
-		
-		
 
 		student.setUser(user);
 		student.setFaculty(faculty);
@@ -124,7 +126,6 @@ public class StudentService {
 		studentRepository.save(student);
 		log.info("Kayıt başarılı");
 
-		
 		StudentDto response = modelMapper.map(student, StudentDto.class);
 		return response;
 
