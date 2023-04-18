@@ -4,21 +4,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.util.List;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -35,33 +30,43 @@ public class StudentService {
 	private final UserRepository userRepository;
 	private final UserTypeService userTypeService;
 
-	public Student getStudent(long id) {
+	public StudentDto getStudent(long id) {
 		try {
 			Student student = studentRepository.findById(id).orElse(null);
 			if (student == null) {
-				log.warn("Girdiğiniz id'ye ait öğrenci bulunmamaktadır.");
+				log.warn("There is no student with the entered ID.");
 				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 			}
-			log.info("{} id'ye sahip öğrenci {} numaralı ,{} {}. ", student.getId(), student.getStudentNo(),
+			log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
 					student.getName(), student.getSurname());
-			return student;
+			ModelMapper modelMapper = new ModelMapper();
+			return modelMapper.map(student, StudentDto.class);
 		} catch (EntityNotFoundException e) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
 
-	public Page<Student> getAllStudents(Pageable pageable) {
-		if (studentRepository.findAll() == null) {
-			log.warn("Öğrenci listesi boş.");
-			return null;
+	public Page<StudentDto> getAllStudents(Pageable pageable) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting all students with pageable: {}", pageable);
+			Page<Student> students = studentRepository.findAll(pageable);
+			if (studentRepository.findAll() == null) {
+				log.warn("Öğrenci listesi boş.");
+				return null;
+			}
+			Page<StudentDto> studentDtos = students.map(student -> modelMapper.map(student, StudentDto.class));
+			return studentDtos;
+		} catch (Exception e) {
+			log.error("An error occurred while getting students: {}", e.getMessage());
+			throw e;
 		}
-		log.info("Öğrenci listesi başarıyla getirildi.");
-		return studentRepository.findAll(pageable);
 	}
 
 	public Student addStudent(Student student) {
-		log.info("Öğrenci başarılı bir şekilde eklendi.");
-		return studentRepository.save(student);
+		Student savedStudent = studentRepository.save(student);
+		log.info("Student added successfully: {}", savedStudent);
+		return savedStudent;
 	}
 
 	public Student updateStudent(Student student) {
@@ -69,7 +74,7 @@ public class StudentService {
 			log.warn("{} id'ye sahip öğrenci bulunmamaktadır.", student.getId());
 			throw new EntityNotFoundException("Student not found!");
 		}
-		log.info("Öğrencinin bilgileri güncellendi.");
+		log.info("The student information has been updated..");
 		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		return studentRepository.save(student);
 	}
@@ -77,17 +82,25 @@ public class StudentService {
 	@Transactional
 	public boolean deleteStudent(long id) {
 		if (!studentRepository.existsById(id)) {
-			log.warn("Girdiğiniz id'ye sahip öğrenci bulunmadığı için silme işlemi gerçekleştirilemedi.");
+			log.warn("The deletion could not be performed as there is no student with the entered ID.");
 			return false;
 		}
 		studentRepository.deleteById(id);
-		log.info("Girdiğiniz id'ye sahip öğrenci silindi.");
+		log.info("The student with the entered ID has been deleted.");
 		return true;
 	}
 
-	public Page<Student> getStudentsByName(Pageable pageable, String name) {
-		// TODO Exception and Logging
-		return studentRepository.findByName(name, pageable);
+	public Page<StudentDto> getStudentsByName(Pageable pageable, String name) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting students by name: {} with pageable: {}", name, pageable);
+			Page<Student> students = studentRepository.findByName(name, pageable);
+			Page<StudentDto> studentDtos = students.map(student -> modelMapper.map(student, StudentDto.class));
+			return studentDtos;
+		} catch (Exception e) {
+			log.error("An error occurred while getting students by name: {}: {}", name, e.getMessage());
+			throw e;
+		}
 	}
 
 	// TODO
@@ -112,8 +125,6 @@ public class StudentService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
-		
-		
 
 		student.setUser(user);
 		student.setFaculty(faculty);
@@ -124,7 +135,6 @@ public class StudentService {
 		studentRepository.save(student);
 		log.info("Kayıt başarılı");
 
-		
 		StudentDto response = modelMapper.map(student, StudentDto.class);
 		return response;
 
