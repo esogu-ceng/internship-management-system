@@ -7,7 +7,6 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.model.Internship;
@@ -30,15 +29,15 @@ public class InternshipService {
 			
 			Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 			internship.setUpdateDate(localDateTime);
-			log.info("Internship date time updated");
+			var updatedInternship = internshipRepository.save(internship);
+			log.info("Internship date time updated successfully.");
+			return updatedInternship;
 			
 		} catch (Exception e) {
 			log.error("Failed to update internship date time. Error message: {}", e.getMessage());
 			throw e;
-		}
+		}	
 		
-		log.info("Internship date time updated successfully.");
-		return internshipRepository.save(internship);
 	}
 	
 	public Optional<Internship> getInternship(Long id) {

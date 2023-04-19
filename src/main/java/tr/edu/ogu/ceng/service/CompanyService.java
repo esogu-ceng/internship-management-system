@@ -24,14 +24,26 @@ public class CompanyService {
 		return companyRepository.findAll(pageable);
 	}
 
+	public Company createCompany(Company company) throws Exception {
+		if (company == null) {
+			log.error("Request body is empty");
+			throw new Exception("Request body is empty");
+		}
+		
+		var createdCompany = companyRepository.save(company);
+		log.info("Company created successfully.");
+		return createdCompany;
+	}
+	
 	public Company updateCompany(Company company) {
 		if (!companyRepository.existsById(company.getId())) {
 			log.error("Company not found");
 			throw new EntityNotFoundException("Company not found!");
 		}
 		
+		var updatedCompany = companyRepository.save(company);
 		log.info("Company updated successfully.");
-		return companyRepository.save(company);
+		return updatedCompany;
 	}
 
 	public Company getCompany(long id) throws EntityNotFoundException {
