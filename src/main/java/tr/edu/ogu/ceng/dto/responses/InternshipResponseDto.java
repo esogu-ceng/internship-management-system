@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InternshipResponsedDto {
+public class InternshipResponseDto {
 	private Long id;
 	private String status;
 	private Timestamp startDate;
