@@ -85,7 +85,7 @@ public class UserService {
 			return true;
 		} catch (Exception e) {
 			log.error("An error occurred while deleting user with id: {}: {}", id, e.getMessage());
-			throw e;
+			return false;
 		}
 	}
 }
