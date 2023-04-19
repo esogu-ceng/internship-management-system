@@ -42,11 +42,14 @@ public class UserService {
 
 	public UserDto saveUser(UserDto userDto) {
 		try {
-
 			ModelMapper modelMapper = new ModelMapper();
+			if (userDto.getId() != null && userRepository.existsById(userDto.getId())) {
+				throw new IllegalArgumentException("User with ID " + userDto.getId() + " already exists.");
+			}
 			User user = modelMapper.map(userDto, User.class);
-			user.setCreateDate(new Timestamp(System.currentTimeMillis()));
-			user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			user.setCreateDate(currentTime);
+			user.setUpdateDate(currentTime);
 			user.setId((long) 0);
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());

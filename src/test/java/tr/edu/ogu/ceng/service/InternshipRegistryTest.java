@@ -30,6 +30,7 @@ public class InternshipRegistryTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
+		modelMapper = new ModelMapper();
 		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository, modelMapper);
 	}
 
@@ -41,7 +42,7 @@ public class InternshipRegistryTest {
 				.name("internshipRegistry1")
 				.type("pdf")
 				.date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
-				.internship(new Internship())
+				.internshipId(1L)
 				.build();
 
 		when(internshipRegistryRepository.save(any(InternshipRegistry.class))).thenReturn(modelMapper.map(internshipRegistryToSave, InternshipRegistry.class));
@@ -54,7 +55,7 @@ public class InternshipRegistryTest {
 		assertEquals(internshipRegistryToSave.getName(), actualIR.getName());
 		assertEquals(internshipRegistryToSave.getType(), actualIR.getType());
 		assertEquals(internshipRegistryToSave.getDate(), actualIR.getDate());
-		assertEquals(internshipRegistryToSave.getInternship(), actualIR.getInternship());
+		assertEquals(internshipRegistryToSave.getInternshipId(), actualIR.getInternshipId());
 
 		verify(internshipRegistryRepository).save(modelMapper.map(internshipRegistryToSave, InternshipRegistry.class));
 	}

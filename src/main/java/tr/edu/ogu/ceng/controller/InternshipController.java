@@ -24,14 +24,14 @@ public class InternshipController {
 	InternshipService internshipService;
 
 	@PostMapping()
-	public ResponseEntity<Internship> addInternship(@RequestBody Internship internship) {
-		return ResponseEntity.ok(internshipService.addInternship(internship));
+	public ResponseEntity<InternshipDto> addInternship(@RequestBody InternshipDto internshipDto) {
+		return ResponseEntity.ok(internshipService.addInternship(internshipDto));
 	}
 
 	@PutMapping
-	public ResponseEntity<InternshipDto> updateInternship(@RequestBody InternshipDto internship) {
+	public ResponseEntity<InternshipDto> updateInternship(@RequestBody InternshipDto internshipDto) {
 
-		InternshipDto updatedInternship = internshipService.updateInternship(internship);
+		InternshipDto updatedInternship = internshipService.updateInternship(internshipDto);
 		return ResponseEntity.ok(updatedInternship);
 	}
 

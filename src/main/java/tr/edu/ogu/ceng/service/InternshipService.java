@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,36 @@ import tr.edu.ogu.ceng.model.Internship;
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
+	private ModelMapper modelMapper;
 
-	public Internship addInternship(Internship internship) {
-		return internshipRepository.save(internship);
+	public InternshipDto addInternship(InternshipDto internshipDto) {
+		modelMapper = new ModelMapper();
+		Internship internship = modelMapper.map(internshipDto, Internship.class);
+		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		internship.setCreateDate(localDateTime);
+		internship.setUpdateDate(localDateTime);
+		internship = internshipRepository.save(internship);
+		
+		return modelMapper.map(internship, InternshipDto.class);
 	}
 
 	public InternshipDto updateInternship(InternshipDto internshipDto) {
 		if (!internshipRepository.existsById(internshipDto.getId()))
 			throw new EntityNotFoundException("Internship not found!");
 
-		ModelMapper modelMapper = new ModelMapper();
+		modelMapper = new ModelMapper();
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
 
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		internship.setCreateDate(internshipRepository.getById(internship.getId()).getCreateDate());
 		internship.setUpdateDate(localDateTime);
 
-		Internship updatedInternship = internshipRepository.save(internship);
-		return modelMapper.map(updatedInternship, InternshipDto.class);
+		internship = internshipRepository.save(internship);
+		return modelMapper.map(internship, InternshipDto.class);
 	}
 
 	public Optional<Internship> getInternship(Long id) {
