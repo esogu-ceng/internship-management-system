@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
+import java.sql.Timestamp;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,6 +70,9 @@ public class CompanyService {
 	public CompanyDto addCompany(CompanyDto companyDto) {
 		ModelMapper modelMapper = new ModelMapper();
 		Company company = modelMapper.map(companyDto, Company.class);
+		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		company.setCreateDate(localDateTime);
+		company.setUpdateDate(localDateTime);
 		Company newCompany = companyRepository.save(company);
 		if (newCompany == null) {
 			log.error("An error occurred while adding the company.");
