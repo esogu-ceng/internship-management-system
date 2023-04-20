@@ -40,6 +40,8 @@ public class CompanyService {
 			}
 			ModelMapper modelMapper = new ModelMapper();
 			Company company = modelMapper.map(companyDto, Company.class);
+			Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+			company.setUpdateDate(localDateTime);
 			company = companyRepository.save(company);
 			log.info("Company with ID {} has been updated: {}, {}", company.getId(), company.getName(), company.getDescription());
 			return modelMapper.map(company, CompanyDto.class);

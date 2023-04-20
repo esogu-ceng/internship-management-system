@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -17,7 +16,6 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class FacultyService {
 	@Autowired
 	private FacultyRepository facultyRepository;
@@ -80,7 +78,7 @@ public class FacultyService {
 			return true;
 		} catch (Exception e) {
 			log.error("Failed to delete faculty with ID {}. Error message: {}", id, e.getMessage());
-			throw e;
+			return false;
 		}
 	}
 }

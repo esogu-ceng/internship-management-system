@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.StudentDto;
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -51,13 +50,13 @@ public class StudentController {
 	}
 
 	@PostMapping()
-	public Student addStudent(@RequestBody Student student) {
-		return studentService.addStudent(student);
+	public StudentDto addStudent(@RequestBody StudentDto studentDto) {
+		return studentService.addStudent(studentDto);
 	}
 
 	@PutMapping()
-	public Student updateStudent(@RequestBody Student student) {
-		return studentService.updateStudent(student);
+	public StudentDto updateStudent(@RequestBody StudentDto studentDto) {
+		return studentService.updateStudent(studentDto);
 	}
 
 	@DeleteMapping("/{id}")

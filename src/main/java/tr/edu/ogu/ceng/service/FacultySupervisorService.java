@@ -4,11 +4,13 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
@@ -69,11 +71,17 @@ public class FacultySupervisorService {
 	}
 
 	public boolean deleteFacultySupervisor(long id) {
-		if (!facultySupervisorRepository.existsById(id))
-			throw new EntityNotFoundException("Faculty Supervisor Not Found!");
-
-		facultySupervisorRepository.deleteById(id);
-		log.info("Faculty supervisor deleted with id: {}", id);
-		return true;
+		try {
+			facultySupervisorRepository.deleteById(id);
+			log.info("Faculty supervisor deleted with id: {}", id);
+			return true;
+		} catch (DataIntegrityViolationException e) {
+			log.warn("Cannot delete faculty supervisor with ID {} due to integrity violation", id);
+			return false;
+		} catch (EmptyResultDataAccessException e) {
+			log.warn("Faculty supervisor with ID {} not found", id);
+			return false;
+		}
 	}
+
 }

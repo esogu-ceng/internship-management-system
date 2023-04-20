@@ -52,7 +52,7 @@ public class StudentService {
 			log.info("Getting all students with pageable: {}", pageable);
 			Page<Student> students = studentRepository.findAll(pageable);
 			if (studentRepository.findAll() == null) {
-				log.warn("Öğrenci listesi boş.");
+				log.warn("The student list is empty.");
 				return null;
 			}
 			Page<StudentDto> studentDtos = students.map(student -> modelMapper.map(student, StudentDto.class));
@@ -63,20 +63,42 @@ public class StudentService {
 		}
 	}
 
-	public Student addStudent(Student student) {
-		Student savedStudent = studentRepository.save(student);
-		log.info("Student added successfully: {}", savedStudent);
-		return savedStudent;
+	public StudentDto addStudent(StudentDto studentDto) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			Student student = modelMapper.map(studentDto, Student.class);
+			Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+			student.setCreateDate(localDateTime);
+			student.setUpdateDate(localDateTime);
+
+			// fetch the User object by ID and set it as a reference in the Student object
+			User user = userRepository.getById(student.getUser().getId());
+			student.setUser(user);
+
+			studentRepository.save(student);
+			log.info("Student added successfully: {}", student);
+			return modelMapper.map(student, StudentDto.class);
+		} catch (Exception e) {
+			log.error("Failed to add student. Error message: {}", e.getMessage());
+			throw e;
+		}
 	}
 
-	public Student updateStudent(Student student) {
+	public StudentDto updateStudent(StudentDto studentDto) {
+		ModelMapper modelMapper = new ModelMapper();
+		Student student = modelMapper.map(studentDto, Student.class);
+
 		if (!studentRepository.existsById(student.getId())) {
-			log.warn("{} id'ye sahip öğrenci bulunmamaktadır.", student.getId());
+			log.warn("There is no student with id {}", student.getId());
 			throw new EntityNotFoundException("Student not found!");
 		}
-		log.info("The student information has been updated..");
+		// fetch the User object by ID and set it as a reference in the Student object
+		User user = userRepository.getById(student.getUser().getId());
+		student.setUser(user);
 		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		return studentRepository.save(student);
+		student = studentRepository.save(student);
+		log.info("Student updated successfully: {}", student);
+		return modelMapper.map(student, StudentDto.class);
 	}
 
 	@Transactional
@@ -133,7 +155,7 @@ public class StudentService {
 		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		student.setCreateDate(new Timestamp(System.currentTimeMillis()));
 		studentRepository.save(student);
-		log.info("Kayıt başarılı");
+		log.info("Registration successful.");
 
 		StudentDto response = modelMapper.map(student, StudentDto.class);
 		return response;
