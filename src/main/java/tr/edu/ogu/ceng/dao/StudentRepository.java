@@ -9,6 +9,8 @@ import tr.edu.ogu.ceng.model.Student;
 public interface StudentRepository extends JpaRepository<Student, Long> {
 	Page<Student> findByName(String name, Pageable pageable);
 
-	Student findByTcknOrStudentNo(String tcNo, String studentNo);
+	Student findByTckn(String tcNo);
+
+	Student findByStudentNo(String studentNo);
 
 }

@@ -58,12 +58,16 @@ public class StudentService {
 		String tcNo = student.getTckn();
 		String studentNo = student.getStudentNo();
 		if (tcNo != null && studentNo != null) {
-			Student existingStudent = studentRepository.findByTcknOrStudentNo(tcNo, studentNo);
-			if (existingStudent != null) {
-				throw new IllegalArgumentException("Bu TC kimlik numarası veya öğrenci numarası zaten kayıtlı.");
+			Student existingStudentTcNo = studentRepository.findByTckn(tcNo);
+			Student existingStudentStudenNo = studentRepository.findByStudentNo(studentNo);
+			if (existingStudentTcNo != null && existingStudentStudenNo != null) {
+				throw new IllegalArgumentException("Bu TC kimlik numarası ve Öğrenci numarası zaten kayıtlı.");
+			} else if (existingStudentTcNo != null) {
+				throw new IllegalArgumentException("Bu TC kimlik numarası zaten kayıtlı.");
+			} else if (existingStudentStudenNo != null) {
+				throw new IllegalArgumentException("Bu öğrenci numarası zaten kayıtlı.");
 			}
 		}
-
 		log.info("Öğrenci başarılı bir şekilde eklendi.");
 		return studentRepository.save(student);
 	}
