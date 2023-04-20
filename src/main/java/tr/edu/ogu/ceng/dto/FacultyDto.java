@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class FacultyDto {
 
 	private Long id;
 	private String name;
-	private Timestamp createDate;
-	private Timestamp updateDate;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 
 }
