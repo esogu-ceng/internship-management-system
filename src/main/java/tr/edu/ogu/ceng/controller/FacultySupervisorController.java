@@ -25,7 +25,7 @@ public class FacultySupervisorController {
 
 	@PostMapping("/saveFacultysupervisor")
 	public ResponseEntity<FacultySupervisorDto> addFacultySupervisor(@RequestBody FacultySupervisorDto facultySupervisor) {
-		FacultySupervisorDto facultySupervisor1 = facultySupervisorService.saveFacultySupervisor(facultySupervisor);
+		FacultySupervisorDto facultySupervisor1 = facultySupervisorService.addFacultySupervisor(facultySupervisor);
 		return new ResponseEntity<>(facultySupervisor1, HttpStatus.CREATED);
 	}
 

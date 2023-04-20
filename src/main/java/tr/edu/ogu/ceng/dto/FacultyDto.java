@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDto {
+public class FacultyDto {
+
 	private Long id;
-	private String username;
-	private String password;
-	private String email;
-	private UserTypeDto userType;
+	private String name;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
+
 }
