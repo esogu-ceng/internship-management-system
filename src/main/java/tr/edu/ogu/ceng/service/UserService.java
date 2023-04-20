@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -47,9 +47,9 @@ public class UserService {
 				throw new IllegalArgumentException("User with ID " + userDto.getId() + " already exists.");
 			}
 			User user = modelMapper.map(userDto, User.class);
-			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-			user.setCreateDate(currentTime);
-			user.setUpdateDate(currentTime);
+			LocalDateTime dateTime = LocalDateTime.now();
+			user.setCreateDate(dateTime);
+			user.setUpdateDate(dateTime);
 			user.setId((long) 0);
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());
