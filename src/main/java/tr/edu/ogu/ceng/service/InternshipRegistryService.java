@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
@@ -18,6 +20,7 @@ import tr.edu.ogu.ceng.model.InternshipRegistry;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class InternshipRegistryService {
 
 	@Autowired
@@ -30,16 +33,17 @@ public class InternshipRegistryService {
 			return false;
 		}
 		internshipRegistryRepository.deleteById(id);
-		log.info("Internship registry deleted with id: {}", id);
+		log.info("Internship registry deleted with ID: {}", id);
 		return true;
 	}
 
 	public InternshipRegistryDto updateInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
+		modelMapper = new ModelMapper();
 		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
-		if (!internshipRegistryRepository.existsById(internshipRegistry.getId()))
-			throw new EntityNotFoundException("Internship Registry not found!");
+		if (!internshipRegistryRepository.existsById(internshipRegistry.getId())) {
 			log.warn("Internship registry with ID {} not found", internshipRegistry.getId());
-			
+			throw new EntityNotFoundException("Internship Registry not found!");
+		}
 		internshipRegistry.setCreateDate(internshipRegistryRepository.getById(internshipRegistry.getId()).getCreateDate());
 		internshipRegistry.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		
@@ -54,6 +58,7 @@ public class InternshipRegistryService {
 	}
 
 	public InternshipRegistryDto addInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
+		modelMapper = new ModelMapper();
 		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		internshipRegistry.setCreateDate(localDateTime);
@@ -66,6 +71,8 @@ public class InternshipRegistryService {
             log.error("Error occurred while saving internship registry: {}", e.getMessage());
             throw e;
         }
+
+		internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
 		return modelMapper.map(internshipRegistry, InternshipRegistryDto.class);
 	}

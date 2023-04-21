@@ -19,7 +19,6 @@ public class SettingController {
 	private SettingService settingService;
 
 	@PutMapping
-
 	public ResponseEntity<SettingDto> updateSetting(@RequestBody SettingDto setting) {
 		SettingDto updatedSetting = settingService.updateSetting(setting);
 		return ResponseEntity.ok(updatedSetting);
