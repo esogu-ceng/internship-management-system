@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.responses.update;
 
 import java.sql.Timestamp;
 
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InternshipRequestDto {
+public class UpdateInternshipResponseDto {
+	private Long id;
 	private String status;
 	private Timestamp startDate;
 	private Timestamp endDate;

@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.requests.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,17 @@ import tr.edu.ogu.ceng.model.Company;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyRequestDto {
+public class CreateCompanyRequestDto {
 
-	public CompanyRequestDto(Company company) {
+	private String name;
+	private String address;
+	private String phone_number;
+	private String fax_number;
+	private String email;
+	private String scope;
+	private String description;
+	
+	public CreateCompanyRequestDto(Company company) {
 		super();
 		this.name = company.getName();
 		this.address = company.getAddress();
@@ -20,13 +28,5 @@ public class CompanyRequestDto {
 		this.scope = company.getScope();
 		this.description = company.getDescription();
 	}
-
-	private String name;
-	private String address;
-	private String phone_number;
-	private String fax_number;
-	private String email;
-	private String scope;
-	private String description;
 
 }

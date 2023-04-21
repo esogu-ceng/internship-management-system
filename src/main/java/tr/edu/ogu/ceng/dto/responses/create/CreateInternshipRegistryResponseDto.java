@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.responses;
+package tr.edu.ogu.ceng.dto.responses.create;
 
 import java.sql.Timestamp;
 
@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTypeResponseDto {
+public class CreateInternshipRegistryResponseDto {
 	private Long id;
+	private String filePath;
+	private String name;
 	private String type;
-	private Timestamp createDate;
-	private Timestamp updateDate;
+	private Timestamp date;
+	private Long internshipId;
 }

@@ -1,4 +1,6 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.responses.get;
+
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentRequestDto {
+public class GetByIdStudentResponseDto {
+	private Long id;
 	private String name;
 	private String surname;
 	private String tckn;
@@ -40,6 +43,8 @@ public class StudentRequestDto {
 	private String idRegistryReason;
 	private Boolean sgkFamily;
 	private Boolean sgkSelf;
+	private Timestamp createDate;
+	private Timestamp updateDate;
 	private long userId;
 	private long facultyId;
 	private String password;

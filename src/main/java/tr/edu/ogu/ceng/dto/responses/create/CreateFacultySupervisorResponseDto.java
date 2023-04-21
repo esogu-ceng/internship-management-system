@@ -1,13 +1,16 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.responses.create;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FacultySupervisorRequestDto {
+@Builder
+public class CreateFacultySupervisorResponseDto {
+	private Long id;
 	private String name;
 	private String surname;
 	private String phoneNumber;

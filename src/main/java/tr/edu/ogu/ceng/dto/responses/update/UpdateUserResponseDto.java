@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.responses;
+package tr.edu.ogu.ceng.dto.responses.update;
 
 import java.sql.Timestamp;
 
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDto {
+public class UpdateUserResponseDto {
 	private Long id;
 	private String username;
 	private String password;
 	private String email;
-	private long userTypeId;
+	private long userTypeID;
 	private Timestamp createDate;
 	private Timestamp updateDate;
 }

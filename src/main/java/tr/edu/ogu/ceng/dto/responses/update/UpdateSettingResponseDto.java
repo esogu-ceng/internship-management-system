@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.responses.update;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTypeRequestDto {
-	private String type;
+public class UpdateSettingResponseDto {
+	private String key;
+	private String value;
 }

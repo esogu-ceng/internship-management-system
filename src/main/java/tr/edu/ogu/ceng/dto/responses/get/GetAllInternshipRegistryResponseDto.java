@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.responses.get;
 
 import java.sql.Timestamp;
 
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InternshipRegistryRequestDto {
+public class GetAllInternshipRegistryResponseDto {
+	private Long id;
 	private String filePath;
 	private String name;
 	private String type;

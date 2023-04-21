@@ -1,4 +1,4 @@
-package tr.edu.ogu.ceng.dto.responses;
+package tr.edu.ogu.ceng.dto.responses.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,9 @@ import tr.edu.ogu.ceng.model.Company;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyResponseDto {
+public class CreateCompanyResponseDto {
 
-	public CompanyResponseDto(Company company) {
+	public CreateCompanyResponseDto(Company company) {
 		super();
 		this.id = company.getId();
 		this.name = company.getName();
