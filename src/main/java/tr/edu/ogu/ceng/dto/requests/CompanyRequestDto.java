@@ -15,8 +15,8 @@ public class CompanyRequestDto {
 		this.id = company.getId();
 		this.name = company.getName();
 		this.address = company.getAddress();
-		this.phone_number = company.getPhoneNumber();
-		this.fax_number = company.getFaxNumber();
+		this.phoneNumber = company.getPhoneNumber();
+		this.faxNumber = company.getFaxNumber();
 		this.email = company.getEmail();
 		this.scope = company.getScope();
 		this.description = company.getDescription();
@@ -25,8 +25,8 @@ public class CompanyRequestDto {
 	private Long id;
 	private String name;
 	private String address;
-	private String phone_number;
-	private String fax_number;
+	private String phoneNumber;
+	private String faxNumber;
 	private String email;
 	private String scope;
 	private String description;

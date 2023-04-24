@@ -14,7 +14,7 @@ public class UserRequestDto {
 	private String username;
 	private String password;
 	private String email;
-	private long userTypeID;
+	private long userTypeId;
 	private Timestamp createDate;
 	private Timestamp updateDate;
 }
