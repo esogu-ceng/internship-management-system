@@ -83,3 +83,17 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
+
+##############################
+## React
+##############################
+*/*-client/node_modules
+*/*-client/.pnp
+.pnp.js
+*-client/build
+.env.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
