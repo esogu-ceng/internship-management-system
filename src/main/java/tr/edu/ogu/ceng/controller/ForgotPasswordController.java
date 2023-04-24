@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
+import tr.edu.ogu.ceng.dto.ResetPasswordDto;
 import tr.edu.ogu.ceng.service.ForgotPasswordService;
 
 @RestController
-@RequestMapping("/forgot-password")
+@RequestMapping("forgot-password")
 public class ForgotPasswordController {
 	@Autowired
 	ForgotPasswordService forgotPasswordService; 
@@ -22,4 +23,11 @@ public class ForgotPasswordController {
 			 forgotPasswordService.sendResetPasswordEmail(email);
 			 return ResponseEntity.ok("Reset password e-mail sent successfully!");
 	 } 
+	 
+	 @PostMapping("/update")
+	 public ResponseEntity<String> updatePassword(@RequestBody ResetPasswordDto resetPasswordDto) throws Exception{
+			 forgotPasswordService.updatePassword(resetPasswordDto);
+			 return ResponseEntity.ok("Password updated successfully!");
+	 } 
+	 
 }
