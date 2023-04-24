@@ -30,4 +30,7 @@ public class ForgotPasswordController {
 			 return ResponseEntity.ok("Password updated successfully!");
 	 } 
 	 
+	 // TODO: Show reset password form
+	 // @GetMapping
+	 
 }
