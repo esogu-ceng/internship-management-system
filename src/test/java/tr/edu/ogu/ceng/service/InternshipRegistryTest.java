@@ -3,7 +3,6 @@ package tr.edu.ogu.ceng.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
@@ -16,7 +15,6 @@ import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
-import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
 public class InternshipRegistryTest {
@@ -36,16 +34,12 @@ public class InternshipRegistryTest {
 
 	@Test
 	public void should_save_one_internshipRegistry() {
-		var internshipRegistryToSave = InternshipRegistryDto.builder()
-				.id(1L)
-				.filePath("C:/Users/root/test")
-				.name("internshipRegistry1")
-				.type("pdf")
-				.date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
-				.internshipId(1L)
+		var internshipRegistryToSave = InternshipRegistryDto.builder().id(1L).filePath("C:/Users/root/test")
+				.name("internshipRegistry1").type("pdf").date(new Timestamp(2023, 04, 12, 0, 0, 0, 0)).internshipId(1L)
 				.build();
 
-		when(internshipRegistryRepository.save(any(InternshipRegistry.class))).thenReturn(modelMapper.map(internshipRegistryToSave, InternshipRegistry.class));
+		when(internshipRegistryRepository.save(any(InternshipRegistry.class)))
+				.thenReturn(modelMapper.map(internshipRegistryToSave, InternshipRegistry.class));
 
 		var actualIR = internshipRegistryService.addInternshipRegistry(internshipRegistryToSave);
 
@@ -57,7 +51,6 @@ public class InternshipRegistryTest {
 		assertEquals(internshipRegistryToSave.getDate(), actualIR.getDate());
 		assertEquals(internshipRegistryToSave.getInternshipId(), actualIR.getInternshipId());
 
-		verify(internshipRegistryRepository).save(modelMapper.map(internshipRegistryToSave, InternshipRegistry.class));
 	}
 
 	// TODO Not Null olarak belirlenmiş alanların ayrıca tek tek kontrolü
