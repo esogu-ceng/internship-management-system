@@ -30,7 +30,6 @@ public class CompanyService {
 			log.warn("No company found with id {}.", company.getId());
 			throw new EntityNotFoundException("Company not found!");
 		}
-		log.info("Company is updated successfully.");
 		return companyRepository.save(company);
 	}
 
@@ -49,7 +48,6 @@ public class CompanyService {
 			log.warn("The search query should consist of at least three characters.");
 			throw new InvalidArgumentException("Name should be at least 3 characters long.");
 		}
-		log.info("Company is found successfully.");
 		return companyRepository.findByNameContainingIgnoreCase(name, pageable);
 	}
 
@@ -68,8 +66,8 @@ public class CompanyService {
 			log.warn("Deletion process could not be performed because no company was found with the given ID ");
 			return false;
 		}
-		log.info("Deletion process is completed successfully");
 		companyRepository.deleteById(id);
+		log.info("Deletion process is completed successfully");
 		return true;
 	}
 

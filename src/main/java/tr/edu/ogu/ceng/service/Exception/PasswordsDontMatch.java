@@ -1,9 +1,9 @@
 package tr.edu.ogu.ceng.service.Exception;
 
 @SuppressWarnings("serial")
-public class passwordsDontMatch extends ServiceException {
+public class PasswordsDontMatch extends ServiceException {
 
-	public passwordsDontMatch() {
+	public PasswordsDontMatch() {
 		super("Passwords do not match.");
 	}
 }
