@@ -30,17 +30,14 @@ public class ForgotPasswordService {
 	@Autowired
 	private SettingService settingService;
 	
-	private User user;
-	
-	private Map<String, EmailReceiverDto> resetRequests = new HashMap<>();	
+	private Map<String, String> resetRequests = new HashMap<>();	
 	
 	public void sendResetPasswordEmail(EmailReceiverDto emailReceiver) throws Exception{
 		if(userService.findByEmail(emailReceiver.getEmail()) == null)
 			throw new EntityNotFoundException("User with " + emailReceiver.getEmail() +" does not exist!");
 		
-		user = userService.findByEmail(emailReceiver.getEmail());
 		String resetHash = UUID.randomUUID().toString();
-	    resetRequests.put(resetHash, emailReceiver);
+	    resetRequests.put(resetHash, emailReceiver.getEmail());
 		
 		JavaMailSender mailSender = getJavaMailSender();
 		MimeMessage message = mailSender.createMimeMessage();
@@ -63,6 +60,8 @@ public class ForgotPasswordService {
 		if(!resetRequests.containsKey(hash))
 			throw new InvalidTokenException();
 		
+		String email = resetRequests.get(hash);
+        User user = userService.findByEmail(email);
 		user.setPassword(resetPasswordDto.getPassword());
 		userService.updateUser(user);
 		resetRequests.remove(hash);
