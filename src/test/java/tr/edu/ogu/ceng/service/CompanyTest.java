@@ -3,10 +3,9 @@ package tr.edu.ogu.ceng.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,30 +32,46 @@ class CompanyTest {
 
 	@Test
 	void should_save_one_company() {
+		LocalDateTime dateTime = LocalDateTime.now();
+
 		var companyToSave = CompanyDto.builder()
+				.id(1L)
 				.name("Test")
 				.address("Test")
-				.phone_number("Test")
-				.fax_number("Test")
-				.email("Test")
+				.phoneNumber("Test")
+				.faxNumber("Test")
+				.email("Test@test.com")
 				.scope("Test")
-				.createDate(new Timestamp(2023, 04, 17, 0, 0, 0, 0))
-				.updateDate(new Timestamp(2023, 04, 17, 1, 0, 0, 0))
+				.description("Test")
+				.createDate(dateTime)
+				.updateDate(dateTime)
 				.build();
 
-		when(companyRepository.save(any(Company.class))).thenReturn(modelMapper.map(companyToSave, Company.class));
+		var savedCompany = Company.builder()
+				.id(1L)
+				.name("Test")
+				.address("Test")
+				.phoneNumber("Test")
+				.faxNumber("Test")
+				.email("Test")
+				.scope("Test")
+				.description("Test")
+				.createDate(dateTime)
+				.updateDate(dateTime)
+				.build();
+
+		when(companyRepository.save(any(Company.class))).thenReturn(savedCompany);
 
 		var actual = companyService.addCompany(companyToSave);
 
 		assertNotNull(actual);
 		assertEquals(companyToSave.getName(), actual.getName());
 		assertEquals(companyToSave.getAddress(), actual.getAddress());
-		assertEquals(companyToSave.getPhone_number(), actual.getPhone_number());
-		assertEquals(companyToSave.getFax_number(), actual.getFax_number());
+		assertEquals(companyToSave.getPhoneNumber(), actual.getPhoneNumber());
+		assertEquals(companyToSave.getFaxNumber(), actual.getFaxNumber());
 		assertEquals(companyToSave.getEmail(), actual.getEmail());
 		assertEquals(companyToSave.getScope(), actual.getScope());
+		assertEquals(companyToSave.getDescription(), actual.getDescription());
 
-		verify(companyRepository).save(modelMapper.map(companyToSave, Company.class));
 	}
-
 }

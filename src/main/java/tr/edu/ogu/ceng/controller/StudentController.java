@@ -49,12 +49,12 @@ public class StudentController {
 		return students;
 	}
 
-	@PostMapping()
+	@PostMapping("/saveStudent")
 	public StudentDto addStudent(@RequestBody StudentDto studentDto) {
 		return studentService.addStudent(studentDto);
 	}
 
-	@PutMapping()
+	@PutMapping("/{id}")
 	public StudentDto updateStudent(@RequestBody StudentDto studentDto) {
 		return studentService.updateStudent(studentDto);
 	}

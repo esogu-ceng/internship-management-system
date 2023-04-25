@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,12 +16,12 @@ public class CompanyDto {
 	private Long id;
 	private String name;
 	private String address;
-	private String phone_number;
-	private String fax_number;
+	private String phoneNumber;
+	private String faxNumber;
 	private String email;
 	private String scope;
 	private String description;
-	private Timestamp createDate;
-	private Timestamp updateDate;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 
 }

@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,8 @@ public class CompanyService {
 			}
 			ModelMapper modelMapper = new ModelMapper();
 			Company company = modelMapper.map(companyDto, Company.class);
-			Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
-			company.setUpdateDate(localDateTime);
+			LocalDateTime dateTime = LocalDateTime.now();
+			company.setUpdateDate(dateTime);
 			company = companyRepository.save(company);
 			log.info("Company with ID {} has been updated: {}, {}", company.getId(), company.getName(), company.getDescription());
 			return modelMapper.map(company, CompanyDto.class);
@@ -70,18 +70,19 @@ public class CompanyService {
 	}
 
 	public CompanyDto addCompany(CompanyDto companyDto) {
-		ModelMapper modelMapper = new ModelMapper();
-		Company company = modelMapper.map(companyDto, Company.class);
-		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
-		company.setCreateDate(localDateTime);
-		company.setUpdateDate(localDateTime);
-		Company newCompany = companyRepository.save(company);
-		if (newCompany == null) {
-			log.error("An error occurred while adding the company.");
-			throw new EntityNotFoundException();
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			Company company = modelMapper.map(companyDto, Company.class);
+			LocalDateTime dateTime = LocalDateTime.now();
+			company.setCreateDate(dateTime);
+			company.setUpdateDate(dateTime);
+			companyRepository.save(company);
+			log.info("The company has been added successfully.");
+			return modelMapper.map(company, CompanyDto.class);
+		} catch (Exception e) {
+			log.error("Failed to add company. Error message: {}", e.getMessage());
+			throw e;
 		}
-		log.info("The company has been added successfully.");
-		return modelMapper.map(newCompany, CompanyDto.class);
 	}
 
 	public boolean deleteCompany(long id) {

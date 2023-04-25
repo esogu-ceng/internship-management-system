@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -28,7 +30,10 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
+	private final UserTypeRepository userTypeRepository;
+	private final FacultyRepository facultyRepository;
 	private final UserTypeService userTypeService;
+	private ModelMapper modelMapper;
 
 	public StudentDto getStudent(long id) {
 		try {
@@ -63,42 +68,49 @@ public class StudentService {
 		}
 	}
 
+	@Transactional
 	public StudentDto addStudent(StudentDto studentDto) {
-		try {
-			ModelMapper modelMapper = new ModelMapper();
-			Student student = modelMapper.map(studentDto, Student.class);
-			Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
-			student.setCreateDate(localDateTime);
-			student.setUpdateDate(localDateTime);
+		Student student = modelMapper.map(studentDto, Student.class);
+		// need to add a new user to the DB
+		User user = student.getUser();
+		LocalDateTime now = LocalDateTime.now();
 
-			// fetch the User object by ID and set it as a reference in the Student object
-			User user = userRepository.getById(student.getUser().getId());
-			student.setUser(user);
+		user.setCreateDate(now);
+		user.setUpdateDate(now);
+		user.setUserType(userTypeRepository.findByType(UserTypeEnum.STUDENT.name()));
 
-			studentRepository.save(student);
-			log.info("Student added successfully: {}", student);
-			return modelMapper.map(student, StudentDto.class);
-		} catch (Exception e) {
-			log.error("Failed to add student. Error message: {}", e.getMessage());
-			throw e;
-		}
+		// give persisted entity to the student Object
+		student.setUser(userRepository.save(user));// FIXME instead, do we need to call to Service method?
+													// But the Service method needs to get DTO. Or are there
+													// any other approaches to persist the User?
+
+		student.setCreateDate(now);
+		student.setUpdateDate(now);
+
+		Student savedStudent = studentRepository.save(student);
+		log.info("The student was successfully added: {}", savedStudent);
+
+		return modelMapper.map(savedStudent, StudentDto.class);
 	}
 
 	public StudentDto updateStudent(StudentDto studentDto) {
-		ModelMapper modelMapper = new ModelMapper();
-		Student student = modelMapper.map(studentDto, Student.class);
-
-		if (!studentRepository.existsById(student.getId())) {
-			log.warn("There is no student with id {}", student.getId());
-			throw new EntityNotFoundException("Student not found!");
+		if (studentDto.getId() == null) {
+			throw new IllegalArgumentException("Student ID cannot be null");
 		}
-		// fetch the User object by ID and set it as a reference in the Student object
-		User user = userRepository.getById(student.getUser().getId());
-		student.setUser(user);
-		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		student = studentRepository.save(student);
-		log.info("Student updated successfully: {}", student);
-		return modelMapper.map(student, StudentDto.class);
+		Student student = modelMapper.map(studentDto, Student.class);
+		if (!studentRepository.existsById(student.getId()))
+			throw new EntityNotFoundException("Student not found!");
+		LocalDateTime now = LocalDateTime.now();
+		student.setUpdateDate(now);
+		Student updatedStudent;
+		try {
+			updatedStudent = studentRepository.save(student);
+			log.info("Student updated: {}", updatedStudent);
+		} catch (Exception e) {
+			log.error("Error occurred while updating student: {}", e.getMessage());
+			throw e;
+		}
+		return modelMapper.map(updatedStudent, StudentDto.class);
 	}
 
 	@Transactional
@@ -151,9 +163,8 @@ public class StudentService {
 		student.setUser(user);
 		student.setFaculty(faculty);
 
-		student.getFaculty().setId(request.getFacultyId());
-		student.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		student.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		student.setUpdateDate(LocalDateTime.now());
+		student.setCreateDate(LocalDateTime.now());
 		studentRepository.save(student);
 		log.info("Registration successful.");
 

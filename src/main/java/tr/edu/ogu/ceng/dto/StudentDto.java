@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +46,10 @@ public class StudentDto {
 	private String idRegistryReason;
 	private Boolean sgkFamily;
 	private Boolean sgkSelf;
-	private Timestamp createDate;
-	private Timestamp updateDate;
-	private long userId;
-	private long facultyId;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
+	private UserDto user;
+	private FacultyDto faculty;
 	private String password;
 	private String confirmPassword;
 	private String username;
