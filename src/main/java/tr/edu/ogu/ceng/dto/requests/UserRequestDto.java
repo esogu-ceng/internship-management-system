@@ -1,7 +1,5 @@
 package tr.edu.ogu.ceng.dto.requests;
 
-import java.sql.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +13,4 @@ public class UserRequestDto {
 	private String password;
 	private String email;
 	private long userTypeId;
-	private Timestamp createDate;
-	private Timestamp updateDate;
 }

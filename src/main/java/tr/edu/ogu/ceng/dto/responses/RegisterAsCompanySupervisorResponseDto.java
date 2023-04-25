@@ -18,6 +18,4 @@ public class RegisterAsCompanySupervisorResponseDto {
 	private String phoneNumber;
 	private Timestamp createDate;
 	private Timestamp updateDate;
-	private String password;
-	private String confirmPassword;
 }

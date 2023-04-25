@@ -47,8 +47,6 @@ public class StudentResponseDto {
 	private Timestamp updateDate;
 	private long userId;
 	private long facultyId;
-	private String password;
-	private String confirmPassword;
 	private String username;
 	private String email;
 }

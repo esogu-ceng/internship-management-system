@@ -1,7 +1,5 @@
 package tr.edu.ogu.ceng.dto.requests;
 
-import java.sql.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,8 +41,6 @@ public class StudentRequestDto {
 	private String idRegistryReason;
 	private Boolean sgkFamily;
 	private Boolean sgkSelf;
-	private Timestamp createDate;
-	private Timestamp updateDate;
 	private long userId;
 	private long facultyId;
 	private String password;
