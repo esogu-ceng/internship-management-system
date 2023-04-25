@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterAsCompanySupervisorDto {
-	private long id;
-	private long userId;
-	private long companyId;
+	private Long id;
+	private Long userId;
+	private Long companyId;
 	private String name;
 	private String surname;
 	private String phoneNumber;

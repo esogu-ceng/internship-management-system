@@ -26,7 +26,7 @@ public class RegisterAsCompanySupervisorService{
 		Company company = new Company();
 		companySupervisor.setUser(user);
 		companySupervisor.setCompany(company);
-		companySupervisor.setId(0);
+		companySupervisor.setId((long) 0);
 		companySupervisor.setName(request.getName());
 		companySupervisor.setSurname(request.getSurname());
 		companySupervisor.setPhoneNumber(request.getPhoneNumber());
