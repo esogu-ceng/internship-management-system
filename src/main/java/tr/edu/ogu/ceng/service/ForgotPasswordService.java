@@ -30,7 +30,7 @@ public class ForgotPasswordService {
 	@Autowired
 	private SettingService settingService;
 	
-	private Map<String, String> resetRequests = new HashMap<>();	
+	private static Map<String, String> resetRequests = new HashMap<>();	
 	
 	public void sendResetPasswordEmail(EmailReceiverDto emailReceiver) throws Exception{
 		if(userService.findByEmail(emailReceiver.getEmail()) == null)
