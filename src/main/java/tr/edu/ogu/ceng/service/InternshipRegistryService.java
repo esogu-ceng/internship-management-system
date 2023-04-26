@@ -6,6 +6,8 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -57,4 +59,11 @@ public class InternshipRegistryService {
 
 		return modelMapper.map(internshipRegistry, InternshipRegistryDto.class);
 	}
+	
+	public Page<InternshipRegistry> getAllInternshipRegistiries(Pageable pageable) {
+        if (internshipRegistryRepository.findAll() == null)
+			return null;
+		return internshipRegistryRepository.findAll(pageable);
+    }
+	
 }
