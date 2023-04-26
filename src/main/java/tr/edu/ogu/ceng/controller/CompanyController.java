@@ -42,8 +42,10 @@ public class CompanyController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyDto> getCompany(@PathVariable(name = "id") long id) throws Exception {
+
 		CompanyDto companyDto = companyService.getCompany(id);
 		return ResponseEntity.ok(companyDto);
+
 	}
 
 	@GetMapping("/search/{name}")
