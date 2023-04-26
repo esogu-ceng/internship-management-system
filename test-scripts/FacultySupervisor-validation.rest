@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "id":null,
-    "name":"Yusuf",
+    "name":"",
     "surname":"Kartal",
     "phoneNumber":"5051234567",
     "supervisorNo":"920",
