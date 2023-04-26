@@ -87,8 +87,8 @@ nb-configuration.xml
 ##############################
 ## React
 ##############################
-*/*-client/node_modules
-*/*-client/.pnp
+clients/*/node_modules
+clients/*/.pnp
 .pnp.js
 *-client/build
 .env.local
