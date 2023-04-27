@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,14 +14,18 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
+import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
+import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.UserDto;
+import tr.edu.ogu.ceng.dto.UserTypeDto;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.model.UserType;
 
 public class FacultySupervisorTest {
 
@@ -32,6 +37,9 @@ public class FacultySupervisorTest {
 
 	@Mock
 	UserTypeRepository userTypeRepository;
+
+	@Mock
+	FacultyRepository facultyRepository;
 
 	FacultySupervisorService facultySupervisorService;
 
@@ -45,26 +53,39 @@ public class FacultySupervisorTest {
 	@Test
 	void is_faculty_supervisor_added_successfully() {
 
-		// FIXME This test case will be extended to mock all used repository methods
-		// like facultyRepository.get etc.
-		LocalDateTime dateTime = LocalDateTime.now();
-		var savedUser = User.builder().email("test").password("passwordHash").id(1L).username("test").build();
-		var savedFacultySupervisor = FacultySupervisor.builder().id(1L).name("Faculty Supervisor").surname("test")
-				.phoneNumber("test").supervisorNo("test").createDate(dateTime).updateDate(dateTime).user(savedUser)
-				.faculty(new Faculty()).build();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-		when(userRepository.save(any(User.class))).thenReturn(savedUser);
-		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(savedFacultySupervisor);
+		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(timestamp).updateDate(timestamp).build();
+		var modelUserType = UserType.builder().id(2L).type("UserType").createDate(localDateTime).updateDate(localDateTime).build();
+		var modelUser = User.builder().id(3L).username("Username").password("password").email("email").userType(modelUserType)
+				.createDate(localDateTime).updateDate(localDateTime).build();
+		var modelFacultySupervisor = FacultySupervisor.builder().id(4L).name("Name").surname("Surname").phoneNumber("Phone")
+				.supervisorNo("No").createDate(localDateTime).updateDate(localDateTime).user(modelUser).faculty(modelFaculty)
+				.build();
 
-		var userToSave = UserDto.builder().email("test").password("passwordHash").username("test").build();
-		var facultySupervisortoSave = FacultySupervisorDto.builder().name("Faculty Supervisor").surname("test")
-				.phoneNumber("test").supervisorNo("test").user(userToSave).build();
-		var actual = facultySupervisorService.addFacultySupervisor(facultySupervisortoSave);
+		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
+		when(userTypeRepository.save(any(UserType.class))).thenReturn(modelUserType);
+		when(userRepository.save(any(User.class))).thenReturn(modelUser);
+		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
+
+		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
+		var DtoUserType = UserTypeDto.builder().id(2L).type("UserType").createDate(localDateTime).updateDate(localDateTime).build();
+		var DtoUser = UserDto.builder().id(3L).username("Username").password("password").email("email").userType(DtoUserType)
+				.createDate(localDateTime).updateDate(localDateTime).build();
+		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(4L).name("Name").surname("Surname").phoneNumber("Phone")
+				.supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
+
+		var actual = facultySupervisorService.addFacultySupervisor(DtoFacultySupervisor);
 
 		assertNotNull(actual);
-		assertEquals(savedFacultySupervisor.getName(), actual.getName());
-		assertEquals(savedFacultySupervisor.getSurname(), actual.getSurname());
-		assertEquals(savedFacultySupervisor.getPhoneNumber(), actual.getPhoneNumber());
-		assertEquals(savedFacultySupervisor.getSupervisorNo(), actual.getSupervisorNo());
+		assertEquals(modelFacultySupervisor.getId(), actual.getId());
+		assertEquals(modelFacultySupervisor.getName(), actual.getName());
+		assertEquals(modelFacultySupervisor.getSurname(), actual.getSurname());
+		assertEquals(modelFacultySupervisor.getPhoneNumber(), actual.getPhoneNumber());
+		assertEquals(modelFacultySupervisor.getUser().getId(), actual.getUser().getId());
+		assertEquals(modelFacultySupervisor.getUser().getUserType().getId(), actual.getUser().getUserType().getId());
+		assertEquals(modelFacultySupervisor.getFaculty().getId(), actual.getFaculty().getId());
+
 	}
 }
