@@ -54,9 +54,9 @@ public class FacultySupervisorTest {
 	void is_faculty_supervisor_added_successfully() {
 
 		LocalDateTime localDateTime = LocalDateTime.now();
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		
 
-		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(timestamp).updateDate(timestamp).build();
+		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
 		var modelUserType = UserType.builder().id(2L).type("UserType").createDate(localDateTime).updateDate(localDateTime).build();
 		var modelUser = User.builder().id(3L).username("Username").password("password").email("email").userType(modelUserType)
 				.createDate(localDateTime).updateDate(localDateTime).build();
