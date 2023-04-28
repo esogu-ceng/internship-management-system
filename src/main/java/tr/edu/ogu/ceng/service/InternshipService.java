@@ -75,7 +75,7 @@ public class InternshipService {
 
 		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
 		Internship internship = internshipRepository.findById(id).orElse(null);
-		internship.setStatus(InternshipStatus.Approved);
+		internship.setStatus(InternshipStatus.APPROVED);
 		internship.setUpdateDate(localDateTime);
 		internshipRepository.save(internship);
 
