@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -130,10 +131,10 @@ public class Student {
 	private Boolean sgkSelf;
 
 	@Column(name = "create_date")
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "update_date")
-	private Timestamp updateDate;
+	private LocalDateTime updateDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")
