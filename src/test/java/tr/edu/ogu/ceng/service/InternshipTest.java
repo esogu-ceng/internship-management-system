@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
 
 public class InternshipTest {
@@ -33,7 +34,7 @@ public class InternshipTest {
 
 	@Test
 	public void is_internship_added_successfully() {
-		var internshipToSave = InternshipDto.builder().id(1004L).status("Test")
+		var internshipToSave = InternshipDto.builder().id(1004L).status(InternshipStatus.APPROVED)
 				.startDate(new Timestamp(2023, 04, 14, 0, 0, 0, 0)).endDate(new Timestamp(2023, 04, 30, 0, 0, 0, 0))
 				.days(20).companyId(5L).studentId(8L).facultySupervisorId(2L).build();
 
