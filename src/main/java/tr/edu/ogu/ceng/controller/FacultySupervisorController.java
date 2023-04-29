@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ public class FacultySupervisorController {
 	private FacultySupervisorService facultySupervisorService;
 
 	@PostMapping("/saveFacultysupervisor")
-	public ResponseEntity<FacultySupervisorDto> addFacultySupervisor(@RequestBody FacultySupervisorDto facultySupervisor) {
+	public ResponseEntity<FacultySupervisorDto> addFacultySupervisor(@RequestBody @Valid FacultySupervisorDto facultySupervisor) {
 		FacultySupervisorDto facultySupervisor1 = facultySupervisorService.addFacultySupervisor(facultySupervisor);
 		return new ResponseEntity<>(facultySupervisor1, HttpStatus.CREATED);
 	}

@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
@@ -88,4 +89,11 @@ public class UserService {
 			return false;
 		}
 	}
+	
+	public User updateUser(User user) {
+		if (!userRepository.existsById(user.getId())) {
+			throw new EntityNotFoundException("User not found!");
+		}
+		return userRepository.save(user);
+    }
 }
