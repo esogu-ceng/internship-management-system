@@ -4,21 +4,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.util.List;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -90,9 +85,15 @@ public class StudentService {
 		return studentRepository.findByName(name, pageable);
 	}
 
-	// TODO
-	public Student getStudentByUserId() {
-		return null;
+	public StudentDto getStudentByUserId(Long id) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			Student student = studentRepository.findByUserId(id);
+			return modelMapper.map(student, StudentDto.class);
+		} catch (Exception e) {
+			log.error("An error occurred while getting students with given ID", e.getMessage());
+			throw e;
+		}
 	}
 
 	public StudentDto registerAsStudent(StudentDto request) {
@@ -112,8 +113,6 @@ public class StudentService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
-		
-		
 
 		student.setUser(user);
 		student.setFaculty(faculty);
@@ -124,7 +123,6 @@ public class StudentService {
 		studentRepository.save(student);
 		log.info("Kayıt başarılı");
 
-		
 		StudentDto response = modelMapper.map(student, StudentDto.class);
 		return response;
 
