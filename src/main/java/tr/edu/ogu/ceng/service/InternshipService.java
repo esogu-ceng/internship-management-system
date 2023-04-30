@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -8,12 +9,19 @@ import javax.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import tr.edu.ogu.ceng.dao.CompanyRepository;
+import tr.edu.ogu.ceng.dao.FacultyRepository;
+import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
+import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
@@ -26,14 +34,21 @@ import tr.edu.ogu.ceng.model.Internship;
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
+	private StudentRepository studentRepository;
+	private CompanyRepository companyRepository;
+	private FacultySupervisorRepository facultySupervisorRepository;
+	private UserRepository userRepository;
+	private FacultyRepository facultyRepository;
+	private UserTypeRepository userTypeRepository;
 	private ModelMapper modelMapper;
 
 	public InternshipDto addInternship(InternshipDto internshipDto) {
 		modelMapper = new ModelMapper();
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
-		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
-		internship.setCreateDate(localDateTime);
-		internship.setUpdateDate(localDateTime);
+		LocalDateTime dateTime = LocalDateTime.now();
+		internship.setCreateDate(dateTime);
+		internship.setUpdateDate(dateTime);
+		internship.setId((long) 0);
 		internship = internshipRepository.save(internship);
 		
 		return modelMapper.map(internship, InternshipDto.class);
@@ -46,9 +61,9 @@ public class InternshipService {
 		modelMapper = new ModelMapper();
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
 
-		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		LocalDateTime dateTime = LocalDateTime.now();
 		internship.setCreateDate(internshipRepository.getById(internship.getId()).getCreateDate());
-		internship.setUpdateDate(localDateTime);
+		internship.setUpdateDate(dateTime);
 
 		internship = internshipRepository.save(internship);
 		return modelMapper.map(internship, InternshipDto.class);
@@ -73,10 +88,10 @@ public class InternshipService {
 		if (!internshipRepository.existsById(id))
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
 
-		Timestamp localDateTime = new Timestamp(System.currentTimeMillis());
+		LocalDateTime dateTime = LocalDateTime.now();
 		Internship internship = internshipRepository.findById(id).orElse(null);
 		internship.setStatus(InternshipStatus.APPROVED);
-		internship.setUpdateDate(localDateTime);
+		internship.setUpdateDate(dateTime);
 		internshipRepository.save(internship);
 
 		log.info("Internship Approved!");
