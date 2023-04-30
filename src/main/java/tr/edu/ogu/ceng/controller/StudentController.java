@@ -41,7 +41,7 @@ public class StudentController {
 		return students;
 	}
 
-	@GetMapping("/getByNameSurnameStudentNo/{keyWord}")
+	@GetMapping("/search/{keyWord}")
 	public Page<StudentDto> getByNameSurnameStudentNo(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
