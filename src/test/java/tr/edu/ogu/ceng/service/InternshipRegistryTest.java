@@ -74,8 +74,9 @@ public class InternshipRegistryTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository, internshipRegistryService, internshipRepository,
-				studentRepository, companyRepository, facultySupervisorRepository, userRepository, facultyRepository, userTypeRepository, new ModelMapper());
+		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository,
+				internshipRegistryService, internshipRepository, studentRepository, companyRepository,
+				facultySupervisorRepository, userRepository, facultyRepository, userTypeRepository, new ModelMapper());
 	}
 
 	@Test
@@ -83,91 +84,31 @@ public class InternshipRegistryTest {
 
 		LocalDateTime localDateTime = LocalDateTime.now();
 
-		var modelCompany = Company.builder()
-				.id(1L)
-				.name("Test")
-				.address("Test")
-				.phoneNumber("Test")
-				.faxNumber("Test")
-				.email("Test@test.com")
-				.scope("Test")
-				.description("Test")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
+		var modelCompany = Company.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
+				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
+				.updateDate(localDateTime).build();
+		var modelUserType = UserType.builder().id(2L).type("UserType").createDate(localDateTime)
+				.updateDate(localDateTime).build();
+		var modelUser = User.builder().id(3L).username("Username").password("password").email("email")
+				.userType(modelUserType).createDate(localDateTime).updateDate(localDateTime).build();
+		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
-		var modelUserType = UserType.builder().id(2L).type("UserType")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.build();
-		var modelUser = User.builder()
-				.id(3L).username("Username")
-				.password("password")
-				.email("email")
-				.userType(modelUserType)
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.build();
-		var modelFaculty = Faculty.builder()
-				.id(1L).name("Faculty")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.build();
-		var modelFacultySupervisor = FacultySupervisor.builder()
-				.id(4L).name("Name")
-				.surname("Surname")
-				.phoneNumber("Phone")
-				.supervisorNo("No")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.user(modelUser)
-				.faculty(modelFaculty)
-				.build();
-		var modelStudent = Student.builder()
-				.id(6L)
-				.name("test")
-				.surname("test")
-				.tckn("test")
-				.studentNo("test")
-				.grade("test")
-				.phoneNumber("test")
-				.province("test")
-				.subprovince("test")
-				.zipCode("test")
-				.motherName("test")
-				.fatherName("test")
-				.birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.idCardSerialNo("test")
-				.idRegisterProvince("test")
-				.idRegisterSubprovince("test")
-				.idRegisterStreetVillage("test")
-				.idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test")
-				.idRegistryOffice("test")
-				.idRegistryReason("test")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.faculty(modelFaculty)
-				.user(modelUser)
-				.build();
-		var modelInternship = Internship.builder()
-				.id(1L)
-				.status(status)
-				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.days(1)
-				.student(modelStudent)
-				.company(modelCompany)
-				.facultySupervisor(modelFacultySupervisor)
-				.build();
-		var modelInternshipRegistry = InternshipRegistry.builder()
-				.id(1L)
-				.filePath("C:/Users/root/test")
-				.name("internshipRegistry1")
-				.type("pdf")
-				.date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
-				.internship(modelInternship)
-				.build();
+		var modelFacultySupervisor = FacultySupervisor.builder().id(4L).name("Name").surname("Surname")
+				.phoneNumber("Phone").supervisorNo("No").createDate(localDateTime).updateDate(localDateTime)
+				.user(modelUser).faculty(modelFaculty).build();
+		var modelStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
+				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
+				.motherName("test").fatherName("test").birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
+				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test")
+				.createDate(localDateTime).updateDate(localDateTime).faculty(modelFaculty).user(modelUser).build();
+		var modelInternship = Internship.builder().id(1L).status(status)
+				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.days(1).student(modelStudent).company(modelCompany).facultySupervisor(modelFacultySupervisor).build();
+		var modelInternshipRegistry = InternshipRegistry.builder().id(1L).filePath("C:/Users/root/test")
+				.name("internshipRegistry1").type("pdf").date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
+				.internship(modelInternship).build();
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
 		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);
@@ -178,97 +119,37 @@ public class InternshipRegistryTest {
 		when(internshipRepository.save(any(Internship.class))).thenReturn(modelInternship);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
-		var DtoFaculty = FacultyDto.builder()
-				.id(1L).name("Faculty")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
+		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 
-		var DtoUserType = UserTypeDto.builder()
-				.id(2L).type("UserType")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.build();
+		var DtoUserType = UserTypeDto.builder().id(2L).type("UserType").createDate(localDateTime)
+				.updateDate(localDateTime).build();
 
-		var DtoUser = UserDto.builder()
-				.id(3L).username("Username")
-				.password("password")
-				.email("email")
-				.userType(DtoUserType)
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.build();
+		var DtoUser = UserDto.builder().id(3L).username("Username").password("password").email("email")
+				.userType(DtoUserType).createDate(localDateTime).updateDate(localDateTime).build();
 
-		var DtoFacultySupervisor = FacultySupervisorDto.builder()
-				.id(4L)
-				.name("Name")
-				.surname("Surname")
-				.phoneNumber("Phone")
-				.supervisorNo("No")
-				.user(DtoUser)
-				.faculty(DtoFaculty)
-				.build();
+		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(4L).name("Name").surname("Surname")
+				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
 
-		var Dtostudent = StudentDto.builder()
-				.id(6L)
-				.name("test")
-				.surname("test")
-				.tckn("test")
-				.studentNo("test")
-				.grade("test")
-				.phoneNumber("test")
-				.province("test")
-				.subprovince("test")
-				.zipCode("test")
-				.motherName("test")
-				.fatherName("test")
-				.birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.idCardSerialNo("test")
-				.idRegisterProvince("test")
-				.idRegisterSubprovince("test")
-				.idRegisterStreetVillage("test")
-				.idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test")
-				.idRegistryOffice("test")
-				.idRegistryReason("test")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.faculty(DtoFaculty)
-				.build();
+		var Dtostudent = StudentDto.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
+				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
+				.motherName("test").fatherName("test").birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
+				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test")
+				.createDate(localDateTime).updateDate(localDateTime).faculty(DtoFaculty).build();
 
-		var Dtocompany = CompanyDto.builder()
-				.id(1L)
-				.name("Test")
-				.address("Test")
-				.phoneNumber("Test")
-				.faxNumber("Test")
-				.email("Test@test.com")
-				.scope("Test")
-				.description("Test")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.build();
+		var Dtocompany = CompanyDto.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
+				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
+				.updateDate(localDateTime).build();
 
-		var Dtointernship = InternshipDto.builder()
-				.id(1L)
-				.status(status)
-				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.days(1)
-				.student(Dtostudent)
-				.company(Dtocompany)
-				.facultySupervisor(DtoFacultySupervisor)
-				.build();
+		var Dtointernship = InternshipDto.builder().id(1L).status(status)
+				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.days(1).student(Dtostudent).company(Dtocompany).facultySupervisor(DtoFacultySupervisor).build();
 
-		var DtointernshipRegistry = InternshipRegistryDto.builder()
-				.id(1L)
-				.filePath("C:/Users/root/test")
-				.name("internshipRegistry1")
-				.type("pdf")
-				.date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
-				.internship(Dtointernship)
-				.build();
+		var DtointernshipRegistry = InternshipRegistryDto.builder().id(1L).filePath("C:/Users/root/test")
+				.name("internshipRegistry1").type("pdf").date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
+				.internship(Dtointernship).build();
 
 		var actual = internshipRegistryService.addInternshipRegistry(DtointernshipRegistry);
 
