@@ -4,8 +4,7 @@
 
 1. Clone this repository to your device.
 
-2. Install Maven packages. If you are using Eclipe IDE you can do this by right clicking on project name then selecting maven -> Update Project...
-
+2. Install Maven packages. If you are using Eclipe IDE you can do this by right clicking on project name then selecting maven -> Update Project
 
 3. Duplicate "application.properties.example". You can find it here: "src/main/resources/application.properties.example"
 
