@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
@@ -73,25 +72,25 @@ public class InternshipRegistryService {
 		LocalDateTime dateTime = LocalDateTime.now();
 		internshipRegistry.setCreateDate(dateTime);
 		internshipRegistry.setUpdateDate(dateTime);
-		internshipRegistry.setId((long) 0);
 		InternshipRegistry addedInternshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 		return modelMapper.map(addedInternshipRegistry, InternshipRegistryDto.class);
 	}
-	
+
 	public Page<InternshipRegistryDto> getAllInternshipRegistiries(Pageable pageable) {
-        try {
-        	ModelMapper modelMapper = new ModelMapper();
-        	log.info("Getting all internship registriries with pageable: {}", pageable);
-        	Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAll(pageable);
-            if (internshipRegistries.isEmpty()) {
-            	log.warn("The internship registry list is empty.");
-            }
-            Page<InternshipRegistryDto> internshipRegistryDtos = internshipRegistries.map(internshipRegistry -> modelMapper.map(internshipRegistry, InternshipRegistryDto.class));
-            return internshipRegistryDtos;
-        } catch (Exception e) {
-        	log.error("An error occured while getting internship registries: {}", e.getMessage());
-        	throw e;
-        }
-    }
-	
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting all internship registriries with pageable: {}", pageable);
+			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAll(pageable);
+			if (internshipRegistries.isEmpty()) {
+				log.warn("The internship registry list is empty.");
+			}
+			Page<InternshipRegistryDto> internshipRegistryDtos = internshipRegistries
+					.map(internshipRegistry -> modelMapper.map(internshipRegistry, InternshipRegistryDto.class));
+			return internshipRegistryDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting internship registries: {}", e.getMessage());
+			throw e;
+		}
+	}
+
 }

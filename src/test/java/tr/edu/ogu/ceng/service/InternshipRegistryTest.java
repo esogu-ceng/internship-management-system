@@ -44,72 +44,45 @@ public class InternshipRegistryTest {
 
 	@Mock
 	InternshipRegistryRepository internshipRegistryRepository;
-	
+
 	@Mock
 	InternshipRegistryService internshipRegistryService;
-	
+
 	@Mock
 	InternshipRepository internshipRepository;
-	
+
 	@Mock
 	StudentRepository studentRepository;
-	
+
 	@Mock
 	CompanyRepository companyRepository;
-	
+
 	@Mock
 	FacultySupervisorRepository facultySupervisorRepository;
-	
+
 	@Mock
 	UserRepository userRepository;
-	
+
 	@Mock
 	FacultyRepository facultyRepository;
-	
+
 	@Mock
 	UserTypeRepository userTypeRepository;
-	
+
 	InternshipStatus status = InternshipStatus.APPROVED;
 
-	
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository, internshipRegistryService, internshipRepository, studentRepository, companyRepository, facultySupervisorRepository, userRepository, facultyRepository, userTypeRepository, new ModelMapper());
+		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository, internshipRegistryService, internshipRepository,
+				studentRepository, companyRepository, facultySupervisorRepository, userRepository, facultyRepository, userTypeRepository, new ModelMapper());
 	}
 
 	@Test
 	public void should_save_one_internshipRegistry() {
-		
+
 		LocalDateTime localDateTime = LocalDateTime.now();
-		
-		var modelStudent = Student.builder()
-				.id(6L)
-				.name("test")
-				.surname("test")
-				.tckn("test")
-				.studentNo("test")
-				.grade("test")
-				.phoneNumber("test")
-				.province("test")
-				.subprovince("test")
-				.zipCode("test")
-				.motherName("test")
-				.fatherName("test")
-				.birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.idCardSerialNo("test")
-				.idRegisterProvince("test")
-				.idRegisterSubprovince("test")
-				.idRegisterStreetVillage("test")
-				.idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test")
-				.idRegistryOffice("test")
-				.idRegistryReason("test")
-				.createDate(localDateTime)
-				.updateDate(localDateTime)
-				.faculty(new Faculty())
-				.build();
+
 		var modelCompany = Company.builder()
 				.id(1L)
 				.name("Test")
@@ -122,8 +95,7 @@ public class InternshipRegistryTest {
 				.createDate(localDateTime)
 				.updateDate(localDateTime)
 				.build();
-		var modelUserType = UserType.builder().
-				id(2L).type("UserType")
+		var modelUserType = UserType.builder().id(2L).type("UserType")
 				.createDate(localDateTime)
 				.updateDate(localDateTime)
 				.build();
@@ -150,6 +122,34 @@ public class InternshipRegistryTest {
 				.user(modelUser)
 				.faculty(modelFaculty)
 				.build();
+		var modelStudent = Student.builder()
+				.id(6L)
+				.name("test")
+				.surname("test")
+				.tckn("test")
+				.studentNo("test")
+				.grade("test")
+				.phoneNumber("test")
+				.province("test")
+				.subprovince("test")
+				.zipCode("test")
+				.motherName("test")
+				.fatherName("test")
+				.birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.idCardSerialNo("test")
+				.idRegisterProvince("test")
+				.idRegisterSubprovince("test")
+				.idRegisterStreetVillage("test")
+				.idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test")
+				.idRegistryOffice("test")
+				.idRegistryReason("test")
+				.createDate(localDateTime)
+				.updateDate(localDateTime)
+				.faculty(modelFaculty)
+				.user(modelUser)
+				.build();
 		var modelInternship = Internship.builder()
 				.id(1L)
 				.status(status)
@@ -168,26 +168,28 @@ public class InternshipRegistryTest {
 				.date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
 				.internship(modelInternship)
 				.build();
-		
+
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
 		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);
 		when(userTypeRepository.save(any(UserType.class))).thenReturn(modelUserType);
 		when(userRepository.save(any(User.class))).thenReturn(modelUser);
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
+		when(internshipRegistryRepository.save(any(InternshipRegistry.class))).thenReturn(modelInternshipRegistry);
+		when(internshipRepository.save(any(Internship.class))).thenReturn(modelInternship);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
-		
+
 		var DtoFaculty = FacultyDto.builder()
 				.id(1L).name("Faculty")
 				.createDate(localDateTime)
 				.updateDate(localDateTime)
 				.build();
-		
+
 		var DtoUserType = UserTypeDto.builder()
 				.id(2L).type("UserType")
 				.createDate(localDateTime)
 				.updateDate(localDateTime)
 				.build();
-		
+
 		var DtoUser = UserDto.builder()
 				.id(3L).username("Username")
 				.password("password")
@@ -206,7 +208,7 @@ public class InternshipRegistryTest {
 				.user(DtoUser)
 				.faculty(DtoFaculty)
 				.build();
-		
+
 		var Dtostudent = StudentDto.builder()
 				.id(6L)
 				.name("test")
@@ -234,7 +236,7 @@ public class InternshipRegistryTest {
 				.updateDate(localDateTime)
 				.faculty(DtoFaculty)
 				.build();
-		
+
 		var Dtocompany = CompanyDto.builder()
 				.id(1L)
 				.name("Test")
@@ -247,7 +249,6 @@ public class InternshipRegistryTest {
 				.createDate(localDateTime)
 				.updateDate(localDateTime)
 				.build();
-		
 
 		var Dtointernship = InternshipDto.builder()
 				.id(1L)
@@ -259,7 +260,7 @@ public class InternshipRegistryTest {
 				.company(Dtocompany)
 				.facultySupervisor(DtoFacultySupervisor)
 				.build();
-		
+
 		var DtointernshipRegistry = InternshipRegistryDto.builder()
 				.id(1L)
 				.filePath("C:/Users/root/test")
@@ -268,17 +269,16 @@ public class InternshipRegistryTest {
 				.date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
 				.internship(Dtointernship)
 				.build();
-				
+
 		var actual = internshipRegistryService.addInternshipRegistry(DtointernshipRegistry);
 
-		
 		assertNotNull(modelInternshipRegistry);
 		assertEquals(modelInternshipRegistry.getId(), actual.getId());
 		assertEquals(modelInternshipRegistry.getFilePath(), actual.getFilePath());
 		assertEquals(modelInternshipRegistry.getName(), actual.getName());
 		assertEquals(modelInternshipRegistry.getType(), actual.getType());
 		assertEquals(modelInternshipRegistry.getDate(), actual.getDate());
-		assertEquals(modelInternshipRegistry.getInternship(), actual.getInternship());
+		assertEquals(modelInternshipRegistry.getInternship().getId(), actual.getInternship().getId());
 
 	}
 

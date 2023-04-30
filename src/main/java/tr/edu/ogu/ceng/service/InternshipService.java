@@ -1,19 +1,17 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
@@ -48,9 +46,8 @@ public class InternshipService {
 		LocalDateTime dateTime = LocalDateTime.now();
 		internship.setCreateDate(dateTime);
 		internship.setUpdateDate(dateTime);
-		internship.setId((long) 0);
 		internship = internshipRepository.save(internship);
-		
+
 		return modelMapper.map(internship, InternshipDto.class);
 	}
 
