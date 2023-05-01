@@ -87,4 +87,17 @@ public class FacultyService {
 			return false;
 		}
 	}
+	
+    public FacultyDto getFacultyById(Long id) {
+        Faculty faculty = facultyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Faculty not found with id: " + id));
+        return convertToDto(faculty);
+    }
+    
+    private FacultyDto convertToDto(Faculty faculty) {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(faculty, FacultyDto.class);
+    }
+	
+	
 }
