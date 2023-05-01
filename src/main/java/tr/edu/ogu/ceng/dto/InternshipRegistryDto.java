@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class InternshipRegistryDto {
 	private String name;
 	private String type;
 	private Timestamp date;
-	private Long internshipId;
-
+	private InternshipDto internship;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 }

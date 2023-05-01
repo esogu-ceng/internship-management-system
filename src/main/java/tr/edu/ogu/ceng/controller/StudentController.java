@@ -71,4 +71,9 @@ public class StudentController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/byUserId/{userId}")
+	public StudentDto getStudentByUserId(@PathVariable Long userId) {
+		return studentService.getStudentByUserId(userId);
+	}
+
 }

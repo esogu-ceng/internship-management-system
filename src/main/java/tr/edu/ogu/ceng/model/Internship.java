@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -31,10 +33,10 @@ public class Internship {
     private int days;
     
     @Column(name = "create_date")
-    private Timestamp createDate;
+    private LocalDateTime createDate;
     
     @Column(name = "update_date")
-    private Timestamp updateDate;
+    private LocalDateTime updateDate;
     
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
