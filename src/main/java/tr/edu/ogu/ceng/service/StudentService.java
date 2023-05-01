@@ -16,6 +16,7 @@ import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
+import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -33,6 +34,8 @@ public class StudentService {
 	private final UserTypeRepository userTypeRepository;
 	private final FacultyRepository facultyRepository;
 	private final UserTypeService userTypeService;
+	private final FacultyService facultyService;
+	
 	private ModelMapper modelMapper;
 
 	public StudentDto getStudent(long id) {
@@ -145,9 +148,7 @@ public class StudentService {
 	public StudentDto registerAsStudent(StudentDto request) {
 
 		checkIfPasswordsMatchingValidation(request);
-
-		Faculty faculty = new Faculty();
-
+        FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 		UserType userType = userTypeService.getUserTypeId(UserTypeEnum.STUDENT);
 
 		User user = new User();
@@ -159,9 +160,9 @@ public class StudentService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
-
+		
 		student.setUser(user);
-		student.setFaculty(faculty);
+		student.setFaculty(modelMapper.map(facultyDto, Faculty.class));
 
 		student.setUpdateDate(LocalDateTime.now());
 		student.setCreateDate(LocalDateTime.now());
