@@ -4,35 +4,49 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
 
+import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
+import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 public class StudentTest {
 
 	@Mock
 	StudentRepository studentRepository;
-
+	@Mock
 	StudentService studentService;
+	@Mock
 	UserRepository userRepository;
+	@Mock
+	UserTypeRepository userTypeRepository;
+	@Mock
 	UserTypeService userTypeService;
+	@Mock
+	FacultyRepository facultyRepository;
+	@Mock
+	ModelMapper modelMapper;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userTypeService);
+		studentService = new StudentService(studentRepository, userRepository, userTypeRepository, facultyRepository, userTypeService, new ModelMapper());
 	}
 
 	@Test
@@ -47,7 +61,44 @@ public class StudentTest {
 
 	@Test
 	void should_save_one_student() {
-		var studentToSave = Student.builder()
+
+		// FIXME This test case will be extended to mock all used repository methods
+		// like facultyRepository.get etc.
+		LocalDateTime dateTime = LocalDateTime.now();
+		var savedUser = User.builder().email("test").password("passwordHash").id(1L).username("test").build();
+		var SavedStudent = Student.builder()
+				.id(6L)
+				.name("test")
+				.surname("test")
+				.tckn("test")
+				.studentNo("test")
+				.grade("test")
+				.phoneNumber("test")
+				.province("test")
+				.subprovince("test")
+				.zipCode("test")
+				.motherName("test")
+				.fatherName("test")
+				.birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.idCardSerialNo("test")
+				.idRegisterProvince("test")
+				.idRegisterSubprovince("test")
+				.idRegisterStreetVillage("test")
+				.idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test")
+				.idRegistryOffice("test")
+				.idRegistryReason("test")
+				.createDate(dateTime)
+				.updateDate(dateTime)
+				.faculty(new Faculty())
+				.build();
+
+		when(userRepository.save(any(User.class))).thenReturn(savedUser);
+		when(studentRepository.save(any(Student.class))).thenReturn(SavedStudent);
+
+		var userToSave = UserDto.builder().email("test").password("passwordHash").username("test").build();
+		var studentToSave = StudentDto.builder()
 				.name("test")
 				.surname("test")
 				.id(6L)
@@ -70,11 +121,8 @@ public class StudentTest {
 				.idRegisterFamilySerialNo("test")
 				.idRegistryOffice("test")
 				.idRegistryReason("test")
-				.faculty(new Faculty())
+				.user(userToSave)
 				.build();
-
-		when(studentRepository.save(any(Student.class))).thenReturn(studentToSave);
-
 		var actual = studentService.addStudent(studentToSave);
 
 		assertNotNull(actual);
@@ -99,9 +147,7 @@ public class StudentTest {
 		assertEquals(studentToSave.getIdRegisterFamilySerialNo(), actual.getIdRegisterFamilySerialNo());
 		assertEquals(studentToSave.getIdRegistryOffice(), actual.getIdRegistryOffice());
 		assertEquals(studentToSave.getIdRegistryReason(), actual.getIdRegistryReason());
-		assertEquals(studentToSave.getFaculty(), actual.getFaculty());
 
-		verify(studentRepository).save(studentToSave);
 	}
 
 }

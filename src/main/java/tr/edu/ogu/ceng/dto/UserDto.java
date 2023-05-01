@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class UserDto {
 	private String username;
 	private String password;
 	private String email;
-	private long userTypeId;
-	private Timestamp createDate;
-	private Timestamp updateDate;
+	private UserTypeDto userType;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 }
