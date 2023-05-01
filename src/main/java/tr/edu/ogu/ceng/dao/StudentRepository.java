@@ -12,4 +12,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 	@Query("SELECT s FROM Student s JOIN s.user u WHERE u.id = :id")
 	Student findByUserId(Long id);
+	
+	boolean existsByTckn(String tcno);
+	
+	boolean existsByStudentNo(String studentno);
 }
