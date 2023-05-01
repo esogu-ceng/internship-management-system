@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.CompanyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -34,13 +35,6 @@ public class CompanyController {
 		return ResponseEntity.ok(companies);
 	}
 
-
-	@PostMapping()
-	public ResponseEntity<Company> createCompany(@RequestBody Company company) throws Exception {
-		Company createdCompany = companyService.createCompany(company);
-		return ResponseEntity.ok(createdCompany);
-	}
-	
 	@PutMapping
 	public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyDto companyDto) {
 		CompanyDto updatedCompanyDto = companyService.updateCompany(companyDto);

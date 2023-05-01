@@ -36,17 +36,6 @@ public class CompanyService {
 
 	}
 
-
-	public Company createCompany(Company company) throws Exception {
-		if (company == null) {
-			log.error("Request body is empty");
-			throw new Exception("Request body is empty");
-		}
-		
-		var createdCompany = companyRepository.save(company);
-		log.info("Company created successfully.");
-		return createdCompany;
-	}
 	
 	public CompanyDto updateCompany(CompanyDto companyDto) {
 		try {
