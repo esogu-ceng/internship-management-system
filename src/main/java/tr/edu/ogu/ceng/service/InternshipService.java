@@ -18,7 +18,12 @@ import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
-
+import tr.edu.ogu.ceng.dao.CompanyRepository;
+import tr.edu.ogu.ceng.dao.FacultyRepository;
+import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
+import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
 @Slf4j
 @Service
 @NoArgsConstructor
