@@ -32,6 +32,13 @@ import tr.edu.ogu.ceng.model.Internship;
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
+	private StudentRepository studentRepository;
+	private CompanyRepository companyRepository;
+	private FacultySupervisorRepository facultySupervisorRepository;
+	private UserRepository userRepository;
+	private FacultyRepository facultyRepository;
+	private UserTypeRepository userTypeRepository;
+	
 	private ModelMapper modelMapper;
 
 	public InternshipDto addInternship(InternshipDto internshipDto) {
