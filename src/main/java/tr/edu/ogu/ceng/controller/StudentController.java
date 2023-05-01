@@ -41,11 +41,11 @@ public class StudentController {
 		return students;
 	}
 
-	@GetMapping("/getByName/{studentName}")
-	public Page<StudentDto> getStudentsByName(@PathVariable(name = "studentName") String studentName, @RequestParam(defaultValue = "0") Integer pageNo,
+	@GetMapping("/search/{keyWord}")
+	public Page<StudentDto> getByNameSurnameStudentNo(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<StudentDto> students = studentService.getStudentsByName(pageable, studentName);
+		Page<StudentDto> students = studentService.getByNameSurnameStudentNo(pageable, keyWord);
 		return students;
 	}
 
