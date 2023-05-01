@@ -54,7 +54,6 @@ public class FacultySupervisorTest {
 	void is_faculty_supervisor_added_successfully() {
 
 		LocalDateTime localDateTime = LocalDateTime.now();
-		
 
 		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
 		var modelUserType = UserType.builder().id(2L).type("UserType").createDate(localDateTime).updateDate(localDateTime).build();
@@ -86,6 +85,5 @@ public class FacultySupervisorTest {
 		assertEquals(modelFacultySupervisor.getUser().getId(), actual.getUser().getId());
 		assertEquals(modelFacultySupervisor.getUser().getUserType().getId(), actual.getUser().getUserType().getId());
 		assertEquals(modelFacultySupervisor.getFaculty().getId(), actual.getFaculty().getId());
-
 	}
 }

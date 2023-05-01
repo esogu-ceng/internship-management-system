@@ -28,6 +28,7 @@ public class CompanyService {
 		ModelMapper modelMapper = new ModelMapper();
 		Page<Company> companies = companyRepository.findAll(pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
+		log.info("Pageable companies fetched");
 		return companyDtos;
 
 	}
@@ -53,6 +54,7 @@ public class CompanyService {
 	public CompanyDto getCompany(long id) throws EntityNotFoundException {
 		Company company = companyRepository.findById(id).orElse(null);
 		if (company == null) {
+			log.warn("Company not found with id {}", id);
 			throw new EntityNotFoundException();
 		}
 		ModelMapper modelMapper = new ModelMapper();
@@ -61,6 +63,7 @@ public class CompanyService {
 
 	public Page<CompanyDto> searchCompanies(String name, Pageable pageable) {
 		if (name.length() < 3) {
+			log.warn("Lenght of company name is less than 3 characters long.");
 			throw new InvalidArgumentException("Name should be at least 3 characters long.");
 		}
 		ModelMapper modelMapper = new ModelMapper();
@@ -87,8 +90,13 @@ public class CompanyService {
 
 	public boolean deleteCompany(long id) {
 		if (!companyRepository.existsById(id))
+		{
+			log.warn("Company not found with id {}", id);
 			return false;
+		}
+			
 		companyRepository.deleteById(id);
+		log.info("Company has been deleted successfully.");
 		return true;
 	}
 

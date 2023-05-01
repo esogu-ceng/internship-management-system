@@ -32,12 +32,6 @@ import tr.edu.ogu.ceng.model.Internship;
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
-	private StudentRepository studentRepository;
-	private CompanyRepository companyRepository;
-	private FacultySupervisorRepository facultySupervisorRepository;
-	private UserRepository userRepository;
-	private FacultyRepository facultyRepository;
-	private UserTypeRepository userTypeRepository;
 	private ModelMapper modelMapper;
 
 	public InternshipDto addInternship(InternshipDto internshipDto) {
@@ -47,13 +41,16 @@ public class InternshipService {
 		internship.setCreateDate(dateTime);
 		internship.setUpdateDate(dateTime);
 		internship = internshipRepository.save(internship);
-
+		log.info("Insternship has been added successfully.");		
 		return modelMapper.map(internship, InternshipDto.class);
 	}
 
 	public InternshipDto updateInternship(InternshipDto internshipDto) {
-		if (!internshipRepository.existsById(internshipDto.getId()))
+		if (!internshipRepository.existsById(internshipDto.getId())) {
+			log.warn("Internship not found!");			
 			throw new EntityNotFoundException("Internship not found!");
+		}
+			
 
 		modelMapper = new ModelMapper();
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
@@ -63,27 +60,39 @@ public class InternshipService {
 		internship.setUpdateDate(dateTime);
 
 		internship = internshipRepository.save(internship);
+		log.info("Internship has been updated successfully.");
 		return modelMapper.map(internship, InternshipDto.class);
 	}
 
 	public Optional<Internship> getInternship(Long id) {
-		if (!internshipRepository.existsById(id))
+		if (!internshipRepository.existsById(id)) {
+			log.warn("Internship not found!");			
 			throw new EntityNotFoundException("Internship not found!");
+		}
+			
 
 		return internshipRepository.findById(id);
 	}
 
 	public boolean deleteInternship(Long id) {
 		if (!internshipRepository.existsById(id))
+		{
+			log.warn("Internship not found with id {}", id);			
 			return false;
+		}
+			
 		internshipRepository.deleteById(id);
+		log.info("Intership has been deleted successfully.");
 		return true;
 	}
 
 	public Internship approveInternship(Long id) {
 
-		if (!internshipRepository.existsById(id))
+		if (!internshipRepository.existsById(id)) {
+			log.warn("Internship not found with id {}", id);
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+		}
+			
 
 		LocalDateTime dateTime = LocalDateTime.now();
 		Internship internship = internshipRepository.findById(id).orElse(null);
