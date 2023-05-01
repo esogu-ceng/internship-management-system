@@ -22,22 +22,13 @@ public class SettingService {
 	private SettingRepository settingRepository;
 	private ModelMapper modelMapper;
 
-	public SettingDto updateSetting(SettingDto settingDto) {
-		try {
-			Setting setting = modelMapper.map(settingDto, Setting.class);
-			setting.setCreateDate(setting.getCreateDate());
-			setting.setUpdateDate(LocalDateTime.now());
-			if (!settingRepository.existsById(setting.getId())) {
-				throw new EntityNotFoundException("Setting not found with id: " + setting.getId());
-			}
-			Setting savedSetting = settingRepository.save(setting);
-			log.info("Setting updated successfully with id: {}", savedSetting.getId());
-			return modelMapper.map(savedSetting, SettingDto.class);
-		} catch (Exception e) {
-			log.error("An error occurred while updating setting: {}", e.getMessage());
-			throw e;
-		}
-
+	public SettingDto updateSetting(String key, SettingDto settingDto) {
+		Setting setting = settingRepository.findByKey(key);
+		setting.setValue(settingDto.getValue());
+		setting.setUpdateDate(LocalDateTime.now());
+		Setting savedSetting = settingRepository.save(setting);
+		log.info("Setting updated successfully with key: {}", key);
+		return modelMapper.map(savedSetting, SettingDto.class);
 	}
 
 	public SettingDto getSetting(String key) throws EntityNotFoundException {
