@@ -39,6 +39,8 @@ public class StudentTest {
 	@Mock
 	UserTypeService userTypeService;
 	@Mock
+	FacultyService facultyService;
+	@Mock
 	FacultyRepository facultyRepository;
 	@Mock
 	ModelMapper modelMapper;
@@ -46,7 +48,7 @@ public class StudentTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userTypeRepository, facultyRepository, userTypeService, new ModelMapper());
+		studentService = new StudentService(studentRepository, userRepository, userTypeRepository, facultyRepository, userTypeService,facultyService, new ModelMapper());
 	}
 
 	@Test

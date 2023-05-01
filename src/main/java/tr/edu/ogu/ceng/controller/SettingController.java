@@ -18,9 +18,9 @@ public class SettingController {
 	@Autowired
 	private SettingService settingService;
 
-	@PutMapping
-	public ResponseEntity<SettingDto> updateSetting(@RequestBody SettingDto setting) {
-		SettingDto updatedSetting = settingService.updateSetting(setting);
+	@PutMapping("/{key}")
+	public ResponseEntity<SettingDto> updateSetting(@PathVariable(name = "key") String key, @RequestBody SettingDto setting) {
+		SettingDto updatedSetting = settingService.updateSetting(key, setting);
 		return ResponseEntity.ok(updatedSetting);
 	}
 
