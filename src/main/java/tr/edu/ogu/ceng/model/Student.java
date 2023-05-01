@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,9 +41,11 @@ public class Student {
 	@Column(name = "surname", nullable = false)
 	private String surname;
 
+	@NotBlank(message = "tckn is mandatory")
 	@Column(name = "tckn", nullable = false, unique = true)
 	private String tckn;
 
+	@NotBlank(message = "student no is mandatory")
 	@Column(name = "student_no", nullable = false, unique = true)
 	private String studentNo;
 
