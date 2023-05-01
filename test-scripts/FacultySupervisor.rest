@@ -8,9 +8,9 @@ Content-Type: application/json
     "phoneNumber":"5051234567",
     "supervisorNo":"920",
     "user":{
-        "username":"ykartal",
+        "username":"test",
         "password":"sdfasdfadfasdfasdfasdf",
-        "email":"ykartal@ogu.edu.tr"
+        "email":"test@ogu.edu.tr"
     },
     "faculty":{
         "id":"1",

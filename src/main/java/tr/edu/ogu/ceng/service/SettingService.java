@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class SettingService {
 		try {
 			Setting setting = modelMapper.map(settingDto, Setting.class);
 			setting.setCreateDate(setting.getCreateDate());
-			setting.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+			setting.setUpdateDate(LocalDateTime.now());
 			if (!settingRepository.existsById(setting.getId())) {
 				throw new EntityNotFoundException("Setting not found with id: " + setting.getId());
 			}
