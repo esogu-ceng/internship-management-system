@@ -19,8 +19,8 @@ public class InternshipDto {
 	private Timestamp startDate;
 	private Timestamp endDate;
 	private int days;
-	private Long studentId;
-	private Long companyId;
-	private Long facultySupervisorId;
+	private StudentDto student;
+	private CompanyDto company;
+	private FacultySupervisorDto facultySupervisor;
 
 }
