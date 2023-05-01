@@ -33,18 +33,18 @@ public class FacultyTest {
 
 	@Test
 	public void is_faculty_added_successfully() {
-		LocalDateTime dateTime = LocalDateTime.now();
-		var facultyToSave = FacultyDto.builder().id(1L).name("Faculty").createDate(dateTime).updateDate(dateTime).build();
-		var savedFaculty = Faculty.builder().id(0L).name("Faculty")
-				.createDate(LocalDateTime.now())
-				.updateDate(LocalDateTime.now())
-				.build();
 
-		when(facultyRepository.save(any(Faculty.class))).thenReturn(savedFaculty);
-		var actual = facultyService.addFaculty(facultyToSave);
+		LocalDateTime localDateTime = LocalDateTime.now();
+
+		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
+		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
+		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
+
+		var actual = facultyService.addFaculty(DtoFaculty);
 
 		assertNotNull(actual);
-		assertEquals(facultyToSave.getName(), actual.getName());
+		assertEquals(modelFaculty.getId(), actual.getId());
+		assertEquals(modelFaculty.getName(), actual.getName());
 	}
 
 }
