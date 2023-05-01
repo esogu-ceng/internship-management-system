@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
-import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.CompanyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -28,12 +27,13 @@ public class CompanyController {
 	CompanyService companyService;
 
 	@GetMapping("/getAll")
-	public ResponseEntity<Page<Company>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<CompanyDto>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<Company> companies = companyService.getAllCompanies(pageable);
+		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
+
 
 	@PostMapping()
 	public ResponseEntity<Company> createCompany(@RequestBody Company company) throws Exception {
@@ -41,27 +41,33 @@ public class CompanyController {
 		return ResponseEntity.ok(createdCompany);
 	}
 	
-	@PutMapping()
-	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
-		Company newCompany = companyService.updateCompany(company);
-		return ResponseEntity.ok(newCompany);
+	@PutMapping
+	public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyDto companyDto) {
+		CompanyDto updatedCompanyDto = companyService.updateCompany(companyDto);
+		return ResponseEntity.ok(updatedCompanyDto);
+
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyDto> getCompany(@PathVariable(name = "id") long id) throws Exception {
-		Company company = companyService.getCompany(id);
-		CompanyDto companydto = new CompanyDto(company);
-		return ResponseEntity.ok(companydto);
+
+		CompanyDto companyDto = companyService.getCompany(id);
+		return ResponseEntity.ok(companyDto);
+
 	}
 
 	@GetMapping("/search/{name}")
-	public ResponseEntity<Page<Company>> searchCompanies(@PathVariable String name,
+	public ResponseEntity<Page<CompanyDto>> searchCompanies(@PathVariable String name,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
 			@RequestParam(defaultValue = "name") String sortBy) {
-
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<Company> companies = companyService.searchCompanies(name, pageable);
-		return ResponseEntity.ok(companies);
+		Page<CompanyDto> companyDtos = companyService.searchCompanies(name, pageable);
+		return ResponseEntity.ok(companyDtos);
+	}
+
+	@PostMapping
+	public CompanyDto addCompany(@RequestBody CompanyDto companyDto) {
+		return companyService.addCompany(companyDto);
 	}
 
 	@DeleteMapping("/{id}")

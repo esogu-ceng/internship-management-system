@@ -4,18 +4,22 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 
 @Entity
 @Table(name = "ims_internships")
 @Data
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Internship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InternshipStatus status;
     
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
@@ -47,4 +51,6 @@ public class Internship {
     @JoinColumn(name = "faculty_supervisor_id", nullable = false)
     private FacultySupervisor facultySupervisor;
     
+    //TODO Bu sınıfın internship registry sınıfıyla ilişkide olması sebebiyle 
+    //buraya internship registry listesi eklenebilir.
 }

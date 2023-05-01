@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Student {
 
 	@Id
@@ -128,10 +131,10 @@ public class Student {
 	private Boolean sgkSelf;
 
 	@Column(name = "create_date")
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "update_date")
-	private Timestamp updateDate;
+	private LocalDateTime updateDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")

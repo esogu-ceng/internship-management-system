@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "ims_companies")
 public class Company {
 
@@ -46,9 +48,9 @@ public class Company {
 	private String description;
 
 	@Column(name = "create_date")
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "update_date")
-	private Timestamp updateDate;
+	private LocalDateTime updateDate;
 
 }
