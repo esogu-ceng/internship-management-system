@@ -30,11 +30,11 @@ public class InternshipRegistryController {
 	private InternshipRegistryService internshipRegistryService;
 	
 	@GetMapping("/getAll")
-	public ResponseEntity<Page<InternshipRegistry>> getAllInternshipRegistiries(@RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<InternshipRegistryDto> getAllInternshipRegistiries(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<InternshipRegistry> internshipRegistries = internshipRegistryService.getAllInternshipRegistiries(pageable);
-		return ResponseEntity.ok(internshipRegistries);
+		Page<InternshipRegistryDto> internshipRegistries = internshipRegistryService.getAllInternshipRegistiries(pageable);
+		return internshipRegistries;
 	}
 
 	@DeleteMapping("/{id}")
