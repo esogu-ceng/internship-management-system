@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.service.InternshipService;
 
@@ -29,7 +30,7 @@ public class InternshipController {
 	}
 
 	@PutMapping
-	public ResponseEntity<InternshipDto> updateInternship(@RequestBody InternshipDto internshipDto) {
+	public ResponseEntity<InternshipDto> updateInternship(@RequestBody InternshipRequestDto internshipDto) {
 
 		InternshipDto updatedInternship = internshipService.updateInternship(internshipDto);
 		return ResponseEntity.ok(updatedInternship);
