@@ -89,7 +89,7 @@ public class InternshipService {
 	public Internship approveInternship(Long id) {
 
 		if (!internshipRepository.existsById(id)) {
-			log.warn("Internship not found with id {}", id);.
+			log.warn("Internship not found with id {}", id);
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
 		}
 			
