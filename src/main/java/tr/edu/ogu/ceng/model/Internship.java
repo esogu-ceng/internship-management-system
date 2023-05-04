@@ -1,9 +1,12 @@
 package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 
 @Entity
 @Table(name = "ims_internships")
@@ -17,7 +20,8 @@ public class Internship {
     private Long id;
     
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InternshipStatus status;
     
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
@@ -29,10 +33,10 @@ public class Internship {
     private int days;
     
     @Column(name = "create_date")
-    private Timestamp createDate;
+    private LocalDateTime createDate;
     
     @Column(name = "update_date")
-    private Timestamp updateDate;
+    private LocalDateTime updateDate;
     
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -39,9 +41,11 @@ public class Student {
 	@Column(name = "surname", nullable = false)
 	private String surname;
 
+	@NotBlank(message = "tckn is mandatory")
 	@Column(name = "tckn", nullable = false, unique = true)
 	private String tckn;
 
+	@NotBlank(message = "student no is mandatory")
 	@Column(name = "student_no", nullable = false, unique = true)
 	private String studentNo;
 
@@ -130,10 +134,10 @@ public class Student {
 	private Boolean sgkSelf;
 
 	@Column(name = "create_date")
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "update_date")
-	private Timestamp updateDate;
+	private LocalDateTime updateDate;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")

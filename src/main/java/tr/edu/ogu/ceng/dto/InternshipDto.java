@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 
 @Data
 @NoArgsConstructor
@@ -14,12 +15,12 @@ import lombok.NoArgsConstructor;
 public class InternshipDto {
 
 	private Long id;
-	private String status;
+	private InternshipStatus status;
 	private Timestamp startDate;
 	private Timestamp endDate;
 	private int days;
-	private Long studentId;
-	private Long companyId;
-	private Long facultySupervisorId;
+	private StudentDto student;
+	private CompanyDto company;
+	private FacultySupervisorDto facultySupervisor;
 
 }
