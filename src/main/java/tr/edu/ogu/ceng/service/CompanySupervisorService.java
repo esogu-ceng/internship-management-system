@@ -1,8 +1,10 @@
 package tr.edu.ogu.ceng.service;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
+import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @Slf4j
 @AllArgsConstructor
 @Service
@@ -18,26 +21,25 @@ public class CompanySupervisorService {
 	private final CompanySupervisorRepository repository;
     private final ModelMapper mapper;
     
-    public List<CompanySupervisorDto> getAll() {
+    public Page<CompanySupervisorDto> getAll(Pageable pageable) {
 
-        List<CompanySupervisor> companySupervisors = repository.findAll();
-        List<CompanySupervisorDto> response = companySupervisors
-                .stream()
-                .map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class))
-                .toList();
+        Page<CompanySupervisor> companySupervisors = repository.findAll(pageable);
+        Page<CompanySupervisorDto> response = companySupervisors.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class));
 
         return response;
     }
 
-    public CompanySupervisorDto getById(int id) {
+    public CompanySupervisorDto getById(Long id) {
     	CompanySupervisor companySupervisor = repository.findById(id).orElseThrow();
     	CompanySupervisorDto response = mapper.map(companySupervisor,CompanySupervisorDto.class);
         return response;
     }
 
     public CompanySupervisorDto add(CompanySupervisorDto request) {
+    	checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
     	CompanySupervisor companySupervisor = mapper.map(request,CompanySupervisor.class);
-    	companySupervisor.setId((long) 0);
+    	companySupervisor.setCreateDate(LocalDateTime.now());
+    	companySupervisor.setUpdateDate(LocalDateTime.now());
     	CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
 
     	CompanySupervisorDto response = mapper.map(createdCompanySupervisor,CompanySupervisorDto.class);
@@ -45,15 +47,25 @@ public class CompanySupervisorService {
     }
 
     public CompanySupervisorDto update(CompanySupervisorDto request) {
-    	CompanySupervisor companySupervisor = mapper.map(request,CompanySupervisor.class);
-    	companySupervisor.setId(request.getId());
-        repository.save(companySupervisor);
+    	checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
+    	CompanySupervisor companySupervisor = repository.findById(request.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
+    	request.setCreateDate(companySupervisor.getCreateDate());
+    	companySupervisor = mapper.map(request,CompanySupervisor.class);
+    	companySupervisor.setUpdateDate(LocalDateTime.now());
+    	CompanySupervisor updatedCompanySupervisor =repository.save(companySupervisor);
 
-        CompanySupervisorDto response = mapper.map(companySupervisor,CompanySupervisorDto.class);
+        CompanySupervisorDto response = mapper.map(updatedCompanySupervisor,CompanySupervisorDto.class);
         return response;
     }
 
-    public void delete(int id) {
+    public void delete(Long id) {
         repository.deleteById(id);
+    }
+    
+    void checkIfCompanySupervisorExistsByUserId(Long userId) {
+    	if(repository.existsByUserId(userId)) {
+    		throw new RuntimeException("userId must be unique");
+    	}
     }
 }

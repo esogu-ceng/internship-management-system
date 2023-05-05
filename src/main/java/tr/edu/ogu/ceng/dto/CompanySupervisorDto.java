@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanySupervisorDto {
-	private Long userId;
-	private Long companyId;
 	private Long id;
 	private String name;
 	private String surname;
 	private String phoneNumber;
-	private Timestamp createDate;
-	private Timestamp updateDate;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
+	@JsonIncludeProperties(value="id")
+	private UserDto user;
+	@JsonIncludeProperties(value="id")
+	private CompanyDto company;
 }

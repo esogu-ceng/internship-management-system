@@ -33,8 +33,8 @@ public class RegisterAsCompanySupervisorService{
 		companySupervisor.getUser().setId(request.getUserId());
 		companySupervisor.getUser().setPassword(request.getPassword());
 		companySupervisor.getCompany().setId(request.getCompanyId());
-		companySupervisor.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		companySupervisor.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		//companySupervisor.setUpdateDate(new LocalDateTime(System.currentTimeMillis()));
+		//companySupervisor.setCreateDate(new Timestamp(System.currentTimeMillis()));
 		CompanySupervisor registeredCompanySupervisor = repository.save(companySupervisor);
 		
 		RegisterAsCompanySupervisorDto response=new RegisterAsCompanySupervisorDto();
