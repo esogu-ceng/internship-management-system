@@ -78,11 +78,8 @@ public class StudentService {
 		modelMapper = new ModelMapper();
 		LocalDateTime now = LocalDateTime.now();
 
-		UserType userTypeDto = new UserType(); // create userType object to save in UserDto
-		userTypeDto.setId(UserTypeEnum.STUDENT.getId());
-		userTypeDto.setCreateDate(now);
-		userTypeDto.setUpdateDate(now);
-		userTypeDto.setType(UserTypeEnum.STUDENT.name());
+		UserType userTypeDto = new UserType(); // UserType object to save in UserDto
+		userTypeDto.setId(userTypeRepository.getById(UserTypeEnum.STUDENT.getId()).getId());
 
 		// We need to save user before student.
 		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
