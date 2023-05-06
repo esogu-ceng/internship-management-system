@@ -41,8 +41,10 @@ public class InternshipService {
 	}
 
 	public InternshipDto updateInternship(InternshipDto internshipDto) {
-		Internship internship = internshipRepository.getOne(internshipDto.getId());
-
+		Internship internship = internshipRepository.findById(internshipDto.getId()).orElse(null);
+		if (internship == null) {
+			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+		}
 		modelMapper = new ModelMapper();
 		Internship internshipMapped = modelMapper.map(internshipDto, Internship.class);
 
