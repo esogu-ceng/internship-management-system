@@ -15,15 +15,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.InternshipDto;
-import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
+
 @Slf4j
 @Service
 @NoArgsConstructor
@@ -32,13 +26,7 @@ import tr.edu.ogu.ceng.dao.UserTypeRepository;
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
-	private StudentRepository studentRepository;
-	private CompanyRepository companyRepository;
-	private FacultySupervisorRepository facultySupervisorRepository;
-	private UserRepository userRepository;
-	private FacultyRepository facultyRepository;
-	private UserTypeRepository userTypeRepository;
-	
+
 	private ModelMapper modelMapper;
 
 	public InternshipDto addInternship(InternshipDto internshipDto) {
@@ -52,21 +40,18 @@ public class InternshipService {
 		return modelMapper.map(internship, InternshipDto.class);
 	}
 
-	public InternshipDto updateInternship(InternshipRequestDto internshipDto) {
-		if (!internshipRepository.existsById(internshipDto.getId())) {
-			log.warn("Internship not found!");
-			throw new EntityNotFoundException("Internship not found!");
-		}
+	public InternshipDto updateInternship(InternshipDto internshipDto) {
+		Internship internship = internshipRepository.getOne(internshipDto.getId());
 
 		modelMapper = new ModelMapper();
-		Internship internship = modelMapper.map(internshipDto, Internship.class);
+		Internship internshipMapped = modelMapper.map(internshipDto, Internship.class);
 
 		LocalDateTime dateTime = LocalDateTime.now();
-		internship.setCreateDate(internshipRepository.getById(internship.getId()).getCreateDate());
-		internship.setUpdateDate(dateTime);
+		internshipMapped.setCreateDate(internship.getCreateDate());
+		internshipMapped.setUpdateDate(dateTime);
 
-		internship = internshipRepository.save(internship);
-		log.info("Internship has been updated successfully.");
+		internship = internshipRepository.save(internshipMapped);
+		log.info("Internship has been updated successfully with id = {}.", internship.getId());
 		return modelMapper.map(internship, InternshipDto.class);
 	}
 
