@@ -26,10 +26,10 @@ import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.InternshipDto;
-import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.UserTypeDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -147,9 +147,9 @@ public class InternshipRegistryTest {
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.days(1).student(Dtostudent).company(Dtocompany).facultySupervisor(DtoFacultySupervisor).build();
 
-		var DtointernshipRegistry = InternshipRegistryDto.builder().id(1L).filePath("C:/Users/root/test")
+		var DtointernshipRegistry = InternshipRegistryRequestDto.builder().id(1L).filePath("C:/Users/root/test")
 				.name("internshipRegistry1").type("pdf").date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
-				.internship(Dtointernship).build();
+				.internshipId(Dtointernship.getId()).build();
 
 		var actual = internshipRegistryService.addInternshipRegistry(DtointernshipRegistry);
 
@@ -159,10 +159,8 @@ public class InternshipRegistryTest {
 		assertEquals(modelInternshipRegistry.getName(), actual.getName());
 		assertEquals(modelInternshipRegistry.getType(), actual.getType());
 		assertEquals(modelInternshipRegistry.getDate(), actual.getDate());
-		assertEquals(modelInternshipRegistry.getInternship().getId(), actual.getInternship().getId());
+		assertEquals(modelInternshipRegistry.getInternship().getId(), actual.getInternshipId());
 
 	}
 
-	// TODO Not Null olarak belirlenmiş alanların ayrıca tek tek kontrolü
-	// yapılabilir.
 }
