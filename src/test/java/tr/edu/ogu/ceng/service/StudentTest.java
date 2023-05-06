@@ -19,8 +19,8 @@ import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
-import tr.edu.ogu.ceng.dto.StudentDto;
-import tr.edu.ogu.ceng.dto.UserDto;
+import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
+import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
@@ -48,7 +48,8 @@ public class StudentTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userTypeRepository, facultyRepository, userTypeService,facultyService, new ModelMapper());
+		studentService = new StudentService(studentRepository, userRepository, userTypeRepository, facultyRepository, userTypeService, facultyService,
+				new ModelMapper());
 	}
 
 	@Test
@@ -99,8 +100,8 @@ public class StudentTest {
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 		when(studentRepository.save(any(Student.class))).thenReturn(SavedStudent);
 
-		var userToSave = UserDto.builder().email("test").password("passwordHash").username("test").build();
-		var studentToSave = StudentDto.builder()
+		var userToSave = UserRequestDto.builder().email("test").password("passwordHash").username("test").build();
+		var studentToSave = StudentRequestDto.builder()
 				.name("test")
 				.surname("test")
 				.id(6L)
@@ -114,7 +115,7 @@ public class StudentTest {
 				.motherName("test")
 				.fatherName("test")
 				.birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.birthDate("test")
 				.idCardSerialNo("test")
 				.idRegisterProvince("test")
 				.idRegisterSubprovince("test")
