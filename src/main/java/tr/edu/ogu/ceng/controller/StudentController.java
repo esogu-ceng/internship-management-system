@@ -44,10 +44,10 @@ public class StudentController {
 	}
 
 	@GetMapping("/search/{keyWord}")
-	public Page<StudentDto> getByNameSurnameStudentNo(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<StudentResponseDto> searchStudent(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<StudentDto> students = studentService.getByNameSurnameStudentNo(pageable, keyWord);
+		Page<StudentResponseDto> students = studentService.searchStudent(pageable, keyWord);
 		return students;
 	}
 

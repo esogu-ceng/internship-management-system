@@ -70,6 +70,7 @@ public class FacultySupervisorService {
 			throw new EntityNotFoundException("Faculty supervisor not found!");
 		LocalDateTime now = LocalDateTime.now();
 		facultySupervisor.setUpdateDate(now);
+		facultySupervisor.setCreateDate(facultySupervisorRepository.getById(facultySupervisor.getId()).getCreateDate());
 		FacultySupervisor updatedFacultySupervisor;
 		try {
 			updatedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);

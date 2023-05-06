@@ -145,13 +145,13 @@ public class StudentService {
 		return true;
 	}
 
-	public Page<StudentDto> getByNameSurnameStudentNo(Pageable pageable, String keyword) {
+	public Page<StudentResponseDto> searchStudent(Pageable pageable, String keyword) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting students by name, surname or studentNo: {} with pageable: {}", keyword, pageable);
 			Page<Student> students = studentRepository.findByNameOrSurnameOrStudentNo(keyword, keyword, keyword, pageable);
-			Page<StudentDto> studentDtos = students.map(student -> modelMapper.map(student, StudentDto.class));
-			return studentDtos;
+			Page<StudentResponseDto> studentResponseDtos = students.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			return studentResponseDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students by name: {}: {}", keyword, e.getMessage());
 			throw e;
