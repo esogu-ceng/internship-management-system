@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -42,10 +43,10 @@ public class StudentController {
 	}
 
 	@GetMapping("/search/{keyWord}")
-	public Page<StudentDto> getByNameSurnameStudentNo(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<StudentResponseDto> searchStudent(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<StudentDto> students = studentService.getByNameSurnameStudentNo(pageable, keyWord);
+		Page<StudentResponseDto> students = studentService.searchStudent(pageable, keyWord);
 		return students;
 	}
 
