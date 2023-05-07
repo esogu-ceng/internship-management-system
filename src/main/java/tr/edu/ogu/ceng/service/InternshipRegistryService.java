@@ -99,7 +99,7 @@ public class InternshipRegistryService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting internship registriries by id: {} with pageable: {}", internshipId, pageable);
-			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAllById(internshipId, pageable);
+			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAllByInternshipId(internshipId, pageable);
 			if (internshipRegistries.isEmpty()) {
 				log.warn("The internship registry list is empty.");
 			}
