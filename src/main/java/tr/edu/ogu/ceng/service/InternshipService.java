@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
+import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
@@ -77,6 +78,32 @@ public class InternshipService {
 		}
 
 		return internshipRepository.findById(id);
+	}
+
+	public CompanyDto getCompanyByInternshipId(Long id) {
+		ModelMapper modelMapper = new ModelMapper();
+		try{
+			if (!internshipRepository.existsById(id)) {
+				log.warn("Internship not found!");
+				throw new EntityNotFoundException("Internship not found!");
+			}
+
+			Optional<Internship> internshipOptional = internshipRepository.findById(id);
+			internshipOptional.ifPresent(internship -> {
+				modelMapper.typeMap(Internship.class, CompanyDto.class)
+						.addMapping(src -> src.getCompany().getName(), CompanyDto::setName)
+						.addMapping(src -> src.getCompany().getAddress(), CompanyDto::setAddress)
+						.addMapping(src -> src.getCompany().getPhoneNumber(), CompanyDto::setPhoneNumber)
+						.addMapping(src -> src.getCompany().getFaxNumber(), CompanyDto::setFaxNumber)
+						.addMapping(src -> src.getCompany().getEmail(), CompanyDto::setEmail)
+						.addMapping(src -> src.getCompany().getScope(), CompanyDto::setScope)
+						.addMapping(src -> src.getCompany().getDescription(), CompanyDto::setDescription);
+			});
+			return modelMapper.map(internshipOptional.orElseThrow(), CompanyDto.class);
+		}catch (Exception e){
+			log.error("Error occured while getting the Company by InternshipId", id);
+			throw new EntityNotFoundException("Error occured while getting the Company by InternshipId!");
+		}
 	}
 
 	public boolean deleteInternship(Long id) {

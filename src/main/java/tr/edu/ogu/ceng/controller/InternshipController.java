@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.model.Internship;
@@ -41,6 +42,10 @@ public class InternshipController {
 		return ResponseEntity.ok(internshipService.getInternship(id));
 	}
 
+	@GetMapping("company/{id}")
+	public ResponseEntity<CompanyDto> getCompanyByInternshipId(@PathVariable(name = "id") long id) {
+		return ResponseEntity.ok(internshipService.getCompanyByInternshipId(id));
+	}
 	@DeleteMapping("/{id}")
 	public boolean deleteInternship(@PathVariable(name = "id") Long id) {
 		return internshipService.deleteInternship(id);
