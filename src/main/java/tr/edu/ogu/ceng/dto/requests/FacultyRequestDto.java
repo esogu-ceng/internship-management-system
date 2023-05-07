@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,4 +15,6 @@ import lombok.NoArgsConstructor;
 public class FacultyRequestDto {
 	private Long id;
 	private String name;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 }
