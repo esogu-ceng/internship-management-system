@@ -7,6 +7,8 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -20,13 +22,20 @@ import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
+import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
+import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
-import tr.edu.ogu.ceng.model.Student;
+import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.model.Internship;
 
 @Slf4j
 @Service
@@ -56,7 +65,7 @@ public class InternshipService {
 			internship = internshipRepository.save(internship);
 			log.info("Insternship has been added successfully.");
 			return modelMapper.map(internship, InternshipResponseDto.class);
-		}catch (Exception e){
+		} catch (Exception e) {
 			log.error("Error occurred while saving internship: {}", e.getMessage());
 			throw e;
 		}
@@ -89,6 +98,32 @@ public class InternshipService {
 		return internshipRepository.findById(id);
 	}
 
+	public CompanyDto getCompanyByInternshipId(Long id) {
+		ModelMapper modelMapper = new ModelMapper();
+		try {
+			if (!internshipRepository.existsById(id)) {
+				log.warn("Internship not found!");
+				throw new EntityNotFoundException("Internship not found!");
+			}
+
+			Optional<Internship> internshipOptional = internshipRepository.findById(id);
+			internshipOptional.ifPresent(internship -> {
+				modelMapper.typeMap(Internship.class, CompanyDto.class)
+						.addMapping(src -> src.getCompany().getName(), CompanyDto::setName)
+						.addMapping(src -> src.getCompany().getAddress(), CompanyDto::setAddress)
+						.addMapping(src -> src.getCompany().getPhoneNumber(), CompanyDto::setPhoneNumber)
+						.addMapping(src -> src.getCompany().getFaxNumber(), CompanyDto::setFaxNumber)
+						.addMapping(src -> src.getCompany().getEmail(), CompanyDto::setEmail)
+						.addMapping(src -> src.getCompany().getScope(), CompanyDto::setScope)
+						.addMapping(src -> src.getCompany().getDescription(), CompanyDto::setDescription);
+			});
+			return modelMapper.map(internshipOptional.orElseThrow(), CompanyDto.class);
+		} catch (Exception e) {
+			log.error("Error occured while getting the Company by InternshipId", id);
+			throw new EntityNotFoundException("Error occured while getting the Company by InternshipId!");
+		}
+	}
+
 	public boolean deleteInternship(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
@@ -118,7 +153,24 @@ public class InternshipService {
 
 	}
 
-	public StudentResponseDto getStudentByInternshipId(Long id){
+	public Page<InternshipResponseDto> getAllInternshipsByStudentId(Long studentId, Pageable pageable) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting all internships by student id: {} with pageable: {}", studentId, pageable);
+			Page<Internship> internships = internshipRepository.findAllByStudentId(studentId, pageable);
+			if (internships.isEmpty()) {
+				log.warn("The internship list is empty.");
+			}
+			Page<InternshipResponseDto> internshipDtos = internships
+					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			return internshipDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting internships: {}", e.getMessage());
+			throw e;
+		}
+	}
+  
+  public StudentResponseDto getStudentByInternshipId(Long id){
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
@@ -129,6 +181,6 @@ public class InternshipService {
 
 		modelMapper = new ModelMapper();
 		return modelMapper.map(student, StudentResponseDto.class);
-	}
+    }
 
 }
