@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
@@ -38,18 +39,24 @@ public class InternshipService {
 	private UserRepository userRepository;
 	private FacultyRepository facultyRepository;
 	private UserTypeRepository userTypeRepository;
-	
 	private ModelMapper modelMapper;
+	private CompanyService companyService;
+	private StudentService studentService;
 
-	public InternshipDto addInternship(InternshipDto internshipDto) {
+	public InternshipResponseDto addInternship(InternshipRequestDto internshipDto) {
 		modelMapper = new ModelMapper();
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
-		LocalDateTime dateTime = LocalDateTime.now();
-		internship.setCreateDate(dateTime);
-		internship.setUpdateDate(dateTime);
-		internship = internshipRepository.save(internship);
-		log.info("Insternship has been added successfully.");
-		return modelMapper.map(internship, InternshipDto.class);
+		try {
+			LocalDateTime dateTime = LocalDateTime.now();
+			internship.setCreateDate(dateTime);
+			internship.setUpdateDate(dateTime);
+			internship = internshipRepository.save(internship);
+			log.info("Insternship has been added successfully.");
+			return modelMapper.map(internship, InternshipResponseDto.class);
+		}catch (Exception e){
+			log.error("Error occurred while saving internship: {}", e.getMessage());
+			throw e;
+		}
 	}
 
 	public InternshipDto updateInternship(InternshipRequestDto internshipDto) {
