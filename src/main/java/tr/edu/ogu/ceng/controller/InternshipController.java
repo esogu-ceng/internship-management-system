@@ -64,7 +64,7 @@ public class InternshipController {
 	}
 
 	@GetMapping("/student/{id}")
-	public Page<InternshipResponseDto> getAllInternshipRegistiries(@PathVariable(name = "id") Long studentId,
+	public Page<InternshipResponseDto> getAllInternshipsByStudentId(@PathVariable(name = "id") Long studentId,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
 			@RequestParam(defaultValue = "id") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
@@ -72,8 +72,8 @@ public class InternshipController {
 		return internships;
 	}
   
-  @GetMapping("/{id}/student")
+  	@GetMapping("/{id}/student")
 	public StudentResponseDto getStudentByInternshipId(@PathVariable(name = "id") long id){
 		return internshipService.getStudentByInternshipId(id);
-    }
+    	}
 }
