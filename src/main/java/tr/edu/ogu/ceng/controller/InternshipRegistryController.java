@@ -26,13 +26,15 @@ public class InternshipRegistryController {
 	@Autowired
 	private InternshipRegistryService internshipRegistryService;
 
-	@GetMapping("/getAll")
+	@GetMapping("/getInternshipRegistiriesById")
 	public Page<InternshipRegistryResponseDto> getAllInternshipRegistiries(
-			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam Long internshipId,
+			@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit,
 			@RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		Page<InternshipRegistryResponseDto> internshipRegistries = internshipRegistryService
-				.getAllInternshipRegistiries(pageable);
+				.getAllInternshipRegistiries(internshipId, pageable);
 		return internshipRegistries;
 	}
 
