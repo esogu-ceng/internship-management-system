@@ -95,11 +95,11 @@ public class InternshipRegistryService {
 		}
 	}
 
-	public Page<InternshipRegistryResponseDto> getAllInternshipRegistiries(Pageable pageable) {
+	public Page<InternshipRegistryResponseDto> getAllInternshipRegistiries(Long internshipId, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting all internship registriries with pageable: {}", pageable);
-			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAll(pageable);
+			log.info("Getting internship registriries by id: {} with pageable: {}", internshipId, pageable);
+			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAllById(internshipId, pageable);
 			if (internshipRegistries.isEmpty()) {
 				log.warn("The internship registry list is empty.");
 			}
