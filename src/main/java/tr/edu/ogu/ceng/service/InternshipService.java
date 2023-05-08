@@ -67,6 +67,7 @@ public class InternshipService {
 	public InternshipResponseDto updateInternship(InternshipRequestDto internshipDto) {
 		Internship internship = internshipRepository.findById(internshipDto.getId()).orElse(null);
 		if (internship == null) {
+			log.warn("Internship not found with id {}!", internshipDto.getId());
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 		modelMapper = new ModelMapper();
@@ -81,13 +82,14 @@ public class InternshipService {
 		return modelMapper.map(internship, InternshipResponseDto.class);
 	}
 
-	public Optional<Internship> getInternship(Long id) {
-		if (!internshipRepository.existsById(id)) {
-			log.warn("Internship not found!");
-			throw new EntityNotFoundException("Internship not found!");
+	public InternshipResponseDto getInternship(Long id) {
+		Internship internship = internshipRepository.findById(id).orElse(null);
+		if (internship == null) {
+			log.warn("Internship not found with id {}!", id);
+			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
-
-		return internshipRepository.findById(id);
+		modelMapper = new ModelMapper();
+		return modelMapper.map(internship, InternshipResponseDto.class);
 	}
 
 	public CompanyDto getCompanyByInternshipId(Long id) {
