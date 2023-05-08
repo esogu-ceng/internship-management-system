@@ -68,8 +68,8 @@ public class StudentController {
 
 	@PostMapping("/registerasstudent")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<StudentDto> registerAsStudent(@RequestBody StudentDto request) {
-		StudentDto response = studentService.registerAsStudent(request);
+	public ResponseEntity<StudentResponseDto> registerAsStudent(@RequestBody StudentDto request) {
+		StudentResponseDto response = studentService.registerAsStudent(request);
 		return ResponseEntity.ok(response);
 	}
 

@@ -65,7 +65,8 @@ public class StudentService {
 				log.warn("The student list is empty.");
 				return null;
 			}
-			Page<StudentResponseDto> studentDtos = students.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			Page<StudentResponseDto> studentDtos = students
+					.map(student -> modelMapper.map(student, StudentResponseDto.class));
 			return studentDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students: {}", e.getMessage());
@@ -149,8 +150,10 @@ public class StudentService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting students by name, surname or studentNo: {} with pageable: {}", keyword, pageable);
-			Page<Student> students = studentRepository.findByNameOrSurnameOrStudentNo(keyword, keyword, keyword, pageable);
-			Page<StudentResponseDto> studentResponseDtos = students.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			Page<Student> students = studentRepository.findByNameOrSurnameOrStudentNo(keyword, keyword, keyword,
+					pageable);
+			Page<StudentResponseDto> studentResponseDtos = students
+					.map(student -> modelMapper.map(student, StudentResponseDto.class));
 			return studentResponseDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students by name: {}: {}", keyword, e.getMessage());
@@ -169,9 +172,8 @@ public class StudentService {
 		}
 	}
 
-	public StudentDto registerAsStudent(StudentDto request) {
+	public StudentResponseDto registerAsStudent(StudentDto request) {
 
-		checkIfPasswordsMatchingValidation(request);
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 		UserType userType = userTypeService.getUserTypeId(UserTypeEnum.STUDENT);
 
@@ -193,16 +195,8 @@ public class StudentService {
 		studentRepository.save(student);
 		log.info("Registration successful.");
 
-		StudentDto response = modelMapper.map(student, StudentDto.class);
+		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;
-
-	}
-
-	// This method checks if the entered password and confirmed password are the
-	// same. If not, it throws a runtime exception.
-	private void checkIfPasswordsMatchingValidation(StudentDto request) {
-		if (!request.getPassword().equals(request.getConfirmPassword()))
-			throw new RuntimeException("Passwords do not match!");
 
 	}
 
