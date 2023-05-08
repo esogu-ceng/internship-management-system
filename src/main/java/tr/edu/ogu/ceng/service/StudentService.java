@@ -18,6 +18,8 @@ import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserTypeEnum;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
@@ -35,10 +37,10 @@ public class StudentService {
 	private final FacultyRepository facultyRepository;
 	private final UserTypeService userTypeService;
 	private final FacultyService facultyService;
-	
+
 	private ModelMapper modelMapper;
 
-	public StudentDto getStudent(long id) {
+	public StudentResponseDto getStudent(long id) {
 		try {
 			Student student = studentRepository.findById(id).orElse(null);
 			if (student == null) {
@@ -48,13 +50,13 @@ public class StudentService {
 			log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
 					student.getName(), student.getSurname());
 			ModelMapper modelMapper = new ModelMapper();
-			return modelMapper.map(student, StudentDto.class);
+			return modelMapper.map(student, StudentResponseDto.class);
 		} catch (EntityNotFoundException e) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
 
-	public Page<StudentDto> getAllStudents(Pageable pageable) {
+	public Page<StudentResponseDto> getAllStudents(Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all students with pageable: {}", pageable);
@@ -63,7 +65,7 @@ public class StudentService {
 				log.warn("The student list is empty.");
 				return null;
 			}
-			Page<StudentDto> studentDtos = students.map(student -> modelMapper.map(student, StudentDto.class));
+			Page<StudentResponseDto> studentDtos = students.map(student -> modelMapper.map(student, StudentResponseDto.class));
 			return studentDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students: {}", e.getMessage());
@@ -72,39 +74,55 @@ public class StudentService {
 	}
 
 	@Transactional
-	public StudentDto addStudent(StudentDto studentDto) {
-		Student student = modelMapper.map(studentDto, Student.class);
-		// need to add a new user to the DB
-		User user = student.getUser();
+	public StudentResponseDto addStudent(StudentRequestDto studentRequestDto) {
+		modelMapper = new ModelMapper();
 		LocalDateTime now = LocalDateTime.now();
 
+		UserType userTypeDto = new UserType(); // UserType object to save in UserDto
+		userTypeDto.setId(userTypeRepository.getById(UserTypeEnum.STUDENT.getId()).getId());
+
+		// We need to save user before student.
+		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
+		user.setUserType(userTypeDto);
 		user.setCreateDate(now);
 		user.setUpdateDate(now);
-		user.setUserType(userTypeRepository.findByType(UserTypeEnum.STUDENT.name()));
 
-		// give persisted entity to the student Object
+		Student student = modelMapper.map(studentRequestDto, Student.class);
 		student.setUser(userRepository.save(user));// FIXME instead, do we need to call to Service method?
 													// But the Service method needs to get DTO. Or are there
 													// any other approaches to persist the User?
-
 		student.setCreateDate(now);
 		student.setUpdateDate(now);
 
 		Student savedStudent = studentRepository.save(student);
 		log.info("The student was successfully added: {}", savedStudent);
 
-		return modelMapper.map(savedStudent, StudentDto.class);
+		return modelMapper.map(savedStudent, StudentResponseDto.class);
 	}
 
-	public StudentDto updateStudent(StudentDto studentDto) {
-		if (studentDto.getId() == null) {
+	public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
+		modelMapper = new ModelMapper();
+		LocalDateTime now = LocalDateTime.now();
+
+		if (studentRequestDto.getId() == null) {
 			throw new IllegalArgumentException("Student ID cannot be null");
 		}
-		Student student = modelMapper.map(studentDto, Student.class);
-		if (!studentRepository.existsById(student.getId()))
-			throw new EntityNotFoundException("Student not found!");
-		LocalDateTime now = LocalDateTime.now();
-		student.setUpdateDate(now);
+		Student student = studentRepository.findById(studentRequestDto.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Student not found!"));
+
+		UserType userTypeDto = student.getUser().getUserType();
+		User user = student.getUser();
+		user.setUserType(userTypeDto);
+		user.setUpdateDate(now);
+		user.setEmail(studentRequestDto.getUser().getEmail());
+		user.setPassword(studentRequestDto.getUser().getPassword());
+		user.setUsername(studentRequestDto.getUser().getUsername());
+
+		student = modelMapper.map(studentRequestDto, Student.class);
+		student.setUser(userRepository.save(user));
+
+		student.setCreateDate(studentRepository.getById(student.getId()).getCreateDate());
+		student.setUpdateDate(LocalDateTime.now());
 		Student updatedStudent;
 		try {
 			updatedStudent = studentRepository.save(student);
@@ -113,7 +131,7 @@ public class StudentService {
 			log.error("Error occurred while updating student: {}", e.getMessage());
 			throw e;
 		}
-		return modelMapper.map(updatedStudent, StudentDto.class);
+		return modelMapper.map(updatedStudent, StudentResponseDto.class);
 	}
 
 	@Transactional
@@ -127,13 +145,13 @@ public class StudentService {
 		return true;
 	}
 
-	public Page<StudentDto> getByNameSurnameStudentNo(Pageable pageable, String keyword) {
+	public Page<StudentResponseDto> searchStudent(Pageable pageable, String keyword) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting students by name, surname or studentNo: {} with pageable: {}", keyword, pageable);
 			Page<Student> students = studentRepository.findByNameOrSurnameOrStudentNo(keyword, keyword, keyword, pageable);
-			Page<StudentDto> studentDtos = students.map(student -> modelMapper.map(student, StudentDto.class));
-			return studentDtos;
+			Page<StudentResponseDto> studentResponseDtos = students.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			return studentResponseDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students by name: {}: {}", keyword, e.getMessage());
 			throw e;
@@ -154,7 +172,7 @@ public class StudentService {
 	public StudentDto registerAsStudent(StudentDto request) {
 
 		checkIfPasswordsMatchingValidation(request);
-        FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
+		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 		UserType userType = userTypeService.getUserTypeId(UserTypeEnum.STUDENT);
 
 		User user = new User();
@@ -166,7 +184,7 @@ public class StudentService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
-		
+
 		student.setUser(user);
 		student.setFaculty(modelMapper.map(facultyDto, Faculty.class));
 

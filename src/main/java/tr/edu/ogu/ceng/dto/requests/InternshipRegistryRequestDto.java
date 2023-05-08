@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.dto.requests;
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRequestDto {
+public class InternshipRegistryRequestDto {
+
 	private Long id;
-	private String username;
-	private String password;
-	private String email;
-	private long userTypeId;
+	private String filePath;
+	private String name;
+	private String type;
+	private Timestamp date;
+	private Long internshipId;
 }

@@ -28,7 +28,7 @@ public class FacultyTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		modelMapper = new ModelMapper();
-		facultyService = new FacultyService(facultyRepository);
+		facultyService = new FacultyService(facultyRepository, modelMapper);
 	}
 
 	@Test
