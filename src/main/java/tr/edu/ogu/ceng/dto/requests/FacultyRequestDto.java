@@ -15,6 +15,4 @@ import java.time.LocalDateTime;
 public class FacultyRequestDto {
 	private Long id;
 	private String name;
-	private LocalDateTime createDate;
-	private LocalDateTime updateDate;
 }

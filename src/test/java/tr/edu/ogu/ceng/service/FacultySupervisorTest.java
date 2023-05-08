@@ -71,9 +71,9 @@ public class FacultySupervisorTest {
         when(userRepository.save(any(User.class))).thenReturn(modelUser);
         when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
-        var DtoFaculty = FacultyRequestDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
+        var DtoFaculty = FacultyRequestDto.builder().id(1L).name("Faculty").build();
         var DtoUser = UserRequestDto.builder().id(3L).username("Username").password("password").email("email")
-                .createDate(localDateTime).updateDate(localDateTime).build();
+                .build();
         var DtoFacultySupervisor = FacultySupervisorRequestDto.builder().id(4L).name("Name").surname("Surname").phoneNumber("Phone")
                 .supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
 

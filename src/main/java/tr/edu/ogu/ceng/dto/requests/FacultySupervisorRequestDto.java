@@ -20,7 +20,5 @@ public class FacultySupervisorRequestDto {
     private String supervisorNo;
     private UserRequestDto user;
     private FacultyRequestDto faculty;
-    private LocalDateTime createDate;
-    private LocalDateTime updateDate;
 
 }
