@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
-import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
@@ -37,10 +36,9 @@ public class InternshipController {
 	}
 
 	@PutMapping
-	public InternshipDto updateInternship(@RequestBody InternshipDto internshipDto) {
+	public ResponseEntity<InternshipResponseDto> updateInternship(@RequestBody InternshipRequestDto internshipDto) {
 
-		InternshipDto updatedInternship = internshipService.updateInternship(internshipDto);
-		return updatedInternship;
+		return ResponseEntity.ok(internshipService.updateInternship(internshipDto));
 	}
 
 	@GetMapping("/{id}")
@@ -71,9 +69,9 @@ public class InternshipController {
 		Page<InternshipResponseDto> internships = internshipService.getAllInternshipsByStudentId(studentId, pageable);
 		return internships;
 	}
-  
-  	@GetMapping("/{id}/student")
-	public StudentResponseDto getStudentByInternshipId(@PathVariable(name = "id") long id){
+
+	@GetMapping("/{id}/student")
+	public StudentResponseDto getStudentByInternshipId(@PathVariable(name = "id") long id) {
 		return internshipService.getStudentByInternshipId(id);
-    	}
+	}
 }

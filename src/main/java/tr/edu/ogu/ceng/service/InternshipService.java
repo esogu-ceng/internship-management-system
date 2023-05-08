@@ -16,26 +16,13 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
-import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.model.Student;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
-import tr.edu.ogu.ceng.dto.InternshipDto;
-import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
-import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
-import tr.edu.ogu.ceng.enums.InternshipStatus;
-import tr.edu.ogu.ceng.model.Internship;
 
 @Slf4j
 @Service
@@ -46,8 +33,6 @@ public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
 	private ModelMapper modelMapper;
-	private CompanyService companyService;
-	private StudentService studentService;
 
 	public InternshipResponseDto addInternship(InternshipRequestDto internshipDto) {
 		modelMapper = new ModelMapper();
@@ -65,7 +50,7 @@ public class InternshipService {
 		}
 	}
 
-	public InternshipDto updateInternship(InternshipDto internshipDto) {
+	public InternshipResponseDto updateInternship(InternshipRequestDto internshipDto) {
 		Internship internship = internshipRepository.findById(internshipDto.getId()).orElse(null);
 		if (internship == null) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
@@ -79,7 +64,7 @@ public class InternshipService {
 
 		internship = internshipRepository.save(internshipMapped);
 		log.info("Internship has been updated successfully with id = {}.", internship.getId());
-		return modelMapper.map(internship, InternshipDto.class);
+		return modelMapper.map(internship, InternshipResponseDto.class);
 	}
 
 	public Optional<Internship> getInternship(Long id) {
@@ -162,8 +147,8 @@ public class InternshipService {
 			throw e;
 		}
 	}
-  
-  public StudentResponseDto getStudentByInternshipId(Long id){
+
+	public StudentResponseDto getStudentByInternshipId(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
@@ -174,6 +159,6 @@ public class InternshipService {
 
 		modelMapper = new ModelMapper();
 		return modelMapper.map(student, StudentResponseDto.class);
-    }
+	}
 
 }

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.service.Exception.ServiceException;
 
 @Slf4j
@@ -25,7 +25,7 @@ public class ImsAOPInternship {
 	private CompanyRepository companyRepository;
 
 	@Before("execution(* tr.edu.ogu.ceng.service.InternshipService.updateInternship(..)) && args(internshipDto) || execution(* tr.edu.ogu.ceng.service.InternshipService.addInternship(..)) && args(internshipDto)")
-	public void beforeAddAndUpdateInternship(InternshipDto internshipDto) {
+	public void beforeAddAndUpdateInternship(InternshipRequestDto internshipDto) {
 		boolean existingFacultySupervisorId = facultySupervisorRepository
 				.existsById(internshipDto.getFacultySupervisorId());
 		boolean existingStudentId = studentRepository.existsById(internshipDto.getStudentId());
