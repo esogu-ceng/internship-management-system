@@ -15,7 +15,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tr.edu.ogu.ceng.dao.CompanyRepository;
+import tr.edu.ogu.ceng.dao.FacultyRepository;
+import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
+import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
@@ -32,7 +38,15 @@ import tr.edu.ogu.ceng.model.Student;
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
+	private StudentRepository studentRepository;
+	private CompanyRepository companyRepository;
+	private FacultySupervisorRepository facultySupervisorRepository;
+	private UserRepository userRepository;
+	private FacultyRepository facultyRepository;
+	private UserTypeRepository userTypeRepository;
 	private ModelMapper modelMapper;
+	private CompanyService companyService;
+	private StudentService studentService;
 
 	public InternshipResponseDto addInternship(InternshipRequestDto internshipDto) {
 		modelMapper = new ModelMapper();
