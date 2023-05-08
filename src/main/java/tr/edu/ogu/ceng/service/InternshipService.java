@@ -15,6 +15,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tr.edu.ogu.ceng.dao.InternshipRepository;
+import tr.edu.ogu.ceng.dto.InternshipDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.model.Internship;
+import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
@@ -22,7 +31,6 @@ import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
-import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
@@ -161,5 +169,18 @@ public class InternshipService {
 			throw e;
 		}
 	}
+  
+  public StudentResponseDto getStudentByInternshipId(Long id){
+		if (!internshipRepository.existsById(id)) {
+			log.warn("Internship not found with id {}", id);
+			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+		}
+
+		Internship internship = internshipRepository.findById(id).orElse(null);
+		Student student = internship.getStudent();
+
+		modelMapper = new ModelMapper();
+		return modelMapper.map(student, StudentResponseDto.class);
+    }
 
 }
