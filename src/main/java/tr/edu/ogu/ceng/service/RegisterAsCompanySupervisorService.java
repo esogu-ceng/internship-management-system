@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
@@ -26,15 +27,14 @@ public class RegisterAsCompanySupervisorService{
 		Company company = new Company();
 		companySupervisor.setUser(user);
 		companySupervisor.setCompany(company);
-		companySupervisor.setId(0);
 		companySupervisor.setName(request.getName());
 		companySupervisor.setSurname(request.getSurname());
 		companySupervisor.setPhoneNumber(request.getPhoneNumber());
 		companySupervisor.getUser().setId(request.getUserId());
 		companySupervisor.getUser().setPassword(request.getPassword());
 		companySupervisor.getCompany().setId(request.getCompanyId());
-		companySupervisor.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		companySupervisor.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		companySupervisor.setUpdateDate(LocalDateTime.now());
+		companySupervisor.setCreateDate(LocalDateTime.now());
 		CompanySupervisor registeredCompanySupervisor = repository.save(companySupervisor);
 		
 		RegisterAsCompanySupervisorDto response=new RegisterAsCompanySupervisorDto();
