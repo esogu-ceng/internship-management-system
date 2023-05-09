@@ -2,12 +2,12 @@ package tr.edu.ogu.ceng.service.Exception;
 
 @SuppressWarnings("serial")
 public class EntityNotFoundException extends ServiceException {
-	
-	public EntityNotFoundException(String message){
+
+	public EntityNotFoundException(String message) {
 		super(message);
 	}
-	
-	public EntityNotFoundException(){
-		super("Not found.");
+
+	public EntityNotFoundException() {
+		super("Entity Not Found");
 	}
 }

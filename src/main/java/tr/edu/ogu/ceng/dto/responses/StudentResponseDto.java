@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.dto.responses;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class StudentResponseDto {
 	private String motherName;
 	private String fatherName;
 	private String birthPlace;
-	private String birthDate;
+	private Timestamp birthDate;
 	private String idCardSerialNo;
 	private String idRegisterProvince;
 	private String idRegisterSubprovince;

@@ -18,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -35,10 +34,6 @@ public class StudentTest {
 	@Mock
 	UserRepository userRepository;
 	@Mock
-	UserTypeRepository userTypeRepository;
-	@Mock
-	UserTypeService userTypeService;
-	@Mock
 	FacultyService facultyService;
 	@Mock
 	FacultyRepository facultyRepository;
@@ -48,7 +43,7 @@ public class StudentTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userTypeRepository, facultyRepository, userTypeService, facultyService,
+		studentService = new StudentService(studentRepository, userRepository, facultyRepository, facultyService,
 				new ModelMapper());
 	}
 
@@ -69,62 +64,24 @@ public class StudentTest {
 		// like facultyRepository.get etc.
 		LocalDateTime dateTime = LocalDateTime.now();
 		var savedUser = User.builder().email("test").password("passwordHash").id(1L).username("test").build();
-		var SavedStudent = Student.builder()
-				.id(6L)
-				.name("test")
-				.surname("test")
-				.tckn("test")
-				.studentNo("test")
-				.grade("test")
-				.phoneNumber("test")
-				.province("test")
-				.subprovince("test")
-				.zipCode("test")
-				.motherName("test")
-				.fatherName("test")
-				.birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.idCardSerialNo("test")
-				.idRegisterProvince("test")
-				.idRegisterSubprovince("test")
-				.idRegisterStreetVillage("test")
-				.idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test")
-				.idRegistryOffice("test")
-				.idRegistryReason("test")
-				.createDate(dateTime)
-				.updateDate(dateTime)
-				.faculty(new Faculty())
-				.build();
+		var SavedStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
+				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
+				.motherName("test").fatherName("test").birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
+				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test").createDate(dateTime)
+				.updateDate(dateTime).faculty(new Faculty()).build();
 
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 		when(studentRepository.save(any(Student.class))).thenReturn(SavedStudent);
 
 		var userToSave = UserRequestDto.builder().email("test").password("passwordHash").username("test").build();
-		var studentToSave = StudentRequestDto.builder()
-				.name("test")
-				.surname("test")
-				.id(6L)
-				.tckn("test")
-				.studentNo("test")
-				.grade("test")
-				.phoneNumber("test")
-				.province("test")
-				.subprovince("test")
-				.zipCode("test")
-				.motherName("test")
-				.fatherName("test")
-				.birthPlace("test")
-				.birthDate("test")
-				.idCardSerialNo("test")
-				.idRegisterProvince("test")
-				.idRegisterSubprovince("test")
-				.idRegisterStreetVillage("test")
-				.idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test")
-				.idRegistryOffice("test")
-				.idRegistryReason("test")
-				.user(userToSave)
+		var studentToSave = StudentRequestDto.builder().name("test").surname("test").id(6L).tckn("test")
+				.studentNo("test").grade("test").phoneNumber("test").province("test").subprovince("test")
+				.zipCode("test").motherName("test").fatherName("test").birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
+				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
+				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test").user(userToSave)
 				.build();
 		var actual = studentService.addStudent(studentToSave);
 

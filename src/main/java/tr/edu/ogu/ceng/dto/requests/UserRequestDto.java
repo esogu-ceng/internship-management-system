@@ -4,10 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tr.edu.ogu.ceng.dto.UserTypeDto;
-import tr.edu.ogu.ceng.model.UserType;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor

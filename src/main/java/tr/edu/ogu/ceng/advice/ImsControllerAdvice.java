@@ -29,7 +29,7 @@ public class ImsControllerAdvice {
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<ErrorResponseDTO> entityNotFoundException(EntityNotFoundException ex) {
 		log.error(ex.getMessage());
-		ErrorResponseDTO errorResponse = new ErrorResponseDTO(null, "İstenen kayıt bulunamadı");
+		ErrorResponseDTO errorResponse = new ErrorResponseDTO(null, ex.getMessage());
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 	}
 
@@ -64,6 +64,7 @@ public class ImsControllerAdvice {
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponseDTO> globalException(Exception ex) {
 		log.error(ex.getMessage());
+		ex.printStackTrace(); // FIXME hold when development stage
 		ErrorResponseDTO errorResponse = new ErrorResponseDTO("500", "Beklenmeyen bir hata oluştu");
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
