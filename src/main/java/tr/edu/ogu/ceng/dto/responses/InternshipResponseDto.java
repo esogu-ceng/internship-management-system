@@ -1,6 +1,7 @@
-package tr.edu.ogu.ceng.dto.requests;
+package tr.edu.ogu.ceng.dto.responses;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +13,7 @@ import tr.edu.ogu.ceng.enums.InternshipStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InternshipRequestDto {
-
+public class InternshipResponseDto {
 	private Long id;
 	private InternshipStatus status;
 	private Timestamp startDate;
@@ -22,5 +22,6 @@ public class InternshipRequestDto {
 	private Long studentId;
 	private Long companyId;
 	private Long facultySupervisorId;
-
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 }

@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRequestDto {
-	private Long id;
-	private String username;
-	private String password;
-	private String email;
-	private long userTypeId;
+public class GetCompanyByInternshipRequest {
+    private Long id;
 }
+

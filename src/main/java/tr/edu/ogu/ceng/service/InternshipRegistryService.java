@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
@@ -23,7 +22,8 @@ import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dao.UserTypeRepository;
-import tr.edu.ogu.ceng.dto.InternshipRegistryDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
 @Slf4j
@@ -55,58 +55,73 @@ public class InternshipRegistryService {
 		return true;
 	}
 
-	public InternshipRegistryDto updateInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
+	public InternshipRegistryResponseDto updateInternshipRegistry(InternshipRegistryRequestDto requestDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
+		InternshipRegistry internshipRegistry = modelMapper.map(requestDto, InternshipRegistry.class);
 		if (!internshipRegistryRepository.existsById(internshipRegistry.getId())) {
 			log.warn("Internship registry with ID {} not found", internshipRegistry.getId());
 			throw new EntityNotFoundException("Internship Registry not found!");
 		}
-		
+
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
-			internshipRegistry.setCreateDate(internshipRegistryRepository.getById(internshipRegistry.getId()).getCreateDate());
+			internshipRegistry
+					.setCreateDate(internshipRegistryRepository.getById(internshipRegistry.getId()).getCreateDate());
 			internshipRegistry.setUpdateDate(dateTime);
-			internshipRegistry = internshipRegistryRepository.save(internshipRegistry);
-            log.info("Internship registry updated: {}", internshipRegistry);
-    		return modelMapper.map(internshipRegistry, InternshipRegistryDto.class);
-        } catch (Exception e) {
-            log.error("Error occurred while updating internship registry: {}", e.getMessage());
-            throw e;
-        }
+			InternshipRegistry updatedInternshipRegistry = internshipRegistryRepository.save(internshipRegistry);
+			log.info("Internship registry updated: {}", updatedInternshipRegistry);
+			return modelMapper.map(updatedInternshipRegistry, InternshipRegistryResponseDto.class);
+		} catch (Exception e) {
+			log.error("Error occurred while updating internship registry: {}", e.getMessage());
+			throw e;
+		}
 	}
 
-	public InternshipRegistryDto addInternshipRegistry(InternshipRegistryDto internshipRegistryDto) {
+	public InternshipRegistryResponseDto addInternshipRegistry(InternshipRegistryRequestDto internshipRegistryDto) {
 		ModelMapper modelMapper = new ModelMapper();
 		InternshipRegistry internshipRegistry = modelMapper.map(internshipRegistryDto, InternshipRegistry.class);
 		InternshipRegistry addedInternshipRegistry = new InternshipRegistry();
-		
+
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
 			internshipRegistry.setCreateDate(dateTime);
 			internshipRegistry.setUpdateDate(dateTime);
 			addedInternshipRegistry = internshipRegistryRepository.save(internshipRegistry);
-            log.info("Internship registry saved: {}", internshipRegistry);
-            return modelMapper.map(addedInternshipRegistry, InternshipRegistryDto.class);
-        } catch (Exception e) {
-            log.error("Error occurred while saving internship registry: {}", e.getMessage());
-            throw e;
-        }	
+			log.info("Internship registry saved: {}", internshipRegistry);
+			return modelMapper.map(addedInternshipRegistry, InternshipRegistryResponseDto.class);
+		} catch (Exception e) {
+			log.error("Error occurred while saving internship registry: {}", e.getMessage());
+			throw e;
+		}
 	}
 
-	public Page<InternshipRegistryDto> getAllInternshipRegistiries(Pageable pageable) {
+	public Page<InternshipRegistryResponseDto> getAllInternshipRegistiries(Long internshipId, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting all internship registriries with pageable: {}", pageable);
-			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAll(pageable);
+			log.info("Getting internship registriries by id: {} with pageable: {}", internshipId, pageable);
+			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAllByInternshipId(internshipId, pageable);
 			if (internshipRegistries.isEmpty()) {
 				log.warn("The internship registry list is empty.");
 			}
-			Page<InternshipRegistryDto> internshipRegistryDtos = internshipRegistries
-					.map(internshipRegistry -> modelMapper.map(internshipRegistry, InternshipRegistryDto.class));
+			Page<InternshipRegistryResponseDto> internshipRegistryDtos = internshipRegistries.map(
+					internshipRegistry -> modelMapper.map(internshipRegistry, InternshipRegistryResponseDto.class));
 			return internshipRegistryDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internship registries: {}", e.getMessage());
+			throw e;
+		}
+	}
+
+	public InternshipRegistryResponseDto getInternshipRegistry(Long id) {
+		if (!internshipRegistryRepository.existsById(id)) {
+			log.warn("Internship registry with ID {} not found", id);
+			throw new EntityNotFoundException("Internship Registry not found!");
+		}
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			return modelMapper.map(internshipRegistryRepository.getById(id), InternshipRegistryResponseDto.class);
+		} catch (Exception e) {
+			log.error("Error occurred while getting internship registry: {}", e.getMessage());
 			throw e;
 		}
 	}
