@@ -25,7 +25,7 @@ public class ImsUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		User user = userRepository.findByEmail(username);
+		User user = userRepository.findByEmailOrUsername(username, username);
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
