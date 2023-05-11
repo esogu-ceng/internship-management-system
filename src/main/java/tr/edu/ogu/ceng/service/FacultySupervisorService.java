@@ -14,16 +14,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
-import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
-import tr.edu.ogu.ceng.enums.UserTypeEnum;
+import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.model.UserType;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 @Service
@@ -33,8 +30,8 @@ public class FacultySupervisorService {
 
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserRepository userRepository;
-	private UserTypeRepository userTypeRepository;
 	private ModelMapper modelMapper;
+	private MessageResource messageResource;
 
 	/**
 	 * Adds a new Faculty Supervisor and related User definition
@@ -49,14 +46,11 @@ public class FacultySupervisorService {
 		modelMapper = new ModelMapper();
 		LocalDateTime now = LocalDateTime.now();
 
-		UserType userType = new UserType(); // UserType object to save in UserDto
-		userType.setId(userTypeRepository.getById(UserTypeEnum.FACULTYSUPERVISOR.getId()).getId());
-
 		// We need to save user before student.
 		User user = modelMapper.map(facultySupervisorRequestDto.getUser(), User.class);
-		user.setUserType(userType);
 		user.setCreateDate(now);
 		user.setUpdateDate(now);
+		user.setUserType(UserType.FACULTYSUPERVISOR);
 
 		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
 		facultySupervisor.setUser(userRepository.save(user));// FIXME instead, do we need to call to Service method?
@@ -91,10 +85,11 @@ public class FacultySupervisorService {
 	}
 
 	public FacultySupervisorDto getFacultySupervisor(Long id) {
-		if (!facultySupervisorRepository.existsById(id))
-			throw new EntityNotFoundException("Faculty supervisor not found!");
+		if (!facultySupervisorRepository.existsById(id)) {
+			String message = messageResource.getMessage("not.found");
+			throw new EntityNotFoundException(message);
+		}
 		Optional<FacultySupervisor> facultySupervisorOptional = facultySupervisorRepository.findById(id);
-
 		facultySupervisorOptional.ifPresent(facultySupervisor -> log.info("Faculty supervisor retrieved: {}",
 				modelMapper.map(facultySupervisorOptional.get(), FacultySupervisorDto.class)));
 		return modelMapper.map(facultySupervisorOptional.get(), FacultySupervisorDto.class);

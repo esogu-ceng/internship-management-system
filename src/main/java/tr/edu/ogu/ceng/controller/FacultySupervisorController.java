@@ -1,10 +1,8 @@
 package tr.edu.ogu.ceng.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,15 +26,16 @@ public class FacultySupervisorController {
 	private FacultySupervisorService facultySupervisorService;
 
 	@PostMapping("/saveFacultysupervisor")
-	public FacultySupervisorResponseDto addFacultySupervisor(@RequestBody @Valid FacultySupervisorRequestDto facultySupervisorRequestDto) {
+	public FacultySupervisorResponseDto addFacultySupervisor(
+			@RequestBody @Validated FacultySupervisorRequestDto facultySupervisorRequestDto) {
 		return facultySupervisorService.addFacultySupervisor(facultySupervisorRequestDto);
 	}
 
-
-
 	@PutMapping
-	public ResponseEntity<FacultySupervisorDto> updateFacultySupervisor(@RequestBody FacultySupervisorDto facultySupervisor) {
-		FacultySupervisorDto updatedFacultySupervisor = facultySupervisorService.updateFacultySupervisor(facultySupervisor);
+	public ResponseEntity<FacultySupervisorDto> updateFacultySupervisor(
+			@RequestBody FacultySupervisorDto facultySupervisor) {
+		FacultySupervisorDto updatedFacultySupervisor = facultySupervisorService
+				.updateFacultySupervisor(facultySupervisor);
 		return ResponseEntity.ok(updatedFacultySupervisor);
 	}
 
