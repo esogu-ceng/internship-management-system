@@ -32,17 +32,17 @@ public class FacultySupervisorController {
 	}
 
 	@PutMapping
-	public ResponseEntity<FacultySupervisorDto> updateFacultySupervisor(
-			@RequestBody FacultySupervisorDto facultySupervisor) {
-		FacultySupervisorDto updatedFacultySupervisor = facultySupervisorService
-				.updateFacultySupervisor(facultySupervisor);
+	public ResponseEntity<FacultySupervisorResponseDto> updateFacultySupervisor(
+			@RequestBody FacultySupervisorRequestDto facultySupervisorRequestDto) {
+		FacultySupervisorResponseDto updatedFacultySupervisor = facultySupervisorService
+				.updateFacultySupervisor(facultySupervisorRequestDto);
 		return ResponseEntity.ok(updatedFacultySupervisor);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<FacultySupervisorDto> getFacultySupervisor(@PathVariable(name = "id") long id) {
-		FacultySupervisorDto facultySupervisorDto = facultySupervisorService.getFacultySupervisor(id);
-		return ResponseEntity.ok(facultySupervisorDto);
+	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisor(@PathVariable(name = "id") long id) {
+		FacultySupervisorResponseDto facultySupervisorResponseDto = facultySupervisorService.getFacultySupervisor(id);
+		return ResponseEntity.ok(facultySupervisorResponseDto);
 	}
 
 	@DeleteMapping("/{id}")
