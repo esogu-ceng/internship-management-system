@@ -21,7 +21,6 @@ import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
@@ -43,7 +42,6 @@ public class InternshipService {
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserRepository userRepository;
 	private FacultyRepository facultyRepository;
-	private UserTypeRepository userTypeRepository;
 	private ModelMapper modelMapper;
 	private CompanyService companyService;
 	private StudentService studentService;

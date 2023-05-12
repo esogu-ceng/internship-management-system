@@ -21,16 +21,15 @@ import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.UserDto;
-import tr.edu.ogu.ceng.dto.UserTypeDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
@@ -38,7 +37,6 @@ import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.model.UserType;
 
 public class InternshipRegistryTest {
 
@@ -66,9 +64,6 @@ public class InternshipRegistryTest {
 	@Mock
 	FacultyRepository facultyRepository;
 
-	@Mock
-	UserTypeRepository userTypeRepository;
-
 	InternshipStatus status = InternshipStatus.APPROVED;
 
 	@BeforeEach
@@ -76,7 +71,7 @@ public class InternshipRegistryTest {
 		MockitoAnnotations.initMocks(this);
 		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository,
 				internshipRegistryService, internshipRepository, studentRepository, companyRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, userTypeRepository, new ModelMapper());
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper());
 	}
 
 	@Test
@@ -87,10 +82,8 @@ public class InternshipRegistryTest {
 		var modelCompany = Company.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
 				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
 				.updateDate(localDateTime).build();
-		var modelUserType = UserType.builder().id(2L).type("UserType").createDate(localDateTime)
-				.updateDate(localDateTime).build();
 		var modelUser = User.builder().id(3L).username("Username").password("password").email("email")
-				.userType(modelUserType).createDate(localDateTime).updateDate(localDateTime).build();
+				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 		var modelFacultySupervisor = FacultySupervisor.builder().id(4L).name("Name").surname("Surname")
@@ -112,7 +105,6 @@ public class InternshipRegistryTest {
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
 		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);
-		when(userTypeRepository.save(any(UserType.class))).thenReturn(modelUserType);
 		when(userRepository.save(any(User.class))).thenReturn(modelUser);
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
 		when(internshipRegistryRepository.save(any(InternshipRegistry.class))).thenReturn(modelInternshipRegistry);
@@ -122,11 +114,8 @@ public class InternshipRegistryTest {
 		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 
-		var DtoUserType = UserTypeDto.builder().id(2L).type("UserType").createDate(localDateTime)
-				.updateDate(localDateTime).build();
-
 		var DtoUser = UserDto.builder().id(3L).username("Username").password("password").email("email")
-				.userType(DtoUserType).createDate(localDateTime).updateDate(localDateTime).build();
+				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 
 		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(4L).name("Name").surname("Surname")
 				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();

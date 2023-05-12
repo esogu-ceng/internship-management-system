@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
@@ -15,11 +16,13 @@ public class FacultySupervisorDto {
 
 	private Long id;
 
-	@NotBlank(message = "Name is mandatory")
+	@NotBlank(message = "{name.not.blank}")
 	private String name;
 	private String surname;
 	private String phoneNumber;
 	private String supervisorNo;
+
+	@Valid
 	private UserDto user;
 	private FacultyDto faculty;
 
