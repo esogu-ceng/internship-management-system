@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.dto.requests;
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +33,7 @@ public class StudentRequestDto {
 	private String motherName;
 	private String fatherName;
 	private String birthPlace;
-	private String birthDate;
+	private Timestamp birthDate;
 	private String idCardSerialNo;
 	private String idRegisterProvince;
 	private String idRegisterSubprovince;

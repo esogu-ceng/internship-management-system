@@ -15,16 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
-import tr.edu.ogu.ceng.enums.UserTypeEnum;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.model.UserType;
 
 @Slf4j
 @Service
@@ -33,11 +31,8 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
-	private final UserTypeRepository userTypeRepository;
 	private final FacultyRepository facultyRepository;
-	private final UserTypeService userTypeService;
 	private final FacultyService facultyService;
-
 	private ModelMapper modelMapper;
 
 	public StudentResponseDto getStudent(long id) {
@@ -79,12 +74,9 @@ public class StudentService {
 		modelMapper = new ModelMapper();
 		LocalDateTime now = LocalDateTime.now();
 
-		UserType userTypeDto = new UserType(); // UserType object to save in UserDto
-		userTypeDto.setId(userTypeRepository.getById(UserTypeEnum.STUDENT.getId()).getId());
-
 		// We need to save user before student.
 		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
-		user.setUserType(userTypeDto);
+		user.setUserType(UserType.STUDENT);
 		user.setCreateDate(now);
 		user.setUpdateDate(now);
 
@@ -175,13 +167,12 @@ public class StudentService {
 	public StudentResponseDto registerAsStudent(StudentDto request) {
 
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
-		UserType userType = userTypeService.getUserTypeId(UserTypeEnum.STUDENT);
 
 		User user = new User();
 		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
-		user.setUserType(userType);
+		user.setUserType(UserType.STUDENT);
 		user = userRepository.save(user);
 
 		ModelMapper modelMapper = new ModelMapper();

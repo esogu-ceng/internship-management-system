@@ -1,6 +1,6 @@
 package tr.edu.ogu.ceng.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +30,7 @@ public class CompanySupervisor{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	@Column(name = "name" ,nullable = false)
 	private String name;
 	@Column(name = "surname" ,nullable = false)
@@ -38,18 +38,18 @@ public class CompanySupervisor{
 	@Column(name = "phone_number" ,nullable = false)
 	private String phoneNumber;
 	@Column(name = "create_date")
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 	@Column(name = "update_date")
-	private Timestamp updateDate;
+	private LocalDateTime updateDate;
 	
 	@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id" ,nullable = false)
+    @JoinColumn(name = "company_id" ,nullable = false, referencedColumnName = "id")
 	private Company company;
 	 
 	@JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" ,nullable = false)
+    @JoinColumn(name = "user_id" , unique = true, referencedColumnName = "id")
     private User user;
 	
 }

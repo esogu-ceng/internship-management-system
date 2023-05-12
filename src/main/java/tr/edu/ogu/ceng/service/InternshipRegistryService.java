@@ -21,7 +21,6 @@ import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
@@ -42,7 +41,6 @@ public class InternshipRegistryService {
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserRepository userRepository;
 	private FacultyRepository facultyRepository;
-	private UserTypeRepository userTypeRepository;
 	private ModelMapper modelMapper;
 
 	public boolean deleteInternshipRegistry(long id) {
@@ -99,7 +97,8 @@ public class InternshipRegistryService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting internship registriries by id: {} with pageable: {}", internshipId, pageable);
-			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository.findAllByInternshipId(internshipId, pageable);
+			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository
+					.findAllByInternshipId(internshipId, pageable);
 			if (internshipRegistries.isEmpty()) {
 				log.warn("The internship registry list is empty.");
 			}

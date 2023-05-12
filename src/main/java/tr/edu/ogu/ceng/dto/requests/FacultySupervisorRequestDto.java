@@ -12,7 +12,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FacultyRequestDto {
-	private Long id;
-	private String name;
+public class FacultySupervisorRequestDto {
+    private Long id;
+    private String name;
+    private String surname;
+    private String phoneNumber;
+    private String supervisorNo;
+    private UserRequestDto user;
+    private FacultyRequestDto faculty;
+
 }

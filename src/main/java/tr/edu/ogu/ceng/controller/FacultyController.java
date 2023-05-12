@@ -39,12 +39,12 @@ public class FacultyController {
 		return facultyService.addFaculty(facultyDto);
 	}
 
-	@PutMapping
+	@PutMapping("/admin")
 	public FacultyDto updateFaculty(@RequestBody FacultyRequestDto facultyDto) {
 		return facultyService.updateFaculty(facultyDto);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/admin/{id}")
 	public boolean deleteFaculty(@PathVariable(name = "id") long id) {
 		return facultyService.deleteFaculty(id);
 	}
