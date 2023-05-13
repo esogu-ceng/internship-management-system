@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tr.edu.ogu.ceng.enums.UserType;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +15,6 @@ public class UserRequestDto {
 	private String username;
 	private String password;
 	private String email;
-	private long userTypeId;
+	private UserType userType;
 
 }
