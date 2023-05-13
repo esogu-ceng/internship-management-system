@@ -164,9 +164,7 @@ public class StudentService {
 		}
 	}
 
-	public StudentDto registerAsStudent(StudentDto request) {
-
-		checkIfPasswordsMatchingValidation(request);
+	public StudentResponseDto registerAsStudent(StudentDto request) {
 
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 
@@ -188,16 +186,8 @@ public class StudentService {
 		studentRepository.save(student);
 		log.info("Registration successful.");
 
-		StudentDto response = modelMapper.map(student, StudentDto.class);
+		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;
-
-	}
-
-	// This method checks if the entered password and confirmed password are the
-	// same. If not, it throws a runtime exception.
-	private void checkIfPasswordsMatchingValidation(StudentDto request) {
-		if (!request.getPassword().equals(request.getConfirmPassword()))
-			throw new RuntimeException("Passwords do not match!");
 
 	}
 
