@@ -1,7 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +40,7 @@ public class InternshipController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Internship>> getInternship(@PathVariable(name = "id") long id) {
+	public ResponseEntity<InternshipResponseDto> getInternship(@PathVariable(name = "id") long id) {
 		return ResponseEntity.ok(internshipService.getInternship(id));
 	}
 
