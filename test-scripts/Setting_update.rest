@@ -1,0 +1,18 @@
+### 
+PUT http://localhost:8080/api/setting/mail_username
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{   
+    "key": "mail_username",
+	"value": "ogucenginternship@hotmail.com"
+}
+### 
+PUT http://localhost:8080/api/setting/mail_password
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{   
+    "key": "mail_password",
+	"value": "asd123"
+}
