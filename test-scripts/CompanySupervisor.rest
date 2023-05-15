@@ -1,0 +1,48 @@
+GET http://localhost:8080/api/company-supervisor
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+###
+GET http://localhost:8080/api/company-supervisor/54
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+###
+POST http://localhost:8080/api/company-supervisor
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+"name": "burak",
+ "surname": "kaya",
+  "phoneNumber": "521265962",
+        "company":{
+            "id": 1
+            },
+            "user":{
+                "id": 17
+            }
+}
+
+###
+PUT http://localhost:8080/api/company-supervisor
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+"id": 63,
+"name": "melisa",
+ "surname": "özel",
+  "phoneNumber": "521265962",
+        "company":{
+            "id": 1
+            },
+            "user":{
+                "id": 20
+            }
+}
+
+###
+DELETE http://localhost:8080/api/company-supervisor/62
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
