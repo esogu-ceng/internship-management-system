@@ -1,14 +1,15 @@
 package tr.edu.ogu.ceng.service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +22,10 @@ import tr.edu.ogu.ceng.model.User;
 @Service
 @AllArgsConstructor
 public class UserService {
-	@Autowired
+
 	private UserRepository userRepository;
+
+	private PasswordEncoder passwordEncoder;
 
 	public Page<UserDto> getAllUsers(Pageable pageable) {
 		try {
@@ -61,6 +64,21 @@ public class UserService {
 		}
 	}
 
+	public User saveUser(User user) {
+		try {
+			LocalDateTime dateTime = LocalDateTime.now();
+			user.setCreateDate(dateTime);
+			user.setUpdateDate(dateTime);
+			user.setPassword(encodeUserPassword(user.getPassword()));
+			User savedUser = userRepository.save(user);
+			log.info("User saved successfully with id: {}", savedUser.getId());
+			return savedUser;
+		} catch (Exception e) {
+			log.error("An error occurred while saving user: {}", e.getMessage());
+			throw e;
+		}
+	}
+
 	public User findByEmail(String email) {
 		try {
 			log.info("Getting user by email: {}", email);
@@ -89,11 +107,27 @@ public class UserService {
 			return false;
 		}
 	}
-	
+
 	public User updateUser(User user) {
 		if (!userRepository.existsById(user.getId())) {
 			throw new EntityNotFoundException("User not found!");
 		}
 		return userRepository.save(user);
-    }
+	}
+
+	public String encodeUserPassword(String rawPass) {
+		return passwordEncoder.encode(rawPass);
+	}
+
+	@Scheduled(fixedDelay = 3000000, initialDelay = 1)
+	public void encodeAllSavedPasswords() {
+		List<User> userList = userRepository.findAll();
+		for (User user : userList) {
+			if (user.getPassword().length() > 59 & user.getPassword().startsWith("$")) {
+				continue;
+			}
+			user.setPassword(encodeUserPassword(user.getPassword()));
+		}
+		userRepository.saveAll(userList);
+	}
 }
