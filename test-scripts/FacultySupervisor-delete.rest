@@ -1,0 +1,2 @@
+DELETE  http://localhost:8080/api/facultySupervisor/1
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
