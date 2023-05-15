@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { Header } from '../components/Header';
 export const Root = () => {
   return (
-    <div className='flex flex-col justify-between items-center'>
-    {/* <Header/> */}
-    <div>staj bilgileri</div>
+    <div className="flex flex-col justify-between items-center">
+      {/* <Header/> */}
+      <div>staj bilgileri</div>
       {/* <div id="sidebasr">
         <h1>React Router Contacts</h1>
         <div>
@@ -44,4 +44,4 @@ export const Root = () => {
       <div id="detail"></div> */}
     </div>
   );
-}
+};
