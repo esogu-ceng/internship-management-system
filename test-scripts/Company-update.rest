@@ -10,7 +10,5 @@ Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
   "faxNumber": "654984654",
   "email": "e@mail.com",
   "scope": "scope0",
-  "description": "desc0",
-  "createDate": "2000-01-01T00:00:00",
-  "updateDate": "2023-05-01T16:58:12.972232"
+  "description": "desc0"
 }
