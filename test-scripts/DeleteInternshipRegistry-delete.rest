@@ -1,0 +1,2 @@
+DELETE http://localhost:8080/api/internshipregistry/24
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
