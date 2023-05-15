@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -28,34 +30,34 @@ public class StudentController {
 	StudentService studentService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<StudentDto> getStudent(@PathVariable(name = "id") long id) {
-		StudentDto studentDto = studentService.getStudent(id);
-		return ResponseEntity.ok(studentDto);
+	public ResponseEntity<StudentResponseDto> getStudent(@PathVariable(name = "id") long id) {
+		StudentResponseDto studentResponseDto = studentService.getStudent(id);
+		return ResponseEntity.ok(studentResponseDto);
 	}
 
 	@GetMapping("/getAll")
-	public Page<StudentDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<StudentResponseDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<StudentDto> students = studentService.getAllStudents(pageable);
+		Page<StudentResponseDto> students = studentService.getAllStudents(pageable);
 		return students;
 	}
 
 	@GetMapping("/search/{keyWord}")
-	public Page<StudentDto> getByNameSurnameStudentNo(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<StudentResponseDto> searchStudent(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<StudentDto> students = studentService.getByNameSurnameStudentNo(pageable, keyWord);
+		Page<StudentResponseDto> students = studentService.searchStudent(pageable, keyWord);
 		return students;
 	}
 
-	@PostMapping("/addStudent")
-	public StudentDto addStudent(@RequestBody StudentDto studentDto) {
-		return studentService.addStudent(studentDto);
+	@PostMapping
+	public StudentResponseDto addStudent(@RequestBody StudentRequestDto studentRequestDto) {
+		return studentService.addStudent(studentRequestDto);
 	}
 
-	@PutMapping()
-	public StudentDto updateStudent(@RequestBody StudentDto studentDto) {
+	@PutMapping
+	public StudentResponseDto updateStudent(@RequestBody StudentRequestDto studentDto) {
 		return studentService.updateStudent(studentDto);
 	}
 
@@ -66,8 +68,8 @@ public class StudentController {
 
 	@PostMapping("/registerasstudent")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<StudentDto> registerAsStudent(@RequestBody StudentDto request) {
-		StudentDto response = studentService.registerAsStudent(request);
+	public ResponseEntity<StudentResponseDto> registerAsStudent(@RequestBody StudentDto request) {
+		StudentResponseDto response = studentService.registerAsStudent(request);
 		return ResponseEntity.ok(response);
 	}
 

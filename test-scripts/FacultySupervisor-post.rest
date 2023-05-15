@@ -1,6 +1,7 @@
 POST http://localhost:8080/api/facultySupervisor/saveFacultysupervisor
 Content-Type: application/json
-
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+    
 {
     "id":null,
     "name":"Yusuf",

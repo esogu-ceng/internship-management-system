@@ -1,9 +1,13 @@
 package tr.edu.ogu.ceng.dto.requests;
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +33,7 @@ public class StudentRequestDto {
 	private String motherName;
 	private String fatherName;
 	private String birthPlace;
-	private String birthDate;
+	private Timestamp birthDate;
 	private String idCardSerialNo;
 	private String idRegisterProvince;
 	private String idRegisterSubprovince;
@@ -41,7 +45,7 @@ public class StudentRequestDto {
 	private String idRegistryReason;
 	private Boolean sgkFamily;
 	private Boolean sgkSelf;
-	private long userId;
+	private UserRequestDto user;
 	private long facultyId;
 	private String password;
 	private String confirmPassword;

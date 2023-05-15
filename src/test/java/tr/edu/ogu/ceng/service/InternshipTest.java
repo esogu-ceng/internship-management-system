@@ -20,22 +20,20 @@ import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
-import tr.edu.ogu.ceng.dto.InternshipDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.UserDto;
-import tr.edu.ogu.ceng.dto.UserTypeDto;
+import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.model.UserType;
 
 public class InternshipTest {
 	@Mock
@@ -57,18 +55,20 @@ public class InternshipTest {
 	FacultyRepository facultyRepository;
 
 	@Mock
-	UserTypeRepository userTypeRepository;
-
-	@Mock
 	InternshipService internshipService;
 
+	@Mock
+	CompanyService companyService;
+	@Mock
+	StudentService studentService;
 	InternshipStatus status = InternshipStatus.PENDING;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		internshipService = new InternshipService(internshipRepository, studentRepository, companyRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, userTypeRepository, new ModelMapper());
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), companyService,
+				studentService);
 	}
 
 	@Test
@@ -79,10 +79,8 @@ public class InternshipTest {
 		var modelCompany = Company.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
 				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
 				.updateDate(localDateTime).build();
-		var modelUserType = UserType.builder().id(1L).type("UserType").createDate(localDateTime)
-				.updateDate(localDateTime).build();
 		var modelUser = User.builder().id(3L).username("Username").password("password").email("email")
-				.userType(modelUserType).createDate(localDateTime).updateDate(localDateTime).build();
+				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 		var modelFacultySupervisor = FacultySupervisor.builder().id(1L).name("Name").surname("Surname")
@@ -95,13 +93,12 @@ public class InternshipTest {
 				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
 				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test")
 				.createDate(localDateTime).updateDate(localDateTime).user(modelUser).faculty(modelFaculty).build();
-		var modelInternship = Internship.builder().id(1L).status(status)
+		var modelInternship = Internship.builder().id(1L).status(InternshipStatus.APPROVED)
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.days(1).student(modelStudent).company(modelCompany).facultySupervisor(modelFacultySupervisor).build();
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
 		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);
-		when(userTypeRepository.save(any(UserType.class))).thenReturn(modelUserType);
 		when(userRepository.save(any(User.class))).thenReturn(modelUser);
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
@@ -110,11 +107,8 @@ public class InternshipTest {
 		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 
-		var DtoUserType = UserTypeDto.builder().id(1L).type("UserType").createDate(localDateTime)
-				.updateDate(localDateTime).build();
-
 		var DtoUser = UserDto.builder().id(1L).username("Username").password("password").email("email")
-				.userType(DtoUserType).createDate(localDateTime).updateDate(localDateTime).build();
+				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 
 		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(1L).name("Name").surname("Surname")
 				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
@@ -131,20 +125,19 @@ public class InternshipTest {
 				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
 				.updateDate(localDateTime).build();
 
-		var Dtointernship = InternshipDto.builder().id(1L).status(status)
+		// TODO @ Change when the InternshipRequestDto manipulated
+		var Dtointernship = InternshipRequestDto.builder().id(1L).status(InternshipStatus.APPROVED)
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.days(1).student(Dtostudent).company(Dtocompany).facultySupervisor(DtoFacultySupervisor).build();
+				.days(1).studentId(1004L).companyId(9001L).facultySupervisorId(400L).build();
 
 		var actual = internshipService.addInternship(Dtointernship);
 
 		assertNotNull(actual);
 		assertEquals(modelInternship.getId(), actual.getId());
 		assertEquals(modelInternship.getStatus(), actual.getStatus());
-		assertEquals(modelInternship.getStartDate(), actual.getStartDate());
-		assertEquals(modelInternship.getEndDate(), actual.getEndDate());
 		assertEquals(modelInternship.getDays(), actual.getDays());
-		assertEquals(modelInternship.getCompany().getId(), actual.getCompany().getId());
-		assertEquals(modelInternship.getStudent().getId(), actual.getStudent().getId());
-		assertEquals(modelInternship.getFacultySupervisor().getId(), actual.getFacultySupervisor().getId());
+		assertEquals(modelInternship.getCompany().getId(), actual.getCompanyId());
+		assertEquals(modelInternship.getStudent().getId(), actual.getStudentId());
+		assertEquals(modelInternship.getFacultySupervisor().getId(), actual.getFacultySupervisorId());
 	}
 }

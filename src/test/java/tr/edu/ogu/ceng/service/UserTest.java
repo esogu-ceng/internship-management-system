@@ -15,9 +15,8 @@ import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.UserDto;
-import tr.edu.ogu.ceng.dto.UserTypeDto;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.model.UserType;
 
 public class UserTest {
 	@Mock
@@ -38,10 +37,10 @@ public class UserTest {
 	void is_user_saved_successfully() {
 		LocalDateTime dateTime = LocalDateTime.now();
 		var userToSave = UserDto.builder().id(1002L).username("TEST").password("Test").email("Test@test.com")
-				.userType(new UserTypeDto()).createDate(dateTime).updateDate(dateTime).build();
+				.userType(UserType.STUDENT).createDate(dateTime).updateDate(dateTime).build();
 
 		var savedUser = User.builder().id(1002L).username("TEST").password("Test").email("Test@test.com")
-				.userType(new UserType()).createDate(dateTime).updateDate(dateTime).build();
+				.userType(UserType.STUDENT).createDate(dateTime).updateDate(dateTime).build();
 
 		when(userRepository.existsById(any(Long.class))).thenReturn(false);
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);

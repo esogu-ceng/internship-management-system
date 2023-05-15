@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
@@ -26,25 +27,25 @@ public class RegisterAsCompanySupervisorService{
 		Company company = new Company();
 		companySupervisor.setUser(user);
 		companySupervisor.setCompany(company);
-		companySupervisor.setId(0);
 		companySupervisor.setName(request.getName());
 		companySupervisor.setSurname(request.getSurname());
 		companySupervisor.setPhoneNumber(request.getPhoneNumber());
 		companySupervisor.getUser().setId(request.getUserId());
 		companySupervisor.getUser().setPassword(request.getPassword());
 		companySupervisor.getCompany().setId(request.getCompanyId());
-		companySupervisor.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		companySupervisor.setCreateDate(new Timestamp(System.currentTimeMillis()));
-		repository.save(companySupervisor);
+		companySupervisor.setUpdateDate(LocalDateTime.now());
+		companySupervisor.setCreateDate(LocalDateTime.now());
+		CompanySupervisor registeredCompanySupervisor = repository.save(companySupervisor);
 		
 		RegisterAsCompanySupervisorDto response=new RegisterAsCompanySupervisorDto();
-		response.setName(companySupervisor.getName());
-		response.setSurname(companySupervisor.getSurname());
-		response.setPhoneNumber(companySupervisor.getPhoneNumber());
-		response.setUserId(companySupervisor.getUser().getId());
-		response.setPassword(companySupervisor.getUser().getPassword());
-		response.setConfirmPassword(companySupervisor.getUser().getPassword());
-		response.setCompanyId(companySupervisor.getCompany().getId());
+		response.setId(registeredCompanySupervisor.getId());
+		response.setName(registeredCompanySupervisor.getName());
+		response.setSurname(registeredCompanySupervisor.getSurname());
+		response.setPhoneNumber(registeredCompanySupervisor.getPhoneNumber());
+		response.setUserId(registeredCompanySupervisor.getUser().getId());
+		response.setPassword(registeredCompanySupervisor.getUser().getPassword());
+		response.setConfirmPassword(registeredCompanySupervisor.getUser().getPassword());
+		response.setCompanyId(registeredCompanySupervisor.getCompany().getId());
 		response.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 		response.setCreateDate(new Timestamp(System.currentTimeMillis()));
 		

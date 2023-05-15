@@ -1,10 +1,8 @@
 package tr.edu.ogu.ceng.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
 
 @RestController
@@ -26,21 +26,23 @@ public class FacultySupervisorController {
 	private FacultySupervisorService facultySupervisorService;
 
 	@PostMapping("/saveFacultysupervisor")
-	public ResponseEntity<FacultySupervisorDto> addFacultySupervisor(@RequestBody @Valid FacultySupervisorDto facultySupervisor) {
-		FacultySupervisorDto facultySupervisor1 = facultySupervisorService.addFacultySupervisor(facultySupervisor);
-		return new ResponseEntity<>(facultySupervisor1, HttpStatus.CREATED);
+	public FacultySupervisorResponseDto addFacultySupervisor(
+			@RequestBody @Validated FacultySupervisorRequestDto facultySupervisorRequestDto) {
+		return facultySupervisorService.addFacultySupervisor(facultySupervisorRequestDto);
 	}
 
 	@PutMapping
-	public ResponseEntity<FacultySupervisorDto> updateFacultySupervisor(@RequestBody FacultySupervisorDto facultySupervisor) {
-		FacultySupervisorDto updatedFacultySupervisor = facultySupervisorService.updateFacultySupervisor(facultySupervisor);
+	public ResponseEntity<FacultySupervisorResponseDto> updateFacultySupervisor(
+			@RequestBody FacultySupervisorRequestDto facultySupervisorRequestDto) {
+		FacultySupervisorResponseDto updatedFacultySupervisor = facultySupervisorService
+				.updateFacultySupervisor(facultySupervisorRequestDto);
 		return ResponseEntity.ok(updatedFacultySupervisor);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<FacultySupervisorDto> getFacultySupervisor(@PathVariable(name = "id") long id) {
-		FacultySupervisorDto facultySupervisorDto = facultySupervisorService.getFacultySupervisor(id);
-		return ResponseEntity.ok(facultySupervisorDto);
+	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisor(@PathVariable(name = "id") long id) {
+		FacultySupervisorResponseDto facultySupervisorResponseDto = facultySupervisorService.getFacultySupervisor(id);
+		return ResponseEntity.ok(facultySupervisorResponseDto);
 	}
 
 	@DeleteMapping("/{id}")

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
+import tr.edu.ogu.ceng.dto.requests.FacultyRequestDto;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
@@ -25,10 +26,11 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 public class FacultyService {
 	@Autowired
 	private FacultyRepository facultyRepository;
+	private ModelMapper modelMapper;
 
 	public Page<FacultyDto> getFaculties(Pageable pageable) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
+			modelMapper = new ModelMapper();
 			log.info("Getting faculties with pageable: {}", pageable);
 			Page<Faculty> faculties = facultyRepository.findAll(pageable);
 			Page<FacultyDto> facultyDtos = faculties.map(faculty -> modelMapper.map(faculty, FacultyDto.class));
@@ -41,7 +43,7 @@ public class FacultyService {
 
 	public FacultyDto addFaculty(FacultyDto facultyDto) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
+			modelMapper = new ModelMapper();
 			Faculty faculty = modelMapper.map(facultyDto, Faculty.class);
 			LocalDateTime dateTime = LocalDateTime.now();
 			faculty.setCreateDate(dateTime);
@@ -55,13 +57,17 @@ public class FacultyService {
 		}
 	}
 
-	public FacultyDto updateFaculty(FacultyDto facultyDto) {
-		Faculty faculty = facultyRepository.findById(facultyDto.getId())
+	public FacultyDto updateFaculty(FacultyRequestDto facultyRequestDto) {
+		modelMapper = new ModelMapper();
+		if (facultyRequestDto.getId() == null) {
+			throw new IllegalArgumentException("Faculty Id cannot be null");
+		}
+		Faculty faculty = facultyRepository.findById(facultyRequestDto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Faculty not found!"));
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.map(facultyDto, faculty);
-		LocalDateTime dateTime = LocalDateTime.now();
-		faculty.setUpdateDate(dateTime);
+
+		faculty = modelMapper.map(facultyRequestDto, Faculty.class);
+		faculty.setCreateDate(facultyRepository.getById(faculty.getId()).getCreateDate());
+		faculty.setUpdateDate(LocalDateTime.now());
 		Faculty updatedFaculty;
 		try {
 			updatedFaculty = facultyRepository.save(faculty);
@@ -87,17 +93,16 @@ public class FacultyService {
 			return false;
 		}
 	}
-	
-    public FacultyDto getFacultyById(Long id) {
-        Faculty faculty = facultyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Faculty not found with id: " + id));
-        return convertToDto(faculty);
-    }
-    
-    private FacultyDto convertToDto(Faculty faculty) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(faculty, FacultyDto.class);
-    }
-	
-	
+
+	public FacultyDto getFacultyById(Long id) {
+		Faculty faculty = facultyRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Faculty not found with id: " + id));
+		return convertToDto(faculty);
+	}
+
+	private FacultyDto convertToDto(Faculty faculty) {
+		modelMapper = new ModelMapper();
+		return modelMapper.map(faculty, FacultyDto.class);
+	}
+
 }

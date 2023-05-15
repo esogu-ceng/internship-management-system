@@ -14,9 +14,12 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dao.UserTypeRepository;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
-import tr.edu.ogu.ceng.enums.UserTypeEnum;
+import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
+import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -26,83 +29,91 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @AllArgsConstructor
 public class FacultySupervisorService {
 
-	private FacultySupervisorRepository facultySupervisorRepository;
-	private UserRepository userRepository;
-	private UserTypeRepository userTypeRepository;
-	private ModelMapper modelMapper;
+    private FacultySupervisorRepository facultySupervisorRepository;
+    private UserRepository userRepository;
+    private ModelMapper modelMapper;
+    private MessageResource messageResource;
 
-	/**
-	 * Adds a new Faculty Supervisor and related User definition
-	 * 
-	 * @param facultySupervisorDto
-	 * @return
-	 */
-	// IMPORTANT: without @Transaction, the user entity may be saved but
-	// FacultySupervisor may not be saved because of some different constraints
-	@Transactional
-	public FacultySupervisorDto addFacultySupervisor(FacultySupervisorDto facultySupervisorDto) {
-		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorDto, FacultySupervisor.class);
+    /**
+     * Adds a new Faculty Supervisor and related User definition
+     *
+     * @param facultySupervisorRequestDto
+     * @return
+     */
+    // IMPORTANT: without @Transaction, the user entity may be saved but
+    // FacultySupervisor may not be saved because of some different constraints
+    @Transactional
+    public FacultySupervisorResponseDto addFacultySupervisor(FacultySupervisorRequestDto facultySupervisorRequestDto) {
+        modelMapper = new ModelMapper();
+        LocalDateTime now = LocalDateTime.now();
 
-		// need to add a new user to the DB
-		User user = facultySupervisor.getUser();
-		LocalDateTime now = LocalDateTime.now(); // LocalDateTime is a better choice than TimeStamp which has deprecated
-													// functionality
-		user.setCreateDate(now);
-		user.setUpdateDate(now);
-		user.setUserType(userTypeRepository.findByType(UserTypeEnum.FACULTYSUPERVISOR.name()));
+        // We need to save user before student.
+        User user = modelMapper.map(facultySupervisorRequestDto.getUser(), User.class);
+        user.setCreateDate(now);
+        user.setUpdateDate(now);
+        user.setUserType(UserType.FACULTYSUPERVISOR);
 
-		// give persisted entity to the facultySupervisor Object
-		facultySupervisor.setUser(userRepository.save(user)); // FIXME instead, do we need to call to Service method?
-																// But the Service method needs to get DTO. Or are there
-																// any other approaches to persist the User?
-		facultySupervisor.setCreateDate(now);
-		facultySupervisor.setUpdateDate(now);
+        FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
+        facultySupervisor.setUser(userRepository.save(user));// FIXME instead, do we need to call to Service method?
+        // But the Service method needs to get DTO. Or are there
+        // any other approaches to persist the User?
+        facultySupervisor.setCreateDate(now);
+        facultySupervisor.setUpdateDate(now);
 
-		FacultySupervisor savedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
-		log.info("Faculty supervisor saved: {}", savedFacultySupervisor);
-		return modelMapper.map(savedFacultySupervisor, FacultySupervisorDto.class);
-	}
+        FacultySupervisor savedfacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
+        log.info("The student was successfully added: {}", savedfacultySupervisor);
 
-	public FacultySupervisorDto updateFacultySupervisor(FacultySupervisorDto facultySupervisordto) {
+        return modelMapper.map(savedfacultySupervisor, FacultySupervisorResponseDto.class);
+    }
 
-		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisordto, FacultySupervisor.class);
-		if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
-			throw new EntityNotFoundException("Faculty supervisor not found!");
-		LocalDateTime now = LocalDateTime.now();
-		facultySupervisor.setUpdateDate(now);
-		FacultySupervisor updatedFacultySupervisor;
-		try {
-			updatedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
+    public FacultySupervisorResponseDto updateFacultySupervisor(FacultySupervisorRequestDto facultySupervisorRequestDto) {
+
+        FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
+        if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
+            throw new EntityNotFoundException("Faculty supervisor not found!");
+
+        try {
+			LocalDateTime now = LocalDateTime.now();
+			facultySupervisor.setUpdateDate(now);
+			facultySupervisor.setCreateDate(facultySupervisorRepository.getById(facultySupervisor.getId()).getCreateDate());
+			FacultySupervisor updatedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
+
+			FacultySupervisorResponseDto responseDto = modelMapper.map(updatedFacultySupervisor, FacultySupervisorResponseDto.class);
+			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
+			responseDto.setUserId(facultySupervisorRequestDto.getUser().getId());
 			log.info("Faculty supervisor updated: {}", updatedFacultySupervisor);
+			return responseDto;
 		} catch (Exception e) {
 			log.error("Error occurred while updating faculty supervisor: {}", e.getMessage());
 			throw e;
 		}
-		return modelMapper.map(updatedFacultySupervisor, FacultySupervisorDto.class);
-	}
+    }
+    public FacultySupervisorResponseDto getFacultySupervisor(Long id) {
+        if (!facultySupervisorRepository.existsById(id)) {
+            String message = messageResource.getMessage("not.found");
+            throw new EntityNotFoundException(message);
+        }
+        try {
+            ModelMapper modelMapper = new ModelMapper();
+            return modelMapper.map(facultySupervisorRepository.getById(id), FacultySupervisorResponseDto.class);
+		} catch (Exception e) {
+            log.error("Error occurred while getting faculty supervisor: {}", e.getMessage());
+            throw e;
+        }
+    }
 
-	public FacultySupervisorDto getFacultySupervisor(Long id) {
-		if (!facultySupervisorRepository.existsById(id))
-			throw new EntityNotFoundException("Faculty supervisor not found!");
-		Optional<FacultySupervisor> facultySupervisorOptional = facultySupervisorRepository.findById(id);
-
-		facultySupervisorOptional.ifPresent(facultySupervisor -> log.info("Faculty supervisor retrieved: {}",
-				modelMapper.map(facultySupervisorOptional.get(), FacultySupervisorDto.class)));
-		return modelMapper.map(facultySupervisorOptional.get(), FacultySupervisorDto.class);
-	}
-
-	public boolean deleteFacultySupervisor(long id) {
-		try {
-			facultySupervisorRepository.deleteById(id);
-			log.info("Faculty supervisor deleted with id: {}", id);
-			return true;
-		} catch (DataIntegrityViolationException e) {
-			log.warn("Cannot delete faculty supervisor with ID {} due to integrity violation", id);
-			return false;
-		} catch (EmptyResultDataAccessException e) {
-			log.warn("Faculty supervisor with ID {} not found", id);
-			return false;
-		}
-	}
+    public boolean deleteFacultySupervisor(long id) {
+        try {
+            facultySupervisorRepository.deleteById(id);
+            log.info("Faculty supervisor deleted with id: {}", id);
+            return true;
+        } catch (DataIntegrityViolationException e) {
+            log.warn("Cannot delete faculty supervisor with ID {} due to integrity violation", id);
+            return false;
+        } catch (EmptyResultDataAccessException e) {
+            log.warn("Faculty supervisor with ID {} not found", id);
+            return false;
+        }
+    }
 
 }

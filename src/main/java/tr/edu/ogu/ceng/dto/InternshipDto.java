@@ -22,5 +22,4 @@ public class InternshipDto {
 	private StudentDto student;
 	private CompanyDto company;
 	private FacultySupervisorDto facultySupervisor;
-
 }
