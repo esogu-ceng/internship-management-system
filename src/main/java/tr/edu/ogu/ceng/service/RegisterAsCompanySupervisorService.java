@@ -12,6 +12,7 @@ import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.RegisterAsCompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.RegisterAsCompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.service.Exception.PasswordsNotMatchedException;
 
 @Service
 @AllArgsConstructor
@@ -47,7 +48,7 @@ public class RegisterAsCompanySupervisorService{
 
 	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorRequestDto request) {
 		if(!request.getPassword().toString().equals(request.getConfirmPassword().toString())) 
-			throw new RuntimeException("Şifreler uyuşmuyor!");
+			throw new PasswordsNotMatchedException();
 	}
 
 }
