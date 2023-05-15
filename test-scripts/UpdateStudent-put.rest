@@ -1,0 +1,46 @@
+PUT http://localhost:8080/api/student
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+            "id":41,
+            "name": "updated",
+            "surname": "melisa",
+            "tckn": "123",
+            "grade": "90",
+            "studentNo": "111",
+            "phoneNumber": "123",
+            "homePhoneNumber": "123",
+            "boulevard": "dsa",
+            "mainStreet": "sdasdas",
+            "street": "sasdsad",
+            "neighborhood": "lasdsada",
+            "outerDoorNo": "şsadasd",
+            "innerDoorNo": "şasdasda",
+            "province": "ösadasd",
+            "subprovince": "lasdasd",
+            "village": "şasdasdl",
+            "zipCode": "şnasdsa",
+            "motherName": "lasdasd",
+            "fatherName": "lasdas",
+            "birthPlace": "ösadasd",
+            "birthDate":"1969-12-31T22:00:01.000+00:00",
+            "idCardSerialNo": "asdsad",
+            "idRegisterProvince": "asdsad",
+            "idRegisterSubprovince": "asdasd",
+            "idRegisterStreetVillage": "sadsa",
+            "idRegisterVolumeNo": "sadsad",
+            "idRegisterFamilySerialNo": "adsasd",
+            "idRegisterSerialNo": "sadas",
+            "idRegistryOffice": "adasd",
+            "idRegistryReason": "asdasd",
+            "sgkFamily": true,
+            "sgkSelf": true,
+            "user":{
+                "username":"melisa",
+                "password":"dsdddddsds",
+                "email":"melisa@gmail.com",
+                "userTypeId":"1"
+            }, 
+            "facultyId": 1
+}
