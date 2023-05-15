@@ -1,58 +1,51 @@
 package tr.edu.ogu.ceng.service;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import tr.edu.ogu.ceng.dao.RegisterAsCompanySupervisorRepository;
-import tr.edu.ogu.ceng.dto.RegisterAsCompanySupervisorDto;
-import tr.edu.ogu.ceng.model.Company;
-import tr.edu.ogu.ceng.model.CompanySupervisor;
-import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.UserDto;
+import tr.edu.ogu.ceng.dto.requests.RegisterAsCompanySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.responses.RegisterAsCompanySupervisorResponseDto;
+import tr.edu.ogu.ceng.enums.UserType;
 
 @Service
 @AllArgsConstructor
 public class RegisterAsCompanySupervisorService{
 
-	private final RegisterAsCompanySupervisorRepository repository;
+	private final CompanySupervisorService companySupervisorService;
+	private final UserService userService;
+	private final ModelMapper mapper;
 	
-	public RegisterAsCompanySupervisorDto register(RegisterAsCompanySupervisorDto request) {
+	public RegisterAsCompanySupervisorResponseDto register(RegisterAsCompanySupervisorRequestDto request) {
 
 		checkIfPasswordsMatchingValidation(request);
-		CompanySupervisor companySupervisor=new CompanySupervisor();
-		User user = new User();
-		Company company = new Company();
-		companySupervisor.setUser(user);
-		companySupervisor.setCompany(company);
-		companySupervisor.setName(request.getName());
-		companySupervisor.setSurname(request.getSurname());
-		companySupervisor.setPhoneNumber(request.getPhoneNumber());
-		companySupervisor.getUser().setId(request.getUserId());
-		companySupervisor.getUser().setPassword(request.getPassword());
-		companySupervisor.getCompany().setId(request.getCompanyId());
-		companySupervisor.setUpdateDate(LocalDateTime.now());
-		companySupervisor.setCreateDate(LocalDateTime.now());
-		CompanySupervisor registeredCompanySupervisor = repository.save(companySupervisor);
 		
-		RegisterAsCompanySupervisorDto response=new RegisterAsCompanySupervisorDto();
-		response.setId(registeredCompanySupervisor.getId());
-		response.setName(registeredCompanySupervisor.getName());
-		response.setSurname(registeredCompanySupervisor.getSurname());
-		response.setPhoneNumber(registeredCompanySupervisor.getPhoneNumber());
-		response.setUserId(registeredCompanySupervisor.getUser().getId());
-		response.setPassword(registeredCompanySupervisor.getUser().getPassword());
-		response.setConfirmPassword(registeredCompanySupervisor.getUser().getPassword());
-		response.setCompanyId(registeredCompanySupervisor.getCompany().getId());
-		response.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-		response.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		UserDto userDto = mapper.map(request, UserDto.class);
+		userDto.setCreateDate(LocalDateTime.now());
+		userDto.setUpdateDate(LocalDateTime.now());
+		userDto.setUserType(UserType.COMPANYSUPERVISOR);
+		UserDto createdUserDto = userService.saveUser(userDto);
+		
+		CompanySupervisorDto companySupervisorDto = mapper.map(request, CompanySupervisorDto.class);
+		companySupervisorDto.setUser(createdUserDto);
+		companySupervisorDto.setCreateDate(LocalDateTime.now());
+		companySupervisorDto.setUpdateDate(LocalDateTime.now());
+		CompanySupervisorDto createdCompanySupervisorDto = companySupervisorService.add(companySupervisorDto);
+		
+		RegisterAsCompanySupervisorResponseDto response = mapper.map(createdCompanySupervisorDto, RegisterAsCompanySupervisorResponseDto.class);
+		response.setUsername(createdUserDto.getUsername());
+		response.setEmail(createdUserDto.getEmail());
+		response.setUserType(createdUserDto.getUserType());
 		
 		return response;
 	}
 
-	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorDto request) {
+	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorRequestDto request) {
 		if(!request.getPassword().toString().equals(request.getConfirmPassword().toString())) 
 			throw new RuntimeException("Şifreler uyuşmuyor!");
 	}
