@@ -1,0 +1,9 @@
+ 
+PUT http://localhost:8080/api/faculty/admin
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+   {
+      "id":"10",
+      "name": "Güzel Sanatlar"
+   }

@@ -1,0 +1,3 @@
+### Delete Student
+DELETE http://localhost:8080/api/student/1
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
