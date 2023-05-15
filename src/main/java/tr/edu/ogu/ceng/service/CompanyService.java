@@ -43,6 +43,7 @@ public class CompanyService {
 			Company company = modelMapper.map(companyDto, Company.class);
 			LocalDateTime dateTime = LocalDateTime.now();
 			company.setUpdateDate(dateTime);
+			company.setCreateDate(companyRepository.getById(companyDto.getId()).getCreateDate());
 			company = companyRepository.save(company);
 			log.info("Company with ID {} has been updated: {}, {}", company.getId(), company.getName(), company.getDescription());
 			return modelMapper.map(company, CompanyDto.class);
