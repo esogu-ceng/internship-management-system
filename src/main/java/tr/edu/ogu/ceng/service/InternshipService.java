@@ -122,7 +122,7 @@ public class InternshipService {
 		return true;
 	}
 
-	public Internship approveInternship(Long id) {
+	public InternshipStatus chanceInternshipStatus(Long id, InternshipStatus status) {
 
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
@@ -131,12 +131,12 @@ public class InternshipService {
 
 		LocalDateTime dateTime = LocalDateTime.now();
 		Internship internship = internshipRepository.findById(id).orElse(null);
-		internship.setStatus(InternshipStatus.APPROVED);
 		internship.setUpdateDate(dateTime);
+		internship.setStatus(status);
 		internshipRepository.save(internship);
-
-		log.info("Internship Approved!");
-		return internship;
+		log.info("Internship with id {} {}!", id, status);
+		
+		return status;
 
 	}
 
