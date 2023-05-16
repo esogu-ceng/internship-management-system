@@ -1,0 +1,26 @@
+PUT http://localhost:8080/api/facultySupervisor
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+  "id": "42",
+  "name": "UPDATEDED",
+  "surname": "UPDATEDED",
+  "phoneNumber": "1322123",
+  "supervisorNo": "921",
+  "user": {
+    "id": "93",
+    "username": "test512",
+    "password": "test52",
+    "email": "aAs51@gmail.com",
+    "userType": "FACULTYSUPERVISOR"
+  },
+  "faculty": {
+    "id": 1
+  }
+}
+
+###
+DELETE http://localhost:8080/api/facultySupervisor/43
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

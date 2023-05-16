@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +29,8 @@ public class InternshipEvaluateFormController {
 	private final InternshipEvaluateFormService internshipEvaluateFormService;
 
 	@PostMapping("/upload")
-	public ResponseEntity<InternshipEvaluateForm> formFileUpload(@RequestParam("file") MultipartFile file, InternshipEvaluateFormDto dto) {
+	public ResponseEntity<InternshipEvaluateForm> formFileUpload(@RequestPart(required = false) MultipartFile file,
+			@RequestPart("dto") InternshipEvaluateFormDto dto) {
 		InternshipEvaluateForm newForm = internshipEvaluateFormService.formFileUpload(file, dto);
 		return new ResponseEntity<>(newForm, HttpStatus.OK);
 	}

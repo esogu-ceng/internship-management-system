@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/company/getAll
+Authorization: Basic yagizharman4biz@gmail.com:password123
