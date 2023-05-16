@@ -123,7 +123,7 @@ public class UserService {
 	public void encodeAllSavedPasswords() {
 		List<User> userList = userRepository.findAll();
 		for (User user : userList) {
-			if (user.getPassword().length() > 59 & user.getPassword().startsWith("$")) {
+			if (user.getPassword().length() > 59 && user.getPassword().startsWith("$")) {
 				continue;
 			}
 			user.setPassword(encodeUserPassword(user.getPassword()));
