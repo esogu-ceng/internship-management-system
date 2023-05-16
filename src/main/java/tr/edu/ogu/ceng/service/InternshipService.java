@@ -158,7 +158,6 @@ public class InternshipService {
 
 	public Page<InternshipResponseDto> getAllInternshipsByCompanyId(Long companyId, Pageable pageable) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all internships by company id: {} with pageable: {}", companyId, pageable);
 			Page<Internship> internships = internshipRepository.findAllByCompanyId(companyId, pageable);
 			if (internships.isEmpty()) {
