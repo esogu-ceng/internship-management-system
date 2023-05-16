@@ -8,4 +8,6 @@ import tr.edu.ogu.ceng.model.Internship;
 
 public interface InternshipRepository extends JpaRepository<Internship, Long> {
 	Page<Internship> findAllByStudentId(Long studentId, Pageable pageable);
+
+	Page<Internship> findAllByCompanyId(Long companyId, Pageable pageable);
 }

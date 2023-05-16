@@ -86,7 +86,6 @@ public class InternshipService {
 	}
 
 	public CompanyDto getCompanyByInternshipId(Long id) {
-		ModelMapper modelMapper = new ModelMapper();
 		try {
 			if (!internshipRepository.existsById(id)) {
 				log.warn("Internship not found!");
@@ -145,6 +144,23 @@ public class InternshipService {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all internships by student id: {} with pageable: {}", studentId, pageable);
 			Page<Internship> internships = internshipRepository.findAllByStudentId(studentId, pageable);
+			if (internships.isEmpty()) {
+				log.warn("The internship list is empty.");
+			}
+			Page<InternshipResponseDto> internshipDtos = internships
+					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			return internshipDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting internships: {}", e.getMessage());
+			throw e;
+		}
+	}
+
+	public Page<InternshipResponseDto> getAllInternshipsByCompanyId(Long companyId, Pageable pageable) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting all internships by company id: {} with pageable: {}", companyId, pageable);
+			Page<Internship> internships = internshipRepository.findAllByCompanyId(companyId, pageable);
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
