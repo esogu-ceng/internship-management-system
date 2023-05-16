@@ -1,0 +1,4 @@
+### Get student by user id
+GET http://localhost:8080/api/student/byUserId/3
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

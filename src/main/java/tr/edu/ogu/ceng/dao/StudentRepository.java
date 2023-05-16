@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 
 import tr.edu.ogu.ceng.model.Student;
 
-public interface StudentRepository extends JpaRepository<Student, Long>{
-    Page<Student> findByNameOrSurnameOrStudentNo(String keyword1, String keyword2, String keyword3, Pageable pageable);
-	
+public interface StudentRepository extends JpaRepository<Student, Long> {
+	Page<Student> findByNameOrSurnameOrStudentNo(String keyword1, String keyword2, String keyword3, Pageable pageable);
+
+	@Query("SELECT s FROM Student s JOIN s.user u WHERE u.id = :id")
+	Student findByUserId(Long id);
+
 	boolean existsByTckn(String tcno);
-	
+
 	boolean existsByStudentNo(String studentno);
 }

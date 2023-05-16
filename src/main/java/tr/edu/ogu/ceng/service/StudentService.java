@@ -156,10 +156,10 @@ public class StudentService {
 	public StudentDto getStudentByUserId(Long id) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			Student student = studentRepository.getReferenceById(id);
+			Student student = studentRepository.findByUserId(id);
 			return modelMapper.map(student, StudentDto.class);
 		} catch (Exception e) {
-			log.error("An error occurred while getting students with given ID", e.getMessage());
+			log.error("An error occurred while getting students with given user ID", e.getMessage());
 			throw e;
 		}
 	}
