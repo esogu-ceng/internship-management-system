@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.UserDto;
+import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
+import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.model.User;
 
 @Slf4j
@@ -89,7 +91,7 @@ public class UserService {
 			return false;
 		}
 	}
-	public UserDto updateUser(User userDto){
+	public UserResponseDto updateUser(UserRequestDto userDto){
 		try {
 			if (!userRepository.existsById(userDto.getId())) {
 				log.warn("There is no user with the entered ID.");
@@ -102,7 +104,7 @@ public class UserService {
 			user.setUpdateDate(dateTime);
 			user = userRepository.save(user);
 			log.info("User with ID {} has been updated", user.getId());
-			return modelMapper.map(user, UserDto.class);
+			return modelMapper.map(user, UserResponseDto.class);
 		} catch (tr.edu.ogu.ceng.service.Exception.EntityNotFoundException e) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}

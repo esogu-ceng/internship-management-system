@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
 import tr.edu.ogu.ceng.dto.ResetPasswordDto;
+import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.InvalidTokenException;
@@ -54,6 +56,7 @@ public class ForgotPasswordService {
 	}
 	
 	public void updatePassword(ResetPasswordDto resetPasswordDto) throws Exception {
+		ModelMapper modelMapper = new ModelMapper();
 		String hash = resetPasswordDto.getHash();
 		if(!resetPasswordDto.getPassword().equals(resetPasswordDto.getConfirmPassword())) 
 			throw new PasswordsNotMatchedException();
@@ -63,7 +66,8 @@ public class ForgotPasswordService {
 		String email = resetRequests.get(hash);
         User user = userService.findByEmail(email);
 		user.setPassword(resetPasswordDto.getPassword());
-		userService.updateUser(user);
+		UserRequestDto userRequestDto = modelMapper.map(user, UserRequestDto.class);
+		userService.updateUser(userRequestDto);
 		resetRequests.remove(hash);
 	}
 	

@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import tr.edu.ogu.ceng.dto.UserDto;
-import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
+import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -33,8 +34,8 @@ public class UserController {
 		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 	}
 	@PutMapping("/admin")
-	public ResponseEntity<UserDto> updateUser(@RequestBody User user) {
-		UserDto userDto = userService.updateUser(user);
+	public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto user) {
+		UserResponseDto userDto = userService.updateUser(user);
 		return ResponseEntity.ok(userDto);
 	}
 	@DeleteMapping("/{id}")
