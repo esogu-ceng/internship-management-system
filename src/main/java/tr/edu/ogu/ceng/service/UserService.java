@@ -89,11 +89,22 @@ public class UserService {
 			return false;
 		}
 	}
-	
-	public User updateUser(User user) {
-		if (!userRepository.existsById(user.getId())) {
-			throw new EntityNotFoundException("User not found!");
+	public UserDto updateUser(User userDto){
+		try {
+			if (!userRepository.existsById(userDto.getId())) {
+				log.warn("There is no user with the entered ID.");
+				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+			}
+			ModelMapper modelMapper = new ModelMapper();
+			User user = modelMapper.map(userDto, User.class);
+			LocalDateTime dateTime = LocalDateTime.now();
+			user.setCreateDate(userRepository.getById(userDto.getId()).getCreateDate());
+			user.setUpdateDate(dateTime);
+			user = userRepository.save(user);
+			log.info("User with ID {} has been updated", user.getId());
+			return modelMapper.map(user, UserDto.class);
+		} catch (tr.edu.ogu.ceng.service.Exception.EntityNotFoundException e) {
+			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
-		return userRepository.save(user);
-    }
+	}
 }
