@@ -1,0 +1,29 @@
+POST /api/internship-evaluate-forms/upload HTTP/1.1
+Host: localhost:8080
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+Cookie: JSESSIONID=2BDE6D12F149AAE22204D9AC31973199
+Content-Length: 545
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="/C:/Users/mervesari/Downloads/example.pdf"
+Content-Type: application/pdf
+
+(data)
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="dto"
+Content-Type: application/json
+
+{   
+    "id": 1,
+    "name": "merve",
+    "surname": "merve",
+    "file_path": "C:\\Users",
+    "internship": {
+        "id": 1
+    },
+    "company": {
+        "id": 1
+    }
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
