@@ -1,0 +1,9 @@
+
+PUT http://localhost:8080/api/internship/approve/1
+Authorization: Basic pastace:123456
+###
+
+
+PUT http://localhost:8080/api/internship/reject/1
+Authorization: Basic pastace:123456
+###
