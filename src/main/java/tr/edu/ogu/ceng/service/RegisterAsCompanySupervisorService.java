@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
@@ -22,6 +23,7 @@ public class RegisterAsCompanySupervisorService{
 	private final UserService userService;
 	private final ModelMapper mapper;
 	
+	@Transactional
 	public RegisterAsCompanySupervisorResponseDto register(RegisterAsCompanySupervisorRequestDto request) {
 
 		checkIfPasswordsMatchingValidation(request);
