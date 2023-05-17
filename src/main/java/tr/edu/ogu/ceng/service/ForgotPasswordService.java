@@ -1,9 +1,9 @@
 package tr.edu.ogu.ceng.service;
 
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.internet.MimeMessage;
 
@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
 import tr.edu.ogu.ceng.dto.ResetPasswordDto;
@@ -29,22 +31,27 @@ public class ForgotPasswordService {
 	@Autowired
 	private SettingService settingService;
 
-	private static Map<String, String> resetRequests = new HashMap<>();
+
+	private static Cache<String, String> resetRequestCache = CacheBuilder.newBuilder().maximumSize(1000)
+			.expireAfterWrite(5, TimeUnit.MINUTES).build();
 
 	public void sendResetPasswordEmail(EmailReceiverDto emailReceiver) throws Exception {
 		if (userService.findByEmail(emailReceiver.getEmail()) == null)
 			throw new EntityNotFoundException("User with " + emailReceiver.getEmail() + " does not exist!");
 
 		String resetHash = UUID.randomUUID().toString();
-		resetRequests.put(resetHash, emailReceiver.getEmail());
+		resetRequestCache.put(resetHash, emailReceiver.getEmail());
 
 		JavaMailSender mailSender = getJavaMailSender();
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
 
 		String subject = "You may reset your password.";
-		String resetPasswordUrl = settingService.findValueByKey("app_host") + ":" + settingService.findValueByKey("app_port") + "/public/update-password?hash="+ resetHash;
-		String emailText = "Please click the link below to reset your password. <br> <a href=\"" + resetPasswordUrl + "\">Reset Password</a>";
+
+		String resetPasswordUrl = settingService.findValueByKey("app_host") + ":"
+				+ settingService.findValueByKey("app_port") + "/public/update-password?hash=" + resetHash;
+		String emailText = "Please click the link below to reset your password. <br> <a href=\"" + resetPasswordUrl
+				+ "\">Reset Password</a>";
 		messageHelper.setSubject(subject);
 		message.setText(emailText, "UTF-8", "html");
 		messageHelper.setTo(emailReceiver.getEmail());
@@ -55,14 +62,14 @@ public class ForgotPasswordService {
 		String hash = resetPasswordDto.getHash();
 		if (!resetPasswordDto.getPassword().equals(resetPasswordDto.getConfirmPassword()))
 			throw new PasswordsNotMatchedException();
-		if (!resetRequests.containsKey(hash))
+		if (resetRequestCache.getIfPresent(hash) == null)
 			throw new InvalidTokenException();
 
-		String email = resetRequests.get(hash);
+		String email = resetRequestCache.getIfPresent(hash);
 		User user = userService.findByEmail(email);
 		user.setPassword(resetPasswordDto.getPassword());
 		userService.updateUser(user);
-		resetRequests.remove(hash);
+		resetRequestCache.invalidate(hash);
 	}
 
 	private JavaMailSender getJavaMailSender() {
@@ -79,8 +86,4 @@ public class ForgotPasswordService {
 		return mailSender;
 	}
 
-	@Scheduled(fixedDelay = 300000)
-	public void clearResetRequests() {
-		resetRequests.clear();
-	}
 }
