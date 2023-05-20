@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -115,5 +117,20 @@ public class FacultySupervisorService {
             return false;
         }
     }
+    public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(Pageable pageable) {
+        try {
+            Page<FacultySupervisor> facultySupervisors = facultySupervisorRepository.findAll(pageable);
+            if (facultySupervisors.isEmpty()) {
+                log.warn("The faculty supervisor list is empty.");
+            }
+            Page<FacultySupervisorResponseDto> facultySupervisorDtos = facultySupervisors.map(
+                    facultySupervisor -> modelMapper.map(facultySupervisor, FacultySupervisorResponseDto.class));
+            return facultySupervisorDtos;
+        } catch (Exception e) {
+            log.error("An error occurred while getting faculty supervisors: {}", e.getMessage());
+            throw e;
+        }
+    }
+
 
 }
