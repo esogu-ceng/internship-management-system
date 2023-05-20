@@ -1,5 +1,17 @@
-function App() {
-	return <div></div>;
-}
+import React from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import "./index.css";
 
-export default App;
+function App() {
+	return (
+	  <React.StrictMode>
+		<Header />
+		<div>
+		</div>
+		<Footer />
+	  </React.StrictMode>
+	);
+  }
+  
+  export default App;
