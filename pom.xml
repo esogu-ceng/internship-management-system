@@ -60,6 +60,15 @@
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context-support</artifactId>
        </dependency>
+       
+       <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>31.1-jre</version>
+		</dependency>
+
+       
 		<!--Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
