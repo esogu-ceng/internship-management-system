@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
@@ -74,5 +77,15 @@ public class CompanySupervisorService {
 		if (repository.existsByUserId(userId)) {
 			throw new UserAlreadyExistsException();
 		}
+	}
+
+	public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(Long companyId){
+		List<CompanySupervisor> companySupervisors = repository.findAllByCompanyId(companyId);
+
+		List<CompanySupervisorDto> companySupervisorDtos = companySupervisors.stream().map(
+				companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class))
+				.collect(Collectors.toList());
+
+		return companySupervisorDtos;
 	}
 }
