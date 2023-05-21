@@ -1,5 +1,7 @@
 function App() {
-	return <div></div>;
+  const test = 12
+
+  return <div></div>
 }
 
-export default App;
+export default App
