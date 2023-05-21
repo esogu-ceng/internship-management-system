@@ -4,8 +4,8 @@ Staj yönetim sistemi uygulaması, öğrenci arayüz modülüdür. React framewo
 
 ## Çalıştırmadan Önce
 
--  _env.development.local_ dosyasını çalışma ortamına göre düzenlenmelidir.
--  **npm install** komutu kullanılarak proje bağımlıklıkları yüklenmelidir.
+- _env.development.local_ dosyasını çalışma ortamına göre düzenlenmelidir.
+- **npm install** komutu kullanılarak proje bağımlıklıkları yüklenmelidir.
 
 ## Kullanılabilir Komutlar
 

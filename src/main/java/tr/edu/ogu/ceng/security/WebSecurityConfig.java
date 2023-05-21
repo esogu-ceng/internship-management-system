@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -19,7 +20,7 @@ import tr.edu.ogu.ceng.enums.UserType;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @AllArgsConstructor
 public class WebSecurityConfig {
-	
+
 	ImsUserDetailsService imsUserDetailsService;
 
 	@Bean
@@ -30,64 +31,35 @@ public class WebSecurityConfig {
 				.authorizeRequests()
 				.antMatchers("/public/**").permitAll()
 				.antMatchers("/facultysupervisor/**", "**/facultysupervisor/**")
-				.hasAuthority(UserType.FACULTYSUPERVISOR.name())
-				.antMatchers("/student/**", "**/student/**")
-				.hasAuthority(UserType.STUDENT.name())
-				.antMatchers("/companysupervisor/**", "**/companysupervisor/**")
-				.hasAuthority(UserType.COMPANYSUPERVISOR.name())
-				.antMatchers("/admin/**", "**/admin/**")
-				.hasAuthority(UserType.ADMIN.name())
-				.anyRequest()
-				.authenticated()
-				.and().formLogin().loginPage("/public/login.html")
-				.loginProcessingUrl("/login")
-				.successHandler(authenticationSuccessHandler())
-				.failureHandler(authenticationFailureHandler())
-				.and().logout()
-				.logoutSuccessUrl("/public/login.html?logout=true")
-				.deleteCookies("JSESSIONID")
-				.and()
-			    .httpBasic()
-				.and()
-				.build();
+				.hasAuthority(UserType.FACULTYSUPERVISOR.name()).antMatchers("/student/**", "**/student/**")
+				.hasAuthority(UserType.STUDENT.name()).antMatchers("/companysupervisor/**", "**/companysupervisor/**")
+				.hasAuthority(UserType.COMPANYSUPERVISOR.name()).antMatchers("/admin/**", "**/admin/**")
+				.hasAuthority(UserType.ADMIN.name()).anyRequest().authenticated().and().formLogin()
+				.loginPage("/public/login.html").loginProcessingUrl("/login")
+				.successHandler(authenticationSuccessHandler()).failureHandler(authenticationFailureHandler()).and()
+				.logout().logoutSuccessUrl("/public/login.html?logout=true").deleteCookies("JSESSIONID").and()
+				.httpBasic().and().build();
 	}
-	
+
 	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailService) 
-	  throws Exception {
-	    return http.getSharedObject(AuthenticationManagerBuilder.class)
-	      .userDetailsService(imsUserDetailsService)
-	      .passwordEncoder(passwordEncoder)
-	      .and()
-	      .build();
+	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder,
+			UserDetailsService userDetailService) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(imsUserDetailsService)
+				.passwordEncoder(passwordEncoder).and().build();
 	}
 
 	@Bean
 	public AuthenticationFailureHandler authenticationFailureHandler() {
 		return new CustomAuthenticationFailureHandler();
 	}
-	
+
 	@Bean
-	public AuthenticationSuccessHandler authenticationSuccessHandler(){
-	    return new RoleBasedAuthenticationSuccessHandler();
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {
+		return new RoleBasedAuthenticationSuccessHandler();
 	}
 
 	@Bean
 	public PasswordEncoder encoder() {
-		return new MyPasswordEncoder(); // FIXME BCryptPasswordEncoder
-	}
-
-	class MyPasswordEncoder implements PasswordEncoder {
-
-		@Override
-		public String encode(CharSequence rawPassword) {
-			return rawPassword.toString();
-		}
-
-		@Override
-		public boolean matches(CharSequence rawPassword, String encodedPassword) {
-			return rawPassword.toString().equals(encodedPassword);
-		}
-
+		return new BCryptPasswordEncoder();
 	}
 }
