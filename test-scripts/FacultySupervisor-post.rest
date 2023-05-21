@@ -11,7 +11,7 @@ Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
     "user":{
         "username":"test",
         "password":"sdfasdfadfasdfasdfasdf",
-        "email":"test@ogu.edu.tr"
+        "email":"test1@ogu.edu.tr"
     },
     "faculty":{
         "id":"1",

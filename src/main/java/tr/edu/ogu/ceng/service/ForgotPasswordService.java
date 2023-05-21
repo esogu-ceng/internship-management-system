@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
+
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +32,7 @@ public class ForgotPasswordService {
 	@Autowired
 	private SettingService settingService;
 
+
 	private static Cache<String, String> resetRequestCache = CacheBuilder.newBuilder().maximumSize(1000)
 			.expireAfterWrite(5, TimeUnit.MINUTES).build();
 
@@ -46,11 +48,11 @@ public class ForgotPasswordService {
 		MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
 
 		String subject = "You may reset your password.";
+
 		String resetPasswordUrl = settingService.findValueByKey("app_host") + ":"
 				+ settingService.findValueByKey("app_port") + "/public/update-password?hash=" + resetHash;
 		String emailText = "Please click the link below to reset your password. <br> <a href=\"" + resetPasswordUrl
 				+ "\">Reset Password</a>";
-
 		messageHelper.setSubject(subject);
 		message.setText(emailText, "UTF-8", "html");
 		messageHelper.setTo(emailReceiver.getEmail());
