@@ -15,7 +15,6 @@ import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.requests.FacultyRequestDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
@@ -31,7 +30,7 @@ public class FacultySupervisorTest {
 	FacultySupervisorRepository facultySupervisorRepository;
 
 	@Mock
-	UserRepository userRepository;
+	UserService userService;
 
 	@Mock
 	FacultyRepository facultyRepository;
@@ -41,7 +40,7 @@ public class FacultySupervisorTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		facultySupervisorService = new FacultySupervisorService(facultySupervisorRepository, userRepository,
+		facultySupervisorService = new FacultySupervisorService(facultySupervisorRepository, userService,
 				new ModelMapper(), new MessageResource(null));
 	}
 
@@ -59,7 +58,7 @@ public class FacultySupervisorTest {
 				.user(modelUser).faculty(modelFaculty).build();
 
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
-		when(userRepository.save(any(User.class))).thenReturn(modelUser);
+		when(userService.saveUser(any(User.class))).thenReturn(modelUser);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
 		var DtoFaculty = FacultyRequestDto.builder().id(1L).name("Faculty").build();

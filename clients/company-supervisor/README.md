@@ -4,8 +4,8 @@ Staj yönetim sistemi uygulaması, şirket sorumlusu arayüz modülüdür. React
 
 ## Çalıştırmadan Önce
 
--  _env.development.local_ dosyasını çalışma ortamına göre düzenlenmelidir.
--  **npm install** komutu kullanılarak proje bağımlıklıkları yüklenmelidir.
+- _env.development.local_ dosyasını çalışma ortamına göre düzenlenmelidir.
+- **npm install** komutu kullanılarak proje bağımlıklıkları yüklenmelidir.
 
 ## Kullanılabilir Komutlar
 

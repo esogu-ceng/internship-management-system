@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.UserDto;
@@ -30,7 +31,7 @@ public class UserTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		modelMapper = new ModelMapper();
-		userService = new UserService(userRepository);
+		userService = new UserService(userRepository, new BCryptPasswordEncoder());
 	}
 
 	@Test

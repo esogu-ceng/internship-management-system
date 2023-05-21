@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.security;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class RoleBasedAuthenticationSuccessHandler implements AuthenticationSucc
 			Authentication authentication) throws IOException, ServletException {
 
 		UserType userType = ((UserPrincipal) authentication.getPrincipal()).getUser().getUserType();
-		String targetUrl = "/" + userType.name().toLowerCase();
+		String targetUrl = "/" + userType.name().toLowerCase(Locale.ENGLISH);
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 

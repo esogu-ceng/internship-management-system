@@ -1,0 +1,47 @@
+### Create a new student
+POST http://localhost:8080/api/student
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+  "name": "Murat",
+  "surname": "Dört",
+  "tckn": "293483516",
+  "grade": "78451",
+  "studentNo": "1521111197845",
+  "phoneNumber": "7845",
+  "homePhoneNumber": "85",
+  "boulevard": "uyghj",
+  "mainStreet": "gyhjn",
+  "street": "yuhjn",
+  "neighborhood": "yuhjn",
+  "outerDoorNo": "956",
+  "innerDoorNo": "845",
+  "province": "u8ıjk",
+  "subprovince": "gyhbj",
+  "village": "yuhjn",
+  "zipCode": "1",
+  "motherName": "gybhjn",
+  "fatherName": "yghjn",
+  "birthPlace": "jnm",
+  "birthDate": "2001-07-30T21:00:00.000+00:00",
+  "idCardSerialNo": "545",
+  "idRegisterProvince": "451",
+  "idRegisterSubprovince": "4512",
+  "idRegisterStreetVillage": "84512",
+  "idRegisterVolumeNo": "4512",
+  "idRegisterFamilySerialNo": "7845",
+  "idRegisterSerialNo": "97845",
+  "idRegistryOffice": "784512",
+  "idRegistryReason": "uhjn",
+  "sgkFamily": true,
+  "sgkSelf": true,
+  "user": {
+     "username":"test",
+        "password":"sdfasdfadfasdfasdfasdf",
+        "email":"test@ogu.edu.tr"
+  },
+  "facultyId": 1
+}
+
+

@@ -18,6 +18,7 @@ import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.service.InternshipService;
 import tr.edu.ogu.ceng.util.PageableUtil;
@@ -55,8 +56,13 @@ public class InternshipController {
 	}
 
 	@PutMapping("/approve/{id}")
-	public Internship approveInternship(@PathVariable(name = "id") long id) {
-		return internshipService.approveInternship(id);
+	public InternshipStatus approveInternship(@PathVariable(name = "id") long id) {
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.APPROVED);
+	}
+	
+	@PutMapping("/reject/{id}")
+	public InternshipStatus rejectInternship(@PathVariable(name = "id") long id) {
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.REJECTED);
 	}
 
 	@GetMapping("/student/{id}")

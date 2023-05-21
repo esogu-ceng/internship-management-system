@@ -37,7 +37,7 @@ public class InternshipEvaluateFormService {
 		String key = "upload_directory";
 		Setting setting = settingsRepository.findByKey(key);
 		String fileName = new File(file.getOriginalFilename()).getName();
-		String filePath = setting.getValue() + fileName;
+		String filePath = setting.getValue() + "\\" + fileName;
 
 		try {
 			Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
