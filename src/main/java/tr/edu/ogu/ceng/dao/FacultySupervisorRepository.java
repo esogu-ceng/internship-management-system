@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
-public interface FacultySupervisorRepository extends JpaRepository<FacultySupervisor,Long > {
-	Page<FacultySupervisor> getAllFacultySupervisors(Pageable pageable);
+public interface FacultySupervisorRepository extends JpaRepository<FacultySupervisor,Long> {
+	Page<FacultySupervisor> listAllFacultySupervisors(Pageable pageable);
 }

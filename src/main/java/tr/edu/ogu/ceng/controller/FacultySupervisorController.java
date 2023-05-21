@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +33,15 @@ public class FacultySupervisorController {
 	@Autowired
 	private FacultySupervisorService facultySupervisorService;
 	
-	@GetMapping("/gelAllFacultySupervisors")
+	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(
 	        @RequestParam(defaultValue = "0") Integer pageNo,
 	        @RequestParam(defaultValue = "10") Integer limit,
 	        @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-	    Page<FacultySupervisorResponseDto> facultySupervisors = facultySupervisorService.getAllFacultySupervisors(pageable);
+	    Page<FacultySupervisorResponseDto> facultySupervisors = facultySupervisorService.listAllFacultySupervisors(pageable);
 	    return facultySupervisors;
 	}
-
 
 	@PostMapping("/saveFacultysupervisor")
 	public FacultySupervisorResponseDto addFacultySupervisor(
