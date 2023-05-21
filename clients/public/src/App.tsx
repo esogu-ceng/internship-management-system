@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
 
@@ -32,6 +34,7 @@ function App() {
 
     return (
         <div className="container">
+            <Header />
             <ToastContainer/>
             <form onSubmit={handleSubmit}>
                 <div className="form-group required">
@@ -60,6 +63,7 @@ function App() {
                     Giriş
                 </button>
             </form>
+            <Footer />
         </div>
     );
 }
