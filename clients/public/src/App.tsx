@@ -7,17 +7,17 @@ import {BrowserRouter, Route, Routes,} from 'react-router-dom';
 import Login from "./components/Login";
 
 function App() {
-
     return (
         <div className="container">
-            <Header />
+            <Header/>
             <ToastContainer/>
+
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Login/>}/>
                 </Routes>
             </BrowserRouter>
-            <Footer />
+            <Footer/>
         </div>
     );
 }
