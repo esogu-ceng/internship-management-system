@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import {BrowserRouter, Route, Routes,} from 'react-router-dom';
 import Login from "./components/Login";
+import ResetPassword from './components/ResetPassword';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Login/>}/>
+                    <Route path="/public/update-password" element={<ResetPassword/>}/>
                 </Routes>
             </BrowserRouter>
             <Footer/>
