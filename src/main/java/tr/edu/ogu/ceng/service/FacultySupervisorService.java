@@ -31,50 +31,49 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @AllArgsConstructor
 public class FacultySupervisorService {
 
-    private FacultySupervisorRepository facultySupervisorRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
-    private MessageResource messageResource;
+	private FacultySupervisorRepository facultySupervisorRepository;
+	private UserService userService;
+	private ModelMapper modelMapper;
+	private MessageResource messageResource;
 
-    /**
-     * Adds a new Faculty Supervisor and related User definition
-     *
-     * @param facultySupervisorRequestDto
-     * @return
-     */
-    // IMPORTANT: without @Transaction, the user entity may be saved but
-    // FacultySupervisor may not be saved because of some different constraints
-    @Transactional
-    public FacultySupervisorResponseDto addFacultySupervisor(FacultySupervisorRequestDto facultySupervisorRequestDto) {
-        modelMapper = new ModelMapper();
-        LocalDateTime now = LocalDateTime.now();
+	/**
+	 * Adds a new Faculty Supervisor and related User definition
+	 *
+	 * @param facultySupervisorRequestDto
+	 * @return
+	 */
+	// IMPORTANT: without @Transaction, the user entity may be saved but
+	// FacultySupervisor may not be saved because of some different constraints
+	@Transactional
+	public FacultySupervisorResponseDto addFacultySupervisor(FacultySupervisorRequestDto facultySupervisorRequestDto) {
+		modelMapper = new ModelMapper();
+		LocalDateTime now = LocalDateTime.now();
 
-        // We need to save user before student.
-        User user = modelMapper.map(facultySupervisorRequestDto.getUser(), User.class);
-        user.setCreateDate(now);
-        user.setUpdateDate(now);
-        user.setUserType(UserType.FACULTYSUPERVISOR);
+		// We need to save user before student.
+		User user = modelMapper.map(facultySupervisorRequestDto.getUser(), User.class);
+		user.setCreateDate(now);
+		user.setUpdateDate(now);
+		user.setUserType(UserType.FACULTYSUPERVISOR);
 
-        FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
-        facultySupervisor.setUser(userRepository.save(user));// FIXME instead, do we need to call to Service method?
-        // But the Service method needs to get DTO. Or are there
-        // any other approaches to persist the User?
-        facultySupervisor.setCreateDate(now);
-        facultySupervisor.setUpdateDate(now);
+		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
+		facultySupervisor.setUser(userService.saveUser(user));
+		facultySupervisor.setCreateDate(now);
+		facultySupervisor.setUpdateDate(now);
 
-        FacultySupervisor savedfacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
-        log.info("The student was successfully added: {}", savedfacultySupervisor);
+		FacultySupervisor savedfacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
+		log.info("The student was successfully added: {}", savedfacultySupervisor);
 
-        return modelMapper.map(savedfacultySupervisor, FacultySupervisorResponseDto.class);
-    }
+		return modelMapper.map(savedfacultySupervisor, FacultySupervisorResponseDto.class);
+	}
 
-    public FacultySupervisorResponseDto updateFacultySupervisor(FacultySupervisorRequestDto facultySupervisorRequestDto) {
+	public FacultySupervisorResponseDto updateFacultySupervisor(
+			FacultySupervisorRequestDto facultySupervisorRequestDto) {
 
-        FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
-        if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
-            throw new EntityNotFoundException("Faculty supervisor not found!");
+		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
+		if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
+			throw new EntityNotFoundException("Faculty supervisor not found!");
 
-        try {
+		try {
 			LocalDateTime now = LocalDateTime.now();
 			facultySupervisor.setUpdateDate(now);
 			facultySupervisor.setCreateDate(facultySupervisorRepository.getById(facultySupervisor.getId()).getCreateDate());
