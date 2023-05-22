@@ -18,6 +18,7 @@ import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.service.InternshipService;
 import tr.edu.ogu.ceng.util.PageableUtil;
@@ -56,8 +57,13 @@ public class InternshipController {
 	}
 
 	@PutMapping("/approve/{id}")
-	public Internship approveInternship(@PathVariable(name = "id") long id) {
-		return internshipService.approveInternship(id);
+	public InternshipStatus approveInternship(@PathVariable(name = "id") long id) {
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.APPROVED);
+	}
+	
+	@PutMapping("/reject/{id}")
+	public InternshipStatus rejectInternship(@PathVariable(name = "id") long id) {
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.REJECTED);
 	}
 
 	@GetMapping("/student/{id}")
@@ -82,5 +88,14 @@ public class InternshipController {
 	@GetMapping("/{id}/student")
 	public StudentResponseDto getStudentByInternshipId(@PathVariable(name = "id") long id) {
 		return internshipService.getStudentByInternshipId(id);
+	}
+	
+	@GetMapping("/supervisor/{id}")
+	public Page<InternshipResponseDto> getAllInternshipsByFacultySupervisorId(@PathVariable(name = "id") Long faculty_supervisor_id,
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "id") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<InternshipResponseDto> internships = internshipService.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
+		return internships;
 	}
 }
