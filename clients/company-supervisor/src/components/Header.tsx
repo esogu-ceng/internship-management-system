@@ -3,8 +3,12 @@ import { Outlet, NavLink } from 'react-router-dom';
 export const Header = () => {
   const [burgerButton, setBurgerButton] = useState<boolean>(false);
   return (
-    <div>
-      <div>
+    <header>
+      <div className="header-content">
+        <div className="header-buttons">
+          <button className="header-button">Profil</button>
+          <button className="header-button">Çıkış</button>
+        </div>
         <nav className="bg-white dark:bg-gray-800  shadow ">
           <div className="px-8 mx-auto w-screen">
             <div className="flex items-center justify-between h-16">
@@ -139,6 +143,6 @@ export const Header = () => {
           )}
         </nav>
       </div>
-    </div>
+    </header>
   );
 };
