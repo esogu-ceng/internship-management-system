@@ -8,6 +8,100 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Rest of the CSS code remains the same */
+
+
+footer {
+ position: fixed;
+  bottom: 0;
+  left: 0;
+ width: 100%;
+  background-color: #888;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #8ac5d6;
+  color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.header-content {
+  display: flex;
+ 
+  align-items: center;
+  flex: 1;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 32px;
+  text-align: center;
+}
+
+.header-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: start;
+}
+
+.header-nav li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.header-nav li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  background-color: transparent;
+  cursor: pointer;
+  box-shadow: none;
+  margin-left: 20px;
+}
+
+.header-nav li a:hover {
+  color:rgba(0, 0, 0, 0.5);
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.header-button {
+  background-color: #3583d6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 10px;
+}
+
+.header-button:hover {
+  background-color: #0062cc;
+}
+.header-button:first-child {
+  margin-left: 0;
+}
+.content-container {
+  margin-bottom: 60px; /* Adjust the value as needed to create enough space for the footer */
 }
