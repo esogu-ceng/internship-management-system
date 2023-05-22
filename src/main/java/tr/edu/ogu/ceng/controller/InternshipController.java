@@ -78,4 +78,13 @@ public class InternshipController {
 	public StudentResponseDto getStudentByInternshipId(@PathVariable(name = "id") long id) {
 		return internshipService.getStudentByInternshipId(id);
 	}
+	
+	@GetMapping("/supervisor/{id}")
+	public Page<InternshipResponseDto> getAllInternshipsByFacultySupervisorId(@PathVariable(name = "id") Long faculty_supervisor_id,
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "id") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<InternshipResponseDto> internships = internshipService.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
+		return internships;
+	}
 }
