@@ -20,6 +20,8 @@ import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.service.CompanySupervisorService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/company-supervisor")
@@ -53,5 +55,10 @@ public class CompanySupervisorController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         service.delete(id);
+    }
+
+    @GetMapping("/getCompanySupervisorsByCompanyId/{companyId}")
+    public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(@PathVariable(name = "companyId") Long companyId){
+        return service.getCompanySupervisorsByCompanyId(companyId);
     }
 }
