@@ -3,10 +3,13 @@ package tr.edu.ogu.ceng.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
 import tr.edu.ogu.ceng.dto.ResetPasswordDto;
@@ -30,7 +33,10 @@ public class ForgotPasswordController {
 			 return ResponseEntity.ok("Password updated successfully!");
 	 } 
 	 
-	 // TODO: Show reset password form
-	 // @GetMapping
+	 @GetMapping("/update-password")
+	 public RedirectView redirectToReactApp(@RequestParam(name = "hash") String hash) {
+		 	String redirectUrl = "http://localhost:3000/public/update-password?hash=" + hash;
+	        return new RedirectView(redirectUrl);
+	 }
 	 
 }
