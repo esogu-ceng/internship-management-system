@@ -48,10 +48,7 @@ const CompanyListContainer: React.FC = () => {
           limit: size,
           sortBy: sort,
         },
-        auth: {
-          username: 'yagizharman4biz@gmail.com',
-          password: 'password123',
-        },
+        
       });
 
       const { content, totalPages } = response.data as PageableResponse<Company>;
@@ -65,10 +62,7 @@ const CompanyListContainer: React.FC = () => {
   const handleDelete = async (companyId: number) => {
     try {
       await axios.delete(`/api/company/${companyId}`, {
-        auth: {
-          username: 'yagizharman4biz@gmail.com',
-          password: 'password123',
-        },
+        
       });
 
       // Refresh the company list after successful deletion
@@ -89,10 +83,7 @@ const CompanyListContainer: React.FC = () => {
   const handleCreateCompany = async (newCompany: Company) => {
     try {
       await axios.post(`/api/company/`, newCompany, {
-        auth: {
-          username: 'yagizharman4biz@gmail.com',
-          password: 'password123',
-        },
+      
       });
 
       // Refresh the company list after creating a new company
@@ -115,10 +106,7 @@ const CompanyListContainer: React.FC = () => {
   const handleUpdate = async (updatedCompany: Company) => {
     try {
       await axios.put(`/api/company/`, updatedCompany, {
-        auth: {
-          username: 'yagizharman4biz@gmail.com',
-          password: 'password123',
-        },
+      
       });
 
       // Refresh the company list after update
