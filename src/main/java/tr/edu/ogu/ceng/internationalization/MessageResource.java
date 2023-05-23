@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
+import tr.edu.ogu.ceng.model.Language;
 import tr.edu.ogu.ceng.security.UserPrincipal;
 
 @Component
@@ -28,8 +29,15 @@ public class MessageResource {
 	private Locale getUserLocale() {
 		UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		String language = userPrincipal.getUser().getLanguage().getLanguageAbbr();
-		String country = userPrincipal.getUser().getLanguage().getCountryAbbr();
-		return new Locale(language, country); // FIXME getLocale from user
+		String languageAbbr = "tr"; // default
+		String countryAbbr = "TR"; // default
+		if (userPrincipal != null) {
+			Language language = userPrincipal.getUser().getLanguage();
+			if (language != null) {
+				languageAbbr = language.getLanguageAbbr();
+				countryAbbr = language.getCountryAbbr();
+			}
+		}
+		return new Locale(languageAbbr, countryAbbr);
 	}
 }
