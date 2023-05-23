@@ -45,6 +45,7 @@ public class InternshipController {
 		return ResponseEntity.ok(internshipService.getInternship(id));
 	}
 
+	// FIXME : bu method company controller içinde olmalı
 	@GetMapping("company/{id}")
 	public ResponseEntity<CompanyDto> getCompanyByInternshipId(@PathVariable(name = "id") long id) {
 		return ResponseEntity.ok(internshipService.getCompanyByInternshipId(id));
@@ -74,8 +75,27 @@ public class InternshipController {
 		return internships;
 	}
 
+	// FIXME : company/{id} olarak değiştirilecek!
+	@GetMapping("/companyid/{id}")
+	public Page<InternshipResponseDto> getAllInternshipsByCompanyId(@PathVariable(name = "id") Long companyId,
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "id") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<InternshipResponseDto> internships = internshipService.getAllInternshipsByCompanyId(companyId, pageable);
+		return internships;
+	}
+
 	@GetMapping("/{id}/student")
 	public StudentResponseDto getStudentByInternshipId(@PathVariable(name = "id") long id) {
 		return internshipService.getStudentByInternshipId(id);
+	}
+	
+	@GetMapping("/supervisor/{id}")
+	public Page<InternshipResponseDto> getAllInternshipsByFacultySupervisorId(@PathVariable(name = "id") Long faculty_supervisor_id,
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "id") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<InternshipResponseDto> internships = internshipService.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
+		return internships;
 	}
 }

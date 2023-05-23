@@ -6,7 +6,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
@@ -25,7 +24,6 @@ footer {
   padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
-
 header {
   display: flex;
   justify-content: center;
@@ -93,15 +91,65 @@ header {
   margin-left: 10px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-left: 10px;
 }
-
 .header-button:hover {
   background-color: #0062cc;
 }
-.header-button:first-child {
-  margin-left: 0;
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
 }
-.content-container {
-  margin-bottom: 60px; /* Adjust the value as needed to create enough space for the footer */
+.dashboard-card {
+  background-color: #f6f6f6; /* kart arka plan rengi */
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 15px;
+  width: 300px;
+  height: 200px;
+  margin: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+.dashboard-card:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+.dashboard-card:nth-child(1) {
+  background-color: #ff6363;
+} 
+.dashboard-card:nth-child(2) {
+  background-color: #76d7c4;
+}
+.dashboard-card:nth-child(3) {
+  background-color: #f7dc6f;
+}
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.dashboard-card h2 {
+  margin: 0;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: bold;
+}
+.dashboard-card p {
+  margin: 0;
+  font-size: 16px;
+  color: #666;
+}
+.dashboard-card:hover {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  background-color: #eabce5;
 }

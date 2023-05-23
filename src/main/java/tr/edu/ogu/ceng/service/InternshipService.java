@@ -86,7 +86,6 @@ public class InternshipService {
 	}
 
 	public CompanyDto getCompanyByInternshipId(Long id) {
-		ModelMapper modelMapper = new ModelMapper();
 		try {
 			if (!internshipRepository.existsById(id)) {
 				log.warn("Internship not found!");
@@ -157,6 +156,22 @@ public class InternshipService {
 		}
 	}
 
+	public Page<InternshipResponseDto> getAllInternshipsByCompanyId(Long companyId, Pageable pageable) {
+		try {
+			log.info("Getting all internships by company id: {} with pageable: {}", companyId, pageable);
+			Page<Internship> internships = internshipRepository.findAllByCompanyId(companyId, pageable);
+			if (internships.isEmpty()) {
+				log.warn("The internship list is empty.");
+			}
+			Page<InternshipResponseDto> internshipDtos = internships
+					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			return internshipDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting internships: {}", e.getMessage());
+			throw e;
+		}
+	}
+
 	public StudentResponseDto getStudentByInternshipId(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
@@ -167,6 +182,23 @@ public class InternshipService {
 		Student student = internship.getStudent();
 
 		return modelMapper.map(student, StudentResponseDto.class);
+	}
+	
+	public Page<InternshipResponseDto> getAllInternshipsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting all internships by faculty supervisor id: {} with pageable: {}", faculty_supervisor_id, pageable);
+			Page<Internship> internships = internshipRepository.findAllByFacultySupervisorId(faculty_supervisor_id, pageable);
+			if (internships.isEmpty()) {
+				log.warn("The internship list is empty.");
+			}
+			Page<InternshipResponseDto> internshipDtos = internships
+					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			return internshipDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting internships: {}", e.getMessage());
+			throw e;
+		}
 	}
 
 }

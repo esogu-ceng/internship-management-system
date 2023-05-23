@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import CompanyListContainer from './containers/CompanyListContainer/CompanyListContainer';
+import InternshipDashboard from './components/InternshipDashboard';
 // Import other screen components
 
 import Header from './components/Header';
@@ -12,6 +13,7 @@ const App: React.FC = () => {
       <div>
         <Header />
         <div className="content-container">
+        <InternshipDashboard />
         <Routes>
           <Route path="/company-list" element={<CompanyListContainer />} />
           {/* Add other routes for different screens */}
@@ -24,4 +26,5 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+
+  export default App;
