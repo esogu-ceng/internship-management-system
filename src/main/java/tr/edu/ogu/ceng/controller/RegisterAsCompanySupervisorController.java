@@ -9,21 +9,22 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import tr.edu.ogu.ceng.dto.RegisterAsCompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.RegisterAsCompanySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.responses.RegisterAsCompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.service.RegisterAsCompanySupervisorService;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/registerascompanysupervisor")
+@RequestMapping("/public/api/registerascompanysupervisor")
 public class RegisterAsCompanySupervisorController {
 
 	@Autowired
-	private final RegisterAsCompanySupervisorService registerAsCompanySupervisorService;
+	private final RegisterAsCompanySupervisorService service;
 	
-	@PostMapping("/register")
+	@PostMapping
 	@ResponseStatus(code=HttpStatus.CREATED)
-	public RegisterAsCompanySupervisorDto register(@RequestBody RegisterAsCompanySupervisorDto request) {
+	public RegisterAsCompanySupervisorResponseDto register(@RequestBody RegisterAsCompanySupervisorRequestDto request) {
 		
-		return this.registerAsCompanySupervisorService.register(request);
+		return service.register(request);
 	}
 }

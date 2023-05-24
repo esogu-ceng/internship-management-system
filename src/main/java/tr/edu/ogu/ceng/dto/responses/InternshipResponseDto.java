@@ -19,7 +19,7 @@ public class InternshipResponseDto {
 	private Timestamp startDate;
 	private Timestamp endDate;
 	private int days;
-	private Long studentId;
+	private StudentResponseDto student;
 	private Long companyId;
 	private Long facultySupervisorId;
 	private LocalDateTime createDate;

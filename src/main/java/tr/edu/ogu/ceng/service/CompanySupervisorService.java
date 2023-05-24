@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -74,5 +76,15 @@ public class CompanySupervisorService {
 		if (repository.existsByUserId(userId)) {
 			throw new UserAlreadyExistsException();
 		}
+	}
+
+	public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(Long companyId){
+		List<CompanySupervisor> companySupervisors = repository.findAllByCompanyId(companyId);
+
+		List<CompanySupervisorDto> companySupervisorDtos = companySupervisors.stream().map(
+						companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class))
+				.collect(Collectors.toList());
+
+		return companySupervisorDtos;
 	}
 }

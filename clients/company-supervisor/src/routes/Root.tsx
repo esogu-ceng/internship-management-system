@@ -31,6 +31,7 @@ export const Root = () => {
 return (
 <div>
   <CompanyDashboard />  
+  return (
     <div className="flex flex-col justify-between items-center">
       <div className="container max-w-screen px-4 mx-auto sm:px-8">
         <div className="py-8">
