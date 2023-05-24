@@ -18,7 +18,7 @@ export const Header = () => {
                       {({ isActive }) => (
                         <p
                           className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
+                            isActive ? `text-gray-200` : `text-gray-400`
                           } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Stajlar
@@ -29,7 +29,7 @@ export const Header = () => {
                       {({ isActive }) => (
                         <p
                           className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
+                            isActive ? `text-gray-200` : `text-gray-400`
                           }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Şirket Bilgileri
@@ -40,7 +40,7 @@ export const Header = () => {
                       {({ isActive }) => (
                         <p
                           className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
+                            isActive ? `text-gray-200` : `text-gray-400`
                           }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Yardım
@@ -51,7 +51,7 @@ export const Header = () => {
                       {({ isActive }) => (
                         <p
                           className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
+                            isActive ? `text-gray-200` : `text-gray-400`
                           }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Joker

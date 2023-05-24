@@ -4,15 +4,15 @@ import { InternshipRow } from '../components/InternshipRow';
 import { Internship } from '../types/InternshipType';
 import axios from 'axios';
 
-export const Root = () => {
+export const Root = ({_companyId, _auth}:{_companyId: number, _auth: string}) => {
   const [loading, setLoading] = useState(true);
   const [internships, setInternships] = useState<Internship[] | any>([]);
 
   useEffect(() => {
-    fetch('/api/internship/companyid/1', {
+    fetch(`/api/internship/companyid/${_companyId}`, {
       headers: {
         Authorization:
-          'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf'), //TODO : change when authorization done
+          'Basic ' + btoa(_auth), //TODO : change when authorization done
       },
       method: 'GET',
     })
