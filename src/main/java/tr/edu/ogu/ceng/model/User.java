@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -47,5 +49,9 @@ public class User {
 
 	@Column(name = "update_date")
 	private LocalDateTime updateDate;
+
+	@ManyToOne
+	@JoinColumn(name = "language", referencedColumnName = "id")
+	private Language language;
 
 }
