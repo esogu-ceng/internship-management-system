@@ -35,7 +35,7 @@ const ResetPassword = () => {
             .then(response => {
                 if (response.status === 200) {
                     toast.success('Şifre başarılı bir şekilde güncellendi. Anasayfaya yönlendiriliyorsunuz...', { autoClose: 2000 })
-                    navigate('/');
+                    navigate('/public/');
                 }
             })
             .catch((error) => {
