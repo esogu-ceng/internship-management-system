@@ -18,7 +18,7 @@ const HeaderLayout = () => (
 );
 const App: React.FC = () => {
   //TODO: UPDATE HERE DYNAMICALLY
-  const [currentCompanyId, setcurrentCompanyId] = useState(1);
+  const [currentCompanyId, setcurrentCompanyId] = useState(250);
   const [auth, setAuth] = useState('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
   //TODO end  
 
@@ -28,11 +28,11 @@ const App: React.FC = () => {
       errorElement: <ErrorPage />,
       children: [
         {
-          path: '/',
+          path: '/companysupervisor',
           element: <Root _companyId={currentCompanyId} _auth={auth}/>,
         },
         {
-          path: '/company',
+          path: '/companysupervisor/company',
           element: <CompanyPage  _companyId={currentCompanyId} _auth={auth}/>,
         },
       ],
