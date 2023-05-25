@@ -30,27 +30,28 @@ const CompanyList: React.FC<CompanyListProps> = ({ companies, onUpdate, onDelete
           </tr>
         </thead>
         <tbody>
-          {companies.map(company => (
-            <tr key={company.id}>
-              <td>{company.name}</td>
-              <td>{company.address}</td>
-              <td>{company.phoneNumber}</td>
-              <td>{company.faxNumber}</td>
-              <td>{company.email}</td>
-              <td>{company.scope}</td>
-              <td>{company.description}</td>
-              <td>{company.createDate}</td>
-              <td>{company.updateDate}</td>
-              <td>
-                <button className="btnupdel" onClick={() => onUpdate(company.id)}>
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-                <button className="btnupdel" onClick={() => onDelete(company.id)}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </td>
-            </tr>
-          ))}
+        {companies.map(({ id, name, address, phoneNumber, faxNumber, email, scope, description, createDate, updateDate }) => (
+  <tr key={id}>
+    <td>{name}</td>
+    <td>{address}</td>
+    <td>{phoneNumber}</td>
+    <td>{faxNumber}</td>
+    <td>{email}</td>
+    <td>{scope}</td>
+    <td>{description}</td>
+    <td>{createDate}</td>
+    <td>{updateDate}</td>
+    <td>
+      <button className="btnupdel" onClick={() => onUpdate(id)}>
+        <FontAwesomeIcon icon={faEdit} />
+      </button>
+      <button className="btnupdel" onClick={() => onDelete(id)}>
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+    </td>
+  </tr>
+))}
+
         </tbody>
       </table>
     </div>
