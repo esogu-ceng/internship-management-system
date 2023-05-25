@@ -20,16 +20,16 @@ interface PageableResponse<T> {
 
 const CompanyListContainer: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(3);
-  const [sortBy, setSortBy] = useState<string>('name');
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
-  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
-  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+const [currentPage, setCurrentPage] = useState<number>(0);
+const [pageSize, setPageSize] = useState<number>(3);
+const [sortBy, setSortBy] = useState<string>('name');
+const [totalPages, setTotalPages] = useState<number>(0);
+const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
+const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleCreateModalOpen = () => {
     setCreateModalOpen(true);
@@ -39,19 +39,20 @@ const CompanyListContainer: React.FC = () => {
     setCreateModalOpen(false);
   };
 
+  
+
 
   const fetchCompanies = async (page: number, size: number, sort: string) => {
     try {
-      const response = await axios.get('/api/company/getAll', {
+      const { data } = await axios.get<PageableResponse<Company>>('/api/company/getAll', {
         params: {
           pageNo: page,
           limit: size,
           sortBy: sort,
         },
-        
       });
-
-      const { content, totalPages } = response.data as PageableResponse<Company>;
+  
+      const { content, totalPages } = data;
       setCompanies(content);
       setTotalPages(totalPages);
     } catch (error) {

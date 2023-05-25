@@ -1,3 +1,4 @@
-export interface Error {
+export interface ErrorModalProps {
     message: string;
+    onClose: () => void;
   }
