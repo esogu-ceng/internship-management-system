@@ -20,16 +20,16 @@ interface PageableResponse<T> {
 
 const CompanyListContainer: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(3);
-  const [sortBy, setSortBy] = useState('name');
-  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(3);
+  const [sortBy, setSortBy] = useState<string>('name');
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
-  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleCreateModalOpen = () => {
     setCreateModalOpen(true);
