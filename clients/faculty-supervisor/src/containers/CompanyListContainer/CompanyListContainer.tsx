@@ -62,16 +62,23 @@ const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleDelete = async (companyId: number) => {
     try {
-      await axios.delete(`/api/company/${companyId}`, {
-        
-      });
-
-      // Refresh the company list after successful deletion
-      fetchCompanies(currentPage, pageSize, sortBy);
+      const response = await axios.delete(`/api/company/${companyId}`);
+  
+      if (response.data === true) {
+        // Başarılı bir şekilde silme işlemi gerçekleşti
+        fetchCompanies(currentPage, pageSize, sortBy);
+      } else {
+        // Silme işlemi başarısız oldu
+        setErrorMessage('Failed to delete the company.');
+        setShowErrorModal(true);
+      }
     } catch (error) {
       console.error(error);
+      setErrorMessage('An error occurred during deletion.');
+      setShowErrorModal(true);
     }
   };
+  
 
   const handleUpdateCompany = (companyId: number) => {
     const selected = companies.find(company => company.id === companyId);
@@ -183,6 +190,8 @@ const [errorMessage, setErrorMessage] = useState<string>('');
         onDelete={handleDelete}
       />
        {showErrorModal && <ErrorModal message={errorMessage} onClose={handleCloseErrorModal} />} {/* Show the error modal if showErrorModal is true */}
+       {showErrorModal && <ErrorModal message={errorMessage} onClose={handleCloseErrorModal} />}
+
       {selectedCompany && (
         <CompanyUpdateModal
           isOpen={isModalOpen}
