@@ -6,11 +6,13 @@ import ErrorPage from './error-page';
 import { Company } from './routes/Company';
 import { Footer } from './components/Footer';
 const HeaderLayout = () => (
-  <div className="flex flex-col justify-between">
+  <div className="flex flex-col min-h-screen justify-between">
     <header>
       <Header />
     </header>
-    <Outlet />
+    <div className="flex-grow">
+      <Outlet />
+    </div>
     <footer>
       <Footer />
     </footer>
