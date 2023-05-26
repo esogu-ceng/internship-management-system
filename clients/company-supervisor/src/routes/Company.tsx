@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Company } from '../types/CompanyType';
 import { CompanyRow } from '../components/CompanyRow';
 
-const companyRows = [{ field: 'İSİM', dataField: 'name' }, { field: 'ALAN', dataField: 'scope' },
-{ field: 'TELEFON NUMARASI', dataField: 'phoneNumber' }, { field: 'FAX NUMARASI', dataField: 'faxNumber' },
-{ field: 'EMAIL', dataField: 'email' }, { field: 'AÇIKLAMA', dataField: 'description' }, { field: 'ADRES', dataField: 'address' },];
+const companyRows = [
+  { field: 'İSİM', dataField: 'name' },
+  { field: 'ALAN', dataField: 'scope' },
+  { field: 'TELEFON NUMARASI', dataField: 'phoneNumber' },
+  { field: 'FAX NUMARASI', dataField: 'faxNumber' },
+  { field: 'EMAIL', dataField: 'email' },
+  { field: 'AÇIKLAMA', dataField: 'description' },
+  { field: 'ADRES', dataField: 'address' }];
 
 export const CompanyPage = ({ _companyId, _auth }: { _companyId: number, _auth: string }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [companyInfo, setCompany] = useState<Company | undefined>();
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
     fetch(`/api/company/${_companyId}`, {
@@ -62,9 +67,10 @@ export const CompanyPage = ({ _companyId, _auth }: { _companyId: number, _auth: 
   };
 
   return (
-    <div className="flex flex-col justify-between items-center">
-      {/* <Header/> */}
+    <div className="flex flex-col justify-between items-center" style={{ marginTop: '100px' }}>
       <div>
+        <h1 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '20px', color: '#3A4F7A'}}>ŞİRKET BİLGİLERİ</h1>
+        <br/>
         <table className="text-gray-700">
           <tbody>
             {companyRows.map(({ field, dataField }) =>

@@ -62,7 +62,7 @@ export const CompanyRow = ({
 
     return (
         <tr className={`text-gray-700 ${editMode ? 'border-2 border-[2px] border-indigo-500' : 'border border-22c55e'}`}>
-            <td id = "fieldName" className="p-4 dark:border-dark-5" style={{ fontWeight: 'bold' }}>
+            <td id = "fieldName" className="p-4 dark:border-dark-5" style={{ fontWeight: 'bold', color: '#3A4F7A' }}>
                 {field}
             </td>
             <td className="p-4 dark:border-dark-5">
