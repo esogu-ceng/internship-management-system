@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Company } from '../types/CompanyType';
+import { CompanyRowProps } from '../types/CompanyRowProps';
 
 export const CompanyRow = ({
     companyId,
@@ -8,18 +9,12 @@ export const CompanyRow = ({
     dataField,
     onEditClick,
     onSaveClick
-}: {
-    companyId?: number;
-    field: string;
-    value?: string;
-    dataField: keyof Company;
-    onEditClick: () => void;
-    onSaveClick: (dataField: keyof Company, editedValue: string) => void;
-}) => {
-    const [editMode, setEditMode] = useState(false);
-    const [editedScope, setEditedScope] = useState(value || '');
-    const [isFieldChanged, setFieldChanged] = useState(false);
-    const [displayedValue, setDisplayedValue] = useState(value);
+}: CompanyRowProps ) => {
+
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [editedScope, setEditedScope] = useState<string | number | undefined>(value || '');
+    const [isFieldChanged, setFieldChanged] = useState<boolean>(false);
+    const [displayedValue, setDisplayedValue] = useState<string | number | undefined>(value);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {

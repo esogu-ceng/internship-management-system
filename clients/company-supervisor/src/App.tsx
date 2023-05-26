@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { Root } from './routes/Root';
@@ -18,8 +18,8 @@ const HeaderLayout = () => (
 );
 const App: React.FC = () => {
   //TODO: UPDATE HERE DYNAMICALLY
-  const [currentCompanyId, setcurrentCompanyId] = useState(250);
-  const [auth, setAuth] = useState('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
+  const [currentCompanyId, setcurrentCompanyId] = useState<number>(250);
+  const [auth, setAuth] = useState<string>('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
   //TODO end  
 
   const router = createBrowserRouter([

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Company } from '../types/CompanyType';
 import { CompanyRow } from '../components/CompanyRow';
 
-export const CompanyPage = ({_companyId, _auth}:{_companyId: number, _auth: string}) => {
+const companyRows = [{ field: 'İSİM', dataField: 'name' }, { field: 'ALAN', dataField: 'scope' },
+{ field: 'TELEFON NUMARASI', dataField: 'phoneNumber' }, { field: 'FAX NUMARASI', dataField: 'faxNumber' },
+{ field: 'EMAIL', dataField: 'email' }, { field: 'AÇIKLAMA', dataField: 'description' }, { field: 'ADRES', dataField: 'address' },];
+
+export const CompanyPage = ({ _companyId, _auth }: { _companyId: number, _auth: string }) => {
   const [loading, setLoading] = useState(true);
   const [companyInfo, setCompany] = useState<Company | undefined>();
   const [editMode, setEditMode] = useState(false);
@@ -11,7 +15,7 @@ export const CompanyPage = ({_companyId, _auth}:{_companyId: number, _auth: stri
     fetch(`/api/company/${_companyId}`, {
       headers: {
         Authorization:
-          'Basic ' + btoa(_auth), 
+          'Basic ' + btoa(_auth),
       },
       method: 'GET',
     })
@@ -51,9 +55,9 @@ export const CompanyPage = ({_companyId, _auth}:{_companyId: number, _auth: stri
     setEditMode(true);
   };
 
-  const handleSaveClick = (dataField: keyof Company, editedValue: string) => {
+  const handleSaveClick = (dataField: keyof Company, editedValue: string | number | undefined) => {
     const updatedCompanyInfo = { ...companyInfo, [dataField]: editedValue };
-    updateCurrentCompany(updatedCompanyInfo); 
+    updateCurrentCompany(updatedCompanyInfo);
     setEditMode(false);
   };
 
@@ -63,13 +67,16 @@ export const CompanyPage = ({_companyId, _auth}:{_companyId: number, _auth: stri
       <div>
         <table className="text-gray-700">
           <tbody>
-            <CompanyRow companyId={companyInfo?.id} field='İSİM' dataField='name' value={companyInfo?.name} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
-            <CompanyRow companyId={companyInfo?.id} field='ALAN' dataField='scope' value={companyInfo?.scope} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
-            <CompanyRow companyId={companyInfo?.id} field='TELEFON NUMARASI' dataField='phoneNumber' value={companyInfo?.phoneNumber} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
-            <CompanyRow companyId={companyInfo?.id} field='FAX NUMARASI' dataField='faxNumber' value={companyInfo?.faxNumber} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
-            <CompanyRow companyId={companyInfo?.id} field='EMAIL' dataField='email' value={companyInfo?.email} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
-            <CompanyRow companyId={companyInfo?.id} field='AÇIKLAMA' dataField='description' value={companyInfo?.description} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
-            <CompanyRow companyId={companyInfo?.id} field='ADRES' dataField='address' value={companyInfo?.address} onEditClick={handleEditClick} onSaveClick={handleSaveClick} />
+            {companyRows.map(({ field, dataField }) =>
+            (<CompanyRow
+              key={dataField}
+              companyId={companyInfo?.id}
+              field={field}
+              dataField={dataField as keyof Company}
+              value={companyInfo?.[dataField as keyof Company]}
+              onEditClick={handleEditClick}
+              onSaveClick={handleSaveClick}
+            />))}
           </tbody>
         </table>
       </div>
