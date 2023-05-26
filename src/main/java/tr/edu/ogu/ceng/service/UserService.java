@@ -19,6 +19,7 @@ import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 
 @Slf4j
 @Service
@@ -56,7 +57,7 @@ public class UserService {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(dateTime);
 			user.setUpdateDate(dateTime);
-			user.setId((long) 0);
+			user.setActivity(true);
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());
 			return modelMapper.map(savedUser, UserDto.class);
@@ -72,6 +73,7 @@ public class UserService {
 			user.setCreateDate(dateTime);
 			user.setUpdateDate(dateTime);
 			user.setPassword(encodeUserPassword(user.getPassword()));
+			user.setActivity(true);
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());
 			return savedUser;
@@ -149,6 +151,27 @@ public class UserService {
 			return modelMapper.map(user, UserResponseDto.class);
 		} catch (tr.edu.ogu.ceng.service.Exception.EntityNotFoundException e) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+		}
+	}
+
+	public boolean setUserActivity(Long id, boolean status) {
+		try {
+			if (!userRepository.existsById(id)) {
+				log.warn("User not found with id: {}", id);
+				throw new EntityNotFoundException("User Not Found!");
+			}
+			if (status != true && status != false) {
+				log.warn("Status value not boolean type!");
+				throw new InvalidArgumentException("Invalid status type for user activity!");
+			}
+			User user = userRepository.getById(id);
+			user.setActivity(status);
+			user = userRepository.save(user);
+			log.info("User activity setted to {} successfully with id: {}", status, id);
+			return true;
+		} catch (Exception e) {
+			log.error("An error occurred while setting activity of user with id: {}: {}", id, e.getMessage());
+			return false;
 		}
 	}
 }

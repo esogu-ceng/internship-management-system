@@ -1,0 +1,2 @@
+PUT http://localhost:8080/api/user/activity/42?status=false
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

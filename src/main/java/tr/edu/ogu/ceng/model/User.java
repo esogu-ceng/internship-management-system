@@ -54,4 +54,7 @@ public class User {
 	@JoinColumn(name = "language", referencedColumnName = "id")
 	private Language language;
 
+	@Column(name = "activity")
+	private boolean activity;
+
 }

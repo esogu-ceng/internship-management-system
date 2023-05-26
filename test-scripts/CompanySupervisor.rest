@@ -13,15 +13,15 @@ Content-Type: application/json
 Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
 
 {
-"name": "burak",
- "surname": "kaya",
-  "phoneNumber": "521265962",
-        "company":{
-            "id": 1
-            },
-            "user":{
-                "id": 17
-            }
+    "name": "burak",
+    "surname": "kaya",
+    "phoneNumber": "521265962",
+    "companyId":0,
+    "user":{
+        "username":"test_cs6",
+        "password":"sdfasdfadfasdfasdfasdf",
+        "email":"test_cs6@ogu.edu.tr"
+    }
 }
 
 ###
@@ -30,19 +30,19 @@ Content-Type: application/json
 Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
 
 {
-"id": 63,
-"name": "melisa",
- "surname": "özel",
-  "phoneNumber": "521265962",
-        "company":{
-            "id": 1
-            },
-            "user":{
-                "id": 20
-            }
+    "id": 63,
+    "name": "melisa",
+    "surname": "özel",
+    "phoneNumber": "521265962",
+    "company":{
+        "id": 1
+        },
+    "user":{
+        "id": 20
+    }
 }
 
 ###
-DELETE http://localhost:8080/api/company-supervisor/62
+DELETE http://localhost:8080/api/company-supervisor/4
 Content-Type: application/json
 Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
