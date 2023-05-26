@@ -11,7 +11,7 @@ type ModalProps = {
 
 const StudentInfo: React.FC<ModalProps> = ({ _student, isOpen, onClose, children }) => {
     const [student, setStudent] = useState<(Student) | undefined>(_student);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<Boolean>(true);
 
     
     useEffect(() => {
