@@ -3,56 +3,56 @@ import { Outlet, NavLink } from 'react-router-dom';
 export const Header = () => {
   const [burgerButton, setBurgerButton] = useState<boolean>(false);
   return (
-    <div>
-      <div>
+    <header>
+      <div className="header-content">
+        <div className="header-buttons">
+          <button className="header-button">Profil</button>
+          <button className="header-button">Çıkış</button>
+        </div>
         <nav className="bg-white dark:bg-gray-800  shadow ">
           <div className="px-8 mx-auto w-screen">
             <div className="flex items-center justify-between h-16">
               <div className=" flex items-center">
-                <a className="flex-shrink-0" href="/">
+                <NavLink to={`/companysupervisor`}>
                   <img className="w-14 h-14" src="/1.png" alt="Workflow" />
-                </a>
+                </NavLink>
                 <div className="hidden md:block">
                   <div className="flex items-baseline ml-10 space-x-4">
-                    <NavLink to={`/`}>
+                    <NavLink to={`/companysupervisor`}>
                       {({ isActive }) => (
                         <p
-                          className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
-                          } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${isActive ? `text-gray-200` : `text-gray-400`
+                            } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Stajlar
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`/Company`}>
+                    <NavLink to={`/companysupervisor/company`}>
                       {({ isActive }) => (
                         <p
-                          className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
-                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${isActive ? `text-gray-200` : `text-gray-400`
+                            }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Şirket Bilgileri
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`/help`}>
+                    <NavLink to={`/companysupervisor/help`}>
                       {({ isActive }) => (
                         <p
-                          className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
-                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${isActive ? `text-gray-200` : `text-gray-400`
+                            }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Yardım
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`/joker`}>
+                    <NavLink to={`/companysupervisor/joker`}>
                       {({ isActive }) => (
                         <p
-                          className={`${
-                            isActive ? `text-gray-800` : `text-gray-300`
-                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${isActive ? `text-gray-200` : `text-gray-400`
+                            }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Joker
                         </p>
@@ -90,45 +90,41 @@ export const Header = () => {
           ) : (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <NavLink to={`/`}>
+                <NavLink to={`/companysupervisor`}>
                   {({ isActive }) => (
                     <p
-                      className={`${
-                        isActive ? `text-gray-800` : `text-gray-300`
-                      } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${isActive ? `text-gray-800` : `text-gray-300`
+                        } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Stajlar
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`/Company`}>
+                <NavLink to={`/companysupervisor/company`}>
                   {({ isActive }) => (
                     <p
-                      className={`${
-                        isActive ? `text-gray-800` : `text-gray-300`
-                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${isActive ? `text-gray-800` : `text-gray-300`
+                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Şirket Bilgileri
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`/help`}>
+                <NavLink to={`/companysupervisor/help`}>
                   {({ isActive }) => (
                     <p
-                      className={`${
-                        isActive ? `text-gray-800` : `text-gray-300`
-                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${isActive ? `text-gray-800` : `text-gray-300`
+                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Yardım
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`/joker`}>
+                <NavLink to={`/companysupervisor/joker`}>
                   {({ isActive }) => (
                     <p
-                      className={`${
-                        isActive ? `text-gray-800` : `text-gray-300`
-                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${isActive ? `text-gray-800` : `text-gray-300`
+                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Joker
                     </p>
@@ -139,6 +135,6 @@ export const Header = () => {
           )}
         </nav>
       </div>
-    </div>
+  </header>
   );
 };

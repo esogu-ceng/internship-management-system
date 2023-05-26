@@ -50,7 +50,7 @@ public class ForgotPasswordService {
 		String subject = "You may reset your password.";
 
 		String resetPasswordUrl = settingService.findValueByKey("app_host") + ":"
-				+ settingService.findValueByKey("app_port") + "/public/update-password?hash=" + resetHash;
+				+ settingService.findValueByKey("app_port") + "/public/reset-password?hash=" + resetHash;
 		String emailText = "Please click the link below to reset your password. <br> <a href=\"" + resetPasswordUrl
 				+ "\">Reset Password</a>";
 		messageHelper.setSubject(subject);

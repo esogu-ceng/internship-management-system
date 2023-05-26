@@ -22,15 +22,11 @@ public class ForgotPasswordController {
 	 public ResponseEntity<String> sendPasswordResetEmail(@RequestBody EmailReceiverDto email) throws Exception{
 			 forgotPasswordService.sendResetPasswordEmail(email);
 			 return ResponseEntity.ok("Reset password e-mail sent successfully!");
-	 } 
-	 
+	 }
 	 @PostMapping("/update-password")
 	 public ResponseEntity<String> updatePassword(@RequestBody ResetPasswordDto resetPasswordDto) throws Exception{
 			 forgotPasswordService.updatePassword(resetPasswordDto);
 			 return ResponseEntity.ok("Password updated successfully!");
 	 } 
-	 
-	 // TODO: Show reset password form
-	 // @GetMapping
-	 
+
 }

@@ -137,7 +137,7 @@ public class InternshipTest {
 		assertEquals(modelInternship.getStatus(), actual.getStatus());
 		assertEquals(modelInternship.getDays(), actual.getDays());
 		assertEquals(modelInternship.getCompany().getId(), actual.getCompanyId());
-		assertEquals(modelInternship.getStudent().getId(), actual.getStudentId());
+		assertEquals(modelInternship.getStudent().getId(), actual.getStudent().getId());
 		assertEquals(modelInternship.getFacultySupervisor().getId(), actual.getFacultySupervisorId());
 	}
 }

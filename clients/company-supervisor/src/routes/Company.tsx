@@ -1,12 +1,85 @@
-import React from 'react';
-import { Header } from '../components/Header';
+import React, { useEffect, useState } from 'react';
+import { Company } from '../types/CompanyType';
+import { CompanyRow } from '../components/CompanyRow';
 
-export const Company = () => {
+const companyRows = [{ field: 'İSİM', dataField: 'name' }, { field: 'ALAN', dataField: 'scope' },
+{ field: 'TELEFON NUMARASI', dataField: 'phoneNumber' }, { field: 'FAX NUMARASI', dataField: 'faxNumber' },
+{ field: 'EMAIL', dataField: 'email' }, { field: 'AÇIKLAMA', dataField: 'description' }, { field: 'ADRES', dataField: 'address' },];
+
+export const CompanyPage = ({ _companyId, _auth }: { _companyId: number, _auth: string }) => {
+  const [loading, setLoading] = useState(true);
+  const [companyInfo, setCompany] = useState<Company | undefined>();
+  const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    fetch(`/api/company/${_companyId}`, {
+      headers: {
+        Authorization:
+          'Basic ' + btoa(_auth),
+      },
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setLoading(false);
+        setCompany(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const updateCurrentCompany = async (data: any) => {
+    const credentials = btoa(_auth);
+    console.log(data);
+    try {
+      const response = await fetch(`/api/company/`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${credentials}`
+        },
+        body: JSON.stringify(data)
+      });
+      if (response.ok) {
+        console.log('Company updated successfully');
+      } else {
+        console.error('Failed to update company');
+      }
+    } catch (error) {
+      console.error('An error occurred while updating company', error);
+    }
+  };
+
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
+
+  const handleSaveClick = (dataField: keyof Company, editedValue: string | number | undefined) => {
+    const updatedCompanyInfo = { ...companyInfo, [dataField]: editedValue };
+    updateCurrentCompany(updatedCompanyInfo);
+    setEditMode(false);
+  };
+
   return (
     <div className="flex flex-col justify-between items-center">
       {/* <Header/> */}
-
-      <div>Company</div>
+      <div>
+        <table className="text-gray-700">
+          <tbody>
+            {companyRows.map(({ field, dataField }) =>
+            (<CompanyRow
+              key={dataField}
+              companyId={companyInfo?.id}
+              field={field}
+              dataField={dataField as keyof Company}
+              value={companyInfo?.[dataField as keyof Company]}
+              onEditClick={handleEditClick}
+              onSaveClick={handleSaveClick}
+            />))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -19,5 +19,6 @@ public class CustomWebMvcConfigurer implements WebMvcConfigurer {
 		registry.addViewController("/admin/").setViewName("forward:/admin/index.html");
 		registry.addViewController("/public").setViewName("redirect:/public/");
 		registry.addViewController("/public/").setViewName("forward:/public/index.html");
+		registry.addViewController("/public/reset-password").setViewName("forward:/public/index.html");
 	}
 }
