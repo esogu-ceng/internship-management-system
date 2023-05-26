@@ -2,23 +2,30 @@
 	"name": "faculty-supervisor",
 	"version": "0.1.0",
 	"private": true,
+	"proxy": "http://localhost:8080/",
 	"dependencies": {
+		"@ant-design/icons": "^5.1.3",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
 		"@types/jest": "^27.5.2",
 		"@types/node": "^16.18.23",
-		"@types/react": "^18.0.37",
+		"@types/react": "^18.2.7",
 		"@types/react-dom": "^18.0.11",
 		"axios": "^1.3.5",
 		"react": "^18.2.0",
 		"react-app-rewired": "^2.2.1",
 		"react-dom": "^18.2.0",
 		"react-hook-form": "^7.43.9",
+		"react-router-dom": "^6.11.2",
 		"react-scripts": "5.0.1",
 		"typescript": "^4.9.5",
 		"web-vitals": "^2.1.4",
 		"yup": "^1.1.1"
+	},
+	"devDependencies": {
+		"prettier": "2.8.8",
+		"tailwindcss": "^3.3.2"
 	},
 	"scripts": {
 		"start": "react-app-rewired start",
