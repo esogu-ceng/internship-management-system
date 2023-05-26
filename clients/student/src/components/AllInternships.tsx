@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Internship } from '../types/InternshipType';
-import InternshipDocument from './InternshipDocuments'; //TODO Internship Documents
 import Modal from '../components/CompanyInfo';
 
 
