@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import { InternshipRow } from '../components/InternshipRow';
 import { Internship } from '../types/InternshipType';
 import CompanyDashboard from '../components/CompanyDashboard';
 import axios from 'axios';
 
-export const Root = () => {
+export const Root = ({_companyId, _auth}:{_companyId: number, _auth: string}) => {
   const [loading, setLoading] = useState(true);
-  const [internships, setInternships] = useState<Internship[] | any>([]);
+  const [internships, setInternships] = useState<Internship[]>([]);
 
   useEffect(() => {
-    fetch('/api/internship/companyid/1', {
+    fetch(`/api/internship/companyid/${_companyId}`, {
+
       headers: {
         Authorization:
-          'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf'), //TODO : change when authorization done
+          'Basic ' + btoa(_auth), //TODO : change when authorization done
       },
       method: 'GET',
     })
@@ -104,7 +105,7 @@ return (
                   </tr>
                 </thead>
                 <tbody>
-                  {internships.map((int: Internship) => (
+                  {internships?.map((int: Internship) => (
                     <InternshipRow key={int.id} internship={int} />
                   ))}
                 </tbody>

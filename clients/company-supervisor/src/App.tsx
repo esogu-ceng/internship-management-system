@@ -1,9 +1,9 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { Root } from './routes/Root';
 import ErrorPage from './error-page';
-import { Company } from './routes/Company';
+import { CompanyPage } from './routes/Company';
 import { Footer } from './components/Footer';
 const HeaderLayout = () => (
   <div className="flex flex-col min-h-screen justify-between">
@@ -19,18 +19,23 @@ const HeaderLayout = () => (
   </div>
 );
 const App: React.FC = () => {
+  //TODO: UPDATE HERE DYNAMICALLY
+  const [currentCompanyId, setcurrentCompanyId] = useState<number>(250);
+  const [auth, setAuth] = useState<string>('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
+  //TODO end  
+
   const router = createBrowserRouter([
     {
       element: <HeaderLayout />,
       errorElement: <ErrorPage />,
       children: [
         {
-          path: '/',
-          element: <Root />,
+          path: '/companysupervisor',
+          element: <Root _companyId={currentCompanyId} _auth={auth}/>,
         },
         {
-          path: 'Company',
-          element: <Company />,
+          path: '/companysupervisor/company',
+          element: <CompanyPage  _companyId={currentCompanyId} _auth={auth}/>,
         },
       ],
     },
