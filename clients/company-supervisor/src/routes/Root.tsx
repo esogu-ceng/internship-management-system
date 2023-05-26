@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import { InternshipRow } from '../components/InternshipRow';
 import { Internship } from '../types/InternshipType';
+import CompanyDashboard from '../components/CompanyDashboard';
 import axios from 'axios';
 
 export const Root = ({_companyId, _auth}:{_companyId: number, _auth: string}) => {
@@ -28,6 +29,9 @@ export const Root = ({_companyId, _auth}:{_companyId: number, _auth: string}) =>
       });
   }, []);
 
+return (
+<div>
+  <CompanyDashboard />  
   return (
     <div className="flex flex-col justify-between items-center">
       <div className="container max-w-screen px-4 mx-auto sm:px-8">
@@ -169,5 +173,6 @@ export const Root = ({_companyId, _auth}:{_companyId: number, _auth: string}) =>
         </div>
       </div>
     </div>
+  </div>
   );
 };
