@@ -1,10 +1,13 @@
-import React from 'react';
-import { Header } from './components/Header';
+import { useState } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import { Root } from './routes/Root';
-import ErrorPage from './error-page';
-import { Company } from './routes/Company';
+
+import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import CompanyDashboard from './components/CompanyDashboard';
+import { Root } from './routes/Root';
+import { CompanyPage } from './routes/Company';
+import ErrorPage from './error-page';
+
 const HeaderLayout = () => (
   <div className="flex flex-col min-h-screen justify-between">
     <header>
@@ -18,23 +21,35 @@ const HeaderLayout = () => (
     </footer>
   </div>
 );
+
 const App: React.FC = () => {
+  //TODO: UPDATE HERE DYNAMICALLY
+  const [currentCompanyId, setcurrentCompanyId] = useState<number>(250);
+  const [auth, setAuth] = useState<string>('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
+  //TODO end  
+  const public_url : string = process.env.PUBLIC_URL
+
   const router = createBrowserRouter([
     {
       element: <HeaderLayout />,
       errorElement: <ErrorPage />,
       children: [
         {
-          path: '/',
-          element: <Root />,
+          path: `${public_url}/`,
+          element: <CompanyDashboard />,
         },
         {
-          path: 'Company',
-          element: <Company />,
+          path: `${public_url}/internships`,
+          element: <Root _companyId={currentCompanyId} _auth={auth}/>,
+        },
+        {
+          path: `${public_url}/company`,
+          element: <CompanyPage  _companyId={currentCompanyId} _auth={auth}/>,
         },
       ],
     },
   ]);
+  
   return (
     <div className="min-h-screen flex justify-center w-screen max-w-screen">
       <RouterProvider router={router} />

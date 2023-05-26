@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Internship } from '../types/InternshipType';
+import Modal from '../components/CompanyInfo';
+
 
 function AllInternships() {
     const [internships, setInternships] = useState<Internship[] | null>(null);
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+
+    const openModal = (companyId:number | null) => {
+        setSelectedCompanyId(companyId);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
     useEffect(() => {
-        fetch('/api/internship/1', {
+        fetch('/api/internship/23', {
             headers: {
                 Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf')
             },
@@ -35,6 +50,11 @@ function AllInternships() {
     if (!internships || internships.length === 0) {
         return <div>No internships found.</div>;
     }
+
+    const handleViewDocuments = (internshipId: number) => {
+        //TODO Staj belgeleri listeleme
+        //console.log(`View documents for internship with ID: ${internshipId}`);
+    };
 
 
     return (
@@ -94,6 +114,9 @@ function AllInternships() {
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Fakülte Sorumlusu
                                 </th>
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Staj Belgeleri
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,9 +132,9 @@ function AllInternships() {
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" onClick={() => openModal(internship.companyId)}>
                                         {/* Şirket Adı */}
-                                        <p className="text-gray-900 whitespace-no-wrap">{internship.companyId}</p>
+                                        <p className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white cursor-pointer"> {internship.companyId}</p>
                                     </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         {/* Başlangıç Tarihi */}
@@ -139,15 +162,40 @@ function AllInternships() {
                                         {/* Fakülte Sorumlusu */}
                                         <p className="text-gray-900 whitespace-no-wrap">{internship.facultySupervisorId}</p>
                                     </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        {/* Staj Belgeleri */}
+                                        <button
+                                            className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white"
+                                            onClick={() => handleViewDocuments(internship.id)}
+                                        >
+                                            Görüntüle
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+                    <div className="bg-white rounded-lg p-8 z-50">
+                        <Modal _company={selectedCompanyId} isOpen={showModal} onClose={closeModal} />
+                        <button
+                            className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+                            onClick={closeModal}
+                        >
+                            Kapat
+                        </button>
+                    </div>
+                </div>
+            )}
 
+
+        </div>
     );
+
 }
 
 export default AllInternships;
