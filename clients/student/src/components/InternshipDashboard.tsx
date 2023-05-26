@@ -5,7 +5,7 @@ function InternshipDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <Link to="/AllInternships">
+        <Link to="/student/AllInternships">
           <h2>Tüm Stajlarım</h2>
         </Link>
       </div>
