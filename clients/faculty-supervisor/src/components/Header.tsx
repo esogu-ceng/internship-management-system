@@ -9,7 +9,7 @@ function Header() {
         <nav>
           <ul className="header-nav">
             <li>
-              <Link to="/company-list">Şirketler</Link>
+              <Link to="facultysupervisor/company-list">Şirketler</Link>
             </li>
           </ul>
         </nav>

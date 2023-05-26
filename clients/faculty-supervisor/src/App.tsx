@@ -8,16 +8,17 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 const App: React.FC = () => {
+  const public_url : string = process.env.PUBLIC_URL
   return (
-    <Router>
+    <Router >
       <div>
         <Header />
         <div className="content-container">
           <Routes>
-            <Route path="/" element={<InternshipDashboard />} />
-            <Route path="/company-list" element={<CompanyListContainer />} />
+            <Route path={`${public_url}`} element={<InternshipDashboard />} />
+            <Route path={`${public_url}/company-list`} element={<CompanyListContainer />} />
             {/* Add other routes for different screens */}
-            <Route path="/default" element={<div>Default Screen</div>} />
+            <Route path={`${public_url}/default`} element={<div>Default Screen</div>} />
           </Routes>
         </div>
         <Footer />
