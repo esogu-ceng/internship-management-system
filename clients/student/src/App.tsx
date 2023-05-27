@@ -6,7 +6,6 @@ import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
 import CompanyInfo from "./components/CompanyInfo";
 import StudentInfo from "./components/StudentInfo";
-
 import "./index.css";
 
 function App() {

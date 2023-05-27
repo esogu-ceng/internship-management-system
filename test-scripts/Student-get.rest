@@ -1,0 +1,7 @@
+#Şevval Kolaca (Endpoint: Öğrenci Getir (ID ile) #33/58) 
+GET http://localhost:8080/api/student/1 
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+### w/ Error
+GET http://localhost:8080/api/student/3333333
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

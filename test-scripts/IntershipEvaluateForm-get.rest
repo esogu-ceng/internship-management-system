@@ -1,0 +1,9 @@
+# Get an InternshipEvaluateForm by ID
+GET http://localhost:8080/api/internship-evaluate-forms/2
+Content-Type: application/json 
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+###
+# Get all InternshipEvaluateForms
+GET http://localhost:8080/api/internship-evaluate-forms/getAll
+Content-Type: application/json 
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

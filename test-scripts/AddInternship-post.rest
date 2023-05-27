@@ -1,0 +1,13 @@
+POST http://localhost:8080/api/internship
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+  "status": "APPROVED",
+  "startDate": "2010-12-31T15:00:00.000+00:00",
+  "endDate": "2010-12-31T15:00:00.000+00:00",
+  "days": 55,
+  "studentId": 0,
+  "companyId": 0,
+  "facultySupervisorId": 0
+}

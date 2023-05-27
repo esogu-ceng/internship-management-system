@@ -8,6 +8,11 @@
 	<properties>
 		<java.version>17</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<frontend.dir.student>./clients/student</frontend.dir.student>
+		<frontend.dir.facultysupervisor>./clients/faculty-supervisor</frontend.dir.facultysupervisor>
+		<frontend.dir.companysupervisor>./clients/company-supervisor</frontend.dir.companysupervisor>
+		<frontend.dir.admin>./clients/admin</frontend.dir.admin>
+		<frontend.dir.public>./clients/public</frontend.dir.public>
 	</properties>
 
 	<parent>
@@ -34,11 +39,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
+	   	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -51,13 +55,20 @@
 	   <dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context</artifactId>
-		    <version>5.3.14</version>
 	   </dependency>
 	   <dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context-support</artifactId>
-		    <version>5.3.14</version>
        </dependency>
+       
+       <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>31.1-jre</version>
+		</dependency>
+
+       
 		<!--Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -101,6 +112,360 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>tr.edu.ogu.ceng.InternshipManagementSystem</mainClass>
+				</configuration>
+			</plugin>			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>npm-install-extras-student</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>@ant-design/icons</argument>
+                              	<argument>@types/react</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.student}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-install-student</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>--no-audit</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.student}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-run-build-student</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.student}</workingDirectory>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>npm-install-extras-facultysupervisor</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>@ant-design/icons</argument>
+                              	<argument>@types/react</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.facultysupervisor}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-install-facultysupervisor</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>--no-audit</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.facultysupervisor}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-run-build-facultysupervisor</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.facultysupervisor}</workingDirectory>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>npm-install-extras-companysupervisor</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>@ant-design/icons</argument>
+                              	<argument>@types/react</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.companysupervisor}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-install-companysupervisor</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>--no-audit</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.companysupervisor}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-run-build-companysupervisor</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.companysupervisor}</workingDirectory>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>npm-install-extras-admin</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>@ant-design/icons</argument>
+                              	<argument>@types/react</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.admin}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-install-admin</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>--no-audit</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.admin}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-run-build-admin</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.admin}</workingDirectory>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>npm-install-extras-public</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>@ant-design/icons</argument>
+                              	<argument>@types/react</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.public}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-install-public</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>--no-audit</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.public}</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-run-build-public</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+							<workingDirectory>${frontend.dir.public}</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			
+			
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
+							<encoding>UTF-8</encoding>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/resources</directory>
+									<includes>
+										<include>**/*.*</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-react-build-student</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/student</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontend.dir.student}/build</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-react-build-facultysupervisor</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/facultysupervisor</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontend.dir.facultysupervisor}/build</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-react-build-companysupervisor</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/companysupervisor</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontend.dir.companysupervisor}/build</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-react-build-admin</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/admin</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontend.dir.admin}/build</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-react-build-public</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/public</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontend.dir.public}/build</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/internshipdocument/internship/0?pageNo=0&limit=10&sortBy=id
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

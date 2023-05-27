@@ -1,0 +1,9 @@
+### Get a setting with key
+GET http://localhost:8080/api/setting/app_port
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+### 
+GET http://localhost:8080/api/setting/app_host
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

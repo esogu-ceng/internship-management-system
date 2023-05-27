@@ -1,10 +1,11 @@
 package tr.edu.ogu.ceng.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,12 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tr.edu.ogu.ceng.enums.UserType;
 
 @Entity
 @Table(name = "ims_users")
@@ -40,15 +40,21 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = UserType.class)
-	@JoinColumn(name = "user_type_id", nullable = false)
+	@Column(name = "user_type", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private UserType userType;
 
 	@Column(name = "create_date")
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "update_date")
-	private Timestamp updateDate;
+	private LocalDateTime updateDate;
+
+	@ManyToOne
+	@JoinColumn(name = "language", referencedColumnName = "id")
+	private Language language;
+
+	@Column(name = "activity")
+	private boolean activity;
 
 }

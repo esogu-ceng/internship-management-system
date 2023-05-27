@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/internship/company/20
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf

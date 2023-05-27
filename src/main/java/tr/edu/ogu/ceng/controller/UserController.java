@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.UserDto;
+import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
+import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -40,9 +43,21 @@ public class UserController {
 		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 	}
 
+	@PutMapping("/admin")
+	public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto user) {
+		UserResponseDto userDto = userService.updateUser(user);
+		return ResponseEntity.ok(userDto);
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Boolean> deleteUser(@PathVariable(name = "id") long id) {
 		return ResponseEntity.ok(userService.deleteUser(id));
+	}
+
+	@PutMapping("/activity/{id}")
+	public ResponseEntity<Boolean> setUserActivity(@PathVariable(name = "id") Long id,
+			@RequestParam(defaultValue = "true") boolean status) {
+		return ResponseEntity.ok(userService.setUserActivity(id, status));
 	}
 
 }

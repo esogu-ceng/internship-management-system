@@ -1,0 +1,12 @@
+PUT http://localhost:8080/api/internshipregistry
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
+
+{
+  "id": 32,
+  "filePath": "C:/root/ds",
+  "name": "Staj32",
+  "type": "pdf",
+  "date": "2010-12-31T15:00:00.000+00:05",
+  "internshipId": 21
+}

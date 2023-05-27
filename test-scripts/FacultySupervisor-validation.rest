@@ -1,0 +1,21 @@
+POST http://localhost:8080/api/facultySupervisor/saveFacultysupervisor
+Content-Type: application/json
+Authorization: Basic test3:test
+
+{
+    "id":null,
+    "name":"",
+    "surname":"Kartal",
+    "phoneNumber":"5051234567",
+    "supervisorNo":"920",
+    "user":{
+        "username":"test3",
+        "password":"test",
+        "email":"test3@ogu.edu.tr"
+    },
+    "faculty":{
+        "id":"1",
+        "name":"Computer Engineering"
+    }
+
+}

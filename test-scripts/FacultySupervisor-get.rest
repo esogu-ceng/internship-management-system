@@ -1,0 +1,4 @@
+GET http://localhost:8080/api/facultySupervisor/1
+Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:test
+    
