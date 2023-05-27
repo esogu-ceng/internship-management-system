@@ -50,5 +50,6 @@ def clear_ims_internships(conn):
     cur = conn.cursor()
     sIdSelectQ = "DELETE FROM public.ims_internships"
     cur.execute(sIdSelectQ)
+    conn.commit()
     cur.close()
     print("ims_internships cleared.")

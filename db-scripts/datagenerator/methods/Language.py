@@ -14,11 +14,13 @@ def generate_language(conn):
     cur.execute(insert_query)
     conn.commit()
     cur.close()
+    print(f"{2} languages added.")
 
 
 def clear_ims_language(conn):
     cur = conn.cursor()
     Q = "DELETE FROM public.ims_language"
     cur.execute(Q)
+    conn.commit()
     cur.close()
     print("ims_language cleared.")

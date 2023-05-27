@@ -60,6 +60,10 @@ def f_students_grade():
     return round(random.uniform(1.5, 4.0), 2)
 
 
+def activityRandomizer():
+    return random.choices(['true', 'false'], weights=[0.7, 0.3], k=1)[0]
+
+
 boulevard_street_names = [
     "İstiklal",
     "Bağdat",

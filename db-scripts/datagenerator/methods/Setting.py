@@ -17,3 +17,4 @@ def setting_fill_blanks(conn):
         conn.commit()
 
     cur.close()
+    print(f"{keys.__len__()} settings updated.")

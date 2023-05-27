@@ -43,12 +43,13 @@ def generate_student(conn, facultyIds, count):
         create_date = date.today().strftime("%Y-%m-%d")
         update_date = date.today().strftime("%Y-%m-%d")
         faculty_id = random.choice(facultyIds)
+        activity = data.activityRandomizer()
         insert_query = f"""
                     INSERT INTO public.ims_users (
-                        username, password, email, user_type, language
+                        username, password, email, user_type, language, activity
                     )
                     VALUES (
-                        '{(name[0] + surname).lower() + i.__str__()}', '123', '{(name[0] + surname).lower() + i.__str__()}@ogu.edu.tr', 'STUDENT', '1'
+                        '{(name[0] + surname).lower() + i.__str__()}', '123', '{(name[0] + surname).lower() + i.__str__()}@ogu.edu.tr', 'STUDENT', '1', {activity}
                     ) RETURNING id
                 """
 
@@ -77,12 +78,13 @@ def generate_student(conn, facultyIds, count):
         cur.execute(insert_query)
         conn.commit()
     cur.close()
-    print(f"{count} students added.")
+    print(f"{count} students and users added.")
 
 
 def clear_ims_students(conn):
     cur = conn.cursor()
     sIdSelectQ = "DELETE FROM public.ims_students"
     cur.execute(sIdSelectQ)
+    conn.commit()
     cur.close()
     print("ims_students cleared.")
