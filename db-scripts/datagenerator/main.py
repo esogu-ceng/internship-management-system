@@ -2,9 +2,8 @@ import psycopg2
 
 from caller import caller
 
-# dolu bi veritabanına clear yapmadan insert yapmak hatalara yol açabilir
-CLEAR = True
-INSERT = True
+# sadece temizleme yapmak için True yapabilirsiniz
+ONLY_CLEAR = False
 
 # BENİ DÜZENLE
 conn = psycopg2.connect(
@@ -15,7 +14,7 @@ conn = psycopg2.connect(
 )
 
 # SAYILARI DEĞİŞTİREBİLİRSİNİZ
-caller(conn=conn, clear=CLEAR, insert=INSERT, counts={
+caller(conn=conn, only_clear=ONLY_CLEAR, counts={
     'student_count': 200,
     'internship_count': 200,
     'company_companySupervisor_count': 23,  # max 23 or company content will be repetitive

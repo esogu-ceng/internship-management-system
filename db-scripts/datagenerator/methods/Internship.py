@@ -48,6 +48,12 @@ def generate_internship(conn, facultySupervisorIds, count):
 
 def clear_ims_internships(conn):
     cur = conn.cursor()
+    sIdSelectQ = "DELETE FROM public.ims_internship_documents"
+    cur.execute(sIdSelectQ)
+    sIdSelectQ = "DELETE FROM public.ims_internship_evaluate_form"
+    cur.execute(sIdSelectQ)
+    sIdSelectQ = "DELETE FROM public.ims_internship_registries"
+    cur.execute(sIdSelectQ)
     sIdSelectQ = "DELETE FROM public.ims_internships"
     cur.execute(sIdSelectQ)
     conn.commit()
