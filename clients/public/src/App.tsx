@@ -1,27 +1,28 @@
-import React, {useState} from 'react';
-import {toast, ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from './components/Header';
 import Footer from './components/Footer';
-import {BrowserRouter, Route, Routes,} from 'react-router-dom';
-import Login from "./components/Login";
-import ResetPassword from "./components/ResetPassword";
+import Login from './components/Login';
+import ResetPassword from './components/ResetPassword';
+import Companies from './components/Companies';
 
 function App() {
-    const public_url : string = process.env.PUBLIC_URL
-    return (
-        <div className="container">
-            <Header/>
-            <ToastContainer/>
-
-            <BrowserRouter>
+  const public_url: string = process.env.PUBLIC_URL;
+  return (
+    <React.StrictMode>
+        <Router>
+            <Header />
+            <div className="app-container">
                 <Routes>
                     <Route path={`${public_url}`} element={<Login/>}/>
                     <Route path={`${public_url}/reset-password`} element={<ResetPassword/>}/>
+                    <Route path={`${public_url}/companies`} element={<Companies/>}/>
                 </Routes>
-            </BrowserRouter>
-            <Footer/>
-        </div>
-    );
+            </div>
+            <Footer />
+        </Router>
+    </React.StrictMode>
+);
 }
+
 export default App;
