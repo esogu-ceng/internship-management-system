@@ -12,8 +12,9 @@ function AdminDashboard() {
         {/* TODO */}
       </div>
       <div className="dashboard-card">
+        <Link to="/admin/facultysupervisor">
         <h2>Fakülte Sorumluları</h2>
-        {/* TODO */}
+        </Link>
       </div>
       <div className="dashboard-card">
         <h2>Ayarlar</h2>

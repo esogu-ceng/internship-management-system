@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AdminDashbord from "./components/AdminDashboard"
 import "./index.css";
+import FacultySupervisor from "./components/FacultySupervisor";
 
 function App() {
 	return (
@@ -13,6 +14,9 @@ function App() {
 				<div className="app-container">
 					<Routes>
 						<Route path="/admin" element={<AdminDashbord />} />
+					</Routes>
+					<Routes>
+						<Route path="/admin/facultysupervisor" element={<FacultySupervisor />} />
 					</Routes>
 				</div>
 				<Footer />
