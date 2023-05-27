@@ -7,6 +7,17 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(<></>);
   const [popUpState, setPopUpState] = useState<boolean>(false);
 
+  const getStatusColor = (status: string) => {
+    if (status === 'APPROVED') {
+      return 'bg-green-200 p-20 rounded-full';
+    } else if (status === 'REJECTED') {
+      return 'bg-red-200 p-20 rounded-full';
+    } else if (status === 'PENDING') {
+      return 'bg-yellow-200 p-20 rounded-full';
+    }
+    return '';
+  };
+
   const handleButtonHover = (buttonName: string | null) => {
     setHoveredButton(buttonName);
   };
@@ -71,10 +82,10 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
         </p>
       </td>
       <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-        <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
+        <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusColor(internship.status)}`}>
           <span
             aria-hidden="true"
-            className="absolute inset-0 bg-green-200 rounded-full opacity-50"
+            className="absolute inset-0 rounded-full opacity-50"
           ></span>
           <span className="relative">{internship.status}</span>
         </span>
@@ -133,8 +144,10 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
           <div className="bg-white rounded-lg p-8 z-50 flex flex-col items-center">
             {popUpScreen}
+            <br />
             <button
               className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              style={{ backgroundColor: '#3A4F7A' }}
               onClick={onClosePopUp}
             >
               Kapat
