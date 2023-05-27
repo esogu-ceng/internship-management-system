@@ -31,6 +31,7 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
+	private final UserService userService;
 	private final FacultyRepository facultyRepository;
 	private final FacultyService facultyService;
 	private ModelMapper modelMapper;
@@ -81,9 +82,8 @@ public class StudentService {
 		user.setUpdateDate(now);
 
 		Student student = modelMapper.map(studentRequestDto, Student.class);
-		student.setUser(userRepository.save(user));// FIXME instead, do we need to call to Service method?
-													// But the Service method needs to get DTO. Or are there
-													// any other approaches to persist the User?
+		student.setUser(userService.saveUser(user));
+
 		student.setCreateDate(now);
 		student.setUpdateDate(now);
 
@@ -112,7 +112,7 @@ public class StudentService {
 		user.setUsername(studentRequestDto.getUser().getUsername());
 
 		student = modelMapper.map(studentRequestDto, Student.class);
-		student.setUser(userRepository.save(user));
+		student.setUser(userService.saveUser(user));
 
 		student.setCreateDate(studentRepository.getById(student.getId()).getCreateDate());
 		student.setUpdateDate(LocalDateTime.now());
@@ -173,7 +173,7 @@ public class StudentService {
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setUserType(UserType.STUDENT);
-		user = userRepository.save(user);
+		user = userService.saveUser(user);
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
