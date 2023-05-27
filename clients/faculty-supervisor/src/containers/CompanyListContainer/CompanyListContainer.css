@@ -1,0 +1,80 @@
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pagination-controls button {
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 25px;
+  width: 100px;
+  height: 30px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-settings {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pagination-settings label {
+  margin-right: 10px;
+}
+
+.pagination-settings input[type="number"],
+.pagination-settings select {
+  margin-left: 5px;
+}
+
+.next {
+  margin-right: 5%;
+}
+
+.previous {
+  margin-left: 5%;
+}
+
+.create-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.create-button-container  {
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  font-size: 15px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  
+}
+.create-button-container:hover  {
+  background-color: #1565C0;
+}
+
+.right-align {
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+.plusicon{
+  margin-right: 10px;
+}
