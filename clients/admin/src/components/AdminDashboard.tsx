@@ -16,7 +16,9 @@ function AdminDashboard() {
         {/* TODO */}
       </div>
       <div className="dashboard-card">
-        <h2>Ayarlar</h2>
+        <Link to="/admin/setting">
+          <h2>Ayarlar</h2>
+        </Link>
         {/* TODO */}
       </div>
     </div>
