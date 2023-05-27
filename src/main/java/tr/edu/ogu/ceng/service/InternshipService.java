@@ -22,6 +22,7 @@ import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
+import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
@@ -134,7 +135,7 @@ public class InternshipService {
 		internship.setStatus(status);
 		internshipRepository.save(internship);
 		log.info("Internship with id {} {}!", id, status);
-		
+
 		return status;
 
 	}
@@ -183,8 +184,8 @@ public class InternshipService {
 
 		return modelMapper.map(student, StudentResponseDto.class);
 	}
-	
-	public Page<InternshipResponseDto> getAllInternshipsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
+
+	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all internships by faculty supervisor id: {} with pageable: {}", faculty_supervisor_id, pageable);
@@ -192,8 +193,7 @@ public class InternshipService {
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
-			Page<InternshipResponseDto> internshipDtos = internships
-					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			Page<InternshipResponseCompanyDto> internshipDtos = internships.map(internship -> modelMapper.map(internship, InternshipResponseCompanyDto.class));
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
