@@ -6,7 +6,7 @@ function InternshipDashboard() {
     <div className="dashboard-container">
       <div className="dashboard-card">
         <Link to="/facultysupervisor/AllInternships">
-        <h2>Staj Yapan Öğrenciler</h2>{/* TODO */}
+          <h2>Staj Yapan Öğrenciler</h2>{/* TODO */}
         </Link>
       </div>
       <div className="dashboard-card">{/* TODO */}

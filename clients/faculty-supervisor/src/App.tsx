@@ -9,8 +9,8 @@ import "./index.css";
 
 function App() {
 	return (
-	  <React.StrictMode>
-		<Router>
+		<React.StrictMode>
+			<Router>
 				<Header />
 				<div className="app-container">
 					<Routes>
@@ -20,8 +20,8 @@ function App() {
 				</div>
 				<Footer />
 			</Router>
-	  </React.StrictMode>
+		</React.StrictMode>
 	);
-  }
-  
-  export default App;
+}
+
+export default App;
