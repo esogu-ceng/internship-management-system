@@ -106,9 +106,10 @@ function GetSettings() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-4">Ayarlar</h1>
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div className="bg-white overflow-hidden">
+        <h1 className="text-3xl font-bold mb-4">Ayarlar</h1>
+        <br />
+        <table className="text-gray-700 border border-gray-300 border-collapse">
           <thead>
             <tr>
               <th className="px-6 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider font-bold w-24">
@@ -123,37 +124,41 @@ function GetSettings() {
           <tbody>
             {settings.map((setting: SettingRow, index: number) => (
               <tr key={index}>
-                <td className="px-6 py-4 w-48 font-bold">{setting.field}</td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4 w-48 font-bold border border-gray-300">{setting.field}</td>
+                <td className="px-6 py-4 border border-gray-300">
                   {setting.value && setting.value.editable ? (
-                    <div className="w-full border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
+                    <div>
                       <textarea
                         value={setting.value.value}
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         className="w-full h-16 resize-none overflow-auto"
-                        style={{ maxHeight: '8rem' }}
+                        style={{ resize: 'vertical', maxWidth: '400px', minWidth: '400px', wordWrap: 'break-word' }}
                       />
                     </div>
                   ) : (
-                    <span>{setting.value ? setting.value.value : ''}</span>
+                    <div style={{ resize: 'vertical', maxWidth: '400px', minWidth: '400px', wordWrap: 'break-word' }}>
+                      {setting.value ? setting.value.value : ''}
+                    </div>
                   )}
                 </td>
-                <td className="px-6 py-4">
-                  {setting.value && setting.value.editable ? (
-                    <button
-                      onClick={() => handleSave(index)}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
-                    >
-                      Kaydet
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleEdit(index)}
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
-                    >
-                      Düzenle
-                    </button>
-                  )}
+                <td className="px-6 py-4 border border-gray-300">
+                  <div>
+                    {setting.value && setting.value.editable ? (
+                      <button
+                        onClick={() => handleSave(index)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
+                      >
+                        Kaydet
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleEdit(index)}
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
+                      >
+                        Düzenle
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -161,8 +166,9 @@ function GetSettings() {
         </table>
       </div>
     </div>
+
   );
-  
+
 }
 
 export default GetSettings;
