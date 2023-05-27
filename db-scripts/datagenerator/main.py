@@ -1,8 +1,6 @@
-import generate_rows_company as companyOp
-import generate_rows_student as studentOp
-import generate_rows_internship as internshipOp
-
 import psycopg2
+
+from caller import caller
 
 # BENİ DÜZENLE
 conn = psycopg2.connect(
@@ -12,12 +10,12 @@ conn = psycopg2.connect(
     password="123456"
 )
 
-internshipOp.clear(conn)
-studentOp.clear(conn)
-companyOp.clear(conn)
-
-studentOp.generateStudents(conn, 2000)
-companyOp.generateCompanies(conn, 20)  # max 23
-internshipOp.generateInternShips(conn, 1000)
+# SAYILARI DEĞİŞTİREBİLİRSİNİZ
+caller(conn, {
+    'student_count': 200,
+    'internship_count': 200,
+    'company_companySupervisor_count': 23,  # max 23 or companies will be duplicated
+    'facultySupervisor_count': 50
+})
 
 conn.close()

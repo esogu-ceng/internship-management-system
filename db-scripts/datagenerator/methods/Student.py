@@ -1,10 +1,10 @@
-import data_pool as data
-import settings as st
 import random
 from datetime import date
 
+from data import data_pool as data
 
-def generateStudents(conn, count):
+
+def generate_student(conn, facultyIds, count):
 
     cur = conn.cursor()
     for i in range(count):
@@ -42,9 +42,19 @@ def generateStudents(conn, count):
         sgk_self = True
         create_date = date.today().strftime("%Y-%m-%d")
         update_date = date.today().strftime("%Y-%m-%d")
-        faculty_id = st.existingDataInfo['faculty_id']
-        user_id = st.existingDataInfo['user_id']
+        faculty_id = random.choice(facultyIds)
+        insert_query = f"""
+                    INSERT INTO public.ims_users (
+                        username, password, email, user_type, language
+                    )
+                    VALUES (
+                        '{(name[0] + surname).lower() + i.__str__()}', '123', '{(name[0] + surname).lower() + i.__str__()}@ogu.edu.tr', 'STUDENT', '1'
+                    ) RETURNING id
+                """
 
+        cur.execute(insert_query)
+        id_of_new_row = cur.fetchone()[0]
+        conn.commit()
         insert_query = f"""
             INSERT INTO public.ims_students (
                 name, surname, tckn, student_no, grade, phone_number, home_phone_number, boulevard, main_street, 
@@ -61,7 +71,7 @@ def generateStudents(conn, count):
                 '{birth_date}', '{id_card_serial_no}', '{id_register_province}', '{id_register_subprovince}', 
                 '{id_register_street_village}', '{id_register_volume_no}', '{id_register_family_serial_no}', 
                 '{id_register_serial_no}', '{id_registry_office}', '{id_registry_reason}', '{sgk_family}', '{sgk_self}', 
-                '{create_date}', '{update_date}', '{user_id}', '{faculty_id}'
+                '{create_date}', '{update_date}', '{id_of_new_row}', '{faculty_id}'
             )
         """
         cur.execute(insert_query)
@@ -70,7 +80,7 @@ def generateStudents(conn, count):
     print(f"{count} students added.")
 
 
-def clear(conn):
+def clear_ims_students(conn):
     cur = conn.cursor()
     sIdSelectQ = "DELETE FROM public.ims_students"
     cur.execute(sIdSelectQ)

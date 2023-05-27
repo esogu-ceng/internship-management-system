@@ -299,3 +299,17 @@ internship_status = [
     "APPROVED",
     "REJECTED"
 ]
+
+facultyNames = [
+    "Mühendislik",
+    "Fen Bilimleri",
+    "Sanat",
+    "İşletme",
+    "Sosyal Bilimler",
+    "Sağlık Bilimleri",
+    "Eğitim",
+    "Hukuk",
+    "Mimarlık",
+    "Tıp"
+]
+

@@ -1,10 +1,10 @@
-import data_pool as data
-import settings as st
 import random
 from datetime import date
 
+from data import data_pool as data
 
-def generateInternShips(conn, count):
+
+def generate_internship(conn, facultySupervisorIds, count):
     cur = conn.cursor()
     sIdSelectQ = "SELECT id FROM public.ims_students"
     cur.execute(sIdSelectQ)
@@ -21,7 +21,7 @@ def generateInternShips(conn, count):
     for i in range(count):
         student_id = int(random.choice(studentIds)[0])
         company_id = int(random.choice(companyIds)[0])
-        faculty_supervisor_id = st.existingDataInfo['faculty_supervisor_id']
+        faculty_supervisor_id = random.choice(facultySupervisorIds)
         status = random.choice(data.internship_status)
         rndYear = data.f_random_n_digit(2)
         rndMonth = data.f_random_n_digit(1)
@@ -46,7 +46,7 @@ def generateInternShips(conn, count):
     print(f"{count} internships added.")
 
 
-def clear(conn):
+def clear_ims_internships(conn):
     cur = conn.cursor()
     sIdSelectQ = "DELETE FROM public.ims_internships"
     cur.execute(sIdSelectQ)
