@@ -8,14 +8,13 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
   const [popUpState, setPopUpState] = useState<boolean>(false);
 
   const getStatusColor = (status: string) => {
-    if (status === 'APPROVED') {
-      return 'bg-green-200 p-20 rounded-full';
-    } else if (status === 'REJECTED') {
-      return 'bg-red-200 p-20 rounded-full';
-    } else if (status === 'PENDING') {
-      return 'bg-yellow-200 p-20 rounded-full';
-    }
-    return '';
+    const statusClasses: { [key: string]: string } = {
+      APPROVED: 'bg-green-200 p-20 rounded-full',
+      REJECTED: 'bg-red-200 p-20 rounded-full',
+      PENDING: 'bg-yellow-200 p-20 rounded-full',
+    };
+  
+    return statusClasses[status] || '';
   };
 
   const handleButtonHover = (buttonName: string | null) => {
