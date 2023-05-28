@@ -1,15 +1,16 @@
 POST http://localhost:8080/public/api/registerascompanysupervisor
 Content-Type: application/json
+Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
 
 {
 "name": "burak",
- "surname": "kaya",
-  "phoneNumber": "521265962",
-   "username": "burakskzxcasd",
-    "email": "burakskxzcasd@gmail.com",
-      "password": "123456",
-       "confirmPassword": "123456",
-        "company":{
-            "id": 1
-            }
+"surname": "kaya",
+"phoneNumber": "521265962",
+"username": "burakskzxcasd",
+"email": "burakskxzcasd@gmail.com",
+"password": "123456",
+"confirmPassword": "123456",
+"company":{
+    "id": 0
+  }
 }

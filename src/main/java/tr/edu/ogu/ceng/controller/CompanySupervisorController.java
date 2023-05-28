@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,48 +19,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.service.CompanySupervisorService;
 import tr.edu.ogu.ceng.util.PageableUtil;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/company-supervisor")
 public class CompanySupervisorController {
 	@Autowired
-    private final CompanySupervisorService service;
-    
-    @GetMapping
-    public Page<CompanySupervisorDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy){
-    	Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+	private final CompanySupervisorService service;
+
+	@GetMapping
+	public Page<CompanySupervisorDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		return service.getAll(pageable);
-    }
+	}
 
-    @GetMapping("/{id}")
-    public CompanySupervisorDto getById(@PathVariable Long id){
-        return service.getById(id);
-    }
+	@GetMapping("/{id}")
+	public CompanySupervisorDto getById(@PathVariable Long id) {
+		return service.getById(id);
+	}
 
-    @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public CompanySupervisorDto add(@RequestBody CompanySupervisorDto request){
-        return service.add(request);
-    }
+	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public CompanySupervisorResponseDto add(@RequestBody CompanySupervisorRequestDto request) {
+		return service.addCompany(request);
+	}
 
-    @PutMapping
-    public CompanySupervisorDto update(@RequestBody CompanySupervisorDto request){
-        return service.update(request);
-    }
+	@PutMapping
+	public CompanySupervisorDto update(@RequestBody CompanySupervisorDto request) {
+		return service.update(request);
+	}
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        service.delete(id);
-    }
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable Long id) {
+		service.delete(id);
+	}
 
-    @GetMapping("/getCompanySupervisorsByCompanyId/{companyId}")
-    public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(@PathVariable(name = "companyId") Long companyId){
-        return service.getCompanySupervisorsByCompanyId(companyId);
-    }
+	@GetMapping("/getCompanySupervisorsByCompanyId/{companyId}")
+	public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(
+			@PathVariable(name = "companyId") Long companyId) {
+		return service.getCompanySupervisorsByCompanyId(companyId);
+	}
 }
