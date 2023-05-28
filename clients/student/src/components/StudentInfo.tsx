@@ -32,7 +32,7 @@ import { Student } from '../types/StudentType';
       });
   });
 
-  const SGKCheck = (value: boolean | undefined) => {
+  const SGKCheck = (value: boolean) => {
     if (value) {
       return ("Var");
     }
