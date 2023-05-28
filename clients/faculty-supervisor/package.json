@@ -2,9 +2,9 @@
 	"name": "faculty-supervisor",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "http://localhost:8080/",
+	"proxy": "http://localhost:8080",
 	"dependencies": {
-		"@ant-design/icons": "^5.1.2",
+		"@ant-design/icons": "^5.1.3",
 		"@emotion/react": "^11.11.0",
 		"@emotion/styled": "^11.11.0",
 		"@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -40,7 +40,6 @@
 		"test": "react-app-rewired test",
 		"eject": "react-scripts eject"
 	},
-	"proxy": "http://localhost:8080",
 	"eslintConfig": {
 		"extends": [
 			"react-app",
