@@ -36,11 +36,9 @@ import { Student } from '../types/StudentType';
     if (value) {
       return ("Var");
     }
-    else if (!value) {
+    else {  
       return ("Yok");
     }
-    else
-      return ("Bilinmiyor");
   };
 
   if (loading) {
