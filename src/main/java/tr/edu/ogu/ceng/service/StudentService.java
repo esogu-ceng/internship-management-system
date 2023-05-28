@@ -18,9 +18,11 @@ import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
+import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
+import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 
@@ -34,6 +36,7 @@ public class StudentService {
 	private final UserService userService;
 	private final FacultyRepository facultyRepository;
 	private final FacultyService facultyService;
+	private final FacultySupervisorService facultySupervisorService;
 	private ModelMapper modelMapper;
 
 	public StudentResponseDto getStudent(long id) {
@@ -189,6 +192,11 @@ public class StudentService {
 		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;
 
+	}
+	public Page<Student> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
+		 FacultySupervisorResponseDto facultySupervisorDto = facultySupervisorService.getFacultySupervisor(faculty_supervisor_id);
+	     Long faculty_id = facultySupervisorDto.getFacultyId();
+	     return studentRepository.findAllByFacultyId(faculty_id, pageable);
 	}
 
 }
