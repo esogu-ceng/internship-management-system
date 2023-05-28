@@ -23,7 +23,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path={`${public_url}`} element={<InternshipDashboard />} />
             <Route path={`${public_url}/company-list`} element={<CompanyListContainer />} />
-            <Route path={`${public_url}/AllInternships`}element={<AllInternships />} />
+            <Route path={`${public_url}/AllInternship`} element={<AllInternships />} />
             {/* Add other routes for different screens */}
             <Route path={`${public_url}/default`} element={<div>Default Screen</div>} />
           </Routes>
