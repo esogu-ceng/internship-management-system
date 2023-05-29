@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Internship } from '../types/InternshipType';
 import axios from 'axios';
+import Modal from '../components/CompanyInfo';
 
 interface PageableResponse<T> {
   content: T[];
@@ -16,7 +17,17 @@ function AllInternships() {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('id');
   const [internships, setInternships] = useState<Internship[] | any>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
+  const openModal = (companyId: number | null) => {
+    setSelectedCompanyId(companyId);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
   const fetchInternship = async (page: number, size: number, sort: string) => {
 
     try {
@@ -25,9 +36,6 @@ function AllInternships() {
           pageNo: page,
           limit: size,
           sortBy: sort,
-        },
-        headers: {
-          Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf') //TODO Change here.
         },
       });
       const { content, totalPages } = response.data as PageableResponse<Internship>;
@@ -140,8 +148,12 @@ function AllInternships() {
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">{internship.student.name + " " + internship.student.surname}</p>
                   </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">{internship.company.name}</p>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" onClick={() => openModal(internship.company.id)}>
+                    <p className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white cursor-pointer text-center">
+                      <span className="inline-block w-40 mx-auto">
+                        {internship.company.name}
+                      </span>
+                    </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">{new Date(internship.startDate).toLocaleDateString('en-GB')}</p>
@@ -154,9 +166,8 @@ function AllInternships() {
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <span
-                      className={`relative inline-block px-3 py-1 font-semibold leading-tight ${
-                        getStatusColor(internship.status)
-                      }`}
+                      className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusColor(internship.status)
+                        }`}
                     >
                       <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
                       <span className="relative">{internship.status}</span>
@@ -168,6 +179,20 @@ function AllInternships() {
           </table>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white rounded-lg p-8 z-50">
+            <Modal _company={selectedCompanyId} isOpen={showModal} onClose={closeModal} />
+            <button
+              className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              onClick={closeModal}
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

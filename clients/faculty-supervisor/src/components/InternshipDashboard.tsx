@@ -2,11 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function InternshipDashboard() {
+  const root_path : string | undefined = process.env.PUBLIC_URL
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <Link to="/facultysupervisor/AllInternships">
-        <h2>Staj Yapan Öğrenciler</h2>{/* TODO */}
+      <Link to={`${root_path}/AllInternship`}>
+          <h2>Staj Yapan Öğrenciler</h2>{/* TODO */}
         </Link>
       </div>
       <div className="dashboard-card">{/* TODO */}
