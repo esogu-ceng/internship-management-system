@@ -206,7 +206,7 @@ public class StudentService {
 						.map(student -> modelMapper.map(student, StudentResponseDto.class));
 				return studentDtos;
 			} catch (Exception e) {
-				log.error("An error occured while getting internships: {}", e.getMessage());
+				log.error("An error occured while getting students: {}", e.getMessage());
 				throw e;
 			}
 	}
