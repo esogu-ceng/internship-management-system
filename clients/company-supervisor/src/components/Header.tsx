@@ -2,13 +2,20 @@ import React, { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 export const Header = () => {
   const [burgerButton, setBurgerButton] = useState<boolean>(false);
-  const root_path : string | undefined = process.env.PUBLIC_URL
+  const root_path: string | undefined = process.env.PUBLIC_URL;
+
+  const handleLogout = () => {
+    window.location.href = process.env.REACT_APP_API_BASE_URI + 'logout';
+  };
+
   return (
     <header>
       <div className="header-content">
         <div className="header-buttons">
           <button className="header-button">Profil</button>
-          <button className="header-button">Çıkış</button>
+          <button className="header-button" onClick={handleLogout}>
+            Çıkış
+          </button>
         </div>
         <nav className="bg-white dark:bg-gray-800  shadow ">
           <div className="px-8 mx-auto w-screen">
@@ -22,8 +29,9 @@ export const Header = () => {
                     <NavLink to={`${root_path}/internships`}>
                       {({ isActive }) => (
                         <p
-                          className={`${isActive ? `text-gray-200` : `text-gray-400`
-                            } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${
+                            isActive ? `text-gray-200` : `text-gray-400`
+                          } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Stajlar
                         </p>
@@ -32,8 +40,9 @@ export const Header = () => {
                     <NavLink to={`${root_path}/company`}>
                       {({ isActive }) => (
                         <p
-                          className={`${isActive ? `text-gray-200` : `text-gray-400`
-                            }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${
+                            isActive ? `text-gray-200` : `text-gray-400`
+                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Şirket Bilgileri
                         </p>
@@ -42,8 +51,9 @@ export const Header = () => {
                     <NavLink to={`${root_path}/help`}>
                       {({ isActive }) => (
                         <p
-                          className={`${isActive ? `text-gray-200` : `text-gray-400`
-                            }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${
+                            isActive ? `text-gray-200` : `text-gray-400`
+                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Yardım
                         </p>
@@ -52,8 +62,9 @@ export const Header = () => {
                     <NavLink to={`${root_path}/joker`}>
                       {({ isActive }) => (
                         <p
-                          className={`${isActive ? `text-gray-200` : `text-gray-400`
-                            }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                          className={`${
+                            isActive ? `text-gray-200` : `text-gray-400`
+                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                         >
                           Joker
                         </p>
@@ -94,8 +105,9 @@ export const Header = () => {
                 <NavLink to={`${root_path}/internships`}>
                   {({ isActive }) => (
                     <p
-                      className={`${isActive ? `text-gray-800` : `text-gray-300`
-                        } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${
+                        isActive ? `text-gray-800` : `text-gray-300`
+                      } hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Stajlar
                     </p>
@@ -104,8 +116,9 @@ export const Header = () => {
                 <NavLink to={`${root_path}/company`}>
                   {({ isActive }) => (
                     <p
-                      className={`${isActive ? `text-gray-800` : `text-gray-300`
-                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${
+                        isActive ? `text-gray-800` : `text-gray-300`
+                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Şirket Bilgileri
                     </p>
@@ -114,8 +127,9 @@ export const Header = () => {
                 <NavLink to={`${root_path}/help`}>
                   {({ isActive }) => (
                     <p
-                      className={`${isActive ? `text-gray-800` : `text-gray-300`
-                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${
+                        isActive ? `text-gray-800` : `text-gray-300`
+                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Yardım
                     </p>
@@ -124,8 +138,9 @@ export const Header = () => {
                 <NavLink to={`${root_path}/joker`}>
                   {({ isActive }) => (
                     <p
-                      className={`${isActive ? `text-gray-800` : `text-gray-300`
-                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      className={`${
+                        isActive ? `text-gray-800` : `text-gray-300`
+                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
                     >
                       Joker
                     </p>
@@ -136,6 +151,6 @@ export const Header = () => {
           )}
         </nav>
       </div>
-  </header>
+    </header>
   );
 };
