@@ -17,142 +17,154 @@ code {
 
 
 footer {
- position: fixed;
-  bottom: 0;
-  left: 0;
- width: 100%;
-  background-color: #888;
-  color: #fff;
-  text-align: center;
-  padding: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-}
-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #8ac5d6;
-  color: #fff;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-}
-
-.header-content {
-  display: flex;
+  position: fixed;
+   bottom: 0;
+   left: 0;
+  width: 100%;
+   background-color: #888;
+   color: #fff;
+   text-align: center;
+   padding: 10px;
+   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+ }
+ header {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: #8ac5d6;
+   color: #fff;
+   padding: 20px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+   font-weight: bolder;
+ }
  
-  align-items: center;
-  flex: 1;
-}
-
-.header-title {
-  margin: 0;
-  font-size: 32px;
-  text-align: center;
-}
-
-.header-nav {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: start;
-}
-
-.header-nav li {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.header-nav li a {
-  text-decoration: none;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 5px;
-  background-color: transparent;
-  cursor: pointer;
-  box-shadow: none;
-  margin-left: 20px;
-}
-
-.header-nav li a:hover {
-  color:rgba(0, 0, 0, 0.5);
-}
-
-.header-buttons {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-
-.header-button {
-  background-color: #3583d6;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 16px;
-  margin-left: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.header-button:hover {
-  background-color: #0062cc;
-}
-.app-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 50px;
-}
-.dashboard-card {
-  background-color: #f6f6f6; /* kart arka plan rengi */
-  border: none;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  border-radius: 15px;
-  width: 300px;
-  height: 200px;
-  margin: 20px;
-  transition: transform 0.3s ease-in-out;
-}
-.dashboard-card:hover {
-  transform: translateY(-5px); 
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-}
-.dashboard-card:nth-child(1) {
-  background-color: #ff6363;
-} 
-.dashboard-card:nth-child(2) {
-  background-color: #76d7c4;
-}
-.dashboard-card:nth-child(3) {
-  background-color: #f7dc6f;
-}
-@media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-.dashboard-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.dashboard-card h2 {
-  margin: 0;
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: white;
+ .header-content {
+   display: flex;
+   align-items: center;
+   flex: 1;
+ }
+ 
+ .header-title {
+   margin: 0;
+   font-size: 32px;
+   text-align: center;
+   text-decoration: none;
+ }
+ .navbar {
+   display: flex;
+ }
+ .navbar-nav {
+   display: flex;
+   list-style: none;
+   padding: 0;
+ }
+ .nav-item {
+  margin-right: 20px;
+  font-size: large;
   font-weight: bold;
+  margin-left: 20px;
+  border: 2px solid #1f8fae; 
+  border-radius: 10px; 
+  padding: 10px; 
+  transition: all 0.3s ease;
 }
-.dashboard-card p {
-  margin: 0;
-  font-size: 16px;
-  color: #666;
+ .nav-item:hover {
+  border-color: #06e928; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
-.dashboard-card:hover {
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-  background-color: #eabce5;
-}
+ .nav-link {
+   text-decoration: none;
+   color: #005733;
+   transition: color 0.3s ease;
+ }
+ .nav-link:hover {
+   color: #0062cc;
+ }
+ .header-nav li a {
+   text-decoration: none;
+   color: #fff;
+   padding: 8px 16px;
+   border-radius: 5px;
+   background-color: transparent;
+   cursor: pointer;
+   box-shadow: none;
+   margin-left: 20px;
+ }
+ 
+ .header-buttons {
+   display: flex;
+   align-items: center;
+   margin-left: auto;
+ }
+ 
+ .header-button {
+   background-color: #3583d6;
+   color: #fff;
+   border: none;
+   border-radius: 5px;
+   padding: 8px 16px;
+   margin-left: 10px;
+   cursor: pointer;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ }
+ .header-button:hover {
+   background-color: #0062cc;
+ }
+ .app-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-wrap: wrap;
+   margin-top: 50px;
+ }
+ .dashboard-card {
+   background-color: #f6f6f6;
+   border: none;
+   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+   padding: 20px;
+   border-radius: 15px;
+   width: 300px;
+   height: 200px;
+   margin: 20px;
+   transition: transform 0.3s ease-in-out;
+ }
+ .dashboard-card:hover {
+   transform: translateY(-5px); 
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+ }
+ .dashboard-card:nth-child(1) {
+   background-color: #ff6363;
+ } 
+ .dashboard-card:nth-child(2) {
+   background-color: #76d7c4;
+ }
+ .dashboard-card:nth-child(3) {
+   background-color: #f7dc6f;
+ }
+ @media (max-width: 768px) {
+   .app-container {
+     flex-direction: column;
+     align-items: center;
+   }
+ }
+ .dashboard-container {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+ }
+ .dashboard-card h2 {
+   margin: 0;
+   font-size: 24px;
+   margin-bottom: 10px;
+   color: white;
+   font-weight: bold;
+ }
+ .dashboard-card p {
+   margin: 0;
+   font-size: 16px;
+   color: #666;
+ }
+ .dashboard-card:hover {
+   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+   background-color: #eabce5;
+ }
