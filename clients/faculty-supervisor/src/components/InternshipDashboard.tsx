@@ -18,6 +18,9 @@ function InternshipDashboard() {
       .then((data: Internship[]) => {
         setInternships(data);
         setApprovedInternships(data.filter(internship => internship.status === "APPROVED").length);
+        data.map(internship => ( 
+          <InternshipCard key={internship.id} internship={internship} />
+        ))
       })
       .catch(error => console.error(error));
 
@@ -48,7 +51,7 @@ function InternshipDashboard() {
       <div className="dashboard-card">
         <h2>Staj Başvuruları</h2>
         <p>{internships.length} adet başvuru bulundu.</p>
-        {internships.map(internship => (
+        {Array.isArray(internships) && internships.map(internship => (
           <InternshipCard key={internship.id} internship={internship} />
         ))}
       </div>

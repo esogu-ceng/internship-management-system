@@ -9,7 +9,7 @@ function Header() {
   return (
     <header className="header">
       <div className="header-content">
-        <Link to="/" className="header-title">Staj Yönetim Sistemi</Link>
+        <Link to="facultysupervisor" className="header-title">Staj Yönetim Sistemi</Link>
         <nav className="navbar">
           <ul className="navbar-nav">
             <li className="nav-item">

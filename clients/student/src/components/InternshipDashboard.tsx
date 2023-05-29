@@ -5,17 +5,11 @@ import { Internship } from '../types/InternshipType';
 import { Company } from '../types/CompanyType';
 
 function InternshipDashboard() {
+  const root_path : string | undefined = process.env.PUBLIC_URL
   const [internships, setInternships] = useState<Internship[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
 
   useEffect(() => {
-    fetch('/api/internship')
-      .then(response => response.json())
-      .then((data: Internship[]) => {
-        setInternships(data);
-      })
-      .catch(error => console.error(error));
-
     fetch('/api/company')
       .then(response => response.json())
       .then((data: Company[]) => {
@@ -30,7 +24,7 @@ function InternshipDashboard() {
       <div className="dashboard-card">
       <Link to={`${root_path}/AllInternships`}>
           <h2>Tüm Stajlarım</h2>
-          <p>Toplam staj: {internships.length}</p>
+          <p>Toplam staj: </p>
         </Link>
       </div>
       <div className="dashboard-card">
@@ -39,9 +33,6 @@ function InternshipDashboard() {
       </div>
       <div className="dashboard-card">
         <h2>Staj Bilgileri</h2>
-        {internships.map(internship => (
-          <InternshipCard key={internship.id} internship={internship} />
-        ))}
       </div>
     </div>
   );
