@@ -24,9 +24,6 @@ function GetSettings() {
     const fetchSettings = async () => {
       const fetchPromises = settingRows.map((row) =>
         fetch(`/api/setting/${row.dataField}`, {
-          headers: {
-            Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf'),
-          },
           method: 'GET',
         }).then((response) => response.json())
       );
@@ -73,10 +70,6 @@ function GetSettings() {
 
       try {
         const response = await fetch(`/api/setting/${setting.dataField}`, {
-          headers: {
-            Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf'),
-            'Content-Type': 'application/json',
-          },
           method: 'PUT',
           body: JSON.stringify(setting.value),
         });
