@@ -13,10 +13,10 @@ function Header() {
         <nav className="navbar">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link to="/facultysupervisor/company-list" className="nav-link">Şirketler</Link>
+              <Link to="facultysupervisor/company-list" className="nav-link">Şirketler</Link>
             </li>
             <li className="nav-item">
-              <Link to="/facultysupervisor/AllInternships" className="nav-link">Staj Yapan Öğrenciler</Link>
+              <Link to="facultysupervisor/AllInternships" className="nav-link">Staj Yapan Öğrenciler</Link>
             </li>
           </ul>
         </nav>

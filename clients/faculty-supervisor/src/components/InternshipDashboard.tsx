@@ -6,6 +6,7 @@ import { Student } from '../types/StudentType';
 import { Company } from '../types/CompanyType';
 
 function InternshipDashboard() {
+  const root_path : string | undefined = process.env.PUBLIC_URL
   const [internships, setInternships] = useState<Internship[]>([]);
   const [studentCount, setStudentCount] = useState<number>(0);
   const [companyCount, setCompanyCount] = useState<number>(0);
