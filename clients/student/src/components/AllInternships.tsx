@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Internship } from '../types/InternshipType';
 import Modal from '../components/CompanyInfo';
+import InternshipDocument from '../components/InternshipDocuments'
 
 
 function AllInternships() {
@@ -9,8 +10,10 @@ function AllInternships() {
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+    const [selectedInternshipId, setSelectedInternshipId] = useState<number | any>();
+    const [showDocumentModal, setDocumentShowModal] = useState<boolean>(false);
 
-    const openModal = (companyId:number | null) => {
+    const openModal = (companyId: number | null) => {
         setSelectedCompanyId(companyId);
         setShowModal(true);
     };
@@ -19,11 +22,17 @@ function AllInternships() {
         setShowModal(false);
     };
 
+    const openDocumentModal = (internshipId: number | null) => {
+        setSelectedInternshipId(internshipId);
+        setDocumentShowModal(true);
+    };
+
+    const closeDocumentModal = () => {
+        setDocumentShowModal(false);
+    };
+
     useEffect(() => {
-        fetch('/api/internship/23', {
-            headers: {
-                Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf')
-            },
+        fetch('/api/internship/1015', {
             method: 'GET'
         })
             .then(response => response.json())
@@ -50,12 +59,6 @@ function AllInternships() {
     if (!internships || internships.length === 0) {
         return <div>No internships found.</div>;
     }
-
-    const handleViewDocuments = (internshipId: number) => {
-        //TODO Staj belgeleri listeleme
-        //console.log(`View documents for internship with ID: ${internshipId}`);
-    };
-
 
     return (
         <div className="bg-white p-5 rounded-md w-full pt-0">
@@ -128,7 +131,6 @@ function AllInternships() {
                                             {/* Render student name */}
                                             <div className="ml-3">
                                                 <p className="text-gray-900 whitespace-no-wrap">{internship.student.name} {internship.student.surname}</p>
-
                                             </div>
                                         </div>
                                     </td>
@@ -166,7 +168,7 @@ function AllInternships() {
                                         {/* Staj Belgeleri */}
                                         <button
                                             className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white"
-                                            onClick={() => handleViewDocuments(internship.id)}
+                                            onClick={() => openDocumentModal(internship.id)}
                                         >
                                             Görüntüle
                                         </button>
@@ -191,11 +193,21 @@ function AllInternships() {
                     </div>
                 </div>
             )}
-
-
+            {showDocumentModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+                    <div className="bg-white rounded-lg p-8 z-50">
+                        <InternshipDocument _internshipId={selectedInternshipId} isOpen={showDocumentModal} onClose={closeDocumentModal} />
+                        <button
+                            className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+                            onClick={closeDocumentModal}
+                        >
+                            Kapat
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
-
 }
-
 export default AllInternships;

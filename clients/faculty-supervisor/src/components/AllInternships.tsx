@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Internship } from '../types/InternshipType';
+import { Student } from '../types/StudentType';
 import axios from 'axios';
+import CompanyInfo from '../components/CompanyInfo';
+import StudentInfo from '../components/StudentInfo';
+import InternshipDocument from '../components/InternshipDocuments'
+
 
 interface PageableResponse<T> {
   content: T[];
@@ -16,7 +21,39 @@ function AllInternships() {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('id');
   const [internships, setInternships] = useState<Internship[] | any>([]);
+  const [showCompanyModal, setCompanyShowModal] = useState<boolean>(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+  const [showStudentModal, setStudentShowModal] = useState<boolean>(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | any>();
+  const [selectedInternshipId, setSelectedInternshipId] = useState<number | any>();
+  const [showDocumentModal, setDocumentShowModal] = useState<boolean>(false);
 
+  const openDocumentModal = (internshipId: number | null) => {
+    setSelectedInternshipId(internshipId);
+    setDocumentShowModal(true);
+  };
+
+  const closeDocumentModal = () => {
+    setDocumentShowModal(false);
+  };
+
+  const openStudentModal = (student: Student | null) => {
+    setSelectedStudent(student);
+    setStudentShowModal(true);
+  };
+
+  const closeStudentModal = () => {
+    setStudentShowModal(false);
+  };
+
+  const openCompanyModal = (companyId: number | null) => {
+    setSelectedCompanyId(companyId);
+    setCompanyShowModal(true);
+  };
+
+  const closeCompanyModal = () => {
+    setCompanyShowModal(false);
+  };
   const fetchInternship = async (page: number, size: number, sort: string) => {
 
     try {
@@ -124,7 +161,9 @@ function AllInternships() {
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Staj Durumu
                 </th>
-
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Staj Belgeleri
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -137,11 +176,19 @@ function AllInternships() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">{internship.student.name + " " + internship.student.surname}</p>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" onClick={() => openStudentModal(internship.student)}>
+                    <p className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white cursor-pointer text-center">
+                      <span className="inline-block w-40 mx-auto">
+                        {internship.student.name + " " + internship.student.surname}
+                      </span>
+                    </p>
                   </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">{internship.company.name}</p>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" onClick={() => openCompanyModal(internship.company.id)}>
+                    <p className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white cursor-pointer text-center">
+                      <span className="inline-block w-40 mx-auto">
+                        {internship.company.name}
+                      </span>
+                    </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">{new Date(internship.startDate).toLocaleDateString('en-GB')}</p>
@@ -154,13 +201,21 @@ function AllInternships() {
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <span
-                      className={`relative inline-block px-3 py-1 font-semibold leading-tight ${
-                        getStatusColor(internship.status)
-                      }`}
+                      className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusColor(internship.status)
+                        }`}
                     >
                       <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
                       <span className="relative">{internship.status}</span>
                     </span>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    {/* Staj Belgeleri */}
+                    <button
+                      className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white"
+                      onClick={() => openDocumentModal(internship.id)}
+                    >
+                      Görüntüle
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -168,6 +223,48 @@ function AllInternships() {
           </table>
         </div>
       </div>
+      {showCompanyModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white rounded-lg p-8 z-50">
+            <CompanyInfo _company={selectedCompanyId} isOpen={showCompanyModal} onClose={closeCompanyModal} />
+            <button
+              className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              onClick={closeCompanyModal}
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      )}
+      {showStudentModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white rounded-lg p-8 z-50">
+            <StudentInfo _student={selectedStudent} isOpen={showStudentModal} onClose={closeStudentModal} />
+            <button
+              className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              onClick={closeStudentModal}
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      )}
+      {showDocumentModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white rounded-lg p-8 z-50">
+            <InternshipDocument _internshipId={selectedInternshipId} isOpen={showDocumentModal} onClose={closeDocumentModal} />
+            <button
+              className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              onClick={closeDocumentModal}
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
