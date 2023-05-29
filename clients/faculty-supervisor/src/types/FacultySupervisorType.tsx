@@ -1,5 +1,5 @@
 export type FacultySupervisor = {
-	supervisorNo: number;
+    supervisorNo: number;
     name: string;
     surname: string;
 };

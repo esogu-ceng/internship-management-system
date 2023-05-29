@@ -11,21 +11,19 @@ import Footer from "./components/Footer";
 import AllInternships from "./components/AllInternships";
 
 
-
-
 const App: React.FC = () => {
-  const public_url : string = process.env.PUBLIC_URL
+  const root_path : string | undefined = process.env.PUBLIC_URL
   return (
     <Router >
       <div>
         <Header />
         <div className="content-container">
           <Routes>
-            <Route path={`${public_url}`} element={<InternshipDashboard />} />
-            <Route path={`${public_url}/company-list`} element={<CompanyListContainer />} />
-            <Route path={`${public_url}/AllInternships`}element={<AllInternships />} />
+            <Route path={`${root_path}`} element={<InternshipDashboard />} />
+            <Route path={`${root_path}/company-list`} element={<CompanyListContainer />} />
+            <Route path={`${root_path}/AllInternship`}element={<AllInternships />} />
             {/* Add other routes for different screens */}
-            <Route path={`${public_url}/default`} element={<div>Default Screen</div>} />
+            <Route path={`${root_path}/default`} element={<div>Default Screen</div>} />
           </Routes>
         </div>
         <Footer />
@@ -35,4 +33,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

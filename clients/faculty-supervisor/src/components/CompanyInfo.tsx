@@ -52,7 +52,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 Şirket Adı
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket Adı */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.name}</p>
               </td>
             </tr>
@@ -61,7 +60,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 Adres
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket Adresi */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.address}</p>
               </td>
             </tr>
@@ -70,7 +68,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 Telefon Numarası
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket Telefon Numarası */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.phoneNumber}</p>
               </td>
             </tr>
@@ -79,7 +76,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 Fax Numarası
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket Fax Numarası */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.faxNumber}</p>
               </td>
             </tr>
@@ -88,7 +84,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 E-Mail
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket E-Maili */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.email}</p>
               </td>
             </tr>
@@ -97,7 +92,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 Alan
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket Alanı */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.scope}</p>
               </td>
             </tr>
@@ -106,7 +100,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
                 Açıklama
               </th>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                {/* Şirket Açıklaması */}
                 <p className="text-gray-900 whitespace-no-wrap">{company?.description}</p>
               </td>
             </tr>
