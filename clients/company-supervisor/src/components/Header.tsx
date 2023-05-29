@@ -4,19 +4,9 @@ export const Header = () => {
   const [burgerButton, setBurgerButton] = useState<boolean>(false);
   const root_path: string | undefined = process.env.PUBLIC_URL;
 
-  const handleLogout = () => {
-    window.location.href = process.env.REACT_APP_API_BASE_URI + 'logout';
-  };
-
   return (
-    <header>
+    <div>
       <div className="header-content">
-        <div className="header-buttons">
-          <button className="header-button">Profil</button>
-          <button className="header-button" onClick={handleLogout}>
-            Çıkış
-          </button>
-        </div>
         <nav className="bg-white dark:bg-gray-800  shadow ">
           <div className="px-8 mx-auto w-screen">
             <div className="flex items-center justify-between h-16">
@@ -59,22 +49,34 @@ export const Header = () => {
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`${root_path}/joker`}>
-                      {({ isActive }) => (
-                        <p
-                          className={`${
-                            isActive ? `text-gray-200` : `text-gray-400`
-                          }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
-                        >
-                          Joker
-                        </p>
-                      )}
-                    </NavLink>
                   </div>
                 </div>
               </div>
-              <div className="block">
-                <div className="flex items-center ml-4 md:ml-6"></div>
+              <div className="flex items-center">
+                <div className="flex items-center ml-4 md:ml-6">
+                  <NavLink to={`${root_path}/profile`}>
+                    {({ isActive }) => (
+                      <p
+                        className={`${
+                          isActive ? `text-gray-200` : `text-gray-400`
+                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      >
+                        Profil
+                      </p>
+                    )}
+                  </NavLink>
+                  <NavLink to={process.env.REACT_APP_API_BASE_URI + 'logout'}>
+                    {({ isActive }) => (
+                      <p
+                        className={`${
+                          isActive ? `text-gray-200` : `text-gray-400`
+                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      >
+                        Çıkış Yap
+                      </p>
+                    )}
+                  </NavLink>
+                </div>
               </div>
               <div className="flex -mr-2 md:hidden">
                 <button
@@ -135,22 +137,11 @@ export const Header = () => {
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`${root_path}/joker`}>
-                  {({ isActive }) => (
-                    <p
-                      className={`${
-                        isActive ? `text-gray-800` : `text-gray-300`
-                      }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
-                    >
-                      Joker
-                    </p>
-                  )}
-                </NavLink>
               </div>
             </div>
           )}
         </nav>
       </div>
-    </header>
+    </div>
   );
 };
