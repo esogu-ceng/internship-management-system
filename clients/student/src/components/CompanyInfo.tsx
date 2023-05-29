@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Outlet, NavLink } from 'react-router-dom';
 import { Company } from '../types/CompanyType';
 
 type ModalProps = {
@@ -17,9 +15,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
 
   useEffect(() => {
     fetch(`/api/company/${_company}`, {
-      headers: {
-        Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf') //TODO Change here.
-      },
       method: 'GET'
     })
       .then(response => response.json())
