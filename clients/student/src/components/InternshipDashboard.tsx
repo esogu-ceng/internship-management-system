@@ -5,14 +5,16 @@ function InternshipDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <Link to="/student/AllInternships">
+        <Link to="/AllInternships">
           <h2>Tüm Stajlarım</h2>
         </Link>
       </div>
       <div className="dashboard-card">
+
          <Link to="/StudentInfo">
           <h2>Öğrenci Bilgilerim</h2>
         </Link>
+       
       </div>
       <div className="dashboard-card">
         {/* TODO */}
