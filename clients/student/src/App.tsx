@@ -4,7 +4,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
-import CompanyInfo from "./components/CompanyInfo";
 
 import "./index.css";
 
