@@ -33,7 +33,7 @@ const useSupervisorManagement = () => {
     const errorMessage = "Error retrieving company supervisors.";
 
     try {
-      const url = `http://localhost:8080/api/company-supervisor?pageNo=${pageNo}&limit=${limit}&sortBy=${sortBy}`;
+      const url = `/api/company-supervisor?pageNo=${pageNo}&limit=${limit}&sortBy=${sortBy}`;
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -66,7 +66,7 @@ const useSupervisorManagement = () => {
     setError(null);
     const errorMessage = "Error adding company supervisor.";
     try {
-      const url = "http://localhost:8080/api/company-supervisor";
+      const url = "/api/company-supervisor";
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -92,7 +92,7 @@ const useSupervisorManagement = () => {
     setError(null);
     const errorMessage = "Error updating company supervisor.";
     try {
-      const url = "http://localhost:8080/api/company-supervisor";
+      const url = "/api/company-supervisor";
       const response = await fetch(url, {
         method: "PUT",
         headers: {
@@ -118,7 +118,7 @@ const useSupervisorManagement = () => {
     setError(null);
     const errorMessage = "Error deleting company supervisor.";
     try {
-      const url = `http://localhost:8080/api/company-supervisor/${id}`;
+      const url = `/api/company-supervisor/${id}`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
