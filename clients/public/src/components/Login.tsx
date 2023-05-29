@@ -43,7 +43,7 @@ function Login() {
         formData.append("password", password);
 
         const domain = process.env.REACT_APP_API_BASE_URI;
-        const login = `${domain}/login`;
+        const login = `${domain}login`;
         // Bu ksımı daha düzgün yazarsınız artık
         fetch(login, {
             method: 'POST',

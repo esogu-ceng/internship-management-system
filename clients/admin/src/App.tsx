@@ -6,13 +6,14 @@ import AdminDashbord from "./components/AdminDashboard"
 import "./index.css";
 
 function App() {
+	const root_path : string | undefined = process.env.PUBLIC_URL
 	return (
 		<React.StrictMode>
 			<Router>
 				<Header />
 				<div className="app-container">
 					<Routes>
-						<Route path="/admin" element={<AdminDashbord />} />
+						<Route path={`${root_path}`} element={<AdminDashbord />} />
 					</Routes>
 				</div>
 				<Footer />

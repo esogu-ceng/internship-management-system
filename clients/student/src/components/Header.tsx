@@ -5,12 +5,7 @@ function Header() {
 
   const handleLogout = () => {
       window.location.href = process.env.REACT_APP_API_BASE_URI + "logout";
-  };
-
-  /*const handleLogout = () => {
-    window.location.href = process.env.PUBLIC_URL + "/logout";
-  };*/
-  
+  };  
   
   return (
     <header>
