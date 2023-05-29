@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 export const Header = () => {
   const [burgerButton, setBurgerButton] = useState<boolean>(false);
-  const public_url : string = process.env.PUBLIC_URL
+  const root_path : string | undefined = process.env.PUBLIC_URL
   return (
     <header>
       <div className="header-content">
@@ -14,12 +14,12 @@ export const Header = () => {
           <div className="px-8 mx-auto w-screen">
             <div className="flex items-center justify-between h-16">
               <div className=" flex items-center">
-                <NavLink to={`${public_url}/`}>
+                <NavLink to={`${root_path}/`}>
                   <img className="w-14 h-14" src="/1.png" alt="Workflow" />
                 </NavLink>
                 <div className="hidden md:block">
                   <div className="flex items-baseline ml-10 space-x-4">
-                    <NavLink to={`${public_url}/internships`}>
+                    <NavLink to={`${root_path}/internships`}>
                       {({ isActive }) => (
                         <p
                           className={`${isActive ? `text-gray-200` : `text-gray-400`
@@ -29,7 +29,7 @@ export const Header = () => {
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`${public_url}/company`}>
+                    <NavLink to={`${root_path}/company`}>
                       {({ isActive }) => (
                         <p
                           className={`${isActive ? `text-gray-200` : `text-gray-400`
@@ -39,7 +39,7 @@ export const Header = () => {
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`${public_url}/help`}>
+                    <NavLink to={`${root_path}/help`}>
                       {({ isActive }) => (
                         <p
                           className={`${isActive ? `text-gray-200` : `text-gray-400`
@@ -49,7 +49,7 @@ export const Header = () => {
                         </p>
                       )}
                     </NavLink>
-                    <NavLink to={`${public_url}/joker`}>
+                    <NavLink to={`${root_path}/joker`}>
                       {({ isActive }) => (
                         <p
                           className={`${isActive ? `text-gray-200` : `text-gray-400`
@@ -91,7 +91,7 @@ export const Header = () => {
           ) : (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <NavLink to={`${public_url}/internships`}>
+                <NavLink to={`${root_path}/internships`}>
                   {({ isActive }) => (
                     <p
                       className={`${isActive ? `text-gray-800` : `text-gray-300`
@@ -101,7 +101,7 @@ export const Header = () => {
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`${public_url}/company`}>
+                <NavLink to={`${root_path}/company`}>
                   {({ isActive }) => (
                     <p
                       className={`${isActive ? `text-gray-800` : `text-gray-300`
@@ -111,7 +111,7 @@ export const Header = () => {
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`${public_url}/help`}>
+                <NavLink to={`${root_path}/help`}>
                   {({ isActive }) => (
                     <p
                       className={`${isActive ? `text-gray-800` : `text-gray-300`
@@ -121,7 +121,7 @@ export const Header = () => {
                     </p>
                   )}
                 </NavLink>
-                <NavLink to={`${public_url}/joker`}>
+                <NavLink to={`${root_path}/joker`}>
                   {({ isActive }) => (
                     <p
                       className={`${isActive ? `text-gray-800` : `text-gray-300`
