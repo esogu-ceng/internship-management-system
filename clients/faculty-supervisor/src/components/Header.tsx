@@ -22,7 +22,9 @@ function Header() {
         </nav>
         <div className="header-buttons">
           <button className="header-button">Profil</button>
-          <button className="header-button">Çıkış</button>
+          <button className="header-button" onClick={handleLogout}>
+            Çıkış
+          </button>
         </div>
       </div>
     </header>
