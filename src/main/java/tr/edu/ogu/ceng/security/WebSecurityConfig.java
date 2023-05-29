@@ -35,9 +35,9 @@ public class WebSecurityConfig {
 				.hasAuthority(UserType.STUDENT.name()).antMatchers("/companysupervisor/**", "**/companysupervisor/**")
 				.hasAuthority(UserType.COMPANYSUPERVISOR.name()).antMatchers("/admin/**", "**/admin/**")
 				.hasAuthority(UserType.ADMIN.name()).anyRequest().authenticated().and().formLogin()
-				.loginPage("/public/login.html").loginProcessingUrl("/login")
+				.loginPage("/public/").loginProcessingUrl("/login")
 				.successHandler(authenticationSuccessHandler()).failureHandler(authenticationFailureHandler()).and()
-				.logout().logoutSuccessUrl("/public/login.html?logout=true").deleteCookies("JSESSIONID").and()
+				.logout().logoutSuccessUrl("/public/?logout=true").deleteCookies("JSESSIONID").and()
 				.httpBasic().and().build();
 	}
 

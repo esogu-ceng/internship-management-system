@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
 
 function App() {
-    const public_url : string = process.env.PUBLIC_URL
+    const root_path : string | undefined = process.env.PUBLIC_URL
     return (
         <div className="container">
             <Header/>
@@ -16,8 +16,8 @@ function App() {
 
             <BrowserRouter>
                 <Routes>
-                    <Route path={`${public_url}`} element={<Login/>}/>
-                    <Route path={`${public_url}/reset-password`} element={<ResetPassword/>}/>
+                    <Route path={`${root_path}`} element={<Login/>}/>
+                    <Route path={`${root_path}/reset-password`} element={<ResetPassword/>}/>
                 </Routes>
             </BrowserRouter>
             <Footer/>

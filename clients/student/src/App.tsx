@@ -9,15 +9,18 @@ import StudentInfo from "./components/StudentInfo";
 import "./index.css";
 
 function App() {
+	const root_path : string | undefined = process.env.PUBLIC_URL
 	return (
 		<React.StrictMode>
 			<Router>
 				<Header />
 				<div className="app-container">
 					<Routes>
-						<Route path="/student" element={<InternshipDashboard />} />
-						<Route path="/student/AllInternships" element={<AllInternships />} />
-						<Route path="/student/StudentInfo" element={<StudentInfo />} />
+            
+						<Route path={`${root_path}`} element={<InternshipDashboard />} />
+						<Route path={`${root_path}/AllInternships`} element={<AllInternships />} />
+            <Route path={`${root_path}/StudentInfo`} element={<StudentInfo />} />
+
 					</Routes>
 				</div>
 				<Footer />
