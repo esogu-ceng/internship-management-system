@@ -28,7 +28,7 @@ function InternshipDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <Link to="/student/AllInternships">
+      <Link to={`${root_path}/AllInternships`}>
           <h2>Tüm Stajlarım</h2>
           <p>Toplam staj: {internships.length}</p>
         </Link>
