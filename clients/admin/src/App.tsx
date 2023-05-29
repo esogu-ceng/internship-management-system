@@ -6,15 +6,16 @@ import AdminDashboard from "./components/AdminDashboard";
 import GetSettings from "./components/GetSettings";
 import "./index.css";
 
-const App: React.FC = () => {
+function App() {
+	const root_path : string | undefined = process.env.PUBLIC_URL
 	return (
 		<React.StrictMode>
 			<Router>
 				<Header />
 				<div className="app-container">
 					<Routes>
-						<Route path="/admin" element={<AdminDashboard />} />
-						<Route path="/admin/setting" element={<GetSettings />} />
+						<Route path={`${root_path}`} element={<AdminDashboard />} />
+						<Route path={`${root_path}/setting`} element={<GetSettings />} />
 					</Routes>
 				</div>
 				<Footer />
