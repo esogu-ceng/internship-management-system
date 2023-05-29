@@ -80,13 +80,15 @@ public class StudentController {
 	}
 	
 	@GetMapping("/supervisor/{id}")
-	public Page<Student> getAllStudentsByFacultySupervisorId(@PathVariable(name = "id") Long faculty_supervisor_id,
-			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
-			@RequestParam(defaultValue = "id") String sortBy) {
-		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<Student> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id, pageable);
-		return students;
+	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(@PathVariable("id") Long faculty_supervisor_id,
+	        @RequestParam(defaultValue = "0") Integer pageNo,
+	        @RequestParam(defaultValue = "10") Integer limit,
+	        @RequestParam(defaultValue = "id") String sortBy) {
+	    Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+	    Page<StudentResponseDto> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id, pageable);
+	    return students;
 	}
+
 	
 
 }

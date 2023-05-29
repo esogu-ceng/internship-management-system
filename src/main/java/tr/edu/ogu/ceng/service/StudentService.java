@@ -193,10 +193,22 @@ public class StudentService {
 		return response;
 
 	}
-	public Page<Student> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
+	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
 		 FacultySupervisorResponseDto facultySupervisorDto = facultySupervisorService.getFacultySupervisor(faculty_supervisor_id);
-	     Long faculty_id = facultySupervisorDto.getFacultyId();
-	     return studentRepository.findAllByFacultyId(faculty_id, pageable);
+		 Long faculty_id = facultySupervisorDto.getFacultyId();
+		 try {
+				ModelMapper modelMapper = new ModelMapper();
+				Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
+				if (students.isEmpty()) {
+					log.warn("The student list is empty.");
+				}
+				Page<StudentResponseDto> studentDtos = students
+						.map(student -> modelMapper.map(student, StudentResponseDto.class));
+				return studentDtos;
+			} catch (Exception e) {
+				log.error("An error occured while getting internships: {}", e.getMessage());
+				throw e;
+			}
 	}
 
 }
