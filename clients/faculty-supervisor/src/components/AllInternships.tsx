@@ -37,9 +37,6 @@ function AllInternships() {
           limit: size,
           sortBy: sort,
         },
-        headers: {
-          Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf') //TODO Change here.
-        },
       });
       const { content, totalPages } = response.data as PageableResponse<Internship>;
       console.log("+++", content);

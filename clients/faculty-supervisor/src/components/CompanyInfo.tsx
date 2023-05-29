@@ -15,9 +15,6 @@ const CompanyInfo: React.FC<ModalProps> = ({ _company, isOpen, onClose, children
 
   useEffect(() => {
     fetch(`/api/company/${_company}`, {
-      headers: {
-        Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf')
-      },
       method: 'GET'
     })
       .then(response => response.json())
