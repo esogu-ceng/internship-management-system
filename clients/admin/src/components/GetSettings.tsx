@@ -70,6 +70,9 @@ function GetSettings() {
 
       try {
         const response = await fetch(`/api/setting/${setting.dataField}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
           method: 'PUT',
           body: JSON.stringify(setting.value),
         });
