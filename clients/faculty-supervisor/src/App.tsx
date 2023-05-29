@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 
 import AllInternships from "./components/AllInternships";
 
+
 const App: React.FC = () => {
   const root_path : string | undefined = process.env.PUBLIC_URL
   return (

@@ -1,8 +1,17 @@
 Veritabanında verilerin kolay yoldan oluşturulması için bir python scripti.
 
-Güncel olarak students, companies, ve internships tablolarını doldurmaktadır.
+imsdb8.sql veritabanı güncellemesinden sonra tasarlanmıştır. Üstüne güncelleme gelmiş ise düzenlenmesi gerekebilir.
 
-Verileri oluşturmak için settings dosyasında yer alan idye sahip girdilerin bulunması gerekmektedir.
+Güncel olarak doldurduğu tablolar:
+    ims_companies,
+    ims_company_supervisors,
+    ims_faculties,
+    ims_faculty_supervisors,
+    ims_internships,
+    ims_language,
+    ims_settings,
+    ims_students,
+    ims_users.
 
 Çalıştırmak için main.py dosyasını koşturmanız yeterlidir.
 

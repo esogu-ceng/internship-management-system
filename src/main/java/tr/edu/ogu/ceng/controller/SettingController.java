@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,7 @@ public class SettingController {
 	@Autowired
 	private SettingService settingService;
 
-	@PutMapping("/{key}")
+	@PutMapping(value = "/{key}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SettingDto> updateSetting(@PathVariable(name = "key") String key, @RequestBody SettingDto setting) {
 		SettingDto updatedSetting = settingService.updateSetting(key, setting);
 		return ResponseEntity.ok(updatedSetting);

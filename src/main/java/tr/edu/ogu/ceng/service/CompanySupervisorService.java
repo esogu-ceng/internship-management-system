@@ -13,7 +13,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
 
@@ -24,6 +28,7 @@ public class CompanySupervisorService {
 
 	private final CompanySupervisorRepository repository;
 	private final ModelMapper mapper;
+	private final UserService userService;
 
 	public Page<CompanySupervisorDto> getAll(Pageable pageable) {
 
@@ -51,6 +56,26 @@ public class CompanySupervisorService {
 		return response;
 	}
 
+	public CompanySupervisorResponseDto addCompany(CompanySupervisorRequestDto request) {
+
+		LocalDateTime now = LocalDateTime.now();
+
+		User user = mapper.map(request.getUser(), User.class);
+		user.setCreateDate(now);
+		user.setUpdateDate(now);
+		user.setUserType(UserType.COMPANYSUPERVISOR);
+
+		checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
+		CompanySupervisor companySupervisor = mapper.map(request, CompanySupervisor.class);
+		companySupervisor.setUser(userService.saveUser(user));
+		companySupervisor.setCreateDate(now);
+		companySupervisor.setUpdateDate(now);
+		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
+
+		return mapper.map(createdCompanySupervisor, CompanySupervisorResponseDto.class);
+
+	}
+
 	public CompanySupervisorDto update(CompanySupervisorDto request) {
 		CompanySupervisor companySupervisor = repository.findById(request.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
@@ -67,9 +92,8 @@ public class CompanySupervisorService {
 	}
 
 	public void delete(Long id) {
-		repository.findById(id)
-		.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
-			repository.deleteById(id);
+		repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
+		repository.deleteById(id);
 	}
 
 	void checkIfCompanySupervisorExistsByUserId(Long userId) {
@@ -78,11 +102,11 @@ public class CompanySupervisorService {
 		}
 	}
 
-	public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(Long companyId){
+	public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(Long companyId) {
 		List<CompanySupervisor> companySupervisors = repository.findAllByCompanyId(companyId);
 
-		List<CompanySupervisorDto> companySupervisorDtos = companySupervisors.stream().map(
-						companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class))
+		List<CompanySupervisorDto> companySupervisorDtos = companySupervisors.stream()
+				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class))
 				.collect(Collectors.toList());
 
 		return companySupervisorDtos;

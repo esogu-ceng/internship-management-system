@@ -113,7 +113,13 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>tr.edu.ogu.ceng.InternshipManagementSystem</mainClass>
+				</configuration>
+			</plugin>			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
