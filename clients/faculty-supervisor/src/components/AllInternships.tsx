@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Internship } from '../types/InternshipType';
+import { Student } from '../types/StudentType';
 import axios from 'axios';
-import Modal from '../components/CompanyInfo';
+import CompanyInfo from '../components/CompanyInfo';
+import StudentInfo from '../components/StudentInfo';
+
 
 interface PageableResponse<T> {
   content: T[];
@@ -20,6 +23,18 @@ function AllInternships() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
+  const [showStudentModal, setStudentShowModal] = useState<boolean>(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | any>();
+
+  const openStudentModal = (student: Student | null) => {
+    setSelectedStudent(student);
+    setStudentShowModal(true);
+  };
+
+  const closeStudentModal = () => {
+    setStudentShowModal(false);
+  };
+
   const openModal = (companyId: number | null) => {
     setSelectedCompanyId(companyId);
     setShowModal(true);
@@ -36,6 +51,9 @@ function AllInternships() {
           pageNo: page,
           limit: size,
           sortBy: sort,
+        },
+        headers: {
+          Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf') //TODO Change here.
         },
       });
       const { content, totalPages } = response.data as PageableResponse<Internship>;
@@ -145,8 +163,12 @@ function AllInternships() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">{internship.student.name + " " + internship.student.surname}</p>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" onClick={() => openStudentModal(internship.student)}>
+                    <p className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white cursor-pointer text-center">
+                      <span className="inline-block w-40 mx-auto">
+                      {internship.student.name + " " + internship.student.surname}
+                      </span>
+                    </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" onClick={() => openModal(internship.company.id)}>
                     <p className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white cursor-pointer text-center">
@@ -183,10 +205,24 @@ function AllInternships() {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
           <div className="bg-white rounded-lg p-8 z-50">
-            <Modal _company={selectedCompanyId} isOpen={showModal} onClose={closeModal} />
+            <CompanyInfo _company={selectedCompanyId} isOpen={showModal} onClose={closeModal} />
             <button
               className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
               onClick={closeModal}
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      )}
+      {showStudentModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white rounded-lg p-8 z-50">
+            <StudentInfo _student = {selectedStudent} isOpen={showStudentModal} onClose={closeStudentModal} />
+            <button
+              className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+              onClick={closeStudentModal}
             >
               Kapat
             </button>
