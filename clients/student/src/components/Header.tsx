@@ -1,12 +1,11 @@
-import React from "react";
-import {toast, ToastContainer} from "react-toastify";
+import React from 'react'
+import { toast, ToastContainer } from 'react-toastify'
 
 function Header() {
-
   const handleLogout = () => {
-      window.location.href = process.env.REACT_APP_API_BASE_URI + "logout";
-  };  
-  
+    window.location.href = process.env.REACT_APP_API_BASE_URI + 'logout'
+  }
+
   return (
     <header>
       <div className="header-content">
@@ -19,7 +18,7 @@ function Header() {
         </div>
       </div>
     </header>
-  );
+  )
 }
 
 export default Header;

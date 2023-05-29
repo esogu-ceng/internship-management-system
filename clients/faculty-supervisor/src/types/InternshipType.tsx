@@ -12,5 +12,5 @@ export type Internship = {
     status: string;
     student: Student;
     company: Company;
-    updateDate:Date;
+    updateDate: Date;
 };
