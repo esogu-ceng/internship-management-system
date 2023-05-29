@@ -24,7 +24,7 @@ const HeaderLayout = () => (
 
 const App: React.FC = () => {
   //TODO: UPDATE HERE DYNAMICALLY
-  const [currentCompanyId, setcurrentCompanyId] = useState<number>(250);
+  const [currentCompanyId, setcurrentCompanyId] = useState<number>(1);
   const [auth, setAuth] = useState<string>('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
   //TODO end  
   const root_path : string | undefined = process.env.PUBLIC_URL
