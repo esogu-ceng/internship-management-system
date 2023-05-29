@@ -42,7 +42,10 @@ function Login() {
         formData.append("username", username);
         formData.append("password", password);
 
-        fetch('/login', {
+        const domain = process.env.REACT_APP_API_BASE_URI;
+        const login = `${domain}/login`;
+        // Bu ksımı daha düzgün yazarsınız artık
+        fetch(login, {
             method: 'POST',
             body: formData
         })
@@ -57,6 +60,8 @@ function Login() {
             toast.error("Bir hata oluştu!", {autoClose: 2000})
             console.log(error);
         });
+
+        
     };
 
     return (
