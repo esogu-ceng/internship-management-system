@@ -12,14 +12,7 @@ import { Student } from '../types/StudentType';
 
  useEffect(() => {
     fetch(`/api/student/23`, { //FIXME burası giriş yapan öğrenci idsine göre düzenlenecek
-<<<<<<< Updated upstream
-      headers: {
-        Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf') //TODO Change here.
-      },
-      method: 'GET'
-=======
     method: 'GET'
->>>>>>> Stashed changes
     })
       .then(response => response.json())
       .then(data => {
@@ -36,11 +29,8 @@ import { Student } from '../types/StudentType';
       });
   });
 
-<<<<<<< Updated upstream
-  const SGKCheck = (value: boolean) => {
-=======
+
   const SGKCheck = (value: boolean | undefined) => {
->>>>>>> Stashed changes
     if (value) {
       return ("Var");
     }
@@ -187,8 +177,4 @@ import { Student } from '../types/StudentType';
   )
 };
 
-<<<<<<< Updated upstream
 export default StudentInfo;
-=======
-export default StudentInfo;
->>>>>>> Stashed changes

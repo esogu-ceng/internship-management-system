@@ -43,8 +43,4 @@ export type User = {
 export type Faculty ={
   id: number;
   // Diğer özellikleri buraya ekleyin
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

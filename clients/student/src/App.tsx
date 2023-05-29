@@ -4,10 +4,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
-<<<<<<< Updated upstream
-import CompanyInfo from "./components/CompanyInfo";
-=======
->>>>>>> Stashed changes
 import StudentInfo from "./components/StudentInfo";
 import "./index.css";
 
@@ -22,11 +18,8 @@ function App() {
             
 						<Route path={`${root_path}`} element={<InternshipDashboard />} />
 						<Route path={`${root_path}/AllInternships`} element={<AllInternships />} />
-<<<<<<< Updated upstream
-            <Route path={`${root_path}/StudentInfo`} element={<StudentInfo />} />
-=======
 						<Route path={`${root_path}/StudentInfo`} element={<StudentInfo />} />
->>>>>>> Stashed changes
+
 
 					</Routes>
 				</div>
