@@ -10,9 +10,16 @@ function InternshipDashboard() {
         </Link>
       </div>
       <div className="dashboard-card">
+<<<<<<< Updated upstream
         <Link to="/student/StudentInfo">
           <h2>Öğrenci Bilgilerim</h2>
         </Link>
+=======
+         <Link to="/StudentInfo">
+          <h2>Öğrenci Bilgilerim</h2>
+        </Link>
+        {/* TODO */}
+>>>>>>> Stashed changes
       </div>
       <div className="dashboard-card">
         {/* TODO */}
