@@ -1,24 +1,17 @@
+/** @format */
+
 import { Link } from "react-router-dom";
+
+import { routes } from "../constants";
 
 function AdminDashboard() {
   return (
     <div className="dashboard-container">
-      <div className="dashboard-card">
-        <h2>Öğrenciler</h2>
-        {/* TODO */}
-      </div>
-      <div className="dashboard-card">
-        <h2>Şirket Sorumluları</h2>
-        {/* TODO */}
-      </div>
-      <div className="dashboard-card">
-        <h2>Fakülte Sorumluları</h2>
-        {/* TODO */}
-      </div>
-      <div className="dashboard-card">
-        <h2>Ayarlar</h2>
-        {/* TODO */}
-      </div>
+      {routes.map(({ href, text }) => (
+        <Link key={href} to={href} className="dashboard-card link">
+          <h2>{text}</h2>
+        </Link>
+      ))}
     </div>
   );
 }
