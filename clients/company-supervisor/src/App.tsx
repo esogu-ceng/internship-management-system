@@ -27,7 +27,7 @@ const App: React.FC = () => {
   const [currentCompanyId, setcurrentCompanyId] = useState<number>(250);
   const [auth, setAuth] = useState<string>('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
   //TODO end  
-  const public_url : string = process.env.PUBLIC_URL
+  const root_path : string | undefined = process.env.PUBLIC_URL
 
   const router = createBrowserRouter([
     {
@@ -35,15 +35,15 @@ const App: React.FC = () => {
       errorElement: <ErrorPage />,
       children: [
         {
-          path: `${public_url}/`,
+          path: `${root_path}/`,
           element: <CompanyDashboard />,
         },
         {
-          path: `${public_url}/internships`,
+          path: `${root_path}/internships`,
           element: <Root _companyId={currentCompanyId} _auth={auth}/>,
         },
         {
-          path: `${public_url}/company`,
+          path: `${root_path}/company`,
           element: <CompanyPage  _companyId={currentCompanyId} _auth={auth}/>,
         },
       ],
