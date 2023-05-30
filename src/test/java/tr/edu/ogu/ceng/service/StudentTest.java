@@ -69,23 +69,16 @@ public class StudentTest {
 		LocalDateTime dateTime = LocalDateTime.now();
 		var savedUser = User.builder().email("test").password("passwordHash").id(1L).username("test").build();
 		var SavedStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
-				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
-				.motherName("test").fatherName("test").birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
-				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test").createDate(dateTime)
-				.updateDate(dateTime).faculty(new Faculty()).build();
+				.grade("test").phoneNumber("test").birthPlace("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.createDate(dateTime).updateDate(dateTime).faculty(new Faculty()).address("address").build();
 
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 		when(studentRepository.save(any(Student.class))).thenReturn(SavedStudent);
 
 		var userToSave = UserRequestDto.builder().email("test").password("passwordHash").username("test").build();
 		var studentToSave = StudentRequestDto.builder().name("test").surname("test").id(6L).tckn("test")
-				.studentNo("test").grade("test").phoneNumber("test").province("test").subprovince("test")
-				.zipCode("test").motherName("test").fatherName("test").birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
-				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test").user(userToSave)
+				.studentNo("test").grade("test").phoneNumber("test").birthPlace("test")
+				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).user(userToSave).facultyId(0L).address("address")
 				.build();
 		var actual = studentService.addStudent(studentToSave);
 
@@ -96,22 +89,9 @@ public class StudentTest {
 		assertEquals(studentToSave.getStudentNo(), actual.getStudentNo());
 		assertEquals(studentToSave.getGrade(), actual.getGrade());
 		assertEquals(studentToSave.getPhoneNumber(), actual.getPhoneNumber());
-		assertEquals(studentToSave.getProvince(), actual.getProvince());
-		assertEquals(studentToSave.getSubprovince(), actual.getSubprovince());
-		assertEquals(studentToSave.getZipCode(), actual.getZipCode());
-		assertEquals(studentToSave.getMotherName(), actual.getMotherName());
-		assertEquals(studentToSave.getFatherName(), actual.getFatherName());
 		assertEquals(studentToSave.getBirthPlace(), actual.getBirthPlace());
 		assertEquals(studentToSave.getBirthDate(), actual.getBirthDate());
-		assertEquals(studentToSave.getIdCardSerialNo(), actual.getIdCardSerialNo());
-		assertEquals(studentToSave.getIdRegisterProvince(), actual.getIdRegisterProvince());
-		assertEquals(studentToSave.getIdRegisterSubprovince(), actual.getIdRegisterSubprovince());
-		assertEquals(studentToSave.getIdRegisterStreetVillage(), actual.getIdRegisterStreetVillage());
-		assertEquals(studentToSave.getIdRegisterVolumeNo(), actual.getIdRegisterVolumeNo());
-		assertEquals(studentToSave.getIdRegisterFamilySerialNo(), actual.getIdRegisterFamilySerialNo());
-		assertEquals(studentToSave.getIdRegistryOffice(), actual.getIdRegistryOffice());
-		assertEquals(studentToSave.getIdRegistryReason(), actual.getIdRegistryReason());
-
+		assertEquals(studentToSave.getAddress(), actual.getAddress());
 	}
 
 }
