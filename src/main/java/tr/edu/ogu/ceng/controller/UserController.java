@@ -61,7 +61,7 @@ public class UserController {
 		return ResponseEntity.ok(userService.setUserActivity(id, status));
 	}
 	
-	@GetMapping(value = {"admin/auth", "student/auth", "company-supervisor/auth", "faculty-supervisor/auth"})
+	@GetMapping(value = {"/admin/auth", "/student/auth", "/company-supervisor/auth", "/faculty-supervisor/auth"})
 	public UserDto getLoggedInUser(){
         return userService.getLoggedInUser();
     }
