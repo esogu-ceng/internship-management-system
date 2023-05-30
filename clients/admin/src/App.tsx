@@ -18,7 +18,7 @@ function App() {
         <div className="app-container">
           <Routes>
             <Route path={`${root_path}`} element={<AdminDashboard />} />
-            <Route path={`${root_path}/setting`} element={<GetSettings />} />
+            <Route path={`${root_path}/settings`} element={<GetSettings />} />
             <Route
               path={`${root_path}/companySupervisors`}
               element={<CompanySupervisors />}
