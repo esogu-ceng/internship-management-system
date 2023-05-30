@@ -10,24 +10,19 @@ import ErrorPage from './error-page';
 
 const HeaderLayout = () => (
   <div className="flex flex-col min-h-screen justify-between">
-    <header>
-      <Header />
-    </header>
+    <Header />
     <div className="flex-grow">
       <Outlet />
     </div>
-    <footer>
-      <Footer />
-    </footer>
+    <Footer />
   </div>
 );
 
 const App: React.FC = () => {
   //TODO: UPDATE HERE DYNAMICALLY
   const [currentCompanyId, setcurrentCompanyId] = useState<number>(1);
-  const [auth, setAuth] = useState<string>('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf');
-  //TODO end  
-  const root_path : string | undefined = process.env.PUBLIC_URL
+  //TODO end
+  const root_path: string | undefined = process.env.PUBLIC_URL;
 
   const router = createBrowserRouter([
     {
@@ -40,16 +35,16 @@ const App: React.FC = () => {
         },
         {
           path: `${root_path}/internships`,
-          element: <Root _companyId={currentCompanyId} _auth={auth}/>,
+          element: <Root _companyId={currentCompanyId} />,
         },
         {
           path: `${root_path}/company`,
-          element: <CompanyPage  _companyId={currentCompanyId} _auth={auth}/>,
+          element: <CompanyPage _companyId={currentCompanyId} />,
         },
       ],
     },
   ]);
-  
+
   return (
     <div className="min-h-screen flex justify-center w-screen max-w-screen">
       <RouterProvider router={router} />
