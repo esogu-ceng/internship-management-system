@@ -122,10 +122,10 @@ function Login() {
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={handleModalClose}>
+                            <Button className="btn-forgot-pass-cncl" variant="secondary" onClick={handleModalClose}>
                                 İptal
                             </Button>
-                            <Button variant="primary" onClick={handleResetPassword}>
+                            <Button className="btn-forgot-pass" variant="primary" onClick={handleResetPassword}>
                                 Şifreyi sıfırla
                             </Button>
                         </Modal.Footer>

@@ -151,6 +151,15 @@ header {
 
 .btn-login {
     margin-top: 30px;
+    background-color: #0d6efd;
+}
+
+.btn-forgot-pass {
+    background-color: #0d6efd;
+}
+
+.btn-forgot-pass-cncl {
+    background-color: gray;
 }
 
 .login-page {
@@ -175,4 +184,6 @@ header {
 
 .header-firmalar{
     margin-top: 80px;
+    color: #333;
+    font-size: 25px;
 }

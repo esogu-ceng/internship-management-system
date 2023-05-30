@@ -58,6 +58,7 @@
 		]
 	},
 	"devDependencies": {
-		"@types/react-bootstrap": "^0.32.32"
+		"@types/react-bootstrap": "^0.32.32",
+		"@types/react-router-dom": "^5.3.3"
 	}
 }
