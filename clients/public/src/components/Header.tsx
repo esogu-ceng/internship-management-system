@@ -6,7 +6,7 @@ function Header() {
     <header>
       <div className="header-content">
         <h1 className="header-title">Staj Yönetim Sistemi
-        <a href="/companies" className="header-link-company">Firmalar</a>
+        <a href="/public/companies" className="header-link-company">Firmalar</a>
         </h1>
       </div>
     </header>

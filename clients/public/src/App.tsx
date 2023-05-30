@@ -18,7 +18,7 @@ function App() {
                 <Routes>
                     <Route path={`${public_url}`} element={<Login/>}/>
                     <Route path={`${public_url}/reset-password`} element={<ResetPassword/>}/>
-                    <Route path={`${public_url}/companies`} element={<Companies/>}/>
+                    <Route path={`${public_url}/public/companies`} element={<Companies/>}/>
                 </Routes>
             </BrowserRouter>
             <Footer/>
