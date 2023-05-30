@@ -7,6 +7,7 @@ import { Company } from '../types/CompanyType';
 function InternshipDashboard() {
   const [internships, setInternships] = useState<Internship[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const root_path : string | undefined = process.env.PUBLIC_URL;
 
   useEffect(() => {
     fetch('/api/internship')
