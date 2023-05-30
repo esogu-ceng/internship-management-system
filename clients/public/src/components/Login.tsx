@@ -1,16 +1,16 @@
 import React, {useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Form, Modal, Spinner} from "react-bootstrap";
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faKey} from '@fortawesome/free-solid-svg-icons';
-
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const handleForgotPassword = () => {
         setShowModal(true);
     };
@@ -24,17 +24,19 @@ function Login() {
                 'Content-Type': 'application/json',
             }, body: JSON.stringify({email}),
         }).then((response) => {
+            setIsLoading(false);
             if (response.ok === true) {
                 toast.success("Link başarıyla gönderildi")
+                setShowModal(false);
             } else
                 toast.error("Lütfen geçerli bir mail adresi giriniz.")
 
         }).catch((error) => {
-            console.log(error);
+            setIsLoading(false);
             toast.error("Bir hata oluştu!", {autoClose: 2000})
 
         });
-        setShowModal(false);
+        setIsLoading(true);
     };
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
@@ -63,7 +65,6 @@ function Login() {
 
         
     };
-
     return (
         <div className="container">
             <ToastContainer/>
@@ -121,8 +122,8 @@ function Login() {
                                     className="form-control"
                                     id="emailInput"
                                     value={email}
-                                    required
                                     onChange={(event) => setEmail(event.target.value)}
+                                    required
                                 />
                             </div>
                         </Modal.Body>
@@ -130,8 +131,15 @@ function Login() {
                             <Button variant="secondary" onClick={handleModalClose}>
                                 İptal
                             </Button>
-                            <Button variant="primary" onClick={handleResetPassword}>
-                                Şifreyi sıfırla
+                            <Button variant="primary" onClick={handleResetPassword} disabled={isLoading}>
+                                {isLoading ? (
+                                    <>
+                                        <Spinner animation="border" role="status"/>
+                                        <span className="ml-2">Mail gönderiliyor...</span>
+                                    </>
+                                ) : (
+                                    "Şifreyi sıfırla"
+                                )}
                             </Button>
                         </Modal.Footer>
                     </Modal>
