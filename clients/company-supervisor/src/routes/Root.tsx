@@ -156,6 +156,7 @@ export const Root = ({ _companyId }: { _companyId: number }) => {
                       <PaginationButton
                         key={number}
                         number={number}
+                        isActive={number == currentPage}
                         handleClick={() => handleClick(number)}
                       />
                     ))}

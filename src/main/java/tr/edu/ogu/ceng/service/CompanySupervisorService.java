@@ -111,4 +111,10 @@ public class CompanySupervisorService {
 
 		return companySupervisorDtos;
 	}
+
+	public CompanySupervisorDto getByUserId(Long userId) {
+		CompanySupervisor companySupervisor = repository.findByUserId(userId);
+		CompanySupervisorDto response = mapper.map(companySupervisor, CompanySupervisorDto.class);
+		return response;
+	}
 }

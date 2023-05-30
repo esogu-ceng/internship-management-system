@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 
 import { Header } from './components/Header';
@@ -7,6 +7,7 @@ import CompanyDashboard from './components/CompanyDashboard';
 import { Root } from './routes/Root';
 import { CompanyPage } from './routes/Company';
 import ErrorPage from './error-page';
+import { User } from './types/UserType';
 
 const HeaderLayout = () => (
   <div className="flex flex-col min-h-screen justify-between">
@@ -19,8 +20,10 @@ const HeaderLayout = () => (
 );
 
 const App: React.FC = () => {
+  const [user, setUser] = useState<User>();
+  const [currentCompanyId, setcurrentCompanyId] = useState<number>(0);
   //TODO: UPDATE HERE DYNAMICALLY
-  const [currentCompanyId, setcurrentCompanyId] = useState<number>(1);
+
   //TODO end
   const root_path: string | undefined = process.env.PUBLIC_URL;
 
@@ -44,6 +47,42 @@ const App: React.FC = () => {
       ],
     },
   ]);
+
+  function getAuthUser() {
+    fetch('/api/get-logged-in-user', {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function getCompanyId(userId: number | undefined) {
+    fetch(`/api/company-supervisor/byUserId/${userId}`, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setcurrentCompanyId(data.company.id);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    getAuthUser();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      getCompanyId(user?.id);
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen flex justify-center w-screen max-w-screen">

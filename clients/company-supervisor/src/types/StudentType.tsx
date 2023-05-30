@@ -1,3 +1,5 @@
+import { User } from './UserType';
+
 export type Student = {
   id: number;
   name: string;
@@ -20,7 +22,7 @@ export type Student = {
   motherName: string;
   fatherName: string;
   birthPlace: string;
-  birthDate: Date; 
+  birthDate: Date;
   idCardSerialNo: string;
   idRegisterProvince: string;
   idRegisterSubprovince: string;
@@ -35,12 +37,8 @@ export type Student = {
   user: User;
   faculty: Faculty;
 };
-export type User = {
-  id: number;
-  // Diğer özellikleri buraya ekleyin
-}
 
-export type Faculty ={
+export type Faculty = {
   id: number;
   // Diğer özellikleri buraya ekleyin
-}
+};

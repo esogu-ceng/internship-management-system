@@ -64,4 +64,9 @@ public class CompanySupervisorController {
 			@PathVariable(name = "companyId") Long companyId) {
 		return service.getCompanySupervisorsByCompanyId(companyId);
 	}
+
+	@GetMapping("/byUserId/{userId}")
+	public CompanySupervisorDto getByUserId(@PathVariable Long userId) {
+		return service.getByUserId(userId);
+	}
 }
