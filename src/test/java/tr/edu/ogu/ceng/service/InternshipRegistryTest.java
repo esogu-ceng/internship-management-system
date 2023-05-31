@@ -90,12 +90,9 @@ public class InternshipRegistryTest {
 				.phoneNumber("Phone").supervisorNo("No").createDate(localDateTime).updateDate(localDateTime)
 				.user(modelUser).faculty(modelFaculty).build();
 		var modelStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
-				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
-				.motherName("test").fatherName("test").birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
-				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test")
-				.createDate(localDateTime).updateDate(localDateTime).faculty(modelFaculty).user(modelUser).build();
+				.grade("test").phoneNumber("test").birthPlace("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.createDate(localDateTime).updateDate(localDateTime).faculty(modelFaculty).user(modelUser)
+				.address("address").build();
 		var modelInternship = Internship.builder().id(1L).status(status)
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.days(1).student(modelStudent).company(modelCompany).facultySupervisor(modelFacultySupervisor).build();
@@ -121,12 +118,8 @@ public class InternshipRegistryTest {
 				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
 
 		var Dtostudent = StudentDto.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
-				.grade("test").phoneNumber("test").province("test").subprovince("test").zipCode("test")
-				.motherName("test").fatherName("test").birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).idCardSerialNo("test").idRegisterProvince("test")
-				.idRegisterSubprovince("test").idRegisterStreetVillage("test").idRegisterVolumeNo("test")
-				.idRegisterFamilySerialNo("test").idRegistryOffice("test").idRegistryReason("test")
-				.createDate(localDateTime).updateDate(localDateTime).faculty(DtoFaculty).build();
+				.grade("test").phoneNumber("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.createDate(localDateTime).updateDate(localDateTime).faculty(DtoFaculty).address("address").build();
 
 		var Dtocompany = CompanyDto.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
 				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
