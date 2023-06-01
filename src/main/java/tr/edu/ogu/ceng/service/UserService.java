@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.security.UserPrincipal;
 import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 
 @Slf4j
@@ -173,5 +175,13 @@ public class UserService {
 			log.error("An error occurred while setting activity of user with id: {}: {}", id, e.getMessage());
 			return false;
 		}
+	}
+	
+	public UserDto getLoggedInUser() {
+		ModelMapper modelMapper = new ModelMapper();
+		UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		UserDto loggedInUser = modelMapper.map(userPrincipal.getUser(), UserDto.class);
+		return loggedInUser;
 	}
 }

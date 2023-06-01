@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -59,5 +60,10 @@ public class UserController {
 			@RequestParam(defaultValue = "true") boolean status) {
 		return ResponseEntity.ok(userService.setUserActivity(id, status));
 	}
+	
+	@GetMapping(value = {"/admin/auth", "/student/auth", "/company-supervisor/auth", "/faculty-supervisor/auth"})
+	public UserDto getLoggedInUser(){
+        return userService.getLoggedInUser();
+    }
 
 }
