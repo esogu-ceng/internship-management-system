@@ -1,6 +1,6 @@
 Veritabanında verilerin kolay yoldan oluşturulması için bir python scripti.
 
-imsdb8.sql veritabanı güncellemesinden sonra tasarlanmıştır. Üstüne güncelleme gelmiş ise düzenlenmesi gerekebilir.
+imsdb9.sql veritabanı güncellemesinden sonra tasarlanmıştır. Üstüne güncelleme gelmiş ise düzenlenmesi gerekebilir.
 
 Güncel olarak doldurduğu tablolar:
     ims_companies,
