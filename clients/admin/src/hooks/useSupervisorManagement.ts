@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 
 import {
+  CompanyOption,
+  CompanyPagedResponse,
   CompanySuperviserUpdate,
   CompanySupervisor,
   CompanySupervisorCreate,
@@ -17,6 +19,7 @@ const useSupervisorManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
   const [selectedCompanySupervisor, setSelectedCompanySupervisor] =
     useState<CompanySupervisor>();
+  const [companies, setCompanies] = useState<CompanyOption[]>([]);
 
   const [companySupervisors, setCompanySupervisors] = useState<
     CompanySupervisor[]
@@ -148,6 +151,46 @@ const useSupervisorManagement = () => {
     }
   };
 
+  const getCompanies = async (
+    pageNo: number = 0,
+    limit: number = 10,
+    sortBy: string = "name"
+  ) => {
+    setLoading(true);
+
+    const errorMessage = "Error retrieving companies.";
+
+    try {
+      const url = `/api/company/getAll?pageNo=${pageNo}&limit=${limit}&sortBy=${sortBy}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(errorMessage);
+      }
+
+      const data: CompanyPagedResponse = await response.json();
+
+      console.log("data : ", data);
+
+      setCompanies(data.content);
+      // setPagination({
+      //   totalElements: data.totalElements,
+      //   totalPages: data.totalPages,
+      //   number: data.number,
+      //   size: data.size,
+      // });
+    } catch (error) {
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const pageChangeHandler = (pageNumber: number) => {
     if (!pagination) return;
 
@@ -157,6 +200,7 @@ const useSupervisorManagement = () => {
 
   useEffect(() => {
     getAllCompanySupervisors();
+    getCompanies();
   }, []);
 
   return {
@@ -167,6 +211,8 @@ const useSupervisorManagement = () => {
     selectedCompanySupervisor,
     companySupervisors,
     pagination,
+    companies,
+    getCompanies,
     setIsAddModalOpen,
     getAllCompanySupervisors,
     addCompanySupervisor,

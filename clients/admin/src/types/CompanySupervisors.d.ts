@@ -9,6 +9,7 @@ export interface CompanySupervisorCreate {
     password: string;
     email: string;
   };
+  companyId: number;
 }
 
 export interface CompanySuperviserUpdate {
@@ -69,3 +70,10 @@ export interface User {
   email: string;
   userType: string;
 }
+
+export interface CompanyOption {
+  id: number;
+  name: string;
+}
+
+export interface CompanyPagedResponse extends PagedResponse<CompanyOption> {}

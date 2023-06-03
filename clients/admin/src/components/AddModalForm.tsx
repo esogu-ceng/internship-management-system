@@ -1,7 +1,10 @@
 /** @format */
 
 import React, { useReducer } from "react";
-import { CompanySupervisorCreate } from "../types/CompanySupervisors";
+import {
+  CompanyOption,
+  CompanySupervisorCreate,
+} from "../types/CompanySupervisors";
 
 interface State {
   name: string;
@@ -12,11 +15,13 @@ interface State {
     password: string;
     email: string;
   };
+  companyId: string;
 }
 
 type Action =
   | { type: "UPDATE_FIELD"; field: string; value: string }
   | { type: "UPDATE_USER_FIELD"; field: string; value: string }
+  | { type: "UPDATE_COMPANY_ID"; value: string }
   | { type: "RESET_FORM" };
 
 const initialState: State = {
@@ -28,12 +33,14 @@ const initialState: State = {
     password: "",
     email: "",
   },
+  companyId: "",
 };
 
 interface Props {
   showModal: boolean;
   onShowModal: (showModal: boolean) => void;
   onAddCompanySupervisors: (companySupervisor: CompanySupervisorCreate) => void;
+  companies: CompanyOption[];
 }
 
 const reducer = (state: State, action: Action): State => {
@@ -51,6 +58,11 @@ const reducer = (state: State, action: Action): State => {
           [action.field]: action.value,
         },
       };
+    case "UPDATE_COMPANY_ID":
+      return {
+        ...state,
+        companyId: action.value,
+      };
     case "RESET_FORM":
       return initialState;
     default:
@@ -61,15 +73,20 @@ const reducer = (state: State, action: Action): State => {
 const AddModalForm: React.FC<Props> = ({
   showModal,
   onShowModal,
+  companies,
   onAddCompanySupervisors,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
     if (name.startsWith("user.")) {
       const field = name.split(".")[1];
       dispatch({ type: "UPDATE_USER_FIELD", field, value });
+    } else if (name === "companyId") {
+      dispatch({ type: "UPDATE_COMPANY_ID", value });
     } else {
       dispatch({ type: "UPDATE_FIELD", field: name, value });
     }
@@ -78,7 +95,10 @@ const AddModalForm: React.FC<Props> = ({
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     dispatch({ type: "RESET_FORM" });
-    onAddCompanySupervisors(state);
+    onAddCompanySupervisors({
+      ...state,
+      companyId: parseInt(state.companyId),
+    });
     onShowModal(false);
   };
 
@@ -177,6 +197,26 @@ const AddModalForm: React.FC<Props> = ({
                   className="form-input"
                   required
                 />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="companyId" className="form-label">
+                  Şirket İsmi:
+                </label>
+                <select
+                  id="companyId"
+                  name="companyId"
+                  value={state.companyId}
+                  onChange={handleChange}
+                  className="form-input"
+                  required>
+                  <option value="">Seçiniz</option>
+                  {companies.map((company) => (
+                    <option key={company.id} value={company.id}>
+                      {company.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-buttons">

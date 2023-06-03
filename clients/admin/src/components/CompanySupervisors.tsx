@@ -22,6 +22,7 @@ const CompanySupervisorsPage = () => {
     pagination,
     setSelectedCompanySupervisor,
     pageChangeHandler,
+    companies,
   } = useSupervisorManagement();
   return (
     <div className="container">
@@ -29,6 +30,7 @@ const CompanySupervisorsPage = () => {
         <AddModalForm
           showModal={isAddModalOpen}
           onShowModal={setIsAddModalOpen}
+          companies={companies}
           onAddCompanySupervisors={addCompanySupervisor}
         />
       )}
