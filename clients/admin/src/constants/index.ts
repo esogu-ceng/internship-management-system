@@ -24,6 +24,5 @@ export const facultySupervisortableHeaders = [
   "Fakülte Sorumlusu Soyadı",
   "Fakülte Sorumlusu Telefon No",
   "Fakülte Sorumlusu Id",
-  "Fakülte",
   "Düzenle",
 ];

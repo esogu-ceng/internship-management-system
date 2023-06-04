@@ -1,11 +1,11 @@
 import React, { useReducer } from "react";
-import { FacultySupervisorCreate } from "../types/FacultySuperviosr";
+import { Faculty, FacultySupervisorCreate } from "../types/FacultySuperviosr";
 
 interface State {
   name: string;
   surname: string;
   phoneNumber: string;
-  supervisorNumber: string;
+  supervisorNo: string;
   user: {
     username: string;
     password: string;
@@ -26,14 +26,14 @@ const initialState: State = {
   name: "",
   surname: "",
   phoneNumber: "",
-  supervisorNumber: "",
+  supervisorNo: "",
   user: {
     username: "",
     password: "",
     email: "",
   },
   faculty: {
-    id: 0,
+    id: 1,
   },
 };
 
@@ -41,6 +41,7 @@ interface Props {
   showModal: boolean;
   onShowModal: (showModal: boolean) => void;
   onAddFacultySupervisors: (facultySupervisor: FacultySupervisorCreate) => void;
+  faculties: Faculty[];
 }
 
 const reducer = (state: State, action: Action): State => {
@@ -62,7 +63,8 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         faculty: {
-          id: action.value,
+          ...state.faculty,
+          [action.value]: action.value,
         },
       };
     case "RESET_FORM":
@@ -75,27 +77,25 @@ const reducer = (state: State, action: Action): State => {
 const AddModalForm: React.FC<Props> = ({
   showModal,
   onShowModal,
+  faculties,
   onAddFacultySupervisors,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
     if (name.startsWith("user.")) {
       const field = name.split(".")[1];
       dispatch({ type: "UPDATE_USER_FIELD", field, value });
+    } else if (name === "facultyId") {
+      const selectedValue = parseInt(value, 10);
+      dispatch({ type: "UPDATE_FACULTY_FIELD", value: selectedValue });
     } else {
       dispatch({ type: "UPDATE_FIELD", field: name, value });
     }
   };
-
-  const handleDropdownChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const value = Number(event.target.value);
-    dispatch({ type: "UPDATE_FACULTY_FIELD", value });
-  };
-
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     dispatch({ type: "RESET_FORM" });
@@ -153,6 +153,20 @@ const AddModalForm: React.FC<Props> = ({
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="supervisorNo" className="form-label">
+                  Fakülte Sorumlusu Numarası:
+                </label>
+                <input
+                  type="number"
+                  id="supervisorNo"
+                  name="supervisorNo"
+                  value={state.supervisorNo}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="username" className="form-label">
                   Kullanıcı Adı:
                 </label>
@@ -195,37 +209,24 @@ const AddModalForm: React.FC<Props> = ({
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="supervisorNumber" className="form-label">
-                  Fakülte Sorumlusu Numarası:
-                </label>
-                <input
-                  type="text"
-                  id="supervisorNumber"
-                  name="supervisorNumber"
-                  value={state.supervisorNumber}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
                 <label htmlFor="facultyId" className="form-label">
-                  Fakülte Seçin:
+                  Fakülte İsmi:
                 </label>
                 <select
                   id="facultyId"
                   name="facultyId"
                   value={state.faculty.id}
-                  onChange={handleDropdownChange}
+                  onChange={handleChange}
                   className="form-input"
                   required>
-                  <option value={1}>Faculty 1</option>
-                  <option value={2}>Faculty 2</option>
-                  <option value={3}>Faculty 3</option>
+                  <option value="">Seçiniz</option>
+                  {faculties.map((faculty) => (
+                    <option key={faculty.id} value={faculty.id}>
+                      {faculty.name}
+                    </option>
+                  ))}
                 </select>
               </div>
-
               <div className="form-buttons">
                 <button type="submit" className="submit-button">
                   Kaydet

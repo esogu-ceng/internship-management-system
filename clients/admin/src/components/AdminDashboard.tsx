@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 function AdminDashboard() {
-  const root_path : string | undefined = process.env.PUBLIC_URL
+  const root_path: string | undefined = process.env.PUBLIC_URL;
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
@@ -13,8 +13,9 @@ function AdminDashboard() {
         {/* TODO */}
       </div>
       <div className="dashboard-card">
-        <h2>Fakülte Sorumluları</h2>
-        {/* TODO */}
+        <Link to={`${root_path}/facultySupervisors`}>
+          <h2>Fakülte Sorumlusu</h2>
+        </Link>
       </div>
       <div className="dashboard-card">
         <Link to={`${root_path}/setting`}>

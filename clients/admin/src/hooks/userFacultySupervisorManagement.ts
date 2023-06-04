@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
+    Faculty,
+    FacultyPagedResponse,
     FacultySuperviserUpdate,
     FacultySupervisor,
     FacultySupervisorCreate,
@@ -20,6 +22,9 @@ const useFacultySupervisorManagement = () => {
 
     const [facultySupervisors, setFacultySupervisors] = useState<
         FacultySupervisor[]
+    >([]);
+    const [faculty, setFaculty] = useState<
+        Faculty[]
     >([]);
     const [pagination, setPagination] = useState<Pageable>();
 
@@ -44,8 +49,42 @@ const useFacultySupervisorManagement = () => {
         }
 
         const data: FacultySupervisorPagedResponse = await response.json();
-
+        console.log("what is getAll data", data);
         setFacultySupervisors(data.content);
+        setPagination({
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            number: data.number,
+            size: data.size,
+        });
+        } catch (error) {
+        setError(errorMessage);
+        } finally {
+        setLoading(false);
+        }
+    };
+    const getAllFaculties = async (
+        pageNo: number = 0,
+        limit: number = 10,
+        sortBy: string = "name"
+    ) => {
+        setLoading(true);
+        const errorMessage = "Error retrieving Faculty supervisors.";
+        try {
+        const url = `/api/faculty/getAll?pageNo=${pageNo}&limit=${limit}&sortBy=${sortBy}`;
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(errorMessage);
+        }
+        const data: FacultyPagedResponse = await response.json();
+        console.log("what is data", data.content)
+        setFaculty(data.content);
         setPagination({
             totalElements: data.totalElements,
             totalPages: data.totalPages,
@@ -62,6 +101,7 @@ const useFacultySupervisorManagement = () => {
     const addFacultySupervisor = async (request: FacultySupervisorCreate) => {
         setLoading(true);
         setError(null);
+        console.log("what is request", request);
         const errorMessage = "Error adding Faculty supervisor.";
         try {
         const url = "/api/facultySupervisor/saveFacultysupervisor";
@@ -88,6 +128,7 @@ const useFacultySupervisorManagement = () => {
     const updateFacultySupervisor = async (request: FacultySuperviserUpdate) => {
         setLoading(true);
         setError(null);
+        console.log("what is updated requested data", request);
         const errorMessage = "Error updating Faculty supervisor.";
         try {
         const url = "/api/facultySupervisor";
@@ -133,11 +174,23 @@ const useFacultySupervisorManagement = () => {
         const updatedTotalPages = Math.ceil(updatedTotalItems / pagination.size);
 
         if (facultySupervisors.length === 1 && pagination.number > 0) {
-            getAllFacultySupervisors(pagination.number - 1);
+            let paginationNumbers = pagination.number - 1;
+            if(paginationNumbers < 0){
+                paginationNumbers = 0;
+            }
+            getAllFacultySupervisors(paginationNumbers);
         } else if (pagination.number >= updatedTotalPages) {
-            getAllFacultySupervisors(updatedTotalPages - 1);
+            let paginationNumbers = updatedTotalPages - 1;
+            if(paginationNumbers < 0){
+                paginationNumbers = 0;
+            }
+            getAllFacultySupervisors(paginationNumbers);
         } else {
-            getAllFacultySupervisors(pagination.number);
+            let paginationNumbers = pagination.number;
+            if(paginationNumbers < 0){
+                paginationNumbers = 0;
+            }
+            getAllFacultySupervisors(paginationNumbers);
         }
         } catch (error) {
         setError(errorMessage);
@@ -155,6 +208,7 @@ const useFacultySupervisorManagement = () => {
 
     useEffect(() => {
         getAllFacultySupervisors();
+        getAllFaculties();
     }, []);
 
     return {
@@ -164,8 +218,10 @@ const useFacultySupervisorManagement = () => {
         isUpdateModalOpen,
         selectedFacultySupervisor,
         facultySupervisors,
+        faculty,
         pagination,
         setIsAddModalOpen,
+        getAllFaculties,
         getAllFacultySupervisors,
         addFacultySupervisor,
         updateFacultySupervisor,

@@ -18,6 +18,7 @@ const FacultySupervisorsPage = () => {
     deleteFacultySupervisor,
     setIsUpdateModalOpen,
     facultySupervisors,
+    faculty,
     pagination,
     setSelectedFacultySupervisor,
     pageChangeHandler,
@@ -28,6 +29,7 @@ const FacultySupervisorsPage = () => {
         <AddModalForm
           showModal={isAddModalOpen}
           onShowModal={setIsAddModalOpen}
+          faculties={faculty}
           onAddFacultySupervisors={addFacultySupervisor}
         />
       )}
@@ -51,30 +53,34 @@ const FacultySupervisorsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {facultySupervisors?.map((supervisor) => (
-            <tr key={supervisor.id}>
-              <td>{supervisor.name}</td>
-              <td>{supervisor.surname}</td>
-              <td>{supervisor.phoneNumber}</td>
-              <td>{supervisor.supervisorNumber}</td>
-              <td>{supervisor.faculty.name}</td>
-              <td>
-                <div className="edit-buttons">
-                  <button
-                    onClick={() => {
-                      setSelectedFacultySupervisor(supervisor);
-                      setIsUpdateModalOpen(true);
-                    }}>
-                    Edit
-                  </button>{" "}
-                  <button
-                    onClick={() => deleteFacultySupervisor(supervisor.id)}>
-                    Delete
-                  </button>{" "}
-                </div>
-              </td>
-            </tr>
-          ))}
+          {facultySupervisors?.map(
+            (supervisor) => (
+              console.log("Supervisor: ", supervisor),
+              (
+                <tr key={supervisor?.id}>
+                  <td>{supervisor?.name}</td>
+                  <td>{supervisor?.surname}</td>
+                  <td>{supervisor?.phoneNumber}</td>
+                  <td>{supervisor?.supervisorNo}</td>
+                  <td>
+                    <div className="edit-buttons">
+                      <button
+                        onClick={() => {
+                          setSelectedFacultySupervisor(supervisor);
+                          setIsUpdateModalOpen(true);
+                        }}>
+                        Edit
+                      </button>{" "}
+                      <button
+                        onClick={() => deleteFacultySupervisor(supervisor.id)}>
+                        Delete
+                      </button>{" "}
+                    </div>
+                  </td>
+                </tr>
+              )
+            )
+          )}
         </tbody>
       </table>
       <Pagination

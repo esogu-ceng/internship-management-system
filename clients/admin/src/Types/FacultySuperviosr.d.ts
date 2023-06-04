@@ -2,15 +2,15 @@ export interface FacultySupervisorCreate {
     name: string;
     surname: string;
     phoneNumber: string;
-    supervisorNumber: string;
+    supervisorNo: string;
     user: {
       username: string;
       password: string;
       email: string;
     };
     faculty: {
-        id : number;
-    }
+        id: number;
+    };
 }
 
 export interface FacultySuperviserUpdate {
@@ -18,12 +18,12 @@ export interface FacultySuperviserUpdate {
     name: string;
     surname: string;
     phoneNumber: string;
-    supervisorNumber: string;
-    faculty: {
-      id: number;
+    supervisorNo: string;
+    faculty  : {
+        id : number;
     };
-    user: {
-      id: number;
+    user :{
+        id : number;
     };
 }
 
@@ -32,9 +32,9 @@ export interface FacultySupervisor {
     name: string;
     surname: string;
     phoneNumber: string;
-    supervisorNumber: string;
-    user: User;
-    faculty: Faculty;
+    supervisorNo: string;
+    userId : number;
+    facultyId : number;
 }
 
 interface PagedResponse<T> {
@@ -55,6 +55,9 @@ interface Pageable {
 export interface FacultySupervisorPagedResponse
     extends PagedResponse<FacultySupervisor> {}
 
+
+export interface FacultyPagedResponse
+extends PagedResponse<Faculty> {}
 
 export interface Faculty {
     id: number;
