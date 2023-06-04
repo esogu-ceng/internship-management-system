@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 
-import { Header } from './components/Header';
+import { Header }  from './components/Header';
 import { Footer } from './components/Footer';
 import CompanyDashboard from './components/CompanyDashboard';
 import { Root } from './routes/Root';
