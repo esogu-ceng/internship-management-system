@@ -14,26 +14,13 @@ Authorization: Basic ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf
     "email": "omerkurtuldu01@gmail.com",
     "grade": "4",
     "phoneNumber": "539-484-34-38",
-    "province": "Sakarya",
-    "subprovince": "Serdivan",
-    "zipCode": "34700",
-    "motherName": "Aysel",
-    "fatherName": "Nedim",
     "birthPlace": "Sakarya",
     "faculty": {
-        "id": 4
+        "id": 0
     },
     "birthDate": "1999-02-25T00:00:00",
-    "idCardSerialNo": "123456",
-    "idRegisterProvince": "Sakarya",
-    "idRegisterSubprovince": "Serdivan",
-    "idRegisterStreetVillage": "Main Street",
-    "idRegisterVolumeNo": "1",
-    "idRegisterFamilySerialNo": "123",
-    "idRegisterSerialNo": "456",
-    "idRegistryOffice": "Serdivan Nufus Mudurlugu",
-    "idRegistryReason": "Registration",
     "password": "sdfasdfadfasdfasdfasdf",
-    "confirmPassword": "sdfasdfadfasdfasdfasdf"
+    "confirmPassword": "sdfasdfadfasdfasdfasdf",
+    "address": "Address"
 }
 

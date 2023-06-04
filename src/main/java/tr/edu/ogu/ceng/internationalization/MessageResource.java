@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.model.Language;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.UserPrincipal;
 
 @Component
