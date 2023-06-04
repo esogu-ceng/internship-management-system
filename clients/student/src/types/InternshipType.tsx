@@ -9,4 +9,6 @@ export type Internship = {
     student: Student;
     startDate: Date;
     endDate: Date;
+    facultySupervisorName: string;
+    companyName: string;
 };
