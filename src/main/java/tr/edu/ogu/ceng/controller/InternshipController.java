@@ -60,6 +60,10 @@ public class InternshipController {
 	public InternshipStatus approveInternship(@PathVariable(name = "id") long id) {
 		return internshipService.chanceInternshipStatus(id, InternshipStatus.APPROVED);
 	}
+	@PutMapping("/pending/{id}")
+	public InternshipStatus pendingInternship(@PathVariable(name = "id") long id) {
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.PENDING);
+	}
 
 	@PutMapping("/reject/{id}")
 	public InternshipStatus rejectInternship(@PathVariable(name = "id") long id) {

@@ -21,7 +21,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path={`${root_path}`} element={<InternshipDashboard />} />
             <Route path={`${root_path}/company-list`} element={<CompanyListContainer />} />
-            <Route path={`${root_path}/AllInternship`}element={<AllInternships />} />
+            <Route path={`${root_path}/AllInternships`}element={<AllInternships />} />
             {/* Add other routes for different screens */}
             <Route path={`${root_path}/default`} element={<div>Default Screen</div>} />
           </Routes>
