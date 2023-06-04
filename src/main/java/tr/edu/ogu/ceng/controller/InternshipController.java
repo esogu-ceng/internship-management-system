@@ -104,4 +104,14 @@ public class InternshipController {
 	public ResponseEntity<Long> countApprovedInternships() {
 		return ResponseEntity.ok(internshipService.countApprovedInternships());
 	}
+
+	@GetMapping("/count/rejected")
+	public ResponseEntity<Long> countRejectedInternships() {
+		return ResponseEntity.ok(internshipService.countRejectedInternships());
+	}
+
+	@GetMapping("/count/pending")
+	public ResponseEntity<Long> countInProcessInternships() {
+		return ResponseEntity.ok(internshipService.countPendingInternships());
+	}
 }

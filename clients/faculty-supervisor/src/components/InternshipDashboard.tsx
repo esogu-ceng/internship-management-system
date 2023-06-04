@@ -11,7 +11,8 @@ function InternshipDashboard() {
   const [studentCount, setStudentCount] = useState<number>(0);
   const [companyCount, setCompanyCount] = useState<number>(0);
   const [approvedInternships, setApprovedInternships] = useState<number>(0);
-
+  const [rejectedInternships, setRejectedInternships] = useState<number>(0);
+  const [pendingInternships, setPendingInternships] = useState<number>(0);
   useEffect(() => {
     fetch('/api/internship')
       .then(response => response.json())
@@ -44,6 +45,19 @@ function InternshipDashboard() {
     })
     .catch(error => console.error(error));
     
+    fetch('/api/internship/count/rejected')
+    .then(response => response.json())
+    .then(count => {
+      setRejectedInternships(count);
+    })
+    .catch(error => console.error(error));
+
+    fetch('/api/internship/count/pending')
+    .then(response => response.json())
+    .then(count => {
+    setPendingInternships(count);
+     })
+  .catch(error => console.error(error));
   }, []);
 
   return (
@@ -64,6 +78,14 @@ function InternshipDashboard() {
       <div className="dashboard-card">
         <h2>Onaylanan Staj Başvurusu </h2>
         <p>{approvedInternships} adet staj başvurusu onaylandı.</p>
+      </div>
+      <div className="dashboard-card">
+        <h2>Reddedilmiş Staj Başvurusu </h2>
+        <p>{rejectedInternships} adet staj başvurusu reddedildi.</p>
+      </div>
+      <div className="dashboard-card">
+        <h2>Onay Bekleyen Staj Başvurusu </h2>
+        <p>{pendingInternships} adet staj başvurusu onay beklemektedir.</p>
       </div>
       <div className="dashboard-card">
         <h2>Firma Sayısı</h2>

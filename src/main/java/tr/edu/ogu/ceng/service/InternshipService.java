@@ -209,4 +209,12 @@ public class InternshipService {
 		return internshipRepository.countByStatus(InternshipStatus.APPROVED);
 	}
 
+	public long countRejectedInternships() {
+		return internshipRepository.countByStatus(InternshipStatus.REJECTED);
+	}
+
+	public long countPendingInternships() {
+		return internshipRepository.countByStatus(InternshipStatus.PENDING);
+	}
+
 }
