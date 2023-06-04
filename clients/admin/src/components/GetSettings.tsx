@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Setting } from '../types/SettingType';
+import { Setting } from '../Types/SettingType';
 
 type SettingRow = {
   field: string;
