@@ -7,13 +7,16 @@ function Header() {
   };
 
   return (
-    <header>
+    <header className="header">
       <div className="header-content">
-        <h1 className="header-title">Staj Yönetim Sistemi</h1>
-        <nav>
-          <ul className="header-nav">
-            <li>
-              <Link to="facultysupervisor/company-list">Şirketler</Link>
+        <Link to="facultysupervisor" className="header-title">Staj Yönetim Sistemi</Link>
+        <nav className="navbar">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link to="facultysupervisor/company-list" className="nav-link">Şirketler</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="facultysupervisor/AllInternships" className="nav-link">Staj Yapan Öğrenciler</Link>
             </li>
           </ul>
         </nav>

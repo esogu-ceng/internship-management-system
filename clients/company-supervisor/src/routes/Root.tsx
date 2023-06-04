@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
 import { InternshipRow } from '../components/InternshipRow';
 import { Internship } from '../types/InternshipType';
+import { PaginationButton } from '../components/PaginationButton';
 
-export const Root = ({ _companyId, _auth }: { _companyId: number, _auth: string }) => {
+export const Root = ({ _companyId }: { _companyId: number }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [internships, setInternships] = useState<Internship[]>([]);
 
-  useEffect(() => {
-    fetch(`/api/internship/companyid/${_companyId}`, {
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageNumbers = [];
 
-      headers: {
-        Authorization:
-          'Basic ' + btoa(_auth),
-      },
+  useEffect(() => {
+    fetchInternships(currentPage);
+  }, []);
+
+  const fetchInternships = (number: number) => {
+    console.log(number);
+    fetch(`/api/internship/companyid/${_companyId}?pageNo=${number - 1}`, {
       method: 'GET',
     })
       .then((response) => response.json())
@@ -20,11 +25,33 @@ export const Root = ({ _companyId, _auth }: { _companyId: number, _auth: string 
         console.log('data: ', data);
         setLoading(false);
         setInternships(data.content);
+        setTotalPages(data.totalPages);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  };
+
+  for (let i = 1; i <= Math.ceil(totalPages); i++) {
+    pageNumbers.push(i);
+  }
+
+  const handleClick = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    fetchInternships(pageNumber);
+  };
+
+  const decreasePageNumber = () => {
+    if (currentPage != 1) {
+      handleClick(currentPage - 1);
+    }
+  };
+
+  const increasePageNumber = () => {
+    if (currentPage != totalPages) {
+      handleClick(currentPage + 1);
+    }
+  };
 
   return (
     <div>
@@ -112,6 +139,7 @@ export const Root = ({ _companyId, _auth }: { _companyId: number, _auth: string 
                     <button
                       type="button"
                       className="w-full p-4 text-base text-gray-600 bg-white border rounded-l-xl hover:bg-gray-100"
+                      onClick={() => decreasePageNumber()}
                     >
                       <svg
                         width="9"
@@ -124,33 +152,17 @@ export const Root = ({ _companyId, _auth }: { _companyId: number, _auth: string 
                         <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path>
                       </svg>
                     </button>
-                    <button
-                      type="button"
-                      className="w-full px-4 py-2 text-base text-indigo-500 bg-white border-t border-b hover:bg-gray-100 "
-                    >
-                      1
-                    </button>
-                    <button
-                      type="button"
-                      className="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100"
-                    >
-                      2
-                    </button>
-                    <button
-                      type="button"
-                      className="w-full px-4 py-2 text-base text-gray-600 bg-white border-t border-b hover:bg-gray-100"
-                    >
-                      3
-                    </button>
-                    <button
-                      type="button"
-                      className="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100"
-                    >
-                      4
-                    </button>
+                    {pageNumbers.map((number) => (
+                      <PaginationButton
+                        key={number}
+                        number={number}
+                        handleClick={() => handleClick(number)}
+                      />
+                    ))}
                     <button
                       type="button"
                       className="w-full p-4 text-base text-gray-600 bg-white border-t border-b border-r rounded-r-xl hover:bg-gray-100"
+                      onClick={() => increasePageNumber()}
                     >
                       <svg
                         width="9"

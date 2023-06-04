@@ -1,6 +1,6 @@
 Veritabanında verilerin kolay yoldan oluşturulması için bir python scripti.
 
-imsdb8.sql veritabanı güncellemesinden sonra tasarlanmıştır. Üstüne güncelleme gelmiş ise düzenlenmesi gerekebilir.
+imsdb9.sql veritabanı güncellemesinden sonra tasarlanmıştır. Üstüne güncelleme gelmiş ise düzenlenmesi gerekebilir.
 
 Güncel olarak doldurduğu tablolar:
     ims_companies,
@@ -14,6 +14,9 @@ Güncel olarak doldurduğu tablolar:
     ims_users.
 
 Çalıştırmak için main.py dosyasını koşturmanız yeterlidir.
+
+Admin kullanıcı bilgileri -> ykartal@ogu.edu.tr sdfasdfadfasdfasdfasdf
+Admin dışında kullanıcı şifreleri -> 123
 
 Not: Çalıştımak için psycopg2 kütüphanesini "pip install psycopg2" komutu ile yükleyebilirsiniz.
 
