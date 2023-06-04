@@ -66,4 +66,10 @@ public class CompanyController {
 	public boolean deleteCompany(@PathVariable(name = "id") Long id) {
 		return companyService.deleteCompany(id);
 	}
+
+	@GetMapping("/count")
+	public ResponseEntity<Long> getCompanyCount() {
+		Long count = companyService.countCompanies();
+		return ResponseEntity.ok(count);
+	}
 }
