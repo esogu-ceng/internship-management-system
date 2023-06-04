@@ -78,9 +78,9 @@ function GetSettings() {
         });
 
         if (response.ok) {
-          console.log('Değer başarıyla kaydedildi.');
+          window.alert('Başarıyla güncellendi!');
         } else {
-          console.log('Değer kaydedilirken bir hata oluştu.');
+          window.alert('Güncelleme sırasında hata oluştu!');
         }
       } catch (error) {
         console.log(error);
