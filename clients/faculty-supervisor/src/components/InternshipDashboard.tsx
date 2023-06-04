@@ -17,7 +17,6 @@ function InternshipDashboard() {
       .then(response => response.json())
       .then((data: Internship[]) => {
         setInternships(data);
-        setApprovedInternships(data.filter(internship => internship.status === "APPROVED").length);
         data.map(internship => ( 
           <InternshipCard key={internship.id} internship={internship} />
         ))
@@ -37,7 +36,14 @@ function InternshipDashboard() {
         setCompanyCount(data.length);
       })
       .catch(error => console.error(error));
-
+      
+    fetch('/api/company/count')
+    .then(response => response.json())
+    .then(count => {
+      setCompanyCount(count);
+    })
+    .catch(error => console.error(error));
+    
   }, []);
 
   return (
@@ -58,6 +64,10 @@ function InternshipDashboard() {
       <div className="dashboard-card">
         <h2>Onaylanan Staj Başvurusu </h2>
         <p>{approvedInternships} adet staj başvurusu onaylandı.</p>
+      </div>
+      <div className="dashboard-card">
+        <h2>Firma Sayısı</h2>
+        <p>{companyCount} adet firma bulunmaktadır.</p>
       </div>
     </div>
   );
