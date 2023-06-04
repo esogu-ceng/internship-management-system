@@ -3,9 +3,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 export const Header = () => {
   const [burgerButton, setBurgerButton] = useState<boolean>(false);
   const root_path: string | undefined = process.env.PUBLIC_URL;
-  const handleLogout = () => {
-    window.location.href = process.env.REACT_APP_API_BASE_URI + "?logout=true";
-  };
+
   return (
     <div>
       <div className="header-content">
@@ -67,12 +65,17 @@ export const Header = () => {
                       </p>
                     )}
                   </NavLink>
-                  <button 
-                  onClick={handleLogout} 
-                  className={`hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
-                >
-                  Çıkış Yap
-                </button>
+                  <NavLink reloadDocument to={process.env.REACT_APP_API_BASE_URI + 'logout'}>
+                    {({ isActive }) => (
+                      <p
+                        className={`${
+                          isActive ? `text-gray-200` : `text-gray-400`
+                        }  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium`}
+                      >
+                        Çıkış Yap
+                      </p>
+                    )}
+                  </NavLink>
                 </div>
               </div>
               <div className="flex -mr-2 md:hidden">
