@@ -65,7 +65,7 @@ export const Header = () => {
                       </p>
                     )}
                   </NavLink>
-                  <NavLink to={process.env.REACT_APP_API_BASE_URI + 'logout'}>
+                  <NavLink reloadDocument to={process.env.REACT_APP_API_BASE_URI + 'logout'}>
                     {({ isActive }) => (
                       <p
                         className={`${
