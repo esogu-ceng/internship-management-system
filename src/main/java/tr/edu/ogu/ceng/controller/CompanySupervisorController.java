@@ -32,7 +32,7 @@ public class CompanySupervisorController {
 	private final CompanySupervisorService service;
 
 	@GetMapping
-	public Page<CompanySupervisorDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<CompanySupervisorResponseDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		return service.getAll(pageable);
