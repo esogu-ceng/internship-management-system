@@ -184,4 +184,9 @@ public class UserService {
 		UserDto loggedInUser = modelMapper.map(userPrincipal.getUser(), UserDto.class);
 		return loggedInUser;
 	}
+
+	public User GetUserById(Long UserId){
+		User user = userRepository.getById(UserId);
+		return user;
+	}
 }
