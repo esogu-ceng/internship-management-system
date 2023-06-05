@@ -44,6 +44,17 @@ export interface User {
   userType: string;
 }
 
+export interface Company {
+  id: number;
+  name: string;
+  address: string;
+  phoneNumber: string;
+  faxNumber: string;
+  email: string;
+  scope: string;
+  description: string;
+}
+
 interface PagedResponse<T> {
   content: T[];
   totalPages: number;
@@ -61,17 +72,6 @@ interface Pageable {
 
 export interface CompanySupervisorPagedResponse
   extends PagedResponse<CompanySupervisor> {}
-
-export interface Company {
-  id: number;
-  name: string;
-  address: string;
-  phoneNumber: string;
-  faxNumber: string;
-  email: string;
-  scope: string;
-  description: string;
-}
 
 export interface CompanyOption {
   id: number;

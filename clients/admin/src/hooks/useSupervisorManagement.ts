@@ -70,6 +70,34 @@ const useSupervisorManagement = () => {
     }
   };
 
+  const getCompanySupervisor = async (id: number) => {
+    setLoading(true);
+
+    const errorMessage = "Error retrieving company supervisor.";
+
+    try {
+      const url = `/api/company-supervisor/${id}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(errorMessage);
+      }
+
+      const data: CompanySupervisor = await response.json();
+
+      setSelectedCompanySupervisor(data);
+    } catch (error) {
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const addCompanySupervisor = async (request: CompanySupervisorCreate) => {
     setLoading(true);
     setError(null);
@@ -281,6 +309,7 @@ const useSupervisorManagement = () => {
     pagination,
     companies,
     companiesForList,
+    getCompanySupervisor,
     getCompanies,
     getCompaniesForCompaniesPage,
     setIsAddModalOpen,
