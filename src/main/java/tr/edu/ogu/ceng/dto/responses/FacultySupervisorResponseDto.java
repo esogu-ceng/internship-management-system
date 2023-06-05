@@ -18,6 +18,6 @@ public class FacultySupervisorResponseDto {
     private String supervisorNo;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private Long userId;
+    private UserResponseDto user;
     private Long facultyId;
 }

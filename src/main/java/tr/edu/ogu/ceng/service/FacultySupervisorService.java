@@ -84,7 +84,7 @@ public class FacultySupervisorService {
 			FacultySupervisorResponseDto responseDto = modelMapper.map(updatedFacultySupervisor,
 					FacultySupervisorResponseDto.class);
 			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
-			responseDto.setUserId(facultySupervisorRequestDto.getUser().getId());
+			responseDto.setUser(responseDto.getUser());
 			log.info("Faculty supervisor updated: {}", updatedFacultySupervisor);
 			return responseDto;
 		} catch (Exception e) {

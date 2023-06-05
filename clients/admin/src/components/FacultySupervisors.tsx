@@ -43,25 +43,30 @@ const FacultySupervisorsPage = () => {
       <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
         <span>+ Fakülte Sorumlusu Ekle</span>
       </button>
-
-      <table>
-        <thead>
-          <tr>
-            {facultySupervisortableHeaders.map((header) => (
-              <th key={header}>{header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {facultySupervisors?.map(
-            (supervisor) => (
-              console.log("Supervisor: ", supervisor),
-              (
+      {facultySupervisors?.length > 0 ? (
+        <>
+          <table>
+            <thead>
+              <tr>
+                {facultySupervisortableHeaders.map((header) => (
+                  <th key={header}>{header}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {facultySupervisors?.map((supervisor) => (
                 <tr key={supervisor?.id}>
                   <td>{supervisor?.name}</td>
                   <td>{supervisor?.surname}</td>
                   <td>{supervisor?.phoneNumber}</td>
                   <td>{supervisor?.supervisorNo}</td>
+                  <td className="status-container">
+                    <div
+                      className={`status-indicator ${
+                        supervisor.user.activity ? "active" : "inactive"
+                      }`}></div>
+                    <span>{supervisor.user.activity ? "Aktif" : "Pasif"}</span>
+                  </td>
                   <td>
                     <div className="edit-buttons">
                       <button
@@ -78,17 +83,21 @@ const FacultySupervisorsPage = () => {
                     </div>
                   </td>
                 </tr>
-              )
-            )
-          )}
-        </tbody>
-      </table>
-      <Pagination
-        itemsPerPage={10}
-        totalItems={pagination?.totalElements || 0}
-        onPageChange={pageChangeHandler}
-        currentPage={pagination?.number || 0}
-      />
+              ))}
+            </tbody>
+          </table>
+          <Pagination
+            itemsPerPage={10}
+            totalItems={pagination?.totalElements || 0}
+            onPageChange={pageChangeHandler}
+            currentPage={pagination?.number || 0}
+          />
+        </>
+      ) : (
+        <div className="not-found">
+          <p>Kayıtlar bulunamadı!</p>
+        </div>
+      )}
     </div>
   );
 };
