@@ -79,3 +79,6 @@ export interface CompanyOption {
 }
 
 export interface CompanyPagedResponse extends PagedResponse<CompanyOption> {}
+
+export interface CompanyPagedResponseForList extends PagedResponse<Company> {} //////
+

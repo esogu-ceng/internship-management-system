@@ -5,8 +5,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
+  Company,
   CompanyOption,
   CompanyPagedResponse,
+  CompanyPagedResponseForList,  ///
   CompanySuperviserUpdate,
   CompanySupervisor,
   CompanySupervisorCreate,
@@ -22,6 +24,8 @@ const useSupervisorManagement = () => {
   const [selectedCompanySupervisor, setSelectedCompanySupervisor] =
     useState<CompanySupervisor>();
   const [companies, setCompanies] = useState<CompanyOption[]>([]);
+  const [companiesForList, setCompaniesForList] = useState<Company[]>([]);  //
+
 
   const [companySupervisors, setCompanySupervisors] = useState<
     CompanySupervisor[]
@@ -209,6 +213,44 @@ const useSupervisorManagement = () => {
     }
   };
 
+  const getCompaniesForCompaniesPage = async (    //////
+    pageNo: number = 0,
+    limit: number = 10,
+    sortBy: string = "name"
+  ) => {
+    setLoading(true);
+
+    const errorMessage = "Error retrieving companies.";
+
+    try {
+      const url = `/api/company/getAll?pageNo=${pageNo}&limit=${limit}&sortBy=${sortBy}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(errorMessage);
+      }
+
+      const data: CompanyPagedResponseForList = await response.json();
+      console.log(data)
+      setCompaniesForList(data.content);
+      setPagination({
+        totalElements: data.totalElements,
+        totalPages: data.totalPages,
+        number: data.number,
+        size: data.size,
+      });
+    } catch (error) {
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const pageChangeHandler = (pageNumber: number) => {
     if (!pagination) return;
 
@@ -216,9 +258,17 @@ const useSupervisorManagement = () => {
     getAllCompanySupervisors(pageNumber);
   };
 
+  const pageChangeHandlerCompanies = (pageNumber: number) => {
+    if (!pagination) return;
+
+    setPagination({ ...pagination, number: pageNumber });
+    getCompaniesForCompaniesPage(pageNumber);
+  };
+
   useEffect(() => {
     getAllCompanySupervisors();
     getCompanies();
+    getCompaniesForCompaniesPage();
   }, []);
 
   return {
@@ -230,13 +280,16 @@ const useSupervisorManagement = () => {
     companySupervisors,
     pagination,
     companies,
+    companiesForList,
     getCompanies,
+    getCompaniesForCompaniesPage,
     setIsAddModalOpen,
     getAllCompanySupervisors,
     addCompanySupervisor,
     updateCompanySupervisor,
     deleteCompanySupervisor,
     pageChangeHandler,
+    pageChangeHandlerCompanies,
     setIsUpdateModalOpen,
     setSelectedCompanySupervisor,
   };

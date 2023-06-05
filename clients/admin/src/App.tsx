@@ -14,6 +14,8 @@ import CompanySupervisors from "./components/CompanySupervisors";
 import "./index.css";
 import AdminProfile from "./components/AdminProfile";
 import FacultySupervisors from "./components/FacultySupervisors";
+import Companies from "./components/Companies";
+
 
 function App() {
   const root_path: string | undefined = process.env.PUBLIC_URL;
@@ -36,6 +38,7 @@ function App() {
             />
             <Route path={`${root_path}/profile`} element={<AdminProfile />} />
             <Route path={`${root_path}/students`} element={<Students />} />
+            <Route path={`/admin/companies`} element={<Companies />} />
           </Routes>
         </div>
         <Footer />
