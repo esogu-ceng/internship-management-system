@@ -72,6 +72,8 @@ public class FacultySupervisorService {
 		try {
 			LocalDateTime now = LocalDateTime.now();
 			facultySupervisor.setUpdateDate(now);
+			User user = userService.GetUserById(facultySupervisor.getUser().getId());
+			facultySupervisor.setUser(user);
 			facultySupervisor
 					.setCreateDate(facultySupervisorRepository.getById(facultySupervisor.getId()).getCreateDate());
 			FacultySupervisor updatedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
@@ -124,9 +126,20 @@ public class FacultySupervisorService {
 			}
 			Page<FacultySupervisorResponseDto> facultySupervisorDtos = facultySupervisors
 					.map(facultySupervisor -> modelMapper.map(facultySupervisor, FacultySupervisorResponseDto.class));
-			return facultySupervisorDtos;
+ 			return facultySupervisorDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting faculty supervisors: {}", e.getMessage());
+			throw e;
+		}
+	}
+
+	public FacultySupervisorResponseDto getFacultySupervisorByUserId(Long userId) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			FacultySupervisor facultysupervisor = facultySupervisorRepository.findByUserId(userId);
+			return modelMapper.map(facultysupervisor, FacultySupervisorResponseDto.class);
+		} catch (Exception e) {
+			log.error("An error occurred while getting facultySupervisor with given user ID", e.getMessage());
 			throw e;
 		}
 	}

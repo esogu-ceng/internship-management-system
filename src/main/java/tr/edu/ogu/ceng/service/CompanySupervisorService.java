@@ -31,11 +31,11 @@ public class CompanySupervisorService {
 	private final ModelMapper mapper;
 	private final UserService userService;
 
-	public Page<CompanySupervisorDto> getAll(Pageable pageable) {
+	public Page<CompanySupervisorResponseDto> getAll(Pageable pageable) {
 
 		Page<CompanySupervisor> companySupervisors = repository.findAll(pageable);
-		Page<CompanySupervisorDto> response = companySupervisors
-				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class));
+		Page<CompanySupervisorResponseDto> response = companySupervisors
+				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorResponseDto.class));
 
 		return response;
 	}
