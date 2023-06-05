@@ -10,6 +10,7 @@ export const routes = [
 export const tableHeaders = [
   "Yetkili İsmi",
   "Yetkili Soyadı",
+  "Yetkili Durumu",
   "Şirket İsmi",
   "Şirket Açıklaması",
   "Şirket Mail Adresi",
