@@ -7,6 +7,7 @@ import CompanyDashboard from './components/CompanyDashboard';
 import { Root } from './routes/Root';
 import { CompanyPage } from './routes/Company';
 import ErrorPage from './error-page';
+import CompanySupervisorProfile from "./components/CompanySupervisorProfile";
 
 const HeaderLayout = () => (
   <div className="flex flex-col min-h-screen justify-between">
@@ -40,6 +41,10 @@ const App: React.FC = () => {
         {
           path: `${root_path}/company`,
           element: <CompanyPage _companyId={currentCompanyId} />,
+        },
+        {
+          path: `${root_path}/profile`,
+          element: <CompanySupervisorProfile />,
         },
       ],
     },
