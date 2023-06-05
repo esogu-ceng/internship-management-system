@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Admin } from "../types/AdminType";
+
+import React, { useEffect, useState } from 'react';
+import { Admin } from '../types/AdminType';
+
 function AdminProfile() {
   const [adminDatas, setAdminDatas] = useState<Admin[] | null>(null);
 
