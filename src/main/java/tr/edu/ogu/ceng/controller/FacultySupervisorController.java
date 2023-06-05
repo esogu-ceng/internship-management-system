@@ -61,4 +61,9 @@ public class FacultySupervisorController {
 	public ResponseEntity<Boolean> deleteFacultySupervisor(@PathVariable(name = "id") long id) {
 		return ResponseEntity.ok(facultySupervisorService.deleteFacultySupervisor(id));
 	}
+
+	@GetMapping("/byUserId/{userId}")
+	public FacultySupervisorResponseDto getFacultySupervisorByUserId(@PathVariable Long userId) {
+		return facultySupervisorService.getFacultySupervisorByUserId(userId);
+	}
 }

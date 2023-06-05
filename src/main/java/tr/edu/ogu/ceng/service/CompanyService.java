@@ -45,7 +45,8 @@ public class CompanyService {
 			company.setUpdateDate(dateTime);
 			company.setCreateDate(companyRepository.getById(companyDto.getId()).getCreateDate());
 			company = companyRepository.save(company);
-			log.info("Company with ID {} has been updated: {}, {}", company.getId(), company.getName(), company.getDescription());
+			log.info("Company with ID {} has been updated: {}, {}", company.getId(), company.getName(),
+					company.getDescription());
 			return modelMapper.map(company, CompanyDto.class);
 		} catch (EntityNotFoundException e) {
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
@@ -90,15 +91,17 @@ public class CompanyService {
 	}
 
 	public boolean deleteCompany(long id) {
-		if (!companyRepository.existsById(id))
-		{
+		if (!companyRepository.existsById(id)) {
 			log.warn("Company not found with id {}", id);
 			return false;
 		}
-			
+
 		companyRepository.deleteById(id);
 		log.info("Company has been deleted successfully.");
 		return true;
 	}
 
+	public Long countCompanies() {
+		return companyRepository.count();
+	}
 }

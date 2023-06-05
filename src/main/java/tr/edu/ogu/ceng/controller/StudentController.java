@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -45,8 +44,9 @@ public class StudentController {
 	}
 
 	@GetMapping("/search/{keyWord}")
-	public Page<StudentResponseDto> searchStudent(@PathVariable(name = "keyWord") String keyWord, @RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+	public Page<StudentResponseDto> searchStudent(@PathVariable(name = "keyWord") String keyWord,
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		Page<StudentResponseDto> students = studentService.searchStudent(pageable, keyWord);
 		return students;
@@ -78,17 +78,15 @@ public class StudentController {
 	public StudentDto getStudentByUserId(@PathVariable Long userId) {
 		return studentService.getStudentByUserId(userId);
 	}
-	
+
 	@GetMapping("/supervisor/{id}")
 	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(@PathVariable("id") Long faculty_supervisor_id,
-	        @RequestParam(defaultValue = "0") Integer pageNo,
-	        @RequestParam(defaultValue = "10") Integer limit,
-	        @RequestParam(defaultValue = "id") String sortBy) {
-	    Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-	    Page<StudentResponseDto> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id, pageable);
-	    return students;
+			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "id") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<StudentResponseDto> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id,
+				pageable);
+		return students;
 	}
-
-	
 
 }

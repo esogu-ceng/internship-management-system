@@ -337,13 +337,14 @@ tr:hover {
 /* Form Buttons */
 .form-buttons {
   display: flex;
+  gap: 8px;
   justify-content: flex-end;
   margin-top: 20px;
 }
 
 /* Submit Button */
 .submit-button {
-  padding: 8px 16px;
+  padding: 8px 12px;
   margin-left: 10px;
   background-color: #4caf50;
   color: #fff;
@@ -355,7 +356,7 @@ tr:hover {
 /* Cancel Button */
 .cancel-button {
   padding: 8px 16px;
-  background-color: #f44336;
+  background-color: #b53535;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -408,6 +409,7 @@ tr:hover {
 
 .update-modal-buttons button {
   padding: 8px 16px;
+  background-color: #28a745;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -567,4 +569,7 @@ tr:hover {
   padding: 8px 12px;
   border-radius: 3px;
   cursor: pointer;
+}
+.cancel-button {
+  background: rgb(158, 40, 40);
 }
