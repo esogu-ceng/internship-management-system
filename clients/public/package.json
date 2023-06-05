@@ -57,6 +57,7 @@
 		]
 	},
 	"devDependencies": {
-		"@types/react-bootstrap": "^0.32.32"
+		"@types/react-bootstrap": "^0.32.32",
+		"tailwindcss": "^3.3.2"
 	}
 }
