@@ -130,7 +130,7 @@ export const Root = ({ _companyId }: { _companyId: number }) => {
                   </thead>
                   <tbody>
                     {internships?.map((int: Internship) => (
-                      <InternshipRow key={int.id} internship={int} />
+                      <InternshipRow key={int.id} internship={int} company={_companyId}/>
                     ))}
                   </tbody>
                 </table>

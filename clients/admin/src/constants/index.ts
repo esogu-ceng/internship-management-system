@@ -4,6 +4,7 @@ export const routes = [
   { href: "/admin/students", text: "Öğrenciler" },
   { href: "/admin/companySupervisors", text: "Şirket Sorumluları" },
   { href: "/admin/facultySupervisors", text: "Fakülte Sorumluları" },
+  { href: "/admin/companies", text: "Şirketler" },
   { href: "/admin/settings", text: "Ayarlar" },
 ];
 
@@ -25,4 +26,13 @@ export const facultySupervisortableHeaders = [
   "Fakülte Sorumlusu Id",
   "Yetkili Durumu",
   "Düzenle",
+];
+export const companyTableHeaders = [
+  "Şirket İsmi",
+  "Şirket Alanı",
+  "Şirket Açıklaması",
+  "Şirket Mail Adresi",
+  "Şirket Telefon Numarası",
+  "Şirket Fax Numarası",
+  "Şirket Adresi",
 ];

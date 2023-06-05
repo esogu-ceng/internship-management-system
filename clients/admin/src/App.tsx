@@ -14,6 +14,8 @@ import CompanySupervisors from "./components/CompanySupervisors";
 import "./index.css";
 import AdminProfile from "./components/AdminProfile";
 import FacultySupervisors from "./components/FacultySupervisors";
+import Companies from "./components/Companies";
+
 import CompanySupervisorDetail from "./components/CompanySupervisorDetail";
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
             />
             <Route path={`${root_path}/profile`} element={<AdminProfile />} />
             <Route path={`${root_path}/students`} element={<Students />} />
+            <Route path={`${root_path}/companies`} element={<Companies />} />
           </Routes>
         </div>
         <Footer />
