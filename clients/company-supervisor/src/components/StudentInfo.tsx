@@ -19,17 +19,6 @@ const StudentInfo: React.FC<ModalProps> = ({ _student, isOpen, onClose, children
     setLoading(false);
   }, []);
 
-  const SGKCheck = (value: boolean | undefined) => {
-    if (value) {
-      return ("Var");
-    }
-    else if (!value) {
-      return ("Yok");
-    }
-    else
-      return ("Bilinmiyor");
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -86,12 +75,10 @@ const StudentInfo: React.FC<ModalProps> = ({ _student, isOpen, onClose, children
                 <tr>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
                     style={{ color: '#3A4F7A' }}>
-                    İLETİŞİM NUMALARI
+                    CEP TELEFONU
                   </th>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <strong style={{ color: '#3A4F7A' }}>Cep Telefonu: </strong>{student.phoneNumber}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Ev Telefonu: </strong>{student.homePhoneNumber}
+                    {student.phoneNumber}
                   </td>
                 </tr>
                 <tr>
@@ -100,31 +87,7 @@ const StudentInfo: React.FC<ModalProps> = ({ _student, isOpen, onClose, children
                     ADRES
                   </th>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {student.boulevard}, {student.mainStreet}, {student.street}, {student.neighborhood}, {student.village},
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Dış Kapı Numarası: </strong> {student.outerDoorNo},<strong style={{ color: '#3A4F7A' }}> İç Kapı Numarası:</strong>  {student.innerDoorNo}
-                    <br />
-                    {student.subprovince} / {student.province}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Posta Kodu:</strong>{student.zipCode}
-                  </td>
-                </tr>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    style={{ color: '#3A4F7A' }}>
-                    ANNE ADI
-                  </th>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {student.motherName}
-                  </td>
-                </tr>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    style={{ color: '#3A4F7A' }}>
-                    BABA ADI
-                  </th>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {student.fatherName}
+                    {student.address}
                   </td>
                 </tr>
                 <tr>
@@ -143,48 +106,6 @@ const StudentInfo: React.FC<ModalProps> = ({ _student, isOpen, onClose, children
                   </th>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     {new Date(student.birthDate).toLocaleDateString('en-GB')}
-                  </td>
-                </tr>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    style={{ color: '#3A4F7A' }}>
-                    KİMLİK BİLGİLERİ
-                  </th>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <strong style={{ color: '#3A4F7A' }}>Kimlik Kartı Seri Numarası: </strong>{student.idCardSerialNo}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Aile Seri Numarası:</strong>  {student.idRegisterFamilySerialNo}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Sıra Numarası: </strong> {student.idRegisterVolumeNo}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Nüfusa Kayıtlı İl:</strong> {student.idRegisterProvince}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Nüfusa Kayıtlı İlçe:</strong> {student.idRegisterSubprovince}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Nüfusa Kayıtlı Köy:</strong> {student.idRegisterStreetVillage}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}>Kayıt Ofisi: </strong> {student.idRegistryOffice}
-                    <br />
-                    <strong style={{ color: '#3A4F7A' }}> Kayıt Sebebi: </strong> {student.idRegistryReason}
-                  </td>
-                </tr>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    style={{ color: '#3A4F7A' }}>
-                    AİLE SGK DURUMU
-                  </th>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {SGKCheck(student.sgkFamily)}
-                  </td>
-                </tr>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    style={{ color: '#3A4F7A' }}>
-                    ÖĞRENCİ SGK DURUMU
-                  </th>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm"
-                    style={{ color: '#3A4F7A' }}>
-                    {SGKCheck(student.sgkSelf)}
                   </td>
                 </tr>
               </tr>

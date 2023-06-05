@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Header from "./components/Header";
@@ -11,6 +11,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import GetSettings from "./components/GetSettings";
 import CompanySupervisors from "./components/CompanySupervisors";
 import "./index.css";
+import AdminProfile from "./components/AdminProfile";
 
 function App() {
   const root_path: string | undefined = process.env.PUBLIC_URL;
@@ -27,6 +28,7 @@ function App() {
               path={`${root_path}/companySupervisors`}
               element={<CompanySupervisors />}
             />
+            <Route path={`${root_path}/profile`} element={<AdminProfile />} />
           </Routes>
         </div>
         <Footer />

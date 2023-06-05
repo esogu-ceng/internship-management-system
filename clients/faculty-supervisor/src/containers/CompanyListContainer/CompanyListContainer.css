@@ -37,7 +37,10 @@
 
 .pagination-settings input[type="number"],
 .pagination-settings select {
+  margin-top: 5px;
   margin-left: 5px;
+  border: 1px solid #8ac5d6;
+
 }
 
 .next {
