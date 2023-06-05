@@ -13,12 +13,10 @@ export const tableHeaders = [
   "Şirket İsmi",
   "Şirket Açıklaması",
   "Şirket Mail Adresi",
-  "Şirket Fax Numarası",
   "Şirket Telefon Numarası",
   "Şirket Alanı",
   "Düzenle",
 ];
-
 export const facultySupervisortableHeaders = [
   "Fakülte Sorumlusu İsmi",
   "Fakülte Sorumlusu Soyadı",

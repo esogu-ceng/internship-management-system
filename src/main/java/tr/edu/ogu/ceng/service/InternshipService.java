@@ -185,20 +185,36 @@ public class InternshipService {
 		return modelMapper.map(student, StudentResponseDto.class);
 	}
 
-	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
+	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(Long faculty_supervisor_id,
+			Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting all internships by faculty supervisor id: {} with pageable: {}", faculty_supervisor_id, pageable);
-			Page<Internship> internships = internshipRepository.findAllByFacultySupervisorId(faculty_supervisor_id, pageable);
+			log.info("Getting all internships by faculty supervisor id: {} with pageable: {}", faculty_supervisor_id,
+					pageable);
+			Page<Internship> internships = internshipRepository.findAllByFacultySupervisorId(faculty_supervisor_id,
+					pageable);
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
-			Page<InternshipResponseCompanyDto> internshipDtos = internships.map(internship -> modelMapper.map(internship, InternshipResponseCompanyDto.class));
+			Page<InternshipResponseCompanyDto> internshipDtos = internships
+					.map(internship -> modelMapper.map(internship, InternshipResponseCompanyDto.class));
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
 			throw e;
 		}
+	}
+
+	public long countApprovedInternships() {
+		return internshipRepository.countByStatus(InternshipStatus.APPROVED);
+	}
+
+	public long countRejectedInternships() {
+		return internshipRepository.countByStatus(InternshipStatus.REJECTED);
+	}
+
+	public long countPendingInternships() {
+		return internshipRepository.countByStatus(InternshipStatus.PENDING);
 	}
 
 }

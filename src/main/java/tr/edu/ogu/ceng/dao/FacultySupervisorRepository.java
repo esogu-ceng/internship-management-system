@@ -9,4 +9,6 @@ import tr.edu.ogu.ceng.model.FacultySupervisor;
 public interface FacultySupervisorRepository extends JpaRepository<FacultySupervisor, Long> {
 	@Override
 	Page<FacultySupervisor> findAll(Pageable pageable);
+
+	FacultySupervisor findByUserId(Long userId);
 }

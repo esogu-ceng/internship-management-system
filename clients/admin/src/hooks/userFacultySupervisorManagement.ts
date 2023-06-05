@@ -1,6 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
     Faculty,
     FacultyPagedResponse,
@@ -49,7 +50,6 @@ const useFacultySupervisorManagement = () => {
         }
 
         const data: FacultySupervisorPagedResponse = await response.json();
-        console.log("what is getAll data", data);
         setFacultySupervisors(data.content);
         setPagination({
             totalElements: data.totalElements,
@@ -83,7 +83,6 @@ const useFacultySupervisorManagement = () => {
             throw new Error(errorMessage);
         }
         const data: FacultyPagedResponse = await response.json();
-        console.log("what is data", data.content)
         setFaculty(data.content);
         setPagination({
             totalElements: data.totalElements,
@@ -101,7 +100,7 @@ const useFacultySupervisorManagement = () => {
     const addFacultySupervisor = async (request: FacultySupervisorCreate) => {
         setLoading(true);
         setError(null);
-        console.log("what is request", request);
+        const successMessage = "Company supervisor added successfully.";
         const errorMessage = "Error adding Faculty supervisor.";
         try {
         const url = "/api/facultySupervisor/saveFacultysupervisor";
@@ -118,6 +117,7 @@ const useFacultySupervisorManagement = () => {
         }
 
         getAllFacultySupervisors(pagination?.number || 0);
+        toast.success(successMessage); // Display success message
         } catch (error) {
         setError(errorMessage);
         } finally {
@@ -128,7 +128,7 @@ const useFacultySupervisorManagement = () => {
     const updateFacultySupervisor = async (request: FacultySuperviserUpdate) => {
         setLoading(true);
         setError(null);
-        console.log("what is updated requested data", request);
+        const successMessage = "Company supervisor updated successfully.";
         const errorMessage = "Error updating Faculty supervisor.";
         try {
         const url = "/api/facultySupervisor";
@@ -145,6 +145,7 @@ const useFacultySupervisorManagement = () => {
         }
 
         getAllFacultySupervisors(pagination?.number || 0);
+        toast.success(successMessage); // Display success message
         } catch (error) {
         setError(errorMessage);
         } finally {
@@ -156,6 +157,7 @@ const useFacultySupervisorManagement = () => {
         setLoading(true);
         setError(null);
         const errorMessage = "Error deleting Faculty supervisor.";
+        const successMessage = "Company supervisor deleted successfully.";
         try {
         const url = `/api/facultySupervisor/${id}`;
         const response = await fetch(url, {
@@ -192,6 +194,7 @@ const useFacultySupervisorManagement = () => {
             }
             getAllFacultySupervisors(paginationNumbers);
         }
+        toast.success(successMessage); // Display success message
         } catch (error) {
         setError(errorMessage);
         } finally {

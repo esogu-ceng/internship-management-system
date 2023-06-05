@@ -14,34 +14,21 @@ def generate_student(conn, facultyIds, count):
         student_no = i
         grade = str(data.f_students_grade())
         phone_number = str(data.f_random_n_digit(9))
-        home_phone_number = str(data.f_random_n_digit(10))
-        boulevard = str(random.choice(data.boulevard_street_names))
-        main_street = str(random.choice(data.boulevard_street_names))
-        street = str(random.choice(data.boulevard_street_names))
-        neighborhood = str(random.choice(data.mahalleler))
-        outer_door_no = data.f_random_n_digit(2)
-        inner_door_no = data.f_random_n_digit(1)
-        province = str(random.choice(data.sehir))
-        subprovince = random.choice(data.subprovince)
-        village = str(random.choice(data.village_names))
-        zip_code = data.f_random_n_digit(5)
-        mother_name = str(random.choice(data.person_names))
-        father_name = str(random.choice(data.person_names))
+        address = ""
+        address += str(random.choice(data.boulevard_street_names)) + " "
+        address += str(random.choice(data.boulevard_street_names)) + " "
+        address += str(random.choice(data.boulevard_street_names)) + " "
+        address += str(random.choice(data.mahalleler)) + " "
+        address += data.f_random_n_digit(2) + " "
+        address += data.f_random_n_digit(1) + " "
+        address += str(random.choice(data.sehir)) + " "
+        address += random.choice(data.subprovince) + " "
+        address += str(random.choice(data.village_names)) + " "
+        address += data.f_random_n_digit(5)
+
         birth_place = str(random.choice(data.sehir))
         birth_date = f'199{data.f_random_n_digit(1)}-0{data.f_random_n_digit(1)}-1{data.f_random_n_digit(1)}'
-        id_card_serial_no = data.f_random_n_digit(5)
-        id_register_province = str(random.choice(data.sehir))
-        id_register_subprovince = str(random.choice(data.subprovince))
-        id_register_street_village = str(random.choice(data.village_names))
-        id_register_volume_no = data.f_random_n_digit(5)
-        id_register_family_serial_no = data.f_random_n_digit(5)
-        id_register_serial_no = data.f_random_n_digit(5)
-        id_registry_office = f'{random.choice(data.subprovince)} Nüfus Müdürlüğü'
-        id_registry_reason = str(random.choice(data.id_registry_reasons))
-        sgk_family = False
-        sgk_self = True
-        create_date = date.today().strftime("%Y-%m-%d")
-        update_date = date.today().strftime("%Y-%m-%d")
+
         faculty_id = random.choice(facultyIds)
         activity = data.activityRandomizer()
         insert_query = f"""
@@ -58,21 +45,14 @@ def generate_student(conn, facultyIds, count):
         conn.commit()
         insert_query = f"""
             INSERT INTO public.ims_students (
-                name, surname, tckn, student_no, grade, phone_number, home_phone_number, boulevard, main_street, 
-                street, neighborhood, outer_door_no, inner_door_no, province, subprovince, village, zip_code, 
-                mother_name, father_name, birth_place, birth_date, id_card_serial_no, id_register_province, 
-                id_register_subprovince, id_register_street_village, id_register_volume_no, id_register_family_serial_no, 
-                id_register_serial_no, id_registry_office, id_registry_reason, sgk_family, sgk_self, create_date, update_date, 
-                user_id, faculty_id
+                name, surname, tckn, student_no, grade, phone_number,
+                birth_place, birth_date,
+                user_id, faculty_id, address
             )
             VALUES (
-                '{name}', '{surname}', '{tckn}', '{'1521%04d' % student_no}', '{grade}', '{phone_number}', '{home_phone_number}', 
-                '{boulevard}', '{main_street}', '{street}', '{neighborhood}', '{outer_door_no}', '{inner_door_no}', 
-                '{province}', '{subprovince}', '{village}', '{zip_code}', '{mother_name}', '{father_name}', '{birth_place}', 
-                '{birth_date}', '{id_card_serial_no}', '{id_register_province}', '{id_register_subprovince}', 
-                '{id_register_street_village}', '{id_register_volume_no}', '{id_register_family_serial_no}', 
-                '{id_register_serial_no}', '{id_registry_office}', '{id_registry_reason}', '{sgk_family}', '{sgk_self}', 
-                '{create_date}', '{update_date}', '{id_of_new_row}', '{faculty_id}'
+                '{name}', '{surname}', '{tckn}', '{'1521%04d' % student_no}', '{grade}', '{phone_number}', 
+                '{birth_place}', '{birth_date}',
+                '{id_of_new_row}', '{faculty_id}', '{address}'
             )
         """
         cur.execute(insert_query)
