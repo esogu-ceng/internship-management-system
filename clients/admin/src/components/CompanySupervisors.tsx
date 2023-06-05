@@ -1,5 +1,7 @@
 /** @format */
 
+import { useNavigate } from "react-router-dom";
+
 import useSupervisorManagement from "../hooks/useSupervisorManagement";
 
 import { tableHeaders } from "../constants";
@@ -9,6 +11,7 @@ import UpdateModalForm from "./UpdateModalForm";
 import Pagination from "./Pagination";
 
 const CompanySupervisorsPage = () => {
+  const navigate = useNavigate();
   const {
     isAddModalOpen,
     setIsAddModalOpen,
@@ -80,11 +83,19 @@ const CompanySupervisorsPage = () => {
                           setSelectedCompanySupervisor(supervisor);
                           setIsUpdateModalOpen(true);
                         }}>
-                        Edit
+                        Düzenle
+                      </button>{" "}
+                      <button
+                        onClick={() => {
+                          navigate(
+                            `/admin/companySupervisors/${supervisor.id}`
+                          );
+                        }}>
+                        Detay
                       </button>{" "}
                       <button
                         onClick={() => deleteCompanySupervisor(supervisor.id)}>
-                        Delete
+                        Sil
                       </button>{" "}
                     </div>
                   </td>
