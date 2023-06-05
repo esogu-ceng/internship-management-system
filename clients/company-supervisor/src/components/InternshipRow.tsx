@@ -2,7 +2,9 @@ import React, { useEffect, useState, ReactNode } from 'react';
 import { Internship } from '../types/InternshipType';
 import Modal from '../components/StudentInfo';
 import { InternshipDocument } from './InternshipDocument';
-export const InternshipRow = ({ internship }: { internship: Internship }) => {
+import InternshipEvaluateForm from '../components/InternshipEvaluateForm';
+
+export const InternshipRow = ({ internship, company }: { internship: Internship, company: number }) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(<></>);
   const [popUpState, setPopUpState] = useState<boolean>(false);
@@ -35,11 +37,20 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
     setPopUpState(true);
     console.log('Running handleInternshipBooks');
     setPopUpScreen(<InternshipDocument internship_id={internship_id} />);
+
   };
   const handleCompanyEvaluation = () => {
     setPopUpState(true);
     console.log('Running handleCompanyEvaluation');
-    setPopUpScreen(<h2>ŞİRKET DEĞERLENDİRMESİ</h2>);
+    setPopUpScreen(
+      <InternshipEvaluateForm
+       _internshipId={internship.id}
+       _companyId={company}
+        isOpen={popUpState}
+        onClose={onClosePopUp}
+      ></InternshipEvaluateForm>
+    );
+
   };
   const onClosePopUp = () => {
     setPopUpState(false);
