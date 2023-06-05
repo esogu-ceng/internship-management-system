@@ -6,7 +6,7 @@ export type Internship = {
     createDate: Date;
     days: number;
     endDate: Date;
-    facultySupervisorId: number;
+    facultySupervisor: FacultySupervisor;
     id: number;
     startDate: Date;
     status: string;

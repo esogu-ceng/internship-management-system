@@ -17,12 +17,10 @@ const InternshipDocuments: React.FC<ModalProps> = ({ _internshipId, isOpen, onCl
   const [documents, setDocuments] = useState<Document[] | any>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log('i: ', _internshipId);
   const fetchInternship = async () => {
     try {
       const response = await axios.get(`/api/internshipdocument/internship/${_internshipId}`, {
       });
-      console.log(response);
       const { content } = response.data as PageableResponse<Document>;
       setDocuments(content);
       setLoading(false);
@@ -37,6 +35,32 @@ const InternshipDocuments: React.FC<ModalProps> = ({ _internshipId, isOpen, onCl
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  function DocumentOpen(_filePath: string, _document: Document) {
+    console.log('data: ');
+    fetch(`/api/internshipdocument/download?filePath=${encodeURIComponent(_filePath)}`, {
+      method: 'GET',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Staj belgesi bulunamadı.');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = _document.name + '.' + _document.type;
+        link.click();
+        URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.log(error);
+
+        window.alert('Staj belgesi bulunamadı.');
+      });
   }
 
   return (
@@ -78,7 +102,7 @@ const InternshipDocuments: React.FC<ModalProps> = ({ _internshipId, isOpen, onCl
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
                       <div>
-                        <button className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white"> AÇ </button>
+                        <button className="border border-blue-500 text-blue-500 rounded-md px-4 py-2 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white" onClick={() => DocumentOpen(document.filePath, document)}> AÇ </button>
                       </div>
                     </td>
                   </tr>
