@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
-import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.service.CompanySupervisorService;
@@ -40,7 +39,7 @@ public class CompanySupervisorController {
 	}
 
 	@GetMapping("/{id}")
-	public CompanySupervisorDto getById(@PathVariable Long id) {
+	public CompanySupervisorResponseDto getById(@PathVariable Long id) {
 		return service.getById(id);
 	}
 
@@ -65,7 +64,7 @@ public class CompanySupervisorController {
 			@PathVariable(name = "companyId") Long companyId) {
 		return service.getCompanySupervisorsByCompanyId(companyId);
 	}
-	
+
 	@GetMapping("/getCompanySupervisorByUserId/{userId}")
 	public CompanySupervisorDto getCompanySupervisorByUserId(@PathVariable Long userId) {
 		return service.getCompanySupervisorByUserId(userId);
