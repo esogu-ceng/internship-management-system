@@ -17,6 +17,6 @@ public interface InternshipRepository extends JpaRepository<Internship, Long> {
 
 	long countByStatus(InternshipStatus status);
 
-	@Query("SELECT COUNT(i) FROM Internship i WHERE i.student.id = ?1")
-	long countByStudentId(Long studentId);
+	@Query(value = "SELECT COUNT(DISTINCT student_id) FROM ims_internships", nativeQuery = true)
+	long countDistinctStudents();
 }

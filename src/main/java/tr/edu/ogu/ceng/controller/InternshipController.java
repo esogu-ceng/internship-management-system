@@ -118,4 +118,15 @@ public class InternshipController {
 	public ResponseEntity<Long> countInProcessInternships() {
 		return ResponseEntity.ok(internshipService.countPendingInternships());
 	}
+	
+	@GetMapping("/count/DistinctStudents")
+    public ResponseEntity<Long> countDistinctStudents() {
+        long count = internshipService.countDistinctStudents();
+        return ResponseEntity.ok(count);
+    }
+	
+	@GetMapping("/count/all")
+	public ResponseEntity<Long> countAllInternships() {
+		return ResponseEntity.ok(internshipService.countAllInternships());
+	}
 }

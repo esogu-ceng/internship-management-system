@@ -216,5 +216,13 @@ public class InternshipService {
 	public long countPendingInternships() {
 		return internshipRepository.countByStatus(InternshipStatus.PENDING);
 	}
+	public long countDistinctStudents() {
+	    return internshipRepository.countDistinctStudents();
+	}
+	
+	public Long countAllInternships() {
+		return internshipRepository.count();
+	}
+
 
 }
