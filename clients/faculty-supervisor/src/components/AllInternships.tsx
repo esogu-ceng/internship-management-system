@@ -5,6 +5,7 @@ import axios from 'axios';
 import CompanyInfo from '../components/CompanyInfo';
 import StudentInfo from '../components/StudentInfo';
 import InternshipDocument from '../components/InternshipDocuments'
+import InternshipStatusChange from '../components/InternshipStatusChange';
 
 
 interface PageableResponse<T> {
@@ -27,7 +28,7 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
   const [selectedStudent, setSelectedStudent] = useState<Student | any>();
   const [selectedInternshipId, setSelectedInternshipId] = useState<number | any>();
   const [showDocumentModal, setDocumentShowModal] = useState<boolean>(false);
-
+  const [statusChanged, setStatusChanged] = useState<boolean>(false);
   const openDocumentModal = (internshipId: number | null) => {
     setSelectedInternshipId(internshipId);
     setDocumentShowModal(true);
@@ -67,7 +68,7 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
       });
       console.log(response);
       const { content, totalPages } = response.data as PageableResponse<Internship>;
-      console.log(content);
+    
       setInternships(content);
       setTotalPages(totalPages);
     } catch (error) {
@@ -78,7 +79,12 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
   useEffect(() => {
     fetchInternship(currentPage, pageSize, sortBy);
   }, [currentPage, pageSize, sortBy]);
-
+  useEffect(() => {
+    if (statusChanged) {
+      fetchInternship(currentPage, pageSize, sortBy);
+      setStatusChanged(false);
+    }
+  }, [statusChanged, currentPage, pageSize, sortBy]);
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
@@ -86,7 +92,9 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
-
+  const handleStatusChange = () => {
+    setStatusChanged(true);
+  };
   if (!internships || internships.length === 0) {
     return <div>No internships found.</div>;
   }
@@ -101,6 +109,11 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
     }
     return '';
   };
+  const handleInternshipStatusChange = () => {
+    fetchInternship(currentPage, pageSize, sortBy);
+  };
+
+  
 
   return (
     <div className="bg-white p-5 rounded-md w-full pt-0">
@@ -205,7 +218,12 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
                     >
                       <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
                       <span className="relative">{internship.status}</span>
+                      
                     </span>
+                    <span>
+                      
+      <InternshipStatusChange id={internship.id} onStatusChange={handleStatusChange}   />
+    </span>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     {/* Staj Belgeleri */}
@@ -216,8 +234,11 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
                       Görüntüle
                     </button>
                   </td>
+                  
                 </tr>
+                
               ))}
+               
             </tbody>
           </table>
         </div>
@@ -250,6 +271,7 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
           </div>
         </div>
       )}
+      
       {showDocumentModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
@@ -263,7 +285,9 @@ function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number
             </button>
           </div>
         </div>
+        
       )}
+      
     </div>
   );
 }
