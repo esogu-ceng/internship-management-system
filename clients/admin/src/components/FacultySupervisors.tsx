@@ -74,11 +74,11 @@ const FacultySupervisorsPage = () => {
                           setSelectedFacultySupervisor(supervisor);
                           setIsUpdateModalOpen(true);
                         }}>
-                        Edit
+                        Düzenle
                       </button>{" "}
                       <button
                         onClick={() => deleteFacultySupervisor(supervisor.id)}>
-                        Delete
+                        Sil
                       </button>{" "}
                     </div>
                   </td>
