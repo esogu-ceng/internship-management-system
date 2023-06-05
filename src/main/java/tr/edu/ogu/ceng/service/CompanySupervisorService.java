@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
@@ -110,5 +111,10 @@ public class CompanySupervisorService {
 				.collect(Collectors.toList());
 
 		return companySupervisorDtos;
+	}
+	
+	public CompanySupervisorDto getCompanySupervisorByUserId(Long userId) {
+		CompanySupervisor companySupervisor = repository.findCompanySupervisorByUserId(userId);
+		return mapper.map(companySupervisor, CompanySupervisorDto.class);
 	}
 }
