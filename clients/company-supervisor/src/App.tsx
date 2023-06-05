@@ -10,7 +10,7 @@ import ErrorPage from './error-page';
 import { User } from './types/UserType';
 
 const HeaderLayout = () => (
-  <div className="flex flex-col min-h-screen justify-between">
+  <div className="flex min-h-screen flex-col justify-between">
     <Header />
     <div className="flex-grow">
       <Outlet />
@@ -49,7 +49,7 @@ const App: React.FC = () => {
   ]);
 
   function getAuthUser() {
-    fetch('/api/get-logged-in-user', {
+    fetch('/api/user/company-supervisor/auth', {
       method: 'GET',
     })
       .then((response) => response.json())
@@ -85,7 +85,7 @@ const App: React.FC = () => {
   }, [user]);
 
   return (
-    <div className="min-h-screen flex justify-center w-screen max-w-screen">
+    <div className="max-w-screen flex min-h-screen w-screen justify-center">
       <RouterProvider router={router} />
     </div>
   );
