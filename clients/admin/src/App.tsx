@@ -41,7 +41,7 @@ function App() {
             />
             <Route path={`${root_path}/profile`} element={<AdminProfile />} />
             <Route path={`${root_path}/students`} element={<Students />} />
-            <Route path={`/admin/companies`} element={<Companies />} />
+            <Route path={`${root_path}/companies`} element={<Companies />} />
           </Routes>
         </div>
         <Footer />
