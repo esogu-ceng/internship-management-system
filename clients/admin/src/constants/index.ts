@@ -17,3 +17,10 @@ export const tableHeaders = [
   "Şirket Alanı",
   "Düzenle",
 ];
+export const facultySupervisortableHeaders = [
+  "Fakülte Sorumlusu İsmi",
+  "Fakülte Sorumlusu Soyadı",
+  "Fakülte Sorumlusu Telefon No",
+  "Fakülte Sorumlusu Id",
+  "Düzenle",
+];
