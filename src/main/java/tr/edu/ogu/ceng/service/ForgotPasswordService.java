@@ -69,7 +69,7 @@ public class ForgotPasswordService {
 
 		String email = resetRequestCache.getIfPresent(hash);
 		User user = userService.findByEmail(email);
-		user.setPassword(resetPasswordDto.getPassword());
+		user.setPassword(userService.encodeUserPassword(resetPasswordDto.getPassword()));
 		UserRequestDto userRequestDto = modelMapper.map(user, UserRequestDto.class);
 		userService.updateUser(userRequestDto);
 		resetRequestCache.invalidate(hash);

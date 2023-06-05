@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 
 @Data
@@ -22,7 +23,7 @@ public class InternshipResponseCompanyDto {
 	private int days;
 	private StudentResponseDto student;
 	private CompanyDto company;
-	private Long facultySupervisorId;
+	private FacultySupervisorDto facultySupervisor;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 }

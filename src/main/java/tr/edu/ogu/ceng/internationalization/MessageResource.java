@@ -41,10 +41,4 @@ public class MessageResource {
 		}
 		return new Locale(languageAbbr, countryAbbr);
 	}
-	
-	public User getLoggedInUser() {
-		UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		return userPrincipal.getUser();
-	}
 }
