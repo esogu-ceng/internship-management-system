@@ -81,7 +81,7 @@ const ResetPassword = () => {
                     />
                 </div>
                 {!checkPasswordMatch() ? <small className='text-danger mt-0 mb-0 not-matched'>Girilen şifreler eşleşmiyor!</small> : null}
-                <Button className='mt-3 mb-3' type="submit" disabled={!checkPasswordMatch() || !isPasswordValid()}> Kaydet</Button>
+                <Button className='submit-btn' type="submit" disabled={!checkPasswordMatch() || !isPasswordValid()}> Kaydet</Button>
                 <div>
                     <ul className='pl-4'>
                         <li className={password.length >= 8 ? 'valid' : 'invalid'}>
