@@ -38,45 +38,12 @@ def generate_internship(conn, facultySupervisorIds, count):
             VALUES (
                 '{student_id}', '{company_id}', '{faculty_supervisor_id}', '{status}', '{create_date}',
                 '{create_date}', '{start_date}', '{end_date}', '{days}'
-            ) RETURNING id
+            )
         """
         cur.execute(insert_query)
-        id_of_new_row = cur.fetchone()[0]
         conn.commit()
-        
-        # Internship Documents
-        for i in range(random.randint(1, 7)):
-            file_path = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit voluptas expedita enim earum corrupti impedit fugit illo, itaque libero repellendus saepe eligendi ratione, harum voluptatem dolore at distinctio quod error!'
-            internship_id = id_of_new_row
-            name = f'Internship Document {i+1}'
-            type = f'Document Type {i+1}'
-            insert_query = f"""
-                            INSERT INTO public.ims_internship_documents (
-                                file_path, name, type, internship_id
-                            )
-                            VALUES (
-                                '{file_path}', '{name}', '{type}', '{internship_id}'
-                            ) 
-                        """
-            cur.execute(insert_query)
-        # Evaluation Documents
-        for i in range(1):
-            name = f'Name{1}'
-            surname = f'Surname {1}'
-            file_path = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit voluptas expedita enim earum corrupti impedit fugit illo, itaque libero repellendus saepe eligendi ratione, harum voluptatem dolore at distinctio quod error!'
-            internship_id = id_of_new_row
-            ev_form_company_id = company_id
-            insert_query = f"""
-                            INSERT INTO public.ims_internship_evaluate_form (
-                                name, surname, file_path, internship_id, company_id
-                            )
-                            VALUES (
-                                '{name}', '{surname}', '{file_path}', '{internship_id}', '{ev_form_company_id}'
-                            ) 
-                        """
-            cur.execute(insert_query)
     cur.close()
-    print(f"{count} internships and documents added.")
+    print(f"{count} internships added.")
 
 
 def clear_ims_internships(conn):

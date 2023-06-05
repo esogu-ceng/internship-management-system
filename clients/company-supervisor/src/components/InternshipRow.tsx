@@ -1,6 +1,7 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 import { Internship } from '../types/InternshipType';
 import Modal from '../components/StudentInfo';
+import { InternshipDocument } from './InternshipDocument';
 import InternshipEvaluateForm from '../components/InternshipEvaluateForm';
 
 export const InternshipRow = ({ internship, company }: { internship: Internship, company: number }) => {
@@ -32,10 +33,11 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
       ></Modal>
     );
   };
-  const handleInternshipBooks = () => {
+  const handleInternshipBooks = (internship_id: number) => {
     setPopUpState(true);
     console.log('Running handleInternshipBooks');
-    setPopUpScreen(<h2>STAJ BİLGİLERİ</h2>);
+    setPopUpScreen(<InternshipDocument internship_id={internship_id} />);
+
   };
   const handleCompanyEvaluation = () => {
     setPopUpState(true);
@@ -48,6 +50,7 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
         onClose={onClosePopUp}
       ></InternshipEvaluateForm>
     );
+
   };
   const onClosePopUp = () => {
     setPopUpState(false);
@@ -137,7 +140,7 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
             className="relative text-indigo-600 hover:text-indigo-900"
             onMouseEnter={() => handleButtonHover('internshipBooks')}
             onMouseLeave={() => handleButtonHover(null)}
-            onClick={() => handleInternshipBooks()}
+            onClick={() => handleInternshipBooks(internship.id)}
           >
             <svg
               className="h-6 w-6"
