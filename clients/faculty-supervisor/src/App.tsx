@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 
 
 import AllInternships from "./components/AllInternships";
+import FacultySupervisorProfile from './components/FacultySupervisorProfile';
 
 
 const App: React.FC = () => {
@@ -65,7 +66,8 @@ const App: React.FC = () => {
           ${currentFacultySupervisorId}
             <Route path={`${root_path}`} element={<InternshipDashboard />} />
             <Route path={`${root_path}/company-list`} element={<CompanyListContainer />} />
-            <Route path={`${root_path}/AllInternship`} element={<AllInternships _facultySupervisorId={currentFacultySupervisorId} />} />
+            <Route path={`${root_path}/AllInternships`} element={<AllInternships _facultySupervisorId={currentFacultySupervisorId} />} />
+            <Route path={`${root_path}/profile`} element={<FacultySupervisorProfile />} />
             {/* Add other routes for different screens */}
             <Route path={`${root_path}/default`} element={<div>Default Screen</div>} />
           </Routes>

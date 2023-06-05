@@ -1,5 +1,7 @@
 /** @format */
 
+import { useNavigate } from "react-router-dom";
+
 import useSupervisorManagement from "../hooks/useSupervisorManagement";
 
 import { tableHeaders } from "../constants";
@@ -9,6 +11,7 @@ import UpdateModalForm from "./UpdateModalForm";
 import Pagination from "./Pagination";
 
 const CompanySupervisorsPage = () => {
+  const navigate = useNavigate();
   const {
     isAddModalOpen,
     setIsAddModalOpen,
@@ -45,7 +48,7 @@ const CompanySupervisorsPage = () => {
         <span>+ Şirket Yetkilisi Ekle</span>
       </button>
 
-      {companySupervisors?.length > 0 && (
+      {companySupervisors?.length > 0 ? (
         <>
           <table>
             <thead>
@@ -60,10 +63,18 @@ const CompanySupervisorsPage = () => {
                 <tr key={supervisor.id}>
                   <td>{supervisor.name}</td>
                   <td>{supervisor.surname}</td>
+                  <td className="status-container">
+                    <div
+                      className={`status-indicator ${
+                        supervisor.user.activity ? "active" : "inactive"
+                      }`}></div>
+                    <span>{supervisor.user.activity ? "Aktif" : "Pasif"}</span>
+                  </td>
                   <td>{supervisor.company.name}</td>
                   <td>{supervisor.company.description}</td>
                   <td>{supervisor.company.email}</td>
                   <td>{supervisor.company.phoneNumber}</td>
+
                   <td>{supervisor.company.scope}</td>
                   <td>
                     <div className="edit-buttons">
@@ -72,11 +83,19 @@ const CompanySupervisorsPage = () => {
                           setSelectedCompanySupervisor(supervisor);
                           setIsUpdateModalOpen(true);
                         }}>
-                        Edit
+                        Düzenle
+                      </button>{" "}
+                      <button
+                        onClick={() => {
+                          navigate(
+                            `/admin/companySupervisors/${supervisor.id}`
+                          );
+                        }}>
+                        Detay
                       </button>{" "}
                       <button
                         onClick={() => deleteCompanySupervisor(supervisor.id)}>
-                        Delete
+                        Sil
                       </button>{" "}
                     </div>
                   </td>
@@ -91,6 +110,10 @@ const CompanySupervisorsPage = () => {
             currentPage={pagination?.number || 0}
           />
         </>
+      ) : (
+        <div className="not-found">
+          <p>Kayıtlar bulunamadı!</p>
+        </div>
       )}
     </div>
   );

@@ -1,13 +1,11 @@
-export type FacultySupervisor = {
-    id: number;
-    supervisorNo: string;
+export type CompanySupervisor = {
     name: string;
     surname: string;
+    username: string;
     phoneNumber: string;
     email: string;
-    facultyId: number;
-    facultyName: string;
-    username: string;
+    companyId: number;
+    companyName: string;
     userType: string;
     userId: number;
     createDate: Date;

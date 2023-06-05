@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.requests.FacultyRequestDto;
 import tr.edu.ogu.ceng.service.FacultyService;
@@ -47,6 +48,11 @@ public class FacultyController {
 	@DeleteMapping("/admin/{id}")
 	public boolean deleteFaculty(@PathVariable(name = "id") long id) {
 		return facultyService.deleteFaculty(id);
+	}
+	
+	@GetMapping("/{id}")
+	public FacultyDto getById(@PathVariable Long id) {
+		return facultyService.getFacultyById(id);
 	}
 
 }

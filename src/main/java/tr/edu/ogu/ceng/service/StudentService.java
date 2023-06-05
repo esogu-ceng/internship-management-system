@@ -22,7 +22,6 @@ import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
-import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 
@@ -111,8 +110,8 @@ public class StudentService {
 		user.setUserType(userTypeDto);
 		user.setUpdateDate(now);
 		user.setEmail(studentRequestDto.getUser().getEmail());
-		user.setPassword(studentRequestDto.getUser().getPassword());
-		user.setUsername(studentRequestDto.getUser().getUsername());
+		// user.setPassword(studentRequestDto.getUser().getPassword());
+		// user.setUsername(studentRequestDto.getUser().getUsername());
 
 		student = modelMapper.map(studentRequestDto, Student.class);
 		student.setUser(userService.saveUser(user));
@@ -193,22 +192,24 @@ public class StudentService {
 		return response;
 
 	}
+
 	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
-		 FacultySupervisorResponseDto facultySupervisorDto = facultySupervisorService.getFacultySupervisor(faculty_supervisor_id);
-		 Long faculty_id = facultySupervisorDto.getFacultyId();
-		 try {
-				ModelMapper modelMapper = new ModelMapper();
-				Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
-				if (students.isEmpty()) {
-					log.warn("The student list is empty.");
-				}
-				Page<StudentResponseDto> studentDtos = students
-						.map(student -> modelMapper.map(student, StudentResponseDto.class));
-				return studentDtos;
-			} catch (Exception e) {
-				log.error("An error occured while getting students: {}", e.getMessage());
-				throw e;
+		FacultySupervisorResponseDto facultySupervisorDto = facultySupervisorService
+				.getFacultySupervisor(faculty_supervisor_id);
+		Long faculty_id = facultySupervisorDto.getFacultyId();
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
+			if (students.isEmpty()) {
+				log.warn("The student list is empty.");
 			}
+			Page<StudentResponseDto> studentDtos = students
+					.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			return studentDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting students: {}", e.getMessage());
+			throw e;
+		}
 	}
 
 }

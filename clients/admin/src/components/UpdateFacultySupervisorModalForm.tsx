@@ -19,12 +19,14 @@ interface State {
   surname: string;
   phoneNumber: string;
   supervisorNo: string;
+  activity: boolean;
 }
 
 type Action =
   | { type: "UPDATE_NAME"; value: string }
   | { type: "UPDATE_SURNAME"; value: string }
   | { type: "UPDATE_SUPERVISORNO"; value: string }
+  | { type: "UPDATE_ACTIVITY"; value: boolean }
   | { type: "UPDATE_PHONE_NUMBER"; value: string };
 
 const initialState: State = {
@@ -32,6 +34,7 @@ const initialState: State = {
   surname: "",
   phoneNumber: "",
   supervisorNo: "",
+  activity: false,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -44,6 +47,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, supervisorNo: action.value };
     case "UPDATE_PHONE_NUMBER":
       return { ...state, phoneNumber: action.value };
+    case "UPDATE_ACTIVITY":
+      return { ...state, activity: action.value };
     default:
       return state;
   }
@@ -67,6 +72,10 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
       type: "UPDATE_PHONE_NUMBER",
       value: facultySupervisorDto.phoneNumber,
     });
+    dispatch({
+      type: "UPDATE_ACTIVITY",
+      value: facultySupervisorDto.user.activity,
+    });
   }, [facultySupervisorDto]);
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -77,12 +86,13 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
       name: state.name,
       surname: state.surname,
       phoneNumber: state.phoneNumber,
-      supervisorNo: facultySupervisorDto.supervisorNo,
+      supervisorNo: state.supervisorNo,
       faculty: {
         id: facultySupervisorDto.facultyId,
       },
       user: {
-        id: facultySupervisorDto.userId,
+        id: facultySupervisorDto.user.id,
+        activity: state.activity,
       },
     };
 
@@ -148,6 +158,18 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 })
               }
               required
+            />
+          </div>
+          <div className="userActivity">
+            <label htmlFor="activity">Activity:</label>
+            <input
+              type="checkbox"
+              id="activity"
+              name="activity"
+              checked={state.activity}
+              onChange={(e) =>
+                dispatch({ type: "UPDATE_ACTIVITY", value: e.target.checked })
+              }
             />
           </div>
           <div className="update-modal-buttons">

@@ -18,17 +18,20 @@ interface State {
   name: string;
   surname: string;
   phoneNumber: string;
+  activity: boolean;
 }
 
 type Action =
   | { type: "UPDATE_NAME"; value: string }
   | { type: "UPDATE_SURNAME"; value: string }
-  | { type: "UPDATE_PHONE_NUMBER"; value: string };
+  | { type: "UPDATE_PHONE_NUMBER"; value: string }
+  | { type: "UPDATE_ACTIVITY"; value: boolean };
 
 const initialState: State = {
   name: "",
   surname: "",
   phoneNumber: "",
+  activity: false,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -39,6 +42,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, surname: action.value };
     case "UPDATE_PHONE_NUMBER":
       return { ...state, phoneNumber: action.value };
+    case "UPDATE_ACTIVITY":
+      return { ...state, activity: action.value };
     default:
       return state;
   }
@@ -58,6 +63,10 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
       type: "UPDATE_PHONE_NUMBER",
       value: companySupervisorDto.phoneNumber,
     });
+    dispatch({
+      type: "UPDATE_ACTIVITY",
+      value: companySupervisorDto.user.activity,
+    });
   }, [companySupervisorDto]);
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -70,6 +79,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
       phoneNumber: state.phoneNumber,
       user: {
         id: companySupervisorDto.user.id,
+        activity: state.activity,
       },
       company: {
         id: companySupervisorDto.company.id,
@@ -127,6 +137,19 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
               required
             />
           </div>
+          <div className="userActivity">
+            <label htmlFor="activity">Activity:</label>
+            <input
+              type="checkbox"
+              id="activity"
+              name="activity"
+              checked={state.activity}
+              onChange={(e) =>
+                dispatch({ type: "UPDATE_ACTIVITY", value: e.target.checked })
+              }
+            />
+          </div>
+
           <div className="update-modal-buttons">
             <button type="submit">Update</button>
             <button type="button" className="cancel-button" onClick={onClose}>

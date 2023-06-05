@@ -8,11 +8,13 @@ import { Company } from '../types/CompanyType';
 function InternshipDashboard() {
   const root_path : string | undefined = process.env.PUBLIC_URL
   const [internships, setInternships] = useState<Internship[]>([]);
-  const [studentCount, setStudentCount] = useState<number>(0);
   const [companyCount, setCompanyCount] = useState<number>(0);
   const [approvedInternships, setApprovedInternships] = useState<number>(0);
   const [rejectedInternships, setRejectedInternships] = useState<number>(0);
   const [pendingInternships, setPendingInternships] = useState<number>(0);
+  const [internshipStudentCount, setinternshipStudentCount] =  useState<number>(0);
+  const [totalInternships, setTotalInternships] = useState<number>(0);
+
   useEffect(() => {
     fetch('/api/internship')
       .then(response => response.json())
@@ -23,57 +25,59 @@ function InternshipDashboard() {
         ))
       })
       .catch(error => console.error(error));
-
-    fetch('/api/student')
-      .then(response => response.json())
-      .then((data: Student[]) => {
-        setStudentCount(data.length);
-      })
-      .catch(error => console.error(error));
-
-    fetch('/api/company')
-      .then(response => response.json())
-      .then((data: Company[]) => {
-        setCompanyCount(data.length);
-      })
-      .catch(error => console.error(error));
       
     fetch('/api/company/count')
-    .then(response => response.json())
-    .then(count => {
-      setCompanyCount(count);
-    })
-    .catch(error => console.error(error));
+      .then(response => response.json())
+      .then(count => {
+        setCompanyCount(count);
+      })
+      .catch(error => console.error(error));
     
     fetch('/api/internship/count/rejected')
+      .then(response => response.json())
+      .then(count => {
+        setRejectedInternships(count);
+      })
+      .catch(error => console.error(error));
+
+    fetch('/api/internship/count/approved')
+      .then(response => response.json())
+      .then(count => {
+        setApprovedInternships(count);
+      })
+      .catch(error => console.error(error));
+
+    fetch('/api/internship/count/pending')
+      .then(response => response.json())
+      .then(count => {
+      setPendingInternships(count);
+      })
+      .catch(error => console.error(error));
+
+  fetch('/api/internship/count/DistinctStudents')
     .then(response => response.json())
     .then(count => {
-      setRejectedInternships(count);
+    setinternshipStudentCount(count);
     })
     .catch(error => console.error(error));
 
-    fetch('/api/internship/count/pending')
-    .then(response => response.json())
-    .then(count => {
-    setPendingInternships(count);
-     })
-  .catch(error => console.error(error));
+  fetch('/api/internship/count/all')
+      .then(response => response.json())
+      .then(count => {
+        setTotalInternships(count);
+      })
+      .catch(error => console.error(error));
   }, []);
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <Link to={`${root_path}/AllInternship`}>
           <h2>Staj Yapan Öğrenciler</h2>
-          <p>Toplam öğrenci: {studentCount}</p>
-        </Link>
+          <p>Staj yapan toplam öğrenci {internshipStudentCount} kişidir. </p>
       </div>
       <div className="dashboard-card">
-        <h2>Staj Başvuruları</h2>
-        <p>{internships.length} adet başvuru bulundu.</p>
-        {Array.isArray(internships) && internships.map(internship => (
-          <InternshipCard key={internship.id} internship={internship} />
-        ))}
+        <h2>Toplam Staj Başvuruları </h2>
+        <p>{totalInternships} adet staj başvurusu yapılmıştır.</p>
       </div>
       <div className="dashboard-card">
         <h2>Onaylanan Staj Başvurusu </h2>
@@ -93,6 +97,6 @@ function InternshipDashboard() {
       </div>
     </div>
   );
-}
+};
 
 export default InternshipDashboard;

@@ -21,7 +21,11 @@ function Header() {
           </ul>
         </nav>
         <div className="header-buttons">
-          <button className="header-button">Profil</button>
+          <button className="header-button"  >
+            <Link to={"facultysupervisor/profile"}>
+              <h2>Profil</h2>
+            </Link>
+          </button>
           <button className="header-button" onClick={handleLogout}>
             Çıkış
           </button>

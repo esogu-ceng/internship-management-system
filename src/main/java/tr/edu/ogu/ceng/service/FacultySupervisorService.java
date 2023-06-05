@@ -14,10 +14,13 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
+import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
+import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -81,7 +84,7 @@ public class FacultySupervisorService {
 			FacultySupervisorResponseDto responseDto = modelMapper.map(updatedFacultySupervisor,
 					FacultySupervisorResponseDto.class);
 			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
-			responseDto.setUserId(facultySupervisorRequestDto.getUser().getId());
+			responseDto.setUser(responseDto.getUser());
 			log.info("Faculty supervisor updated: {}", updatedFacultySupervisor);
 			return responseDto;
 		} catch (Exception e) {
