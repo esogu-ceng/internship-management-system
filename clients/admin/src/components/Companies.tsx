@@ -30,6 +30,7 @@ const Companies = () => {
               <td>{company.description}</td>
               <td>{company.email}</td>
               <td>{company.phoneNumber}</td>
+              <td>{company.faxNumber}</td>
               <td>{company.address}</td>
             </tr>
           ))}

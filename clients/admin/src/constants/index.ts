@@ -33,5 +33,6 @@ export const companyTableHeaders = [
   "Şirket Açıklaması",
   "Şirket Mail Adresi",
   "Şirket Telefon Numarası",
+  "Şirket Fax Numarası",
   "Şirket Adresi",
 ];
