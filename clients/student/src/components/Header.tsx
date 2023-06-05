@@ -1,13 +1,13 @@
 import React from "react";
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Link } from 'react-router-dom';
 
 function Header() {
 
   const handleLogout = () => {
-      window.location.href = process.env.REACT_APP_API_BASE_URI + "logout";
-  };  
-  
+    window.location.href = process.env.REACT_APP_API_BASE_URI + "logout";
+  };
+
   return (
     <header className="header">
       <div className="header-content">
@@ -32,7 +32,11 @@ function Header() {
           </ul>
         </nav>
         <div className="header-buttons">
-          <button className="header-button">Profil</button>
+          <button className="header-button"  >
+            <Link to={"student/profile"}>
+              <h2>Profil</h2>
+            </Link>
+          </button>
           <button className="header-button" onClick={handleLogout}>Çıkış</button>
         </div>
       </div>
