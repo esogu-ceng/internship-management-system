@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Setting } from '../types/SettingType';
+import React, { useEffect, useState } from "react";
+import { Setting } from "../types/SettingType";
 
 type SettingRow = {
   field: string;
@@ -8,13 +8,13 @@ type SettingRow = {
 };
 
 const settingRows: SettingRow[] = [
-  { field: 'Mail Host', dataField: 'mail_host' },
-  { field: 'Mail Port', dataField: 'mail_port' },
-  { field: 'Mail Username', dataField: 'mail_username' },
-  { field: 'Mail Password', dataField: 'mail_password' },
-  { field: 'Upload Directory', dataField: 'upload_directory' },
-  { field: 'App Host', dataField: 'app_host' },
-  { field: 'App Port', dataField: 'app_port' },
+  { field: "Mail Host", dataField: "mail_host" },
+  { field: "Mail Port", dataField: "mail_port" },
+  { field: "Mail Username", dataField: "mail_username" },
+  { field: "Mail Password", dataField: "mail_password" },
+  { field: "Upload Directory", dataField: "upload_directory" },
+  { field: "App Host", dataField: "app_host" },
+  { field: "App Port", dataField: "app_port" },
 ];
 
 function GetSettings() {
@@ -24,7 +24,7 @@ function GetSettings() {
     const fetchSettings = async () => {
       const fetchPromises = settingRows.map((row) =>
         fetch(`/api/setting/${row.dataField}`, {
-          method: 'GET',
+          method: "GET",
         }).then((response) => response.json())
       );
 
@@ -71,9 +71,9 @@ function GetSettings() {
       try {
         const response = await fetch(`/api/setting/${setting.dataField}`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          method: 'PUT',
+          method: "PUT",
           body: JSON.stringify(setting.value),
         });
 
@@ -120,20 +120,35 @@ function GetSettings() {
           <tbody>
             {settings.map((setting: SettingRow, index: number) => (
               <tr key={index}>
-                <td className="px-6 py-4 w-48 font-bold border border-gray-300">{setting.field}</td>
+                <td className="px-6 py-4 w-48 font-bold border border-gray-300">
+                  {setting.field}
+                </td>
                 <td className="px-6 py-4 border border-gray-300">
                   {setting.value && setting.value.editable ? (
                     <div>
                       <textarea
                         value={setting.value.value}
-                        onChange={(e) => handleInputChange(index, e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange(index, e.target.value)
+                        }
                         className="w-full h-16 resize-none overflow-auto"
-                        style={{ resize: 'vertical', maxWidth: '400px', minWidth: '400px', wordWrap: 'break-word' }}
+                        style={{
+                          resize: "vertical",
+                          maxWidth: "400px",
+                          minWidth: "400px",
+                          wordWrap: "break-word",
+                        }}
                       />
                     </div>
                   ) : (
-                    <div style={{ resize: 'vertical', maxWidth: '400px', minWidth: '400px', wordWrap: 'break-word' }}>
-                      {setting.value ? setting.value.value : ''}
+                    <div
+                      style={{
+                        resize: "vertical",
+                        maxWidth: "400px",
+                        minWidth: "400px",
+                        wordWrap: "break-word",
+                      }}>
+                      {setting.value ? setting.value.value : ""}
                     </div>
                   )}
                 </td>
@@ -142,15 +157,13 @@ function GetSettings() {
                     {setting.value && setting.value.editable ? (
                       <button
                         onClick={() => handleSave(index)}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
-                      >
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24">
                         Kaydet
                       </button>
                     ) : (
                       <button
                         onClick={() => handleEdit(index)}
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
-                      >
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24">
                         Düzenle
                       </button>
                     )}
@@ -162,9 +175,7 @@ function GetSettings() {
         </table>
       </div>
     </div>
-
   );
-
 }
 
 export default GetSettings;

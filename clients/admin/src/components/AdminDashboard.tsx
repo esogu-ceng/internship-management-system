@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { routes } from "../constants";
 
 function AdminDashboard() {
-  const root_path : string | undefined = process.env.PUBLIC_URL
+  const root_path: string | undefined = process.env.PUBLIC_URL;
   return (
     <div className="dashboard-container">
       {routes.map(({ href, text }) => (

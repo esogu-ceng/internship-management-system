@@ -13,6 +13,7 @@ import Students from "./components/Students";
 import CompanySupervisors from "./components/CompanySupervisors";
 import "./index.css";
 import AdminProfile from "./components/AdminProfile";
+import FacultySupervisors from "./components/FacultySupervisors";
 
 function App() {
   const root_path: string | undefined = process.env.PUBLIC_URL;
@@ -28,6 +29,10 @@ function App() {
             <Route
               path={`${root_path}/companySupervisors`}
               element={<CompanySupervisors />}
+            />
+            <Route
+              path={`${root_path}/facultySupervisors`}
+              element={<FacultySupervisors />}
             />
             <Route path={`${root_path}/profile`} element={<AdminProfile />} />
             <Route path={`${root_path}/students`} element={<Students />} />
