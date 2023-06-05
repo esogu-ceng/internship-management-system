@@ -24,6 +24,7 @@ export interface FacultySuperviserUpdate {
     };
     user :{
         id : number;
+        activity : boolean;
     };
 }
 
@@ -33,7 +34,7 @@ export interface FacultySupervisor {
     surname: string;
     phoneNumber: string;
     supervisorNo: string;
-    userId : number;
+    user : User;
     facultyId : number;
 }
 
@@ -69,5 +70,6 @@ export interface User {
     username: string;
     password: string;
     email: string;
+    activity: boolean;
     userType: string;
-}
+  }
