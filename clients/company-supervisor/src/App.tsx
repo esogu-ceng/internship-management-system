@@ -8,6 +8,7 @@ import { Root } from './routes/Root';
 import { CompanyPage } from './routes/Company';
 import ErrorPage from './error-page';
 import { User } from './types/UserType';
+import CompanySupervisorProfile from './components/CompanySupervisorProfile';
 
 const HeaderLayout = () => (
   <div className="flex min-h-screen flex-col justify-between">
@@ -43,6 +44,10 @@ const App: React.FC = () => {
         {
           path: `${root_path}/company`,
           element: <CompanyPage _companyId={currentCompanyId} />,
+        },
+        {
+          path: `${root_path}/profile`,
+          element: <CompanySupervisorProfile />,
         },
       ],
     },

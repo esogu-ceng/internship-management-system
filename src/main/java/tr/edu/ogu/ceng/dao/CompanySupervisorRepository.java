@@ -10,6 +10,5 @@ public interface CompanySupervisorRepository extends JpaRepository<CompanySuperv
 	boolean existsByUserId(Long userId);
 
 	List<CompanySupervisor> findAllByCompanyId(Long companyId);
-
-	CompanySupervisor findByUserId(Long userId);
+	CompanySupervisor findCompanySupervisorByUserId(Long userId);
 }
