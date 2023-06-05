@@ -16,7 +16,10 @@ function Header() {
               <Link to="facultysupervisor/company-list" className="nav-link">Şirketler</Link>
             </li>
             <li className="nav-item">
-              <Link to="facultysupervisor/AllInternships" className="nav-link">Staj Yapan Öğrenciler</Link>
+              <Link to="facultysupervisor/AllInternships" className="nav-link">Stajlar</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="facultysupervisor/student-list" className="nav-link">Fakülte Öğrencileri</Link>
             </li>
           </ul>
         </nav>
