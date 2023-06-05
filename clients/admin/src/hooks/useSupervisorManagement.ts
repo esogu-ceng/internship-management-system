@@ -1,6 +1,8 @@
 /** @format */
 
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   CompanyOption,
@@ -68,6 +70,8 @@ const useSupervisorManagement = () => {
     setLoading(true);
     setError(null);
     const errorMessage = "Error adding company supervisor.";
+    const successMessage = "Company supervisor added successfully.";
+
     try {
       const url = "/api/company-supervisor";
       const response = await fetch(url, {
@@ -83,6 +87,7 @@ const useSupervisorManagement = () => {
       }
 
       getAllCompanySupervisors(pagination?.number || 0);
+      toast.success(successMessage); // Display success message
     } catch (error) {
       setError(errorMessage);
     } finally {
@@ -94,6 +99,8 @@ const useSupervisorManagement = () => {
     setLoading(true);
     setError(null);
     const errorMessage = "Error updating company supervisor.";
+    const successMessage = "Company supervisor updated successfully.";
+
     try {
       const url = "/api/company-supervisor";
       const response = await fetch(url, {
@@ -109,6 +116,7 @@ const useSupervisorManagement = () => {
       }
 
       getAllCompanySupervisors(pagination?.number || 0);
+      toast.success(successMessage); // Display success message
     } catch (error) {
       setError(errorMessage);
     } finally {
@@ -120,6 +128,8 @@ const useSupervisorManagement = () => {
     setLoading(true);
     setError(null);
     const errorMessage = "Error deleting company supervisor.";
+    const successMessage = "Company supervisor deleted successfully.";
+
     try {
       const url = `/api/company-supervisor/${id}`;
       const response = await fetch(url, {
@@ -144,6 +154,8 @@ const useSupervisorManagement = () => {
       } else {
         getAllCompanySupervisors(pagination.number);
       }
+
+      toast.success(successMessage); // Display success message
     } catch (error) {
       setError(errorMessage);
     } finally {
@@ -174,8 +186,6 @@ const useSupervisorManagement = () => {
       }
 
       const data: CompanyPagedResponse = await response.json();
-
-      console.log("data : ", data);
 
       setCompanies(data.content);
       // setPagination({

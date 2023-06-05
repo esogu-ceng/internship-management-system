@@ -129,7 +129,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
           </div>
           <div className="update-modal-buttons">
             <button type="submit">Update</button>
-            <button type="button" onClick={onClose}>
+            <button type="button" className="cancel-button" onClick={onClose}>
               Cancel
             </button>
           </div>

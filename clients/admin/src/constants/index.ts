@@ -13,7 +13,6 @@ export const tableHeaders = [
   "Şirket İsmi",
   "Şirket Açıklaması",
   "Şirket Mail Adresi",
-  "Şirket Fax Numarası",
   "Şirket Telefon Numarası",
   "Şirket Alanı",
   "Düzenle",

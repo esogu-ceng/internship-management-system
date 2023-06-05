@@ -2,6 +2,9 @@
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AdminDashboard from "./components/AdminDashboard";
@@ -13,6 +16,7 @@ function App() {
   const root_path: string | undefined = process.env.PUBLIC_URL;
   return (
     <React.StrictMode>
+      <ToastContainer />
       <Router>
         <Header />
         <div className="app-container">
@@ -20,7 +24,7 @@ function App() {
             <Route path={`${root_path}`} element={<AdminDashboard />} />
             <Route path={`${root_path}/settings`} element={<GetSettings />} />
             <Route
-              path={`${root_path}/companySupervisors`}
+              path={`/admin/companySupervisors`}
               element={<CompanySupervisors />}
             />
           </Routes>

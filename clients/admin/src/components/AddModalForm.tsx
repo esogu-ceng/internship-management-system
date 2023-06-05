@@ -180,6 +180,8 @@ const AddModalForm: React.FC<Props> = ({
                   value={state.user.password}
                   onChange={handleChange}
                   className="form-input"
+                  pattern="^(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+                  title="Şifre en az 8 karakter uzunluğunda olmalı ve büyük küçük harf içermelidir."
                   required
                 />
               </div>
