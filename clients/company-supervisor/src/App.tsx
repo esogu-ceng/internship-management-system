@@ -67,7 +67,7 @@ const App: React.FC = () => {
   }
 
   function getCompanyId(userId: number | undefined) {
-    fetch(`/api/company-supervisor/byUserId/${userId}`, {
+    fetch(`/api/company-supervisor/getCompanySupervisorByUserId/${userId}`, {
       method: 'GET',
     })
       .then((response) => response.json())
