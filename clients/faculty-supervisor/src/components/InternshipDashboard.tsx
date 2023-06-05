@@ -63,7 +63,7 @@ function InternshipDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <Link to={`${root_path}/AllInternship`}>
+        <Link to={`${root_path}/AllInternships`}>
           <h2>Staj Yapan Öğrenciler</h2>
           <p>Toplam öğrenci: {studentCount}</p>
         </Link>
@@ -93,6 +93,6 @@ function InternshipDashboard() {
       </div>
     </div>
   );
-}
+};
 
 export default InternshipDashboard;
