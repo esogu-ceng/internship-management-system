@@ -97,8 +97,8 @@ const useSupervisorManagement = () => {
   const addCompanySupervisor = async (request: CompanySupervisorCreate) => {
     setLoading(true);
     setError(null);
-    const errorMessage = "Error adding company supervisor.";
-    const successMessage = "Company supervisor added successfully.";
+    const errorMessage = "Şirket sorumlusu eklenirken hata oluştu!";
+    const successMessage = "Şirket sorumlusu başarıyla eklendi!";
 
     try {
       const url = "/api/company-supervisor";
@@ -111,6 +111,7 @@ const useSupervisorManagement = () => {
       });
 
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
 
@@ -124,6 +125,8 @@ const useSupervisorManagement = () => {
   };
 
   const updateCompanySupervisor = async (request: CompanySuperviserUpdate) => {
+    const errorMessage = "Şirket sorumlusu güncellenirken hata oluştu!";
+    const successMessage = "Şirket sorumlusu başarıyla güncellendi!";
     try {
       setLoading(true);
       setError(null);
@@ -148,11 +151,12 @@ const useSupervisorManagement = () => {
       ]);
 
       if (!response.ok || !activityResponse.ok) {
+        toast.error(errorMessage)
         throw new Error("Error updating company supervisor.");
       }
 
       getAllCompanySupervisors(pagination?.number || 0);
-      toast.success("Company supervisor updated successfully.");
+      toast.success(successMessage);
     } catch (error) {
       setError("Error updating company supervisor.");
     } finally {
@@ -163,8 +167,8 @@ const useSupervisorManagement = () => {
   const deleteCompanySupervisor = async (id: number) => {
     setLoading(true);
     setError(null);
-    const errorMessage = "Error deleting company supervisor.";
-    const successMessage = "Company supervisor deleted successfully.";
+    const errorMessage = "Şirket sorumlusu silinirken hata oluştu!";
+    const successMessage = "Şirket sorumlusu başarıyla silindi!";
 
     try {
       const url = `/api/company-supervisor/${id}`;
@@ -176,6 +180,7 @@ const useSupervisorManagement = () => {
       });
 
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
 

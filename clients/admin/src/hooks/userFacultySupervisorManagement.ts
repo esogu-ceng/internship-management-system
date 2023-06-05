@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Faculty,
   FacultyPagedResponse,
@@ -94,8 +95,8 @@ const useFacultySupervisorManagement = () => {
   };
 
   const addFacultySupervisor = async (request: FacultySupervisorCreate) => {
-    const successMessage = "Faculty supervisor added successfully.";
-    const errorMessage = "Error adding Faculty supervisor.";
+    const successMessage = "Fakülte sorumlusu başarıyla eklendi!";
+    const errorMessage = "Fakülte sorumlusu eklenirken hata oluştu!";
     try {
       setLoading(true);
       setError(null);
@@ -108,6 +109,7 @@ const useFacultySupervisorManagement = () => {
         body: JSON.stringify(request),
       });
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
       getAllFacultySupervisors(pagination?.number || 0);
@@ -120,8 +122,8 @@ const useFacultySupervisorManagement = () => {
   };
 
   const updateFacultySupervisor = async (request: FacultySuperviserUpdate) => {
-    const successMessage = "Faculty supervisor updated successfully.";
-    const errorMessage = "Error updating Faculty supervisor.";
+    const successMessage = "Fakülte sorumlusu başarıyla güncellendi!";
+    const errorMessage = "Fakülte sorumlusu güncellenirken hata oluştu!";
     try {
       setLoading(true);
       setError(null);
@@ -145,6 +147,7 @@ const useFacultySupervisorManagement = () => {
       ]);
 
       if (!response.ok || !activityResponse.ok) {
+        toast.error(errorMessage)
         throw new Error("Error updating faculty supervisor.");
       }
       getAllFacultySupervisors(pagination?.number || 0);
@@ -159,8 +162,8 @@ const useFacultySupervisorManagement = () => {
   const deleteFacultySupervisor = async (id: number) => {
     setLoading(true);
     setError(null);
-    const errorMessage = "Error deleting Faculty supervisor.";
-    const successMessage = "Faculty supervisor deleted successfully.";
+    const successMessage = "Fakülte sorumlusu başarıyla silindi!";
+    const errorMessage = "Fakülte sorumlusu silinirken hata oluştu!";
     try {
       const url = `/api/facultySupervisor/${id}`;
       const response = await fetch(url, {
@@ -171,6 +174,7 @@ const useFacultySupervisorManagement = () => {
       });
 
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
 

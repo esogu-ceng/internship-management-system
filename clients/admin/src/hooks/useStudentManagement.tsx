@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   StudentUpdate,
@@ -64,7 +66,8 @@ const useStudentManagement = () => {
   const addStudent = async (request: StudentCreate) => {
     setLoading(true);
     setError(null);
-    const errorMessage = "Error adding student.";
+    const errorMessage = "Öğrenci eklenirken hata oluştu!";
+    const successMessage = "Öğrenci başarıyla eklendi!";
     try {
       const url = "/api/student";
       const response = await fetch(url, {
@@ -76,11 +79,12 @@ const useStudentManagement = () => {
       });
 
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
 
       getAllStudents(pagination?.number || 0);
-      window.alert('Öğrenci başarıyla eklendi!');
+      toast.success(successMessage);
     } catch (error) {
       setError(errorMessage);
     } finally {
@@ -91,7 +95,8 @@ const useStudentManagement = () => {
   const updateStudent = async (request: StudentUpdate) => {
     setLoading(true);
     setError(null);
-    const errorMessage = "Error updating student.";
+    const errorMessage = "Öğrenci güncellenirken hata oluştu!";
+    const successMessage = "Öğrenci başarıyla güncellendi!";
     try {
       const url = "/api/student";
       const response = await fetch(url, {
@@ -103,11 +108,12 @@ const useStudentManagement = () => {
       });
 
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
 
       getAllStudents(pagination?.number || 0);
-      window.alert('Öğrenci başarıyla güncellendi!');
+      toast.success(successMessage)
     } catch (error) {
       setError(errorMessage);
     } finally {
@@ -118,7 +124,8 @@ const useStudentManagement = () => {
   const deleteStudent = async (id: number) => {
     setLoading(true);
     setError(null);
-    const errorMessage = "Error deleting student.";
+    const errorMessage = "Öğrenci silinirken hata oluştu!";
+    const successMessage = "Öğrenci başarıyla silindi!";
     try {
       const url = `/api/student/${id}`;
       const response = await fetch(url, {
@@ -129,6 +136,7 @@ const useStudentManagement = () => {
       });
 
       if (!response.ok) {
+        toast.error(errorMessage)
         throw new Error(errorMessage);
       }
 
@@ -143,7 +151,7 @@ const useStudentManagement = () => {
       } else {
         getAllStudents(pagination.number);
       }
-      window.alert('Öğrenci başarıyla silindi!');
+      toast.success(successMessage)
     } catch (error) {
       setError(errorMessage);
     } finally {
@@ -218,13 +226,14 @@ const useStudentManagement = () => {
       });
   
       if (!response.ok) {
+        toast.error("Öğrenci aktiflik durumu değiştirilirken hata oluştu!")
         throw new Error('Failed to update student activity.');
       }
       if (activity){
-        window.alert('Öğrenci aktif hale getirildi!');
+        toast.success('Öğrenci aktif hale getirildi!');
       }
       else{
-        window.alert('Öğrenci pasif hale getirildi!');
+        toast.success('Öğrenci pasif hale getirildi!');
       }
       
     } catch (error) {
