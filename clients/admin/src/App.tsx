@@ -24,7 +24,7 @@ function App() {
             <Route path={`${root_path}`} element={<AdminDashboard />} />
             <Route path={`${root_path}/settings`} element={<GetSettings />} />
             <Route
-              path={`/admin/companySupervisors`}
+              path={`${root_path}/companySupervisors`}
               element={<CompanySupervisors />}
             />
           </Routes>
