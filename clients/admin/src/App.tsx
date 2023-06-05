@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AdminDashboard from "./components/AdminDashboard";
 import GetSettings from "./components/GetSettings";
+import Students from "./components/Students";
 import CompanySupervisors from "./components/CompanySupervisors";
 import "./index.css";
 import AdminProfile from "./components/AdminProfile";
@@ -34,6 +35,7 @@ function App() {
               element={<FacultySupervisors />}
             />
             <Route path={`${root_path}/profile`} element={<AdminProfile />} />
+            <Route path={`${root_path}/students`} element={<Students />} />
           </Routes>
         </div>
         <Footer />

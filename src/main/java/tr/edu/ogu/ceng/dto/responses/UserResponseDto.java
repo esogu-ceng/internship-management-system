@@ -14,6 +14,7 @@ public class UserResponseDto {
 	private String username;
 	private String email;
 	private long userTypeId;
+	private boolean activity;
 	private Timestamp createDate;
 	private Timestamp updateDate;
 }

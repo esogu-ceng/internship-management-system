@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tr.edu.ogu.ceng.dto.FacultyDto;
 
 @Builder
 @Data
@@ -24,7 +25,7 @@ public class StudentResponseDto {
 	private Timestamp birthDate;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
-	private long userId;
-	private long facultyId;
+	private UserResponseDto user;
+	private FacultyDto faculty;
 	private String address;
 }
