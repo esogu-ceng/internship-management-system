@@ -95,11 +95,27 @@ public class InternshipController {
 	}
 
 	@GetMapping("/supervisor/{id}")
-	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(@PathVariable(name = "id") Long faculty_supervisor_id,
-			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
-			@RequestParam(defaultValue = "id") String sortBy) {
+	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(
+			@PathVariable(name = "id") Long faculty_supervisor_id, @RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "id") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<InternshipResponseCompanyDto> internships = internshipService.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
+		Page<InternshipResponseCompanyDto> internships = internshipService
+				.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
 		return internships;
+	}
+
+	@GetMapping("/count/approved")
+	public ResponseEntity<Long> countApprovedInternships() {
+		return ResponseEntity.ok(internshipService.countApprovedInternships());
+	}
+
+	@GetMapping("/count/rejected")
+	public ResponseEntity<Long> countRejectedInternships() {
+		return ResponseEntity.ok(internshipService.countRejectedInternships());
+	}
+
+	@GetMapping("/count/pending")
+	public ResponseEntity<Long> countInProcessInternships() {
+		return ResponseEntity.ok(internshipService.countPendingInternships());
 	}
 }

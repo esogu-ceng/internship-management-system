@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import AdminDashboard from "./components/AdminDashboard";
 import GetSettings from "./components/GetSettings";
 import "./index.css";
+import AdminProfile from "./components/AdminProfile";
 
 function App() {
 	const root_path : string | undefined = process.env.PUBLIC_URL
@@ -16,6 +17,7 @@ function App() {
 					<Routes>
 						<Route path={`${root_path}`} element={<AdminDashboard />} />
 						<Route path={`${root_path}/setting`} element={<GetSettings />} />
+						<Route path={`${root_path}/profile`} element={<AdminProfile />} />
 					</Routes>
 				</div>
 				<Footer />

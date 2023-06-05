@@ -8,12 +8,19 @@ function InternshipDashboard() {
   const root_path : string | undefined = process.env.PUBLIC_URL
   const [internships, setInternships] = useState<Internship[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
-
+  const [companyCount, setCompanyCount] = useState<number>(0);
   useEffect(() => {
     fetch('/api/company')
       .then(response => response.json())
       .then((data: Company[]) => {
         setCompanies(data);
+      })
+      .catch(error => console.error(error));
+
+      fetch('/api/company/count')
+      .then(response => response.json())
+      .then(count => {
+        setCompanyCount(count);
       })
       .catch(error => console.error(error));
 
@@ -28,8 +35,8 @@ function InternshipDashboard() {
         </Link>
       </div>
       <div className="dashboard-card">
-        <h2>Firmalar</h2>
-        <p>{companies.length} adet firma bulunmaktadır.</p>
+        <h2>Firma Sayısı</h2>
+        <p>{companyCount} adet firma bulunmaktadır.</p>
       </div>
       <div className="dashboard-card">
         <h2>Staj Bilgileri</h2>
