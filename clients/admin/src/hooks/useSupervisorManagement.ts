@@ -96,29 +96,37 @@ const useSupervisorManagement = () => {
   };
 
   const updateCompanySupervisor = async (request: CompanySuperviserUpdate) => {
-    setLoading(true);
-    setError(null);
-    const errorMessage = "Error updating company supervisor.";
-    const successMessage = "Company supervisor updated successfully.";
-
     try {
-      const url = "/api/company-supervisor";
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request),
-      });
+      setLoading(true);
+      setError(null);
 
-      if (!response.ok) {
-        throw new Error(errorMessage);
+      const [response, activityResponse] = await Promise.all([
+        fetch("/api/company-supervisor", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(request),
+        }),
+        fetch(
+          `/api/user/activity/${request.user.id}?status=${request.user.activity}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ),
+      ]);
+
+      if (!response.ok || !activityResponse.ok) {
+        throw new Error("Error updating company supervisor.");
       }
 
       getAllCompanySupervisors(pagination?.number || 0);
-      toast.success(successMessage); // Display success message
+      toast.success("Company supervisor updated successfully.");
     } catch (error) {
-      setError(errorMessage);
+      setError("Error updating company supervisor.");
     } finally {
       setLoading(false);
     }

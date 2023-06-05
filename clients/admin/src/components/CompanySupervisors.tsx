@@ -45,7 +45,7 @@ const CompanySupervisorsPage = () => {
         <span>+ Şirket Yetkilisi Ekle</span>
       </button>
 
-      {companySupervisors?.length > 0 && (
+      {companySupervisors?.length > 0 ? (
         <>
           <table>
             <thead>
@@ -60,10 +60,18 @@ const CompanySupervisorsPage = () => {
                 <tr key={supervisor.id}>
                   <td>{supervisor.name}</td>
                   <td>{supervisor.surname}</td>
+                  <td className="status-container">
+                    <div
+                      className={`status-indicator ${
+                        supervisor.user.activity ? "active" : "inactive"
+                      }`}></div>
+                    <span>{supervisor.user.activity ? "Aktif" : "Pasif"}</span>
+                  </td>
                   <td>{supervisor.company.name}</td>
                   <td>{supervisor.company.description}</td>
                   <td>{supervisor.company.email}</td>
                   <td>{supervisor.company.phoneNumber}</td>
+
                   <td>{supervisor.company.scope}</td>
                   <td>
                     <div className="edit-buttons">
@@ -91,6 +99,10 @@ const CompanySupervisorsPage = () => {
             currentPage={pagination?.number || 0}
           />
         </>
+      ) : (
+        <div className="not-found">
+          <p>Kayıtlar bulunamadı!</p>
+        </div>
       )}
     </div>
   );

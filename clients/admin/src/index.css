@@ -573,3 +573,39 @@ tr:hover {
 .cancel-button {
   background: rgb(158, 40, 40);
 }
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.active {
+  background-color: green;
+}
+
+.inactive {
+  background-color: red;
+}
+.userActivity {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 2px dashed #ccc;
+  background-color: #f8f8f8;
+  color: #999;
+  font-size: 18px;
+}

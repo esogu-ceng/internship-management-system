@@ -22,6 +22,7 @@ export interface CompanySuperviserUpdate {
   };
   user: {
     id: number;
+    activity: boolean;
   };
 }
 
@@ -32,6 +33,15 @@ export interface CompanySupervisor {
   phoneNumber: string;
   user: User;
   company: Company;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  activity: boolean;
+  userType: string;
 }
 
 interface PagedResponse<T> {
@@ -61,14 +71,6 @@ export interface Company {
   email: string;
   scope: string;
   description: string;
-}
-
-export interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  userType: string;
 }
 
 export interface CompanyOption {
