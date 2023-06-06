@@ -654,3 +654,12 @@ tr:hover {
   color: #ff0000;
   font-weight: bold;
 }
+.back-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #0088cc;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
