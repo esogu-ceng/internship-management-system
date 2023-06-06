@@ -509,7 +509,7 @@ tr:hover {
   height: 150%;
 }
 
-update-buttons {
+.update-buttons {
   margin-top: 10px;
   display: flex;
   gap: 8px;
@@ -540,9 +540,6 @@ update-buttons {
   background-color: #d32f2f;
 }
 
-.update-buttons button:first-child {
-  background-color: blue;
-}
 
 .toast-message {
   position: fixed;
