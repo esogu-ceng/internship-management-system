@@ -43,7 +43,6 @@ const FacultySupervisorsPage = () => {
       <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
         <span>+ Fakülte Sorumlusu Ekle</span>
       </button>
-      {facultySupervisors?.length > 0 ? (
         <>
           <table>
             <thead>
@@ -93,11 +92,6 @@ const FacultySupervisorsPage = () => {
             currentPage={pagination?.number || 0}
           />
         </>
-      ) : (
-        <div className="not-found">
-          <p>Kayıtlar bulunamadı!</p>
-        </div>
-      )}
     </div>
   );
 };

@@ -80,7 +80,7 @@ public class CompanySupervisorService {
 		CompanySupervisor companySupervisor = repository.findById(request.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
 		if (companySupervisor.getUser().getId() != request.getUser().getId()) {
-			checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
+			// checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
 		}
 		request.setCreateDate(companySupervisor.getCreateDate());
 		companySupervisor = mapper.map(request, CompanySupervisor.class);

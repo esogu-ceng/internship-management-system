@@ -203,7 +203,7 @@ table {
   margin-bottom: 32px;
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0;
+  border-spacing: 2px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
@@ -211,7 +211,7 @@ table {
 
 th,
 td {
-  padding: 10px 20px;
+  padding: 30px 0px;
   text-align: center;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -230,7 +230,7 @@ tr:hover {
 }
 
 .container {
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 0;
   padding: 0;
 }
@@ -383,7 +383,7 @@ tr:hover {
   background-color: #fff;
   border-radius: 4px;
   padding: 16px;
-  width: 400px;
+  min-width: 700px;
 }
 
 .update-modal-content h2 {
@@ -509,7 +509,7 @@ tr:hover {
   height: 150%;
 }
 
-update-buttons {
+.update-buttons {
   margin-top: 10px;
   display: flex;
   gap: 8px;
@@ -537,11 +537,7 @@ update-buttons {
 }
 
 .update-buttons button:last-child:hover {
-  background-color: #d32f2f;
-}
-
-.update-buttons button:first-child {
-  background-color: blue;
+  background-color: #d32f2f;
 }
 
 .toast-message {
@@ -697,4 +693,8 @@ update-buttons {
   text-decoration: none;
   border-radius: 4px;
   margin-bottom: 16px;
+}
+
+.cancel-button-1 {
+  background-color: rgb(214, 0, 0) !important;
 }

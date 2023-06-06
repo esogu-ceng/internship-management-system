@@ -93,10 +93,10 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
   return (
     <div className="update-modal">
       <div className="update-modal-content">
-        <h2>Update Company Supervisor</h2>
+        <h2>Şirket Sorumlusu Güncelle</h2>
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">Ad:</label>
             <input
               type="text"
               id="name"
@@ -109,7 +109,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
             />
           </div>
           <div>
-            <label htmlFor="surname">Surname:</label>
+            <label htmlFor="surname">Soyad:</label>
             <input
               type="text"
               id="surname"
@@ -122,7 +122,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
             />
           </div>
           <div>
-            <label htmlFor="phoneNumber">Phone Number:</label>
+            <label htmlFor="phoneNumber">Telefon No:</label>
             <input
               type="text"
               id="phoneNumber"
@@ -138,7 +138,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
             />
           </div>
           <div className="userActivity">
-            <label htmlFor="activity">Activity:</label>
+            <label htmlFor="activity">Aktiflik Durumu:</label>
             <input
               type="checkbox"
               id="activity"
@@ -151,9 +151,9 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
           </div>
 
           <div className="update-modal-buttons">
-            <button type="submit">Update</button>
-            <button type="button" className="cancel-button" onClick={onClose}>
-              Cancel
+            <button type="submit">Kaydet</button>
+            <button type="button" className="cancel-button-1" onClick={onClose}>
+              İptal
             </button>
           </div>
         </form>
