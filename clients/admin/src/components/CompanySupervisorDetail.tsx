@@ -1,11 +1,12 @@
 /** @format */
 
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import useSupervisorManagement from "../hooks/useSupervisorManagement";
 
 const CompanySupervisorDetail = () => {
   const location = useLocation();
+
   const id = location.pathname.split("/")[3];
 
   const { selectedCompanySupervisor, getCompanySupervisor } =
@@ -18,6 +19,9 @@ const CompanySupervisorDetail = () => {
   return (
     <section className="company-supervisor-detail">
       <h3 className="detail-title">Şirket Yetkilisi Detay Sayfası</h3>
+      <Link to="/admin/companySupervisors" className="back-link">
+        Geri
+      </Link>
       {selectedCompanySupervisor ? (
         <div className="detail-container">
           <p className="detail-info">
