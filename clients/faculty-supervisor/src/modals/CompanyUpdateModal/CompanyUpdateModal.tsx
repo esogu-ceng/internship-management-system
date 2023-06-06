@@ -43,7 +43,7 @@ const CompanyUpdateModal: React.FC<CompanyUpdateModalProps> = ({
     <div className="modal-container">
        <div className="modal-container-al">
       <div className="modal-contenta">
-        <h2>Şirketi Güncelle</h2>
+        <div className='head'>Şirketi Güncelle</div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>İsim:</label>

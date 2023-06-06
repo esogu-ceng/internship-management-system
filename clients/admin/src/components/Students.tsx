@@ -91,7 +91,7 @@ const StudentsPage = () => {
                 />
                 </td>
               <td>
-                <div className="edit-buttons">
+                <div className="update-buttons">
                   <button
                     onClick={() => {
                       setSelectedStudent(student);

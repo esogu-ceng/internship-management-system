@@ -68,7 +68,7 @@ const FacultySupervisorsPage = () => {
                     <span>{supervisor.user.activity ? "Aktif" : "Pasif"}</span>
                   </td>
                   <td>
-                    <div className="edit-buttons">
+                    <div className="update-buttons">
                       <button
                         onClick={() => {
                           setSelectedFacultySupervisor(supervisor);
