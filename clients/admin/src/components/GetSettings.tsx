@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Setting } from "../types/SettingType";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type SettingRow = {
   field: string;
@@ -78,9 +80,9 @@ function GetSettings() {
         });
 
         if (response.ok) {
-          window.alert('Başarıyla güncellendi!');
+          toast.success('Başarıyla güncellendi!');
         } else {
-          window.alert('Güncelleme sırasında hata oluştu!');
+          toast.error('Güncelleme sırasında hata oluştu!');
         }
       } catch (error) {
         console.log(error);

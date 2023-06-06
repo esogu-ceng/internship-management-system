@@ -30,7 +30,7 @@ const Pagination: React.FC<PaginationProps> = ({
         className={`pagination-button ${currentPage === 0 ? "disabled" : ""}`}
         onClick={() => handleClick(currentPage - 1)}
         disabled={currentPage === 0}>
-        Previous
+        Önceki
       </button>
       {Array.from({ length: totalPages }, (_, index) => index).map(
         (pageNumber) => (
@@ -50,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({
         }`}
         onClick={() => handleClick(currentPage + 1)}
         disabled={currentPage === totalPages - 1}>
-        Next
+        Sonraki
       </button>
     </div>
   );

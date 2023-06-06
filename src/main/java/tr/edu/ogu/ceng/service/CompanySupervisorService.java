@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
-import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
@@ -40,9 +39,9 @@ public class CompanySupervisorService {
 		return response;
 	}
 
-	public CompanySupervisorDto getById(Long id) {
+	public CompanySupervisorResponseDto getById(Long id) {
 		CompanySupervisor companySupervisor = repository.findById(id).orElseThrow();
-		CompanySupervisorDto response = mapper.map(companySupervisor, CompanySupervisorDto.class);
+		CompanySupervisorResponseDto response = mapper.map(companySupervisor, CompanySupervisorResponseDto.class);
 		return response;
 	}
 
@@ -81,7 +80,7 @@ public class CompanySupervisorService {
 		CompanySupervisor companySupervisor = repository.findById(request.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
 		if (companySupervisor.getUser().getId() != request.getUser().getId()) {
-			checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
+			// checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
 		}
 		request.setCreateDate(companySupervisor.getCreateDate());
 		companySupervisor = mapper.map(request, CompanySupervisor.class);
@@ -112,7 +111,7 @@ public class CompanySupervisorService {
 
 		return companySupervisorDtos;
 	}
-	
+
 	public CompanySupervisorDto getCompanySupervisorByUserId(Long userId) {
 		CompanySupervisor companySupervisor = repository.findCompanySupervisorByUserId(userId);
 		return mapper.map(companySupervisor, CompanySupervisorDto.class);
