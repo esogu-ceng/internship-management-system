@@ -21,8 +21,8 @@ const ResetPassword = () => {
     };
 
     const isPasswordValid = () => {
-        const passwordRegex = /^(?=.*[A-Za-z\d])[A-Za-z\d!@#$%^&*()\-_=+\\|[\]{};:'",.<>/?]{8,}$/;
-        return passwordRegex.test(password);
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()\-_=+\\|[\]{};:'",.<>/?]{8,}$/;
+        return passwordRegex.test(password) && checkPasswordMatch();
     };
 
     const checkPasswordMatch = () => {
@@ -81,9 +81,9 @@ const ResetPassword = () => {
                     />
                 </div>
                 {!checkPasswordMatch() ? <small className='text-danger mt-0 mb-0 not-matched'>Girilen şifreler eşleşmiyor!</small> : null}
-                <Button className='submit-btn' type="submit" disabled={!checkPasswordMatch() || !isPasswordValid()}> Kaydet</Button>
+                <Button className='submit-btn' type="submit" disabled={!isPasswordValid()}> Kaydet</Button>
                 <div>
-                    <ul className='pl-4'>
+                    <ul className='mt-2 pl-4 password-check'>
                         <li className={password.length >= 8 ? 'valid' : 'invalid'}>
                             En az 8 karakter
                         </li>

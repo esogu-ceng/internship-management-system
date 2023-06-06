@@ -195,3 +195,6 @@ button.header-button {
     color: darkblue;
     font-weight: bold;
 }
+.password-check{
+    list-style-type: disc;
+}
