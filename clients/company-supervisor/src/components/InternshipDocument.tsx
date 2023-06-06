@@ -12,7 +12,7 @@ export const InternshipDocument = ({
   const [documentName, setDocumentName] = useState<string>('loading');
   const [documentContents, setDocumentContents] = useState<string>('loading');
   useEffect(() => {
-    fetch(`api/internshipdocument/internship/${internship_id}`)
+    fetch(`/api/internshipdocument/internship/${internship_id}`)
       .then((response) => response.json())
       .then((data) => {
         setInternshipDocuments(data.content);
