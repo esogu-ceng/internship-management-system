@@ -9,7 +9,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+/* 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -77,6 +77,7 @@ footer {
   padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
+*/
 .dashboard-card {
   background-color: #f6f6f6;
   border: none;
@@ -127,4 +128,4 @@ footer {
 .dashboard-card:hover {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   background-color: #eabce5;
-}
+} 

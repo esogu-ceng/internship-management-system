@@ -90,7 +90,7 @@ const App: React.FC = () => {
   }, [user]);
 
   return (
-    <div className="max-w-screen flex min-h-screen w-screen justify-center">
+    <div className="max-w-screen  min-h-screen w-screen justify-center">
       <RouterProvider router={router} />
     </div>
   );
