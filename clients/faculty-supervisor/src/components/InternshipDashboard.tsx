@@ -72,7 +72,7 @@ function InternshipDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-          <h2>Staj Yapan Öğrenciler</h2>
+          <h2>Stajlar</h2>
           <p>Staj yapan toplam öğrenci {internshipStudentCount} kişidir. </p>
       </div>
       <div className="dashboard-card">

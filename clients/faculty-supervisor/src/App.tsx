@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 
 import AllInternships from "./components/AllInternships";
 import FacultySupervisorProfile from './components/FacultySupervisorProfile';
+import StudentList from './components/StudentList';
 
 
 const App: React.FC = () => {
@@ -68,6 +69,7 @@ const App: React.FC = () => {
             <Route path={`${root_path}/company-list`} element={<CompanyListContainer />} />
             <Route path={`${root_path}/AllInternships`} element={<AllInternships _facultySupervisorId={currentFacultySupervisorId} />} />
             <Route path={`${root_path}/profile`} element={<FacultySupervisorProfile />} />
+            <Route path={`${root_path}/student-list`}element={<StudentList  _facultySupervisorId={currentFacultySupervisorId}/>} />
             {/* Add other routes for different screens */}
             <Route path={`${root_path}/default`} element={<div>Default Screen</div>} />
           </Routes>
