@@ -32,14 +32,14 @@ public class CompanySupervisorController {
 	private final CompanySupervisorService service;
 
 	@GetMapping
-	public Page<CompanySupervisorDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
+	public Page<CompanySupervisorResponseDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		return service.getAll(pageable);
 	}
 
 	@GetMapping("/{id}")
-	public CompanySupervisorDto getById(@PathVariable Long id) {
+	public CompanySupervisorResponseDto getById(@PathVariable Long id) {
 		return service.getById(id);
 	}
 
@@ -63,5 +63,10 @@ public class CompanySupervisorController {
 	public List<CompanySupervisorDto> getCompanySupervisorsByCompanyId(
 			@PathVariable(name = "companyId") Long companyId) {
 		return service.getCompanySupervisorsByCompanyId(companyId);
+	}
+
+	@GetMapping("/getCompanySupervisorByUserId/{userId}")
+	public CompanySupervisorDto getCompanySupervisorByUserId(@PathVariable Long userId) {
+		return service.getCompanySupervisorByUserId(userId);
 	}
 }

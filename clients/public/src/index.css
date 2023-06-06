@@ -105,9 +105,12 @@ header {
 
 .header-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    flex: 1;
+    flex: 1 1;
+    align-content: flex-start;
+    gap: 20px;
+    font-size: 18px;
 }
 
 .header-title {
@@ -154,4 +157,44 @@ header {
     border: 1px solid transparent;
     border-radius: 4px;
 }
+.reset-password-page {
+    border-radius: 5px;
+    width: 300px;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+    padding: 35px 15px 0 15px;
+}
+.submit-btn{
+    margin-top: 30px;
+    background-color: blue;
+    color: white;
+}
 
+li.valid {
+    color: green;
+    font-size: 13px;
+}
+li.invalid {
+    color: black;
+    font-size: 13px;
+}
+.not-matched{
+    font-size: 13px;
+}
+.cancel-btn{
+    margin-top: 30px;
+    background-color: gray;
+    color: white;
+}
+
+button.header-button {
+    color: darkblue;
+    font-weight: bold;
+}
+.password-check{
+    list-style-type: disc;
+}

@@ -30,18 +30,18 @@ public class CompanySupervisorService {
 	private final ModelMapper mapper;
 	private final UserService userService;
 
-	public Page<CompanySupervisorDto> getAll(Pageable pageable) {
+	public Page<CompanySupervisorResponseDto> getAll(Pageable pageable) {
 
 		Page<CompanySupervisor> companySupervisors = repository.findAll(pageable);
-		Page<CompanySupervisorDto> response = companySupervisors
-				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class));
+		Page<CompanySupervisorResponseDto> response = companySupervisors
+				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorResponseDto.class));
 
 		return response;
 	}
 
-	public CompanySupervisorDto getById(Long id) {
+	public CompanySupervisorResponseDto getById(Long id) {
 		CompanySupervisor companySupervisor = repository.findById(id).orElseThrow();
-		CompanySupervisorDto response = mapper.map(companySupervisor, CompanySupervisorDto.class);
+		CompanySupervisorResponseDto response = mapper.map(companySupervisor, CompanySupervisorResponseDto.class);
 		return response;
 	}
 
@@ -80,7 +80,7 @@ public class CompanySupervisorService {
 		CompanySupervisor companySupervisor = repository.findById(request.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
 		if (companySupervisor.getUser().getId() != request.getUser().getId()) {
-			checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
+			// checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
 		}
 		request.setCreateDate(companySupervisor.getCreateDate());
 		companySupervisor = mapper.map(request, CompanySupervisor.class);
@@ -110,5 +110,10 @@ public class CompanySupervisorService {
 				.collect(Collectors.toList());
 
 		return companySupervisorDtos;
+	}
+
+	public CompanySupervisorDto getCompanySupervisorByUserId(Long userId) {
+		CompanySupervisor companySupervisor = repository.findCompanySupervisorByUserId(userId);
+		return mapper.map(companySupervisor, CompanySupervisorDto.class);
 	}
 }

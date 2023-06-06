@@ -33,7 +33,15 @@ public class CompanyController {
 		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
-
+	
+	@GetMapping("/getAllCompanies")
+	public ResponseEntity<Page<CompanyDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
+		return ResponseEntity.ok(companies);
+	}
+	
 	@PutMapping
 	public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyDto companyDto) {
 		CompanyDto updatedCompanyDto = companyService.updateCompany(companyDto);
@@ -65,5 +73,11 @@ public class CompanyController {
 	@DeleteMapping("/{id}")
 	public boolean deleteCompany(@PathVariable(name = "id") Long id) {
 		return companyService.deleteCompany(id);
+	}
+
+	@GetMapping("/count")
+	public ResponseEntity<Long> getCompanyCount() {
+		Long count = companyService.countCompanies();
+		return ResponseEntity.ok(count);
 	}
 }

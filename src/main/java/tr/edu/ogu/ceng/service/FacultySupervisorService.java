@@ -14,10 +14,13 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
+import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
+import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -72,6 +75,8 @@ public class FacultySupervisorService {
 		try {
 			LocalDateTime now = LocalDateTime.now();
 			facultySupervisor.setUpdateDate(now);
+			User user = userService.GetUserById(facultySupervisor.getUser().getId());
+			facultySupervisor.setUser(user);
 			facultySupervisor
 					.setCreateDate(facultySupervisorRepository.getById(facultySupervisor.getId()).getCreateDate());
 			FacultySupervisor updatedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
@@ -79,7 +84,7 @@ public class FacultySupervisorService {
 			FacultySupervisorResponseDto responseDto = modelMapper.map(updatedFacultySupervisor,
 					FacultySupervisorResponseDto.class);
 			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
-			responseDto.setUserId(facultySupervisorRequestDto.getUser().getId());
+			responseDto.setUser(responseDto.getUser());
 			log.info("Faculty supervisor updated: {}", updatedFacultySupervisor);
 			return responseDto;
 		} catch (Exception e) {
@@ -124,9 +129,20 @@ public class FacultySupervisorService {
 			}
 			Page<FacultySupervisorResponseDto> facultySupervisorDtos = facultySupervisors
 					.map(facultySupervisor -> modelMapper.map(facultySupervisor, FacultySupervisorResponseDto.class));
-			return facultySupervisorDtos;
+ 			return facultySupervisorDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting faculty supervisors: {}", e.getMessage());
+			throw e;
+		}
+	}
+
+	public FacultySupervisorResponseDto getFacultySupervisorByUserId(Long userId) {
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			FacultySupervisor facultysupervisor = facultySupervisorRepository.findByUserId(userId);
+			return modelMapper.map(facultysupervisor, FacultySupervisorResponseDto.class);
+		} catch (Exception e) {
+			log.error("An error occurred while getting facultySupervisor with given user ID", e.getMessage());
 			throw e;
 		}
 	}

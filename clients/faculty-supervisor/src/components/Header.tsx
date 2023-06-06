@@ -16,12 +16,19 @@ function Header() {
               <Link to="facultysupervisor/company-list" className="nav-link">Şirketler</Link>
             </li>
             <li className="nav-item">
-              <Link to="facultysupervisor/AllInternships" className="nav-link">Staj Yapan Öğrenciler</Link>
+              <Link to="facultysupervisor/AllInternships" className="nav-link">Stajlar</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="facultysupervisor/student-list" className="nav-link">Fakülte Öğrencileri</Link>
             </li>
           </ul>
         </nav>
         <div className="header-buttons">
-          <button className="header-button">Profil</button>
+          <button className="header-button"  >
+            <Link to={"facultysupervisor/profile"}>
+              <h2>Profil</h2>
+            </Link>
+          </button>
           <button className="header-button" onClick={handleLogout}>
             Çıkış
           </button>

@@ -4,6 +4,10 @@ import { ErrorModalProps } from '../../types/Error';
 
 
 const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
+  
+  const handleClose = () => {
+    onClose();
+  };
   return (
     <div className="error-modal">
       <div className="error-modal-content">

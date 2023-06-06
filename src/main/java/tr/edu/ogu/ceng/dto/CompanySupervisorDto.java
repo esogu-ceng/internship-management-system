@@ -17,8 +17,8 @@ public class CompanySupervisorDto {
 	private String phoneNumber;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
-	@JsonIncludeProperties(value="id")
+	@JsonIncludeProperties(value= {"id","name"})
 	private UserDto user;
-	@JsonIncludeProperties(value="id")
+	@JsonIncludeProperties(value= {"id","name"})
 	private CompanyDto company;
 }

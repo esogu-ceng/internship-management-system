@@ -9,6 +9,7 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     font-size: 20px;
+    z-index: 100;
 }
   
   .error-modal-content {

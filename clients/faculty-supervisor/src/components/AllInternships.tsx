@@ -5,6 +5,7 @@ import axios from 'axios';
 import CompanyInfo from '../components/CompanyInfo';
 import StudentInfo from '../components/StudentInfo';
 import InternshipDocument from '../components/InternshipDocuments'
+import InternshipStatusChange from '../components/InternshipStatusChange';
 
 
 interface PageableResponse<T> {
@@ -15,7 +16,7 @@ interface PageableResponse<T> {
   size: number;
 }
 
-function AllInternships() {
+function AllInternships({ _facultySupervisorId }: { _facultySupervisorId: number }) {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -27,7 +28,7 @@ function AllInternships() {
   const [selectedStudent, setSelectedStudent] = useState<Student | any>();
   const [selectedInternshipId, setSelectedInternshipId] = useState<number | any>();
   const [showDocumentModal, setDocumentShowModal] = useState<boolean>(false);
-
+  const [statusChanged, setStatusChanged] = useState<boolean>(false);
   const openDocumentModal = (internshipId: number | null) => {
     setSelectedInternshipId(internshipId);
     setDocumentShowModal(true);
@@ -54,32 +55,36 @@ function AllInternships() {
   const closeCompanyModal = () => {
     setCompanyShowModal(false);
   };
-  const fetchInternship = async (page: number, size: number, sort: string) => {
 
+  const fetchInternship = async (page: number, size: number, sort: string) => {
     try {
-      const response = await axios.get('/api/internship/supervisor/1', {
+      const response = await axios.get(`/api/internship/supervisor/${_facultySupervisorId}`, {
         params: {
           pageNo: page,
           limit: size,
           sortBy: sort,
         },
-        headers: {
-          Authorization: 'Basic ' + btoa('ykartal@ogu.edu.tr:sdfasdfadfasdfasdfasdf') //TODO Change here.
-        },
+
       });
+      console.log(response);
       const { content, totalPages } = response.data as PageableResponse<Internship>;
-      console.log("+++", content);
+    
       setInternships(content);
       setTotalPages(totalPages);
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   useEffect(() => {
     fetchInternship(currentPage, pageSize, sortBy);
   }, [currentPage, pageSize, sortBy]);
-
+  useEffect(() => {
+    if (statusChanged) {
+      fetchInternship(currentPage, pageSize, sortBy);
+      setStatusChanged(false);
+    }
+  }, [statusChanged, currentPage, pageSize, sortBy]);
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
@@ -87,7 +92,9 @@ function AllInternships() {
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
-
+  const handleStatusChange = () => {
+    setStatusChanged(true);
+  };
   if (!internships || internships.length === 0) {
     return <div>No internships found.</div>;
   }
@@ -102,6 +109,11 @@ function AllInternships() {
     }
     return '';
   };
+  const handleInternshipStatusChange = () => {
+    fetchInternship(currentPage, pageSize, sortBy);
+  };
+
+  
 
   return (
     <div className="bg-white p-5 rounded-md w-full pt-0">
@@ -172,7 +184,7 @@ function AllInternships() {
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <div className="flex items-center">
                       <div className="ml-3">
-                        <p className="text-gray-900 whitespace-no-wrap">{internship.facultySupervisorId}</p>
+                        <p className="text-gray-900 whitespace-no-wrap">{internship.facultySupervisor.name + " " + internship.facultySupervisor.surname}</p>
                       </div>
                     </div>
                   </td>
@@ -206,7 +218,12 @@ function AllInternships() {
                     >
                       <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
                       <span className="relative">{internship.status}</span>
+                      
                     </span>
+                    <span>
+                      
+      <InternshipStatusChange id={internship.id} onStatusChange={handleStatusChange}   />
+    </span>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     {/* Staj Belgeleri */}
@@ -217,8 +234,11 @@ function AllInternships() {
                       Görüntüle
                     </button>
                   </td>
+                  
                 </tr>
+                
               ))}
+               
             </tbody>
           </table>
         </div>
@@ -251,6 +271,7 @@ function AllInternships() {
           </div>
         </div>
       )}
+      
       {showDocumentModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
@@ -264,7 +285,9 @@ function AllInternships() {
             </button>
           </div>
         </div>
+        
       )}
+      
     </div>
   );
 }

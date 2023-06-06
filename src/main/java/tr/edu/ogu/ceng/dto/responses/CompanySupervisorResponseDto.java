@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tr.edu.ogu.ceng.dto.CompanyDto;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +19,6 @@ public class CompanySupervisorResponseDto {
 	private String phoneNumber;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
-	private Long userId;
-	private Long companyId;
+	private UserResponseDto user;
+	private CompanyDto company;
 }

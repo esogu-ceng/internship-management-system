@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
+import StudentProfile from './components/StudentProfile';
 
 import "./index.css";
 
@@ -17,6 +18,7 @@ function App() {
 					<Routes>
 						<Route path={`${root_path}`} element={<InternshipDashboard />} />
 						<Route path={`${root_path}/AllInternships`} element={<AllInternships />} />
+						<Route path={`${root_path}/profile`} element={<StudentProfile />} />
 					</Routes>
 				</div>
 				<Footer />

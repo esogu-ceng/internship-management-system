@@ -1,8 +1,12 @@
 package tr.edu.ogu.ceng.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +34,10 @@ public class InternshipDocumentsController {
 		Page<InternshipDocumentsResponseDto> internshipDocuments = internshipDocumentsService
 				.getAllInternshipDocumentsByInternshipId(internshipId, pageable);
 		return internshipDocuments;
+	}
+
+	@GetMapping("/download")
+	public ResponseEntity<InputStreamResource> download(@RequestParam(name = "filePath") String filepath) throws IOException {
+		return internshipDocumentsService.download(filepath);
 	}
 }

@@ -1,22 +1,95 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/** @format */
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0;
+}
+/*
+  3. Allow percentage-based heights in the application
+*/
+html,
+body {
+  height: 100%;
+}
+/*
+  Typographic tweaks!
+  4. Add accessible line-height
+  5. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/*
+  6. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+  7. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/*
+  8. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/*
+  9. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
 }
 footer {
   position: fixed;
   bottom: 0;
   left: 0;
- width: 100%;
+  width: 100%;
   background-color: #888;
   color: #fff;
   text-align: center;
@@ -76,12 +149,12 @@ header {
   transition: transform 0.3s ease-in-out;
 }
 .dashboard-card:hover {
-  transform: translateY(-5px); 
+  transform: translateY(-5px);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 .dashboard-card:nth-child(1) {
   background-color: #ff6363;
-} 
+}
 .dashboard-card:nth-child(2) {
   background-color: #76d7c4;
 }
@@ -90,6 +163,9 @@ header {
 }
 .dashboard-card:nth-child(4) {
   background-color: #59b8bf;
+}
+.dashboard-card:nth-child(5) {
+  background-color: #3583d6;
 }
 @media (max-width: 768px) {
   .app-container {
@@ -118,4 +194,507 @@ header {
 .dashboard-card:hover {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   background-color: #eabce5;
+}
+.link {
+  text-decoration: none;
+}
+
+table {
+  margin-bottom: 32px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 2px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+th,
+td {
+  padding: 30px 0px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+  font-weight: 600;
+  background-color: #f5f5f5;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+tr:hover {
+  background-color: #f0f0f0;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0;
+  padding: 0;
+}
+
+.add-button {
+  margin: 40px auto;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.add-button:hover::before {
+  width: 200%;
+  height: 200%;
+  opacity: 1;
+}
+
+.add-button span {
+  position: relative;
+  z-index: 1;
+}
+
+/**
+ * Modal Overlay
+ *
+ * @format
+ */
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+/* Modal Container */
+.modal {
+  position: absolute;
+  min-width: 700px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Title */
+.modal-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Form Label */
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Form Input */
+.form-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Form Buttons */
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Submit Button */
+.submit-button {
+  padding: 8px 12px;
+  margin-left: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Cancel Button */
+.cancel-button {
+  padding: 8px 16px;
+  background-color: #b53535;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-modal {
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.update-modal-content {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 16px;
+  min-width: 700px;
+}
+
+.update-modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.update-modal-content label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.update-modal-content input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.update-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.update-modal-buttons button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-modal-buttons button:hover {
+  background-color: #218838;
+}
+
+/** @format */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 64px;
+}
+
+.pagination-button {
+  background-color: #f1f1f1;
+  border: none;
+  color: #333;
+  padding: 8px 16px;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-button:hover {
+  background-color: #ddd;
+}
+
+.pagination-button.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+.pagination-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.edit-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.edit-buttons button {
+  position: relative;
+  padding: 8px 12px;
+  margin-right: 8px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.edit-buttons button:hover {
+  background-color: #45a049;
+}
+
+.edit-buttons button:last-child {
+  background-color: #f44336;
+}
+
+.edit-buttons button:last-child:hover {
+  background-color: #d32f2f;
+}
+.edit-buttons button:nth-child(2) {
+  background-color: blue;
+}
+
+.edit-buttons button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.edit-buttons button:hover::before {
+  width: 150%;
+  height: 150%;
+}
+
+.update-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.update-buttons button {
+  position: relative;
+  padding: 8px 12px;
+  margin-right: 8px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.update-buttons button:hover {
+  background-color: #45a049;
+}
+
+.update-buttons button:last-child {
+  background-color: #f44336;
+}
+
+.update-buttons button:last-child:hover {
+  background-color: #d32f2f;
+}
+
+.toast-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.toast-message.visible {
+  opacity: 1;
+}
+
+.toast-default {
+  background-color: #333;
+  color: #fff;
+}
+
+.toast-warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.toast-info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.toast-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.popup-message {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.popup-close {
+  background-color: #ccc;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.cancel-button {
+  background: rgb(158, 40, 40);
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.active {
+  background-color: green;
+}
+
+.inactive {
+  background-color: red;
+}
+.userActivity {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 2px dashed #ccc;
+  background-color: #f8f8f8;
+  color: #999;
+  font-size: 18px;
+}
+
+.company-supervisor-detail {
+  padding: 20px;
+  background-color: #f4f6f9;
+}
+
+.detail-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.detail-container {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-info {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.detail-info-title {
+  font-weight: bold;
+  color: #0088cc;
+}
+
+.detail-info-value {
+  color: #333;
+}
+
+.detail-error {
+  color: #ff0000;
+  font-weight: bold;
+}
+.back-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #0088cc;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.cancel-button-1 {
+  background-color: rgb(214, 0, 0) !important;
 }

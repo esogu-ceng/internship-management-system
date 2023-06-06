@@ -99,7 +99,7 @@ function Login() {
                             Şifrenizi mi unuttunuz?
                         </a>
                     </div>
-                    <Button type="submit" className="btn-login">
+                    <Button type="submit" className="submit-btn">
                         Giriş
                     </Button>
                     <Modal show={showModal} onHide={handleModalClose}>
@@ -128,10 +128,10 @@ function Login() {
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={handleModalClose}>
+                            <Button variant="secondary" className="cancel-btn" onClick={handleModalClose}>
                                 İptal
                             </Button>
-                            <Button variant="primary" onClick={handleResetPassword} disabled={isLoading}>
+                            <Button variant="primary" className="submit-btn" onClick={handleResetPassword} disabled={isLoading}>
                                 {isLoading ? (
                                     <>
                                         <Spinner animation="border" role="status"/>

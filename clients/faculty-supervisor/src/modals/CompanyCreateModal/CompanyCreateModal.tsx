@@ -44,7 +44,7 @@ const CompanyCreateModal: React.FC<CompanyCreateModalProps> = ({ isOpen, onClose
     <div className="modal-container">
       <div className="modal-container-al">
       <div className="modal-content">
-        <h2>Şirket Oluştur</h2>
+        <div className='head'>Şirket Oluştur</div>
         <form onSubmit={handleSubmit}>
           {/* Input fields for company details */}
           <div className="form-group">
