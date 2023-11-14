@@ -8,7 +8,8 @@ ONLY_CLEAR = False
 # BENİ DÜZENLE
 conn = psycopg2.connect(
     host="localhost",
-    database="internship-management-system",
+    port =5432,
+    dbname='internship-management-system ',
     user="postgres",
     password="123456"
 )
