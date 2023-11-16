@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +40,13 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDto> addUser(@RequestBody UserDto user) {
-		UserDto savedUser = userService.saveUser(user);
-		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
+		ModelMapper modelMapper = new ModelMapper();
+		User user = modelMapper.map(userDto, User.class);
+		User savedUser = userService.saveUser(user);
+
+		UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
+		return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/admin")
@@ -60,10 +65,10 @@ public class UserController {
 			@RequestParam(defaultValue = "true") boolean status) {
 		return ResponseEntity.ok(userService.setUserActivity(id, status));
 	}
-	
-	@GetMapping(value = {"/admin/auth", "/student/auth", "/company-supervisor/auth", "/faculty-supervisor/auth"})
-	public UserDto getLoggedInUser(){
-        return userService.getLoggedInUser();
-    }
+
+	@GetMapping(value = { "/admin/auth", "/student/auth", "/company-supervisor/auth", "/faculty-supervisor/auth" })
+	public UserDto getLoggedInUser() {
+		return userService.getLoggedInUser();
+	}
 
 }
