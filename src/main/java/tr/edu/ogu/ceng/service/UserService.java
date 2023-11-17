@@ -49,26 +49,6 @@ public class UserService {
 		}
 	}
 
-	public UserDto saveUser(UserDto userDto) {
-		try {
-			ModelMapper modelMapper = new ModelMapper();
-			if (userDto.getId() != null && userRepository.existsById(userDto.getId())) {
-				throw new IllegalArgumentException("User with ID " + userDto.getId() + " already exists.");
-			}
-			User user = modelMapper.map(userDto, User.class);
-			LocalDateTime dateTime = LocalDateTime.now();
-			user.setCreateDate(dateTime);
-			user.setUpdateDate(dateTime);
-			user.setActivity(true);
-			User savedUser = userRepository.save(user);
-			log.info("User saved successfully with id: {}", savedUser.getId());
-			return modelMapper.map(savedUser, UserDto.class);
-		} catch (Exception e) {
-			log.error("An error occurred while saving user: {}", e.getMessage());
-			throw e;
-		}
-	}
-
 	public User saveUser(User user) {
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
@@ -176,7 +156,7 @@ public class UserService {
 			return false;
 		}
 	}
-	
+
 	public UserDto getLoggedInUser() {
 		ModelMapper modelMapper = new ModelMapper();
 		UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
@@ -185,7 +165,7 @@ public class UserService {
 		return loggedInUser;
 	}
 
-	public User GetUserById(Long UserId){
+	public User GetUserById(Long UserId) {
 		User user = userRepository.getById(UserId);
 		return user;
 	}

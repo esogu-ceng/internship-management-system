@@ -45,15 +45,12 @@ public class CompanySupervisorService {
 		return response;
 	}
 
-	public CompanySupervisorDto add(CompanySupervisorDto request) {
-		checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
-		CompanySupervisor companySupervisor = mapper.map(request, CompanySupervisor.class);
+	public CompanySupervisor add(CompanySupervisor companySupervisor) {
+		checkIfCompanySupervisorExistsByUserId(companySupervisor.getUser().getId());
 		companySupervisor.setCreateDate(LocalDateTime.now());
 		companySupervisor.setUpdateDate(LocalDateTime.now());
 		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
-
-		CompanySupervisorDto response = mapper.map(createdCompanySupervisor, CompanySupervisorDto.class);
-		return response;
+		return createdCompanySupervisor;
 	}
 
 	public CompanySupervisorResponseDto addCompany(CompanySupervisorRequestDto request) {
