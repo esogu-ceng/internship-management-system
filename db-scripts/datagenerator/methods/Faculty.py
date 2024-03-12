@@ -2,7 +2,8 @@ import random
 
 from data.data_pool import facultyNames
 from data.data_pool import person_names, surnames, f_random_n_digit, activityRandomizer
-
+from .Hash import hash_password
+hashed_password = hash_password("123") #Change here for default password
 
 def generate_faculty_facultySupervisor(conn, count):
     cur = conn.cursor()
@@ -34,7 +35,7 @@ def generate_faculty_facultySupervisor(conn, count):
                         username, password, email, user_type, language, activity
                     )
                     VALUES (
-                        '{(name[0] + surname).lower() + i.__str__()}fs', '123', '{(name[0] + surname).lower() + i.__str__()}fs@ogu.edu.tr', 'FACULTYSUPERVISOR', '1', {activity}
+                        '{(name[0] + surname).lower() + i.__str__()}fs', '{hashed_password}', '{(name[0] + surname).lower() + i.__str__()}fs@ogu.edu.tr', 'FACULTYSUPERVISOR', '1', {activity}
                     ) RETURNING id
                 """
         cur.execute(insert_query)

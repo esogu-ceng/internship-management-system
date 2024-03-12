@@ -19,5 +19,6 @@ Admin kullanıcı bilgileri -> ykartal@ogu.edu.tr sdfasdfadfasdfasdfasdf
 Admin dışında kullanıcı şifreleri -> 123
 
 Not: Çalıştımak için psycopg2 kütüphanesini "pip install psycopg2" komutu ile yükleyebilirsiniz.
+     12.03.2024: bcrypt kütüphanesini "pip install bcrypt" komutu ile yükleyin. Varsayılan şifrelerin hashli olarak veritabanına eklenmesi için gerekli.
 
 Not: Var olan verilerinizi bozmamak için halihazırda bulunan veritabanınınzda çalıştırmak yerine yeni bir veritabanı açmanızı öneririz.
