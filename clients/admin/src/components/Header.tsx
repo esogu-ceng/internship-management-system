@@ -9,7 +9,10 @@ function Header() {
   return (
     <header>
       <div className="header-content">
-        <h1 className="header-title">Staj Yönetim Sistemi</h1>
+        <Link to={`${root_path}/`}>
+          <h1 className="header-title">Staj Yönetim Sistemi</h1>
+        </Link>
+
         <div className="header-buttons">
           <button className="header-button">
             <Link to={`${root_path}/profile`}>
