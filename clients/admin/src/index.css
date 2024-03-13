@@ -286,7 +286,7 @@ tr:hover {
  */
 
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -308,12 +308,37 @@ tr:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
+/* Modal Header */
+.modal-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
 /* Modal Title */
 .modal-title {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 20px;
   font-weight: bold;
+}
+
+/* Modal Close button */
+.modal-close-icon {
+  margin-left: auto;
+  cursor: pointer;
+  color: #f87171;
+  background: #d1d5db;
+  border: 1px solid #9ca3af;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0px 8px;
+}
+
+.modal-close-icon:hover {
+  color: #dc2626;
+  opacity: 0.8;
+  transition: all 0.3s ease;
 }
 
 /* Form Group */
@@ -537,7 +562,7 @@ tr:hover {
 }
 
 .update-buttons button:last-child:hover {
-  background-color: #d32f2f;
+  background-color: #d32f2f;
 }
 
 .toast-message {
