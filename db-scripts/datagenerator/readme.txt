@@ -15,7 +15,7 @@ Güncel olarak doldurduğu tablolar:
 
 Çalıştırmak için main.py dosyasını koşturmanız yeterlidir.
 
-Admin kullanıcı bilgileri -> ykartal@ogu.edu.tr sdfasdfadfasdfasdfasdf
+Admin kullanıcı bilgileri -> ykartal@ogu.edu.tr 123456
 Admin dışında kullanıcı şifreleri -> 123
 
 Not: Çalıştımak için psycopg2 kütüphanesini "pip install psycopg2" komutu ile yükleyebilirsiniz.
