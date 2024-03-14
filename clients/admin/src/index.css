@@ -310,8 +310,6 @@ tr:hover {
 
 /* Modal Header */
 .modal-header {
-  margin-top: 0;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -320,6 +318,9 @@ tr:hover {
 
 /* Modal Title */
 .modal-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 20px;
   font-weight: bold;
 }
 

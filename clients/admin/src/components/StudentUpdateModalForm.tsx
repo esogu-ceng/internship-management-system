@@ -186,6 +186,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                   })
                 }
                 defaultValue={studentDto.id}
+                disabled={true}
               />
             </div>
             <div>
@@ -203,6 +204,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 className="form-input"
                 required
                 maxLength={80}
+                placeholder={"Ad"}
               />
             </div>
             <div>
@@ -220,6 +222,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 className="form-input"
                 required
                 maxLength={80}
+                placeholder={"Soyad"}
               />
             </div>
             <div>
@@ -241,6 +244,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 required
                 minLength={11}
                 maxLength={11}
+                placeholder={"11122233344"}
               />
             </div>
             <div>
@@ -262,6 +266,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 required
                 minLength={8}
                 maxLength={12}
+                placeholder={"152120201000"}
               />
             </div>
             <div>
@@ -281,6 +286,8 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                placeholder={"2.00"}
+                maxLength={4}
               />
             </div>
             <div>
@@ -302,6 +309,9 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 required
                 minLength={10} // 555 444 33 22
                 maxLength={10} // in the database it is 10
+                placeholder={"5554443322"}
+                pattern="[0-9]{10}"
+                title="Telefon numarası 10 haneli olmalıdır!"
               />
             </div>
             <div>
@@ -321,6 +331,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                placeholder={"Eskişehir"}
               />
             </div>
             <div>
@@ -390,6 +401,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                placeholder={"e.g Odunpazarı/Eskişehir"}
               />
             </div>
             <div>
@@ -409,6 +421,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 required
                 className="form-input"
+                placeholder={"Email"}
               />
             </div>
             <div className="update-modal-buttons">

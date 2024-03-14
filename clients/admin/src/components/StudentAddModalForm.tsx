@@ -203,6 +203,7 @@ const AddModalForm: React.FC<Props> = ({
                       className="form-input"
                       required
                       maxLength={80}
+                      placeholder={"Ad"}
                     />
                   </div>
 
@@ -219,6 +220,7 @@ const AddModalForm: React.FC<Props> = ({
                       className="form-input"
                       required
                       maxLength={80}
+                      placeholder={"Soyad"}
                     />
                   </div>
 
@@ -236,6 +238,7 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={11}
                       maxLength={11}
+                      placeholder={"11122233344"}
                     />
                   </div>
 
@@ -253,6 +256,7 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={8}
                       maxLength={12}
+                      placeholder={"152120201000"}
                     />
                   </div>
 
@@ -268,6 +272,8 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
+                      placeholder={"2.00"}
+                      maxLength={4}
                     />
                   </div>
 
@@ -306,6 +312,9 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={10} // 555 444 33 22
                       maxLength={10} // in the database it is 10
+                      placeholder={"5554443322"}
+                      pattern="[0-9]{10}"
+                      title="Telefon numarası 10 haneli olmalıdır!"
                     />
                   </div>
 
@@ -321,6 +330,7 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
+                      placeholder={"Eskişehir"}
                     />
                   </div>
 
@@ -355,6 +365,7 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
+                      placeholder={"e.g Odunpazarı/Eskişehir"}
                     />
                   </div>
 
@@ -371,6 +382,7 @@ const AddModalForm: React.FC<Props> = ({
                       className="form-input"
                       required
                       maxLength={50}
+                      placeholder={"Kullanıcı Adı"}
                     />
                   </div>
 
@@ -386,6 +398,7 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
+                      placeholder={"Email"}
                     />
                   </div>
 
@@ -401,6 +414,7 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
+                      placeholder={"Şifre"}
                     />
                   </div>
 
@@ -416,6 +430,7 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
+                      placeholder={"Şifreyi doğrula"}
                     />
                   </div>
                   <div className="form-buttons">

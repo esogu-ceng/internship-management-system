@@ -9,6 +9,7 @@ import { tableHeaders } from "../constants";
 import AddModalForm from "./AddModalForm";
 import UpdateModalForm from "./UpdateModalForm";
 import Pagination from "./Pagination";
+import { CompanySupervisor } from "../types/CompanySupervisors";
 
 const CompanySupervisorsPage = () => {
   const navigate = useNavigate();
@@ -27,6 +28,29 @@ const CompanySupervisorsPage = () => {
     pageChangeHandler,
     companies,
   } = useSupervisorManagement();
+
+  const handleOpenAddModal = () => {
+    setIsAddModalOpen(true);
+    document.body.style.overflow = "hidden";
+  }
+
+  const handleOpenUpdateModal = (supervisor: CompanySupervisor) => {
+      setSelectedCompanySupervisor(supervisor);
+      setIsUpdateModalOpen(true);
+       document.body.style.overflow = "hidden";
+  }
+
+  const handleCloseUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+    document.body.style.overflow = "auto";
+  }
+
+  const handleDeleteCompanySupervisor = (id: number) => {
+    if (!window.confirm("Silmek istediğinize emin misiniz?")) return;
+    deleteCompanySupervisor(id);
+  }
+
+
   return (
     <div className="container">
       {isAddModalOpen && (
@@ -41,10 +65,10 @@ const CompanySupervisorsPage = () => {
         <UpdateModalForm
           companySupervisorDto={selectedCompanySupervisor}
           onUpdateCompanySupervisor={updateCompanySupervisor}
-          onClose={() => setIsUpdateModalOpen(false)}
+          onClose={handleCloseUpdateModal}
         />
       )}
-      <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
+      <button className="add-button" onClick={handleOpenAddModal}>
         <span>+ Şirket Yetkilisi Ekle</span>
       </button>
 
@@ -79,10 +103,7 @@ const CompanySupervisorsPage = () => {
                   <td>
                     <div className="edit-buttons">
                       <button
-                        onClick={() => {
-                          setSelectedCompanySupervisor(supervisor);
-                          setIsUpdateModalOpen(true);
-                        }}>
+                        onClick={() => handleOpenUpdateModal(supervisor)}>
                         Düzenle
                       </button>{" "}
                       <button
@@ -94,7 +115,7 @@ const CompanySupervisorsPage = () => {
                         Detay
                       </button>{" "}
                       <button
-                        onClick={() => deleteCompanySupervisor(supervisor.id)}>
+                        onClick={() => handleDeleteCompanySupervisor(supervisor.id)}>
                         Sil
                       </button>{" "}
                     </div>

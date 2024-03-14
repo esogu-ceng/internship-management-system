@@ -100,15 +100,21 @@ const AddModalForm: React.FC<Props> = ({
     event.preventDefault();
     dispatch({ type: "RESET_FORM" });
     onAddFacultySupervisors(state);
-    onShowModal(false);
+    handleOnClose();
   };
+
+  const handleOnClose = () => {
+    onShowModal(false);
+    document.body.style.overflow = "auto";
+  }
+
 
   return (
     <div>
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2 className="modal-title">Modal Form</h2>
+            <h2 className="modal-title">Fakülte Sorumlusu Ekle</h2>
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
                 <label htmlFor="name" className="form-label">
@@ -122,6 +128,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  placeholder="Ad"
+                  maxLength={80}
                 />
               </div>
               <div className="form-group">
@@ -136,6 +144,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  placeholder="Soyad"
+                  maxLength={80}
                 />
               </div>
               <div className="form-group">
@@ -150,6 +160,11 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  pattern="[0-9]{10}"
+                  title="Telefon numarası 10 haneli olmalıdır. Örnek: 5554443322"
+                  minLength={10} // 555 444 33 22
+                  maxLength={10} // in the database it is 10
+                  placeholder={"5554443322"}
                 />
               </div>
               <div className="form-group">
@@ -164,6 +179,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  min={0}
+                  placeholder="örn: 26"
                 />
               </div>
               <div className="form-group">
@@ -178,6 +195,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  maxLength={50}
+                  placeholder={"Kullanıcı Adı"}
                 />
               </div>
               <div className="form-group">
@@ -192,6 +211,7 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  placeholder="Şifre"
                 />
               </div>
               <div className="form-group">
@@ -206,6 +226,7 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  placeholder="Email"
                 />
               </div>
               <div className="form-group">
@@ -234,7 +255,7 @@ const AddModalForm: React.FC<Props> = ({
                 <button
                   type="button"
                   className="cancel-button"
-                  onClick={() => onShowModal(false)}>
+                  onClick={handleOnClose}>
                   İptal
                 </button>
               </div>

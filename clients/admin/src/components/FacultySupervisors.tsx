@@ -6,6 +6,7 @@ import { facultySupervisortableHeaders } from "../constants";
 import AddModalForm from "./AddFacultySupervisorModalForm";
 import UpdateModalForm from "./UpdateFacultySupervisorModalForm";
 import Pagination from "./Pagination";
+import { FacultySupervisor } from "../types/FacultySuperviosr";
 
 const FacultySupervisorsPage = () => {
   const {
@@ -23,6 +24,29 @@ const FacultySupervisorsPage = () => {
     setSelectedFacultySupervisor,
     pageChangeHandler,
   } = useFacultySupervisorManagement();
+
+
+  const handleAddModalOpen = () =>{
+    setIsAddModalOpen(true);
+    document.body.style.overflow = "hidden";
+  }
+
+  const handleUpdateModalOpen = (supervisor : FacultySupervisor) => {
+    setSelectedFacultySupervisor(supervisor);
+    setIsUpdateModalOpen(true);
+    document.body.style.overflow = "hidden";
+  }
+
+  const handleUpdateModalClose = () => {
+    setIsUpdateModalOpen(false);
+    document.body.style.overflow = "auto";
+  }
+
+  const handleDeleteFacultySupervisor = (id: number) => {
+    if (!window.confirm("Silmek istediğinize emin misiniz?")) return;
+    deleteFacultySupervisor(id);
+  }
+
   return (
     <div className="container">
       {isAddModalOpen && (
@@ -37,10 +61,10 @@ const FacultySupervisorsPage = () => {
         <UpdateModalForm
           facultySupervisorDto={selectedFacultySupervisor}
           onUpdateFacultySupervisor={updateFacultySupervisor}
-          onClose={() => setIsUpdateModalOpen(false)}
+          onClose={handleUpdateModalClose}
         />
       )}
-      <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
+      <button className="add-button" onClick={handleAddModalOpen}>
         <span>+ Fakülte Sorumlusu Ekle</span>
       </button>
         <>
@@ -69,14 +93,13 @@ const FacultySupervisorsPage = () => {
                   <td>
                     <div className="update-buttons">
                       <button
-                        onClick={() => {
-                          setSelectedFacultySupervisor(supervisor);
-                          setIsUpdateModalOpen(true);
-                        }}>
+                        onClick={() => 
+                          handleUpdateModalOpen(supervisor)
+                        }>
                         Düzenle
                       </button>{" "}
                       <button
-                        onClick={() => deleteFacultySupervisor(supervisor.id)}>
+                        onClick={() => handleDeleteFacultySupervisor(supervisor.id)}>
                         Sil
                       </button>{" "}
                     </div>

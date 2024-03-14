@@ -93,7 +93,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
   return (
     <div className="update-modal">
       <div className="update-modal-content">
-        <h2>Şirket Sorumlusu Güncelle</h2>
+        <h2 className="modal-title">Şirket Sorumlusu Güncelle</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name">Ad:</label>
@@ -106,6 +106,8 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 dispatch({ type: "UPDATE_NAME", value: e.target.value })
               }
               required
+              placeholder="Ad"
+              maxLength={80}
             />
           </div>
           <div>
@@ -119,6 +121,8 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 dispatch({ type: "UPDATE_SURNAME", value: e.target.value })
               }
               required
+              placeholder="Soyad"
+              maxLength={80}
             />
           </div>
           <div>
@@ -135,6 +139,11 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 })
               }
               required
+              pattern="[0-9]{10}"
+              title="Telefon numarası 10 haneli olmalıdır. Örnek: 5554443322"
+              minLength={10} // 555 444 33 22
+              maxLength={10} // in the database it is 10
+              placeholder={"5554443322"}
             />
           </div>
           <div className="userActivity">
