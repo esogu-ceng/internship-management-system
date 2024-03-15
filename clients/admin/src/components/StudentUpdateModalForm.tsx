@@ -147,9 +147,9 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
     if (
       !/^\d+(\.\d+)?$/.test(state.grade) ||
       parseFloat(state.grade) < 0 ||
-      parseFloat(state.grade) > 4
+      parseFloat(state.grade) > 100
     ) {
-      toast.error("Not 0 ile 4 arasında bir sayı olmalıdır!");
+      toast.error("Not 0 ile 4 veya 0 ile 100 arasında bir sayı olmalıdır! Örn: 2.00 veya 50");
       return;
     }
 
@@ -286,8 +286,8 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
-                placeholder={"2.00"}
-                maxLength={4}
+                placeholder={"2.00 veya 50.750"}
+                maxLength={6} // 2.575/4.00 or 90.750/100
               />
             </div>
             <div>

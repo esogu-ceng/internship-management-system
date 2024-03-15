@@ -132,13 +132,13 @@ const AddModalForm: React.FC<Props> = ({
     if (
       !/^\d+(\.\d+)?$/.test(state.grade) ||
       parseFloat(state.grade) < 0 ||
-      parseFloat(state.grade) > 4
+      parseFloat(state.grade) > 100
     ) {
       dispatch({ type: "UPDATE_FIELD", field: "isErrorVisible", value: true });
       dispatch({
         type: "UPDATE_FIELD",
         field: "errorMessage",
-        value: "Not 0 ile 4 arasında bir sayı olmalıdır!",
+        value: "Not 0 ile 4 veya 0 ile 100 arasında bir sayı olmalıdır! Örn: 2.00 veya 50",
       });
       isErrorVisible = true;
     }
@@ -272,8 +272,8 @@ const AddModalForm: React.FC<Props> = ({
                       onChange={handleChange}
                       className="form-input"
                       required
-                      placeholder={"2.00"}
-                      maxLength={4}
+                      placeholder={"2.00 veya 50.750"}
+                      maxLength={6} // 2.575/4.00 or 90.750/100
                     />
                   </div>
 

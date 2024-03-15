@@ -328,7 +328,7 @@ tr:hover {
 .modal-close-icon {
   margin-left: auto;
   cursor: pointer;
-  color: #f87171;
+  color: #ef4444;
   background: #d1d5db;
   border: 1px solid #9ca3af;
   border-radius: 8px;
@@ -337,7 +337,7 @@ tr:hover {
 }
 
 .modal-close-icon:hover {
-  color: #dc2626;
+  background: #cbd5e1;
   opacity: 0.8;
   transition: all 0.3s ease;
 }
