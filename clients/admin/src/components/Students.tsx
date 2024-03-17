@@ -36,8 +36,26 @@ const StudentsPage = () => {
     setSelectedStudent,
     pageChangeHandler,
     faculties,
-    handleCheckboxChange
+    handleCheckboxChange,
   } = useStudentManagement();
+
+  const handleOpenModal = () => {
+    setIsAddModalOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleOnClose = () => {
+    setIsUpdateModalOpen(false);
+    document.body.style.overflow = "auto";
+  };
+
+  const handleDeleteUser = (id: number) => {
+    // ask for confirmation before deleting
+    if (!window.confirm("Silmek istediğinize emin misiniz?")) return;
+    // delete the student
+    deleteStudent(id);
+  };
+
   return (
     <div className="container">
       {isAddModalOpen && (
@@ -52,11 +70,11 @@ const StudentsPage = () => {
         <UpdateModalForm
           studentDto={selectedStudent}
           onUpdateStudent={updateStudent}
-          onClose={() => setIsUpdateModalOpen(false)}
+          onClose={handleOnClose}
           faculties={faculties}
         />
       )}
-      <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
+      <button className="add-button" onClick={handleOpenModal}>
         <span>+ Öğrenci Ekle</span>
       </button>
 
@@ -79,7 +97,12 @@ const StudentsPage = () => {
               <td>{student.faculty.name}</td>
               <td>{student.phoneNumber}</td>
               <td>{student.birthPlace}</td>
-              <td>{new Date(student.birthDate).toLocaleDateString('en-GB').split('/').join("-")}</td>
+              <td>
+                {new Date(student.birthDate)
+                  .toLocaleDateString("en-GB")
+                  .split("/")
+                  .join("-")}
+              </td>
               <td>{student.address}</td>
               <td>{student.user.username}</td>
               <td>{student.user.email}</td>
@@ -89,18 +112,19 @@ const StudentsPage = () => {
                   checked={student.user.activity}
                   onChange={() => handleCheckboxChange(student.id)}
                 />
-                </td>
+              </td>
               <td>
                 <div className="update-buttons">
                   <button
                     onClick={() => {
                       setSelectedStudent(student);
                       setIsUpdateModalOpen(true);
-                    }}>
+                      document.body.style.overflow = "hidden";
+                    }}
+                  >
                     Düzenle
                   </button>{" "}
-                  <button
-                    onClick={() => deleteStudent(student.id)}>
+                  <button onClick={() => handleDeleteUser(student.id)}>
                     Sil
                   </button>{" "}
                 </div>

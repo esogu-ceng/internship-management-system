@@ -7,13 +7,11 @@ import {
   StudentUpdate,
   UserUpdate,
 } from "../types/StudentType";
-import { stat } from "fs";
+import { toast } from "react-toastify";
 
 interface UpdateModalFormProps {
   studentDto: Student;
-  onUpdateStudent: (
-    updatedStudentDto: StudentUpdate
-  ) => void;
+  onUpdateStudent: (updatedStudentDto: StudentUpdate) => void;
   faculties: Faculty[];
   onClose: () => void;
 }
@@ -62,11 +60,11 @@ const initialState: State = {
     email: "",
     activity: true,
   },
-  faculty:{
-    id:0,
-    name: ""
+  faculty: {
+    id: 0,
+    name: "",
   },
-  address: ""
+  address: "",
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -104,7 +102,7 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
   studentDto,
   onUpdateStudent,
   onClose,
-  faculties
+  faculties,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -139,11 +137,21 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
       user: {
         id: studentDto.user.id,
         email: state.user.email,
-        activity: studentDto.user.activity
+        activity: studentDto.user.activity,
       },
       facultyId: state.faculty.id,
-      address: state.address
+      address: state.address,
     };
+
+    // validate grade
+    if (
+      !/^\d+(\.\d+)?$/.test(state.grade) ||
+      parseFloat(state.grade) < 0 ||
+      parseFloat(state.grade) > 100
+    ) {
+      toast.error("Not 0 ile 4 veya 0 ile 100 arasında bir sayı olmalıdır! Örn: 2.00 veya 50");
+      return;
+    }
 
     onUpdateStudent(updatedStudentDto);
     onClose();
@@ -152,12 +160,19 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
   return (
     <div className="update-modal">
       <div className="update-modal-content">
-        <h2 className="modal-title"> Öğrenci Düzenle</h2>
-        <div style={{ maxHeight: '80vh', overflowY: 'auto', }}>
-          <div style={{ width: '100%', overflowX: 'auto' }}></div>
+        <div className="modal-header">
+          <h2 className="modal-title">Öğrenci Ekle</h2>
+          <div className="modal-close-icon" onClick={onClose}>
+            X
+          </div>
+        </div>
+        <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
+          <div style={{ width: "100%", overflowX: "auto" }}></div>
           <form onSubmit={handleSubmit} className="modal-form">
             <div className="form-group">
-              <label htmlFor="id" className="form-label">Id:</label>
+              <label htmlFor="id" className="form-label">
+                Id:
+              </label>
               <input
                 type="number"
                 readOnly={true}
@@ -165,13 +180,19 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 name="id"
                 className="form-input"
                 onChange={(e) =>
-                  dispatch({ type: "UPDATE_ID", value: parseInt(e.target.value) })
+                  dispatch({
+                    type: "UPDATE_ID",
+                    value: parseInt(e.target.value),
+                  })
                 }
                 defaultValue={studentDto.id}
+                disabled={true}
               />
             </div>
             <div>
-              <label htmlFor="name" className="form-label">Ad:</label>
+              <label htmlFor="name" className="form-label">
+                Ad:
+              </label>
               <input
                 type="text"
                 id="name"
@@ -182,10 +203,14 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                maxLength={80}
+                placeholder={"Ad"}
               />
             </div>
             <div>
-              <label htmlFor="surname" className="form-label">Soyad:</label>
+              <label htmlFor="surname" className="form-label">
+                Soyad:
+              </label>
               <input
                 type="text"
                 id="surname"
@@ -196,10 +221,14 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                maxLength={80}
+                placeholder={"Soyad"}
               />
             </div>
             <div>
-              <label htmlFor="tckn" className="form-label">T.C. Kimlik No:</label>
+              <label htmlFor="tckn" className="form-label">
+                T.C. Kimlik No:
+              </label>
               <input
                 type="text"
                 id="tckn"
@@ -213,10 +242,15 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                minLength={11}
+                maxLength={11}
+                placeholder={"11122233344"}
               />
             </div>
             <div>
-              <label htmlFor="studentNo" className="form-label">Öğrenci No:</label>
+              <label htmlFor="studentNo" className="form-label">
+                Öğrenci No:
+              </label>
               <input
                 type="text"
                 id="studentNo"
@@ -230,10 +264,15 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                minLength={8}
+                maxLength={12}
+                placeholder={"152120201000"}
               />
             </div>
             <div>
-              <label htmlFor="grade" className="form-label">Not Ortalaması:</label>
+              <label htmlFor="grade" className="form-label">
+                Not Ortalaması:
+              </label>
               <input
                 type="text"
                 id="grade"
@@ -247,10 +286,14 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                placeholder={"2.00 veya 50.750"}
+                maxLength={6} // 2.575/4.00 or 90.750/100
               />
             </div>
             <div>
-              <label htmlFor="phoneNumber" className="form-label">Cep Telefonu:</label>
+              <label htmlFor="phoneNumber" className="form-label">
+                Cep Telefonu:
+              </label>
               <input
                 type="text"
                 id="phoneNumber"
@@ -264,10 +307,17 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                minLength={10} // 555 444 33 22
+                maxLength={10} // in the database it is 10
+                placeholder={"5554443322"}
+                pattern="[0-9]{10}"
+                title="Telefon numarası 10 haneli olmalıdır!"
               />
             </div>
             <div>
-              <label htmlFor="birthPlace" className="form-label">Doğum Yeri:</label>
+              <label htmlFor="birthPlace" className="form-label">
+                Doğum Yeri:
+              </label>
               <input
                 type="text"
                 id="birthPlace"
@@ -281,15 +331,22 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                placeholder={"Eskişehir"}
               />
             </div>
             <div>
-              <label htmlFor="birthDate" className="form-label">Doğum Tarihi:</label>
+              <label htmlFor="birthDate" className="form-label">
+                Doğum Tarihi:
+              </label>
               <input
                 type="date"
                 id="birthDate"
                 name="birthDate"
-                value={new Date(state.birthDate).toLocaleDateString('en-GB').split('/').reverse().join("-")}
+                value={new Date(state.birthDate)
+                  .toLocaleDateString("en-GB")
+                  .split("/")
+                  .reverse()
+                  .join("-")}
                 onChange={(e) =>
                   dispatch({
                     type: "UPDATE_BIRTH_DATE",
@@ -313,9 +370,11 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                   dispatch({
                     type: "UPDATE_FACULTY_ID",
                     value: parseInt(e.target.value),
-                  })}
+                  })
+                }
                 className="form-input"
-                required>
+                required
+              >
                 <option value="">Seçiniz</option>
                 {faculties.map((faculty) => (
                   <option key={faculty.id} value={faculty.id}>
@@ -326,7 +385,9 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
             </div>
 
             <div>
-              <label htmlFor="address" className="form-label">Adres:</label>
+              <label htmlFor="address" className="form-label">
+                Adres:
+              </label>
               <input
                 type="text"
                 id="address"
@@ -340,10 +401,13 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 className="form-input"
                 required
+                placeholder={"e.g Odunpazarı/Eskişehir"}
               />
             </div>
             <div>
-              <label htmlFor="user.email" className="form-label">Email:</label>
+              <label htmlFor="user.email" className="form-label">
+                Email:
+              </label>
               <input
                 type="text"
                 id="user.email"
@@ -357,11 +421,18 @@ const UpdateModalForm: React.FC<UpdateModalFormProps> = ({
                 }
                 required
                 className="form-input"
+                placeholder={"Email"}
               />
             </div>
             <div className="update-modal-buttons">
-              <button type="submit" className="submit-button">Kaydet</button>
-              <button type="button" className="cancel-button-1" onClick={onClose} >
+              <button type="submit" className="submit-button">
+                Kaydet
+              </button>
+              <button
+                type="button"
+                className="cancel-button-1"
+                onClick={onClose}
+              >
                 İptal
               </button>
             </div>

@@ -99,15 +99,20 @@ const AddModalForm: React.FC<Props> = ({
       ...state,
       companyId: parseInt(state.companyId),
     });
-    onShowModal(false);
+    handleClose()
   };
+
+  const handleClose = () => {
+    onShowModal(false);
+    document.body.style.overflow = "auto";
+  }
 
   return (
     <div>
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2 className="modal-title">Modal Form</h2>
+            <h2 className="modal-title">Şirket Yetkilisi Ekle</h2>
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
                 <label htmlFor="name" className="form-label">
@@ -121,6 +126,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  placeholder="Ad"
+                  maxLength={80}
                 />
               </div>
 
@@ -136,6 +143,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  placeholder="Soyad"
+                  maxLength={80}
                 />
               </div>
 
@@ -151,6 +160,11 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  pattern="[0-9]{10}"
+                  title="Telefon numarası 10 haneli olmalıdır. Örnek: 5554443322"
+                  minLength={10} // 555 444 33 22
+                  maxLength={10} // in the database it is 10
+                  placeholder={"5554443322"}
                 />
               </div>
 
@@ -166,6 +180,8 @@ const AddModalForm: React.FC<Props> = ({
                   onChange={handleChange}
                   className="form-input"
                   required
+                  maxLength={50}
+                  placeholder={"Kullanıcı Adı"}
                 />
               </div>
 
@@ -183,6 +199,7 @@ const AddModalForm: React.FC<Props> = ({
                   pattern="^(?=.*[a-z])(?=.*[A-Z]).{8,}$"
                   title="Şifre en az 8 karakter uzunluğunda olmalı ve büyük küçük harf içermelidir."
                   required
+                  placeholder="Şifre"
                 />
               </div>
 
@@ -228,7 +245,7 @@ const AddModalForm: React.FC<Props> = ({
                 <button
                   type="button"
                   className="cancel-button"
-                  onClick={() => onShowModal(false)}>
+                  onClick={handleClose}>
                   İptal
                 </button>
               </div>
