@@ -15,9 +15,6 @@ import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dto.requests.FacultyRequestDto;
-import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
-import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -53,20 +50,17 @@ public class FacultySupervisorTest {
 				.build();
 		var modelUser = User.builder().id(3L).username("Username").password("password").email("email")
 				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
-		var modelFacultySupervisor = FacultySupervisor.builder().id(4L).name("Name").surname("Surname")
-				.phoneNumber("Phone").supervisorNo("No").createDate(localDateTime).updateDate(localDateTime)
-				.user(modelUser).faculty(modelFaculty).build();
+		var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
+				localDateTime, modelUser, modelFaculty);
 
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
 		when(userService.saveUser(any(User.class))).thenReturn(modelUser);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
-		var DtoFaculty = FacultyRequestDto.builder().id(1L).name("Faculty").build();
-		var DtoUser = UserRequestDto.builder().id(3L).username("Username").password("password").email("email").build();
-		var DtoFacultySupervisor = FacultySupervisorRequestDto.builder().id(4L).name("Name").surname("Surname")
-				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
+		var facultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
+				localDateTime, null, null);
 
-		var actual = facultySupervisorService.addFacultySupervisor(DtoFacultySupervisor);
+		var actual = facultySupervisorService.addFacultySupervisor(dtoFacultySupervisor);
 
 		assertNotNull(actual);
 		assertEquals(modelFacultySupervisor.getId(), actual.getId());

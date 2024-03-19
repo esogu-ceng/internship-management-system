@@ -14,13 +14,10 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
-import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
-import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -44,25 +41,23 @@ public class FacultySupervisorService {
 	// IMPORTANT: without @Transaction, the user entity may be saved but
 	// FacultySupervisor may not be saved because of some different constraints
 	@Transactional
-	public FacultySupervisorResponseDto addFacultySupervisor(FacultySupervisorRequestDto facultySupervisorRequestDto) {
-		modelMapper = new ModelMapper();
-		LocalDateTime now = LocalDateTime.now();
+	public FacultySupervisor addFacultySupervisor(FacultySupervisor facultySupervisor) {
 
-		// We need to save user before student.
-		User user = modelMapper.map(facultySupervisorRequestDto.getUser(), User.class);
+		LocalDateTime now = LocalDateTime.now();
+		// We need to save user before facultysupervisor.
+		User user = facultySupervisor.getUser();
 		user.setCreateDate(now);
 		user.setUpdateDate(now);
 		user.setUserType(UserType.FACULTYSUPERVISOR);
 
-		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
 		facultySupervisor.setUser(userService.saveUser(user));
 		facultySupervisor.setCreateDate(now);
 		facultySupervisor.setUpdateDate(now);
 
 		FacultySupervisor savedfacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
-		log.info("The student was successfully added: {}", savedfacultySupervisor);
+		log.info("The faculty supervisor was successfully added: {}", savedfacultySupervisor.getId());
 
-		return modelMapper.map(savedfacultySupervisor, FacultySupervisorResponseDto.class);
+		return savedfacultySupervisor;
 	}
 
 	public FacultySupervisorResponseDto updateFacultySupervisor(
@@ -129,7 +124,7 @@ public class FacultySupervisorService {
 			}
 			Page<FacultySupervisorResponseDto> facultySupervisorDtos = facultySupervisors
 					.map(facultySupervisor -> modelMapper.map(facultySupervisor, FacultySupervisorResponseDto.class));
- 			return facultySupervisorDtos;
+			return facultySupervisorDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting faculty supervisors: {}", e.getMessage());
 			throw e;
