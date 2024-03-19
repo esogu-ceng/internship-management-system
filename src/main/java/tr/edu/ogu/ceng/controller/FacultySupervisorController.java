@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
-import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
+import tr.edu.ogu.ceng.model.FacultySupervisor;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -42,7 +43,13 @@ public class FacultySupervisorController {
 	@PostMapping("/saveFacultysupervisor")
 	public FacultySupervisorResponseDto addFacultySupervisor(
 			@RequestBody @Validated FacultySupervisorRequestDto facultySupervisorRequestDto) {
-		return facultySupervisorService.addFacultySupervisor(facultySupervisorRequestDto);
+		ModelMapper modelMapper = new ModelMapper();
+		User user = modelMapper.map(facultySupervisorRequestDto.getUser(), User.class);
+
+		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
+		facultySupervisor.setUser(user);
+		return modelMapper.map(facultySupervisorService.addFacultySupervisor(facultySupervisor),
+				FacultySupervisorResponseDto.class);
 	}
 
 	@PutMapping

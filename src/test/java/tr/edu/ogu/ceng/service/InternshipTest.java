@@ -83,9 +83,8 @@ public class InternshipTest {
 				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
-		var modelFacultySupervisor = FacultySupervisor.builder().id(1L).name("Name").surname("Surname")
-				.phoneNumber("Phone").supervisorNo("No").createDate(localDateTime).updateDate(localDateTime)
-				.user(modelUser).faculty(modelFaculty).build();
+		var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
+				localDateTime, modelUser, modelFaculty);
 		var modelStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
 				.grade("test").phoneNumber("test").birthPlace("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.createDate(localDateTime).updateDate(localDateTime).faculty(modelFaculty).user(modelUser)
