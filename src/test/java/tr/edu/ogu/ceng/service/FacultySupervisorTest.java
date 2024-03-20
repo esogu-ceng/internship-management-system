@@ -60,7 +60,7 @@ public class FacultySupervisorTest {
 		var facultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
 				localDateTime, null, null);
 
-		var actual = facultySupervisorService.addFacultySupervisor(dtoFacultySupervisor);
+		var actual = facultySupervisorService.addFacultySupervisor(facultySupervisor);
 
 		assertNotNull(actual);
 		assertEquals(modelFacultySupervisor.getId(), actual.getId());
