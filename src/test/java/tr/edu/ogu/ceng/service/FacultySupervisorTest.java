@@ -19,6 +19,7 @@ import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
+import tr.edu.ogu.ceng.model.Language;
 import tr.edu.ogu.ceng.model.User;
 
 public class FacultySupervisorTest {
@@ -46,10 +47,9 @@ public class FacultySupervisorTest {
 
 		LocalDateTime localDateTime = LocalDateTime.now();
 
-		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
-				.build();
-		var modelUser = User.builder().id(3L).username("Username").password("password").email("email")
-				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
+		var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
+		var modelUser = new User(3L, "Username", "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+				localDateTime, new Language(1L, "Türkçe", "tr", "tr", "TR", "Türkiye"), true);
 		var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
 				localDateTime, modelUser, modelFaculty);
 
@@ -58,7 +58,7 @@ public class FacultySupervisorTest {
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
 		var facultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
-				localDateTime, null, null);
+				localDateTime, modelUser, modelFaculty);
 
 		var actual = facultySupervisorService.addFacultySupervisor(facultySupervisor);
 

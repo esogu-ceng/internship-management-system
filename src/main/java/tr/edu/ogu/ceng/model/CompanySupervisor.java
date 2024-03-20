@@ -16,40 +16,38 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "ims_company_supervisors")
-public class CompanySupervisor{
+public class CompanySupervisor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "name" ,nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
-	@Column(name = "surname" ,nullable = false)
+	@Column(name = "surname", nullable = false)
 	private String surname;
-	@Column(name = "phone_number" ,nullable = false)
+	@Column(name = "phone_number", nullable = false)
 	private String phoneNumber;
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	@Column(name = "update_date")
 	private LocalDateTime updateDate;
-	
+
 	@JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id" ,nullable = false, referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id", nullable = false, referencedColumnName = "id")
 	private Company company;
-	 
+
 	@JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" , unique = true, referencedColumnName = "id")
-    private User user;
-	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", unique = true, referencedColumnName = "id")
+	private User user;
+
 }

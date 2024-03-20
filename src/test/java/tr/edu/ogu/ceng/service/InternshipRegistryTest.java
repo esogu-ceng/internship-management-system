@@ -35,6 +35,7 @@ import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
+import tr.edu.ogu.ceng.model.Language;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 
@@ -79,25 +80,24 @@ public class InternshipRegistryTest {
 
 		LocalDateTime localDateTime = LocalDateTime.now();
 
-		var modelCompany = Company.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
-				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
-				.updateDate(localDateTime).build();
-		var modelUser = User.builder().id(3L).username("Username").password("password").email("email")
-				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
-		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
-				.build();
+		var modelCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", localDateTime,
+				localDateTime);
+		var modelUser = new User(3L, "Username", "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+				localDateTime, new Language(), true);
+
+		var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
+
 		var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
 				localDateTime, modelUser, modelFaculty);
-		var modelStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
-				.grade("test").phoneNumber("test").birthPlace("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.createDate(localDateTime).updateDate(localDateTime).faculty(modelFaculty).user(modelUser)
-				.address("address").build();
-		var modelInternship = Internship.builder().id(1L).status(status)
-				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.days(1).student(modelStudent).company(modelCompany).facultySupervisor(modelFacultySupervisor).build();
-		var modelInternshipRegistry = InternshipRegistry.builder().id(1L).filePath("C:/Users/root/test")
-				.name("internshipRegistry1").type("pdf").date(new Timestamp(2023, 04, 12, 0, 0, 0, 0))
-				.internship(modelInternship).build();
+		var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test",
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), localDateTime, localDateTime, modelUser, modelFaculty,
+				"address");
+
+		var modelInternship = new Internship(1L, InternshipStatus.APPROVED, null, null, 20, localDateTime,
+				localDateTime, modelStudent, modelCompany, modelFacultySupervisor);
+
+		var modelInternshipRegistry = new InternshipRegistry(1L, "C:/Users/root/test", "internshipRegistry1", "pdf",
+				new Timestamp(2023, 04, 12, 0, 0, 0, 0), localDateTime, localDateTime, modelInternship);
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
 		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);

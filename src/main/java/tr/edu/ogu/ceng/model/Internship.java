@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
@@ -28,7 +27,6 @@ import tr.edu.ogu.ceng.enums.InternshipStatus;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Internship {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

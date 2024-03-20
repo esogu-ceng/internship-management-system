@@ -73,26 +73,18 @@ public class StudentService {
 	}
 
 	@Transactional
-	public StudentResponseDto addStudent(StudentRequestDto studentRequestDto) {
-		modelMapper = new ModelMapper();
+	public Student addStudent(Student student) {
 		LocalDateTime now = LocalDateTime.now();
-
-		// We need to save user before student.
-		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
-		user.setUserType(UserType.STUDENT);
-		user.setCreateDate(now);
-		user.setUpdateDate(now);
-
-		Student student = modelMapper.map(studentRequestDto, Student.class);
-		student.setUser(userService.saveUser(user));
-
 		student.setCreateDate(now);
 		student.setUpdateDate(now);
-
+		student.getUser().setUserType(UserType.STUDENT);
+		student.getUser().setCreateDate(now);
+		student.getUser().setUpdateDate(now);
+		student.setUser(userRepository.save(student.getUser()));
 		Student savedStudent = studentRepository.save(student);
 		log.info("The student was successfully added: {}", savedStudent);
 
-		return modelMapper.map(savedStudent, StudentResponseDto.class);
+		return savedStudent;
 	}
 
 	public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
