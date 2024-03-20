@@ -36,9 +36,10 @@ public class FacultyTest {
 
 		LocalDateTime localDateTime = LocalDateTime.now();
 
-		var modelFaculty = Faculty.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
+		var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
-		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime).build();
+		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
+				.build();
 
 		var actual = facultyService.addFaculty(DtoFaculty);
 

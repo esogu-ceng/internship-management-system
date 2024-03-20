@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.model.Student;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -54,7 +57,11 @@ public class StudentController {
 
 	@PostMapping
 	public StudentResponseDto addStudent(@RequestBody StudentRequestDto studentRequestDto) {
-		return studentService.addStudent(studentRequestDto);
+		ModelMapper modelMapper = new ModelMapper();
+		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
+		Student student = modelMapper.map(studentRequestDto, Student.class);
+		student.setUser(user);
+		return modelMapper.map(studentService.addStudent(student), StudentResponseDto.class);
 	}
 
 	@PutMapping

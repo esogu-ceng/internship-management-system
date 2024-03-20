@@ -41,11 +41,11 @@ public class UserTest {
 	void is_user_saved_successfully() {
 		String rawPassword = "Test";
 		LocalDateTime dateTime = LocalDateTime.now();
-		var userToSave = User.builder().id(1002L).username("TEST").password(rawPassword).email("Test@test.com")
-				.userType(UserType.STUDENT).createDate(dateTime).updateDate(dateTime).build();
+		var userToSave = new User(1002L, "TEST", rawPassword, "Test@test.com", UserType.STUDENT, dateTime, dateTime,
+				null, false);
 
-		var savedUser = User.builder().id(1002L).username("TEST").password(passwordEncoder.encode(rawPassword))
-				.email("Test@test.com").userType(UserType.STUDENT).createDate(dateTime).updateDate(dateTime).build();
+		var savedUser = new User(1002L, "TEST", passwordEncoder.encode(rawPassword), "Test@test.com", UserType.STUDENT,
+				dateTime, dateTime, null, false);
 
 		when(userRepository.existsById(any(Long.class))).thenReturn(false);
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);

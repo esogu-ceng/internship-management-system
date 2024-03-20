@@ -18,8 +18,6 @@ import org.modelmapper.ModelMapper;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
-import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
-import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
@@ -67,31 +65,30 @@ public class StudentTest {
 		// FIXME This test case will be extended to mock all used repository methods
 		// like facultyRepository.get etc.
 		LocalDateTime dateTime = LocalDateTime.now();
-		var savedUser = User.builder().email("test").password("passwordHash").id(1L).username("test").build();
-		var SavedStudent = Student.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
-				.grade("test").phoneNumber("test").birthPlace("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.createDate(dateTime).updateDate(dateTime).faculty(new Faculty()).address("address").build();
+		var savedUser = new User(1002L, "TEST", "passwordHash", "", null, dateTime, dateTime, null, false);
+		var SavedStudent = new Student(6L, "test", "test", "test", "test", null, null, null,
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
+
+		var user = new User(1002L, "TEST", "passwordHash", "", null, dateTime, dateTime, null, false);
+		user.setId(null);
+		var student = new Student(6L, "test", "test", "test", "test", null, null, null,
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
+		student.setId(null);
 
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 		when(studentRepository.save(any(Student.class))).thenReturn(SavedStudent);
 
-		var userToSave = UserRequestDto.builder().email("test").password("passwordHash").username("test").build();
-		var studentToSave = StudentRequestDto.builder().name("test").surname("test").id(6L).tckn("test")
-				.studentNo("test").grade("test").phoneNumber("test").birthPlace("test")
-				.birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).user(userToSave).facultyId(0L).address("address")
-				.build();
-		var actual = studentService.addStudent(studentToSave);
+		var actual = studentService.addStudent(student);
 
 		assertNotNull(actual);
-		assertEquals(studentToSave.getName(), actual.getName());
-		assertEquals(studentToSave.getSurname(), actual.getSurname());
-		assertEquals(studentToSave.getId(), actual.getId());
-		assertEquals(studentToSave.getStudentNo(), actual.getStudentNo());
-		assertEquals(studentToSave.getGrade(), actual.getGrade());
-		assertEquals(studentToSave.getPhoneNumber(), actual.getPhoneNumber());
-		assertEquals(studentToSave.getBirthPlace(), actual.getBirthPlace());
-		assertEquals(studentToSave.getBirthDate(), actual.getBirthDate());
-		assertEquals(studentToSave.getAddress(), actual.getAddress());
+		assertEquals(student.getName(), actual.getName());
+		assertEquals(student.getSurname(), actual.getSurname());
+		assertEquals(student.getStudentNo(), actual.getStudentNo());
+		assertEquals(student.getGrade(), actual.getGrade());
+		assertEquals(student.getPhoneNumber(), actual.getPhoneNumber());
+		assertEquals(student.getBirthPlace(), actual.getBirthPlace());
+		assertEquals(student.getBirthDate(), actual.getBirthDate());
+		assertEquals(student.getAddress(), actual.getAddress());
 	}
 
 }

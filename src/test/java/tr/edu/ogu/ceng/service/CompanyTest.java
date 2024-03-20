@@ -34,31 +34,11 @@ class CompanyTest {
 	void should_save_one_company() {
 		LocalDateTime dateTime = LocalDateTime.now();
 
-		var companyToSave = CompanyDto.builder()
-				.id(1L)
-				.name("Test")
-				.address("Test")
-				.phoneNumber("Test")
-				.faxNumber("Test")
-				.email("Test@test.com")
-				.scope("Test")
-				.description("Test")
-				.createDate(dateTime)
-				.updateDate(dateTime)
-				.build();
+		var companyToSave = CompanyDto.builder().id(1L).name("Test").address("Test").phoneNumber("Test")
+				.faxNumber("Test").email("Test@test.com").scope("Test").description("Test").createDate(dateTime)
+				.updateDate(dateTime).build();
 
-		var savedCompany = Company.builder()
-				.id(1L)
-				.name("Test")
-				.address("Test")
-				.phoneNumber("Test")
-				.faxNumber("Test")
-				.email("Test")
-				.scope("Test")
-				.description("Test")
-				.createDate(dateTime)
-				.updateDate(dateTime)
-				.build();
+		var savedCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", dateTime, dateTime);
 
 		when(companyRepository.save(any(Company.class))).thenReturn(savedCompany);
 
