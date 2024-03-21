@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
@@ -130,6 +131,8 @@ public class FacultySupervisorService {
 			throw e;
 		}
 	}
+
+
 
 	public FacultySupervisorResponseDto getFacultySupervisorByUserId(Long userId) {
 		try {

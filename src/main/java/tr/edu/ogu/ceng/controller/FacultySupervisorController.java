@@ -16,12 +16,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
+import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
+import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.EmailService;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
+import tr.edu.ogu.ceng.service.PasswordGeneratorService;
+import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
+
+import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/facultySupervisor")
@@ -30,6 +42,15 @@ public class FacultySupervisorController {
 
 	@Autowired
 	private FacultySupervisorService facultySupervisorService;
+
+	@Autowired
+	private PasswordGeneratorService passwordGeneratorService;
+
+	@Autowired
+	private StudentService studentService;
+
+	@Autowired
+	private EmailService emailService;
 
 	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -51,6 +72,28 @@ public class FacultySupervisorController {
 		return modelMapper.map(facultySupervisorService.addFacultySupervisor(facultySupervisor),
 				FacultySupervisorResponseDto.class);
 	}
+
+	@PostMapping ("/addStudent")
+	public ResponseEntity<?> addStudentUnderFacultySupervisor(@RequestBody StudentRequestDto studentRequestDto) {
+
+
+		String password = passwordGeneratorService.generateSecurePassword();
+		studentRequestDto.setPassword(password);
+		ModelMapper modelMapper = new ModelMapper();
+		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
+		Student student = modelMapper.map(studentRequestDto, Student.class);
+		student.setUser(user);
+		StudentResponseDto studentResponseDto = modelMapper.map(studentService.addStudent(student), StudentResponseDto.class);
+
+		if (studentResponseDto != null) {
+			emailService.sendPasswordViaEmail(password, user.getEmail(), user.getUserType());
+			System.out.println("Başarıyla kaydoldu");
+			return ResponseEntity.ok(studentResponseDto); // 200 OK
+		} else {
+			return ResponseEntity.notFound().build(); // 404 Not Found
+		}
+	}
+	
 
 	@PutMapping
 	public ResponseEntity<FacultySupervisorResponseDto> updateFacultySupervisor(

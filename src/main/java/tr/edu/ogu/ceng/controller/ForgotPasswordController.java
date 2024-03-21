@@ -10,17 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
 import tr.edu.ogu.ceng.dto.ResetPasswordDto;
+import tr.edu.ogu.ceng.service.EmailService;
 import tr.edu.ogu.ceng.service.ForgotPasswordService;
 
 @RestController
 @RequestMapping("/public")
 public class ForgotPasswordController {
 	@Autowired
-	ForgotPasswordService forgotPasswordService; 
+	ForgotPasswordService forgotPasswordService;
+
+	@Autowired
+	EmailService emailService;
 	
 	 @PostMapping("/forgot-password")
 	 public ResponseEntity<String> sendPasswordResetEmail(@RequestBody EmailReceiverDto email) throws Exception{
-			 forgotPasswordService.sendResetPasswordEmail(email);
+			 emailService.sendResetPasswordEmail(email);
 			 return ResponseEntity.ok("Reset password e-mail sent successfully!");
 	 }
 	 @PostMapping("/update-password")

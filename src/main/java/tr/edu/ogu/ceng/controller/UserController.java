@@ -20,6 +20,7 @@ import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.model.User;
+
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -30,6 +31,10 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 public class UserController {
 	@Autowired
 	private UserService userService;
+
+
+
+
 
 	@GetMapping("/getAll")
 	public Page<UserDto> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,

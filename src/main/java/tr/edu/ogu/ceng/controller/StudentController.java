@@ -22,6 +22,7 @@ import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.PasswordGeneratorService;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -31,6 +32,8 @@ public class StudentController {
 
 	@Autowired
 	StudentService studentService;
+
+
 
 	@GetMapping("/{id}")
 	public ResponseEntity<StudentResponseDto> getStudent(@PathVariable(name = "id") long id) {
@@ -57,6 +60,8 @@ public class StudentController {
 
 	@PostMapping
 	public StudentResponseDto addStudent(@RequestBody StudentRequestDto studentRequestDto) {
+
+
 		ModelMapper modelMapper = new ModelMapper();
 		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
 		Student student = modelMapper.map(studentRequestDto, Student.class);
