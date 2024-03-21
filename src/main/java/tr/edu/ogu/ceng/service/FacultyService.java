@@ -60,6 +60,7 @@ public class FacultyService {
 	public FacultyDto updateFaculty(FacultyRequestDto facultyRequestDto) {
 		modelMapper = new ModelMapper();
 		if (facultyRequestDto.getId() == null) {
+			log.warn("Faculty Id cannot be null");
 			throw new IllegalArgumentException("Faculty Id cannot be null");
 		}
 		Faculty faculty = facultyRepository.findById(facultyRequestDto.getId())
@@ -97,11 +98,13 @@ public class FacultyService {
 	public FacultyDto getFacultyById(Long id) {
 		Faculty faculty = facultyRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Faculty not found with id: " + id));
+		log.info("Faculty found with id: {}", id);
 		return convertToDto(faculty);
 	}
 
 	private FacultyDto convertToDto(Faculty faculty) {
 		modelMapper = new ModelMapper();
+		log.info("Converted faculty to facultyDto: {}", faculty);
 		return modelMapper.map(faculty, FacultyDto.class);
 	}
 

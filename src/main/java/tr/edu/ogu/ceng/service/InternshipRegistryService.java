@@ -118,6 +118,7 @@ public class InternshipRegistryService {
 		}
 		try {
 			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting internship registry by id: {}", id);
 			return modelMapper.map(internshipRegistryRepository.getById(id), InternshipRegistryResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while getting internship registry: {}", e.getMessage());

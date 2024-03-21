@@ -50,6 +50,7 @@ public class StudentService {
 			ModelMapper modelMapper = new ModelMapper();
 			return modelMapper.map(student, StudentResponseDto.class);
 		} catch (EntityNotFoundException e) {
+			log.error("An error occurred while getting student: {}", e.getMessage());
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
@@ -92,6 +93,7 @@ public class StudentService {
 		LocalDateTime now = LocalDateTime.now();
 
 		if (studentRequestDto.getId() == null) {
+			log.warn("Student ID cannot be null.");
 			throw new IllegalArgumentException("Student ID cannot be null");
 		}
 		Student student = studentRepository.findById(studentRequestDto.getId())
@@ -151,6 +153,7 @@ public class StudentService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			Student student = studentRepository.findByUserId(id);
+			log.info("Getting student with user ID: {}", id);
 			return modelMapper.map(student, StudentDto.class);
 		} catch (Exception e) {
 			log.error("An error occurred while getting students with given user ID", e.getMessage());
@@ -197,6 +200,7 @@ public class StudentService {
 			}
 			Page<StudentResponseDto> studentDtos = students
 					.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			log.info("Getting all students with pageable: {}", pageable);
 			return studentDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting students: {}", e.getMessage());

@@ -49,6 +49,7 @@ public class CompanyService {
 					company.getDescription());
 			return modelMapper.map(company, CompanyDto.class);
 		} catch (EntityNotFoundException e) {
+			log.error("Failed to update company. Error message: {}", e.getMessage());
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
@@ -60,6 +61,8 @@ public class CompanyService {
 			throw new EntityNotFoundException();
 		}
 		ModelMapper modelMapper = new ModelMapper();
+		log.info("Company with ID {} has been fetched: {}, {}", company.getId(), company.getName(),
+				company.getDescription();
 		return modelMapper.map(company, CompanyDto.class);
 	}
 
@@ -71,6 +74,7 @@ public class CompanyService {
 		ModelMapper modelMapper = new ModelMapper();
 		Page<Company> companies = companyRepository.findByNameContainingIgnoreCase(name, pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
+		log.info("Companies with name containing {} fetched", name);
 		return companyDtos;
 	}
 

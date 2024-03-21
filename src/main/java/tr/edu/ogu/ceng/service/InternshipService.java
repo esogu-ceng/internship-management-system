@@ -83,6 +83,7 @@ public class InternshipService {
 			log.warn("Internship not found with id {}!", id);
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
+		log.info("Internship has been found with id = {}.", id);
 		return modelMapper.map(internship, InternshipResponseDto.class);
 	}
 
@@ -104,6 +105,7 @@ public class InternshipService {
 						.addMapping(src -> src.getCompany().getScope(), CompanyDto::setScope)
 						.addMapping(src -> src.getCompany().getDescription(), CompanyDto::setDescription);
 			});
+			log.info("Company has been found by InternshipId: {}", id);
 			return modelMapper.map(internshipOptional.orElseThrow(), CompanyDto.class);
 		} catch (Exception e) {
 			log.error("Error occured while getting the Company by InternshipId", id);
@@ -143,13 +145,13 @@ public class InternshipService {
 	public Page<InternshipResponseDto> getAllInternshipsByStudentId(Long studentId, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting all internships by student id: {} with pageable: {}", studentId, pageable);
 			Page<Internship> internships = internshipRepository.findAllByStudentId(studentId, pageable);
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
 			Page<InternshipResponseDto> internshipDtos = internships
 					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			log.info("Internships has been found by student id: {}", studentId);
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
@@ -181,7 +183,7 @@ public class InternshipService {
 
 		Internship internship = internshipRepository.findById(id).orElse(null);
 		Student student = internship.getStudent();
-
+		log.info("Student has been found by InternshipId: {}", id);
 		return modelMapper.map(student, StudentResponseDto.class);
 	}
 
@@ -198,6 +200,7 @@ public class InternshipService {
 			}
 			Page<InternshipResponseCompanyDto> internshipDtos = internships
 					.map(internship -> modelMapper.map(internship, InternshipResponseCompanyDto.class));
+			log.info("Internships has been found by faculty supervisor id: {}", faculty_supervisor_id);
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
@@ -206,21 +209,26 @@ public class InternshipService {
 	}
 
 	public long countApprovedInternships() {
+		log.info("Counting approved internships");
 		return internshipRepository.countByStatus(InternshipStatus.APPROVED);
 	}
 
 	public long countRejectedInternships() {
+		log.info("Counting rejected internships");
 		return internshipRepository.countByStatus(InternshipStatus.REJECTED);
 	}
 
 	public long countPendingInternships() {
+		log.info("Counting pending internships");
 		return internshipRepository.countByStatus(InternshipStatus.PENDING);
 	}
 	public long countDistinctStudents() {
+		log.info("Counting distinct students");
 	    return internshipRepository.countDistinctStudents();
 	}
 	
 	public Long countAllInternships() {
+		log.info("Counting all internships");
 		return internshipRepository.count();
 	}
 
