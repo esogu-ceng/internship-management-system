@@ -6,14 +6,13 @@ def addADMIN(conn):
                     username, password, email, user_type, language, activity
                 )
                 VALUES (
-                    'ykartal@ogu.edu.tr', '123456', 'ykartal@ogu.edu.tr', 'ADMIN', '1', true
+                    'ykartal@ogu.edu.tr', '$2a$10$0JcB6.kytS7h215ptvjVxOitKMeth3IQriCXmLUUFvStp.6wKqftm', 'ykartal@ogu.edu.tr', 'ADMIN', '1', true
                 ) RETURNING id
             """
-
     cur.execute(insert_query)
     conn.commit()
     cur.close()
-    print(f"ADMIN user added. (ykartal@ogu.edu.tr:123456)")
+    print(f"ADMIN user added. (ykartal@ogu.edu.tr:$2a$10$0JcB6.kytS7h215ptvjVxOitKMeth3IQriCXmLUUFvStp.6wKqftm)")
 
 
 def clear_ims_users(conn):

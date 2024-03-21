@@ -1,7 +1,8 @@
 import random
 
 from data import data_pool as data
-
+from .Hash import hash_password
+hashed_password = hash_password("123") #Change here for default password
 
 def generate_company_companySupervisor(conn, count):
     cur = conn.cursor()
@@ -51,7 +52,7 @@ def generate_company_companySupervisor(conn, count):
                                username, password, email, user_type, language, activity
                            )
                            VALUES (
-                               '{(name[0] + surname).lower() + i.__str__()}cs', '123', '{(name[0] + surname).lower() + i.__str__()}cs@ogu.edu.tr', 'COMPANYSUPERVISOR', '1', {activity}
+                               '{(name[0] + surname).lower() + i.__str__()}cs', '{hashed_password}', '{(name[0] + surname).lower() + i.__str__()}cs@ogu.edu.tr', 'COMPANYSUPERVISOR', '1', {activity}
                            ) RETURNING id
                        """
         cur.execute(insert_query)
