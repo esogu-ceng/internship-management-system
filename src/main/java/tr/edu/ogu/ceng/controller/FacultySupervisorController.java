@@ -77,6 +77,7 @@ public class FacultySupervisorController {
 	public ResponseEntity<?> addStudentUnderFacultySupervisor(@RequestBody StudentRequestDto studentRequestDto) {
 
 
+
 		String password = passwordGeneratorService.generateSecurePassword();
 		studentRequestDto.setPassword(password);
 		ModelMapper modelMapper = new ModelMapper();
@@ -86,14 +87,40 @@ public class FacultySupervisorController {
 		StudentResponseDto studentResponseDto = modelMapper.map(studentService.addStudent(student), StudentResponseDto.class);
 
 		if (studentResponseDto != null) {
-			emailService.sendPasswordViaEmail(password, user.getEmail(), user.getUserType());
+			emailService.sendPasswordViaEmail(user,student.getName(),student.getSurname());
 			System.out.println("Başarıyla kaydoldu");
 			return ResponseEntity.ok(studentResponseDto); // 200 OK
 		} else {
 			return ResponseEntity.notFound().build(); // 404 Not Found
 		}
 	}
-	
+
+ /*
+	@GetMapping ("/sendmail")
+	public boolean addStudentUnderFacultySupervisor() {
+
+        User user = new User();
+		user.setPassword(passwordGeneratorService.generateSecurePassword());
+        user.setId(1L);
+        user.setUsername("example_user");
+        user.setEmail("danisss.zeynep@gmail.com");
+        user.setUserType(UserType.STUDENT);
+        user.setCreateDate(LocalDateTime.now());
+        user.setUpdateDate(LocalDateTime.now());
+
+
+
+
+
+		emailService.sendPasswordViaEmail(user,"zeynep","Danış");
+
+       return true;
+
+
+
+	}
+*/
+
 
 	@PutMapping
 	public ResponseEntity<FacultySupervisorResponseDto> updateFacultySupervisor(

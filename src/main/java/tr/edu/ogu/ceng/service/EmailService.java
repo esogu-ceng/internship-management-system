@@ -8,12 +8,15 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -32,44 +35,64 @@ public class EmailService {
 
     private static Cache<String, String> resetRequestCache = CacheBuilder.newBuilder().maximumSize(1000)
             .expireAfterWrite(5, TimeUnit.MINUTES).build();
-    public boolean sendPasswordViaEmail(String password, String sendTo, UserType userType) {
+    public  boolean sendPasswordViaEmail(User user,String name,String surname) {
         try {
-
             // Get JavaMailSender instance
             JavaMailSender mailSender = getJavaMailSender();
 
             // Create MimeMessage
             MimeMessage message = mailSender.createMimeMessage();
 
-            // Create MimeMessageHelper for easier email creation
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(sendTo);
+            // Create MimeMessageHelper for easier email creation with UTF-8 character encoding
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+            helper.setTo(user.getEmail());
             helper.setSubject("Password Reminder");
 
             // Customize email body based on user type
             String userTypeMessage = "";
-            switch(userType) {
+            String additionalMessage = "";
+
+            switch(user.getUserType()) {
                 case STUDENT:
-                    userTypeMessage = "Hello Student, \n\n";
+
+                    additionalMessage = "As a student,------";
                     break;
                 case COMPANYSUPERVISOR:
-                    userTypeMessage = "Hello Company Supervisor, \n\n";
+
+                    additionalMessage = "As a company supervisor, ------";
                     break;
                 case FACULTYSUPERVISOR:
-                    userTypeMessage = "Hello Faculty Supervisor, \n\n";
+
+                    additionalMessage = "As a faculty supervisor, ----";
                     break;
                 case ADMIN:
-                    userTypeMessage = "Hello Admin, \n\n";
+
+                    additionalMessage = "As an admin, -----";
                     break;
                 default:
-                    userTypeMessage = "Hello, \n\n";
+
+                    additionalMessage = "Please ensure the security of your account credentials.";
                     break;
             }
-            helper.setText(userTypeMessage + "Your password is: " + password);
+
+            // Constructing personalized message body
+            String emailBody = "<html><body>" +
+                    "<div style=\"background-color: #f2f2f2; padding: 20px; border-radius: 10px;\">" +
+                    "<p style=\"font-size: 16px;\">" + "Hello"+" " + name+ " " +surname+ " "+ ",<br><br>" +
+                    "Your account has been successfully created. Below are your account details:<br><br>" +
+                    "<strong>Username:</strong> " + user.getUsername() + "<br>" +
+                    "<strong>Password:</strong> " + user.getPassword() + "<br><br>" +
+                    "For security reasons, please consider changing your password after logging in.<br><br>" +
+                    additionalMessage + "<br><br>" +
+                    "Best regards,<br>" +
+                    "Your System Team" +
+                    "</p></div></body></html>";
+
+            helper.setText(emailBody, true);
 
             // Send message
             mailSender.send(message);
-            System.out.println("Email successfully sent to: " + sendTo);
+            System.out.println("Email successfully sent to: " + user.getEmail());
             return true; // Return true if email is sent successfully
         } catch (MessagingException mex) {
             mex.printStackTrace();
