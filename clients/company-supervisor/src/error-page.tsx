@@ -1,7 +1,10 @@
 import { useRouteError } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function ErrorPage() {
   const error: any = useRouteError();
+  const root_path: string | undefined = process.env.PUBLIC_URL;
+
   console.error(error);
   return (
     <div id="error-page">
@@ -19,6 +22,9 @@ export default function ErrorPage() {
             <p className="my-44 animate-bounce text-8xl font-extrabold text-white">
               <i>{error.statusText || error.message}</i>
             </p>
+            <Link to={`${root_path}/`} className="text-white underline mt-8">
+              Ana sayfaya dön
+            </Link>
           </div>
         </div>
       </div>
