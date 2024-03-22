@@ -60,7 +60,8 @@ public class StudentService {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all students with pageable: {}", pageable);
 			Page<Student> students = studentRepository.findAll(pageable);
-			if (studentRepository.findAll() == null) {
+			// Check if the student list is empty
+			if (students.isEmpty()){
 				log.warn("The student list is empty.");
 				return null;
 			}
@@ -156,7 +157,7 @@ public class StudentService {
 			log.info("Getting student with user ID: {}", id);
 			return modelMapper.map(student, StudentDto.class);
 		} catch (Exception e) {
-			log.error("An error occurred while getting students with given user ID", e.getMessage());
+			log.error("An error occurred while getting student by user ID: {}", e.getMessage());
 			throw e;
 		}
 	}

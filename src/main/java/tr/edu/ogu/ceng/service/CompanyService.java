@@ -61,8 +61,7 @@ public class CompanyService {
 			throw new EntityNotFoundException();
 		}
 		ModelMapper modelMapper = new ModelMapper();
-		log.info("Company with ID {} has been fetched: {}, {}", company.getId(), company.getName(),
-				company.getDescription();
+		log.info("Company with ID {} fetched", id);
 		return modelMapper.map(company, CompanyDto.class);
 	}
 
