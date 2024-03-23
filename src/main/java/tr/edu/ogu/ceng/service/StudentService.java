@@ -135,6 +135,13 @@ public class StudentService {
 		return true;
 	}
 
+  /**
+     * Search student by name, surname or student number.
+     * 
+     * @param pageable
+     * @param keyword
+     * @return Page<StudentResponseDto>
+     */
 	public Page<StudentResponseDto> searchStudent(Pageable pageable, String keyword) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
