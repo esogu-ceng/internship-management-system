@@ -210,5 +210,8 @@ public class StudentService {
             throw e;
         }
     }
+    public Long countStudents() {
+		return studentRepository.count();
+	}
 
 }

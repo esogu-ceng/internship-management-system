@@ -198,3 +198,9 @@ button.header-button {
 .password-check{
     list-style-type: disc;
 }
+
+button.header-login {
+    color: darkblue;
+    font-weight: bold;
+    right: 0;
+}

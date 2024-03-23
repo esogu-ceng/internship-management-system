@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
 import Companies from './components/Companies';
 import { log } from 'console';
-
+import Dashboard from './components/Dashboard';
 function App() {
     const root_path: string | undefined = process.env.PUBLIC_URL
     return (
@@ -21,6 +21,8 @@ function App() {
                     <Route path={`${root_path}`} element={<Login />} />
                     <Route path={`${root_path}/reset-password`} element={<ResetPassword />} />
                     <Route path={`${root_path}/companies`} element={<Companies />} />
+                    <Route path={`${root_path}/dashboard`} element={<Dashboard />} />
+        
                 </Routes>
             <Footer />
             </BrowserRouter>

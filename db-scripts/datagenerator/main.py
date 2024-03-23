@@ -10,7 +10,7 @@ conn = psycopg2.connect(
     host="localhost",
     database="internship-management-system",
     user="postgres",
-    password="123456"
+    password="burak123"
 )
 
 # SAYILARI DEĞİŞTİREBİLİRSİNİZ
