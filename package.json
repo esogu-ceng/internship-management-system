@@ -1,0 +1,12 @@
+{
+  "name": "internship-management-system",
+  "version": "1.0.0",
+  "description": "This project contains a Java application that performs internship management functions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
