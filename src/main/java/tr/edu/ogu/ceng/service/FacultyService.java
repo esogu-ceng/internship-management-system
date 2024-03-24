@@ -104,7 +104,8 @@ public class FacultyService {
 
 	private FacultyDto convertToDto(Faculty faculty) {
 		modelMapper = new ModelMapper();
-		log.info("Converted faculty to facultyDto: {}", faculty);
+		log.info("Converting faculty to FacultyDtoId: {}, FacultyDtoName: {}", faculty.getId(),faculty.getName());
+
 		return modelMapper.map(faculty, FacultyDto.class);
 	}
 

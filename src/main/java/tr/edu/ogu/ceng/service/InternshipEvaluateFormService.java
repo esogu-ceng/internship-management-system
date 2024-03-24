@@ -68,7 +68,7 @@ public class InternshipEvaluateFormService {
             internshipEvaluateFormRepository.save(internshipEvaluateForm);
             log.info("File upload completed");
         } else {
-            log.error("Hatalı internship ID veya company ID");
+            log.error("Wrong internship ID or company ID");
             throw new IllegalArgumentException("Hatalı internship ID veya company ID");
         }
         return internshipEvaluateForm;
@@ -80,7 +80,7 @@ public class InternshipEvaluateFormService {
     }
 
     public Page<InternshipEvaluateForm> getAllInternshipEvaluateForms(Pageable pageable) {
-        log.info("Getting all internship evaluate forms with pageable: {}", pageable);
+        log.info("Getting all internship evaluate forms");
         return internshipEvaluateFormRepository.findAll(pageable);
     }
     

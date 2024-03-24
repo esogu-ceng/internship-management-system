@@ -46,7 +46,9 @@ public class RegisterAsCompanySupervisorService {
 		response.setUsername(createdUser.getUsername());
 		response.setEmail(createdUser.getEmail());
 		response.setUserType(createdUser.getUserType());
-		log.info("Company Supervisor registered successfully");
+
+		log.info("Company supervisor registered successfully with username: {} and id: {}", createdUser.getUsername(),
+				createdUser.getId());
 		return response;
 	}
 

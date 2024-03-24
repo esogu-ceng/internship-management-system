@@ -42,7 +42,7 @@ public class StudentService {
 		try {
 			Student student = studentRepository.findById(id).orElse(null);
 			if (student == null) {
-				log.warn("There is no student with the entered ID.");
+				log.warn("Student with ID {} not found.", id);
 				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 			}
 			log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
@@ -84,7 +84,8 @@ public class StudentService {
 		student.getUser().setUpdateDate(now);
 		student.setUser(userRepository.save(student.getUser()));
 		Student savedStudent = studentRepository.save(student);
-		log.info("The student was successfully added: {}", savedStudent);
+		log.info("Student with ID {} has been successfully added. Email: {}, Student No: {}", savedStudent.getId(),
+				savedStudent.getUser().getEmail(), savedStudent.getStudentNo());
 
 		return savedStudent;
 	}
@@ -116,7 +117,10 @@ public class StudentService {
 		Student updatedStudent;
 		try {
 			updatedStudent = studentRepository.save(student);
-			log.info("Student updated: {}", updatedStudent);
+
+			log.info("Student with ID {} has been successfully updated. Email: {}, Student No: {}", updatedStudent.getId(),
+					updatedStudent.getUser().getEmail(), updatedStudent.getStudentNo());
+
 		} catch (Exception e) {
 			log.error("Error occurred while updating student: {}", e.getMessage());
 			throw e;
@@ -127,11 +131,11 @@ public class StudentService {
 	@Transactional
 	public boolean deleteStudent(long id) {
 		if (!studentRepository.existsById(id)) {
-			log.warn("The deletion could not be performed as there is no student with the entered ID.");
+			log.warn("Student with ID {} not found.", id);
 			return false;
 		}
 		studentRepository.deleteById(id);
-		log.info("The student with the entered ID has been deleted.");
+		log.info("Student with ID {} has been successfully deleted.", id);
 		return true;
 	}
 
@@ -154,7 +158,7 @@ public class StudentService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			Student student = studentRepository.findByUserId(id);
-			log.info("Getting student with user ID: {}", id);
+			log.info("Student with ID {} has email: {}", student.getId(), student.getUser().getEmail());
 			return modelMapper.map(student, StudentDto.class);
 		} catch (Exception e) {
 			log.error("An error occurred while getting student by user ID: {}", e.getMessage());
@@ -182,7 +186,9 @@ public class StudentService {
 		student.setUpdateDate(LocalDateTime.now());
 		student.setCreateDate(LocalDateTime.now());
 		studentRepository.save(student);
-		log.info("Registration successful.");
+
+		log.info("Student registered with ID: {} and email: {}", student.getId(), student.getUser().getEmail());
+
 
 		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;

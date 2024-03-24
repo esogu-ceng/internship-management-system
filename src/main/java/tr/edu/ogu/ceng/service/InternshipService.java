@@ -52,7 +52,8 @@ public class InternshipService {
 			internship.setCreateDate(dateTime);
 			internship.setUpdateDate(dateTime);
 			internship = internshipRepository.save(internship);
-			log.info("Insternship has been added successfully.");
+
+			log.info("Internship has been saved successfully with id = {}.", internship.getId());
 			return modelMapper.map(internship, InternshipResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while saving internship: {}", e.getMessage());
@@ -90,7 +91,7 @@ public class InternshipService {
 	public CompanyDto getCompanyByInternshipId(Long id) {
 		try {
 			if (!internshipRepository.existsById(id)) {
-				log.warn("Internship not found!");
+				log.warn("Internship not found with id {}", id);
 				throw new EntityNotFoundException("Internship not found!");
 			}
 
@@ -120,7 +121,7 @@ public class InternshipService {
 		}
 
 		internshipRepository.deleteById(id);
-		log.info("Intership has been deleted successfully.");
+		log.info("Internship has been deleted with id = {}.", id);
 		return true;
 	}
 
@@ -161,13 +162,13 @@ public class InternshipService {
 
 	public Page<InternshipResponseDto> getAllInternshipsByCompanyId(Long companyId, Pageable pageable) {
 		try {
-			log.info("Getting all internships by company id: {} with pageable: {}", companyId, pageable);
 			Page<Internship> internships = internshipRepository.findAllByCompanyId(companyId, pageable);
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
 			Page<InternshipResponseDto> internshipDtos = internships
 					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			log.info("Internships has been found by company id: {}", companyId);
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());

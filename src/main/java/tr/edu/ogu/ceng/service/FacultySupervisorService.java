@@ -82,7 +82,8 @@ public class FacultySupervisorService {
 					FacultySupervisorResponseDto.class);
 			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
 			responseDto.setUser(responseDto.getUser());
-			log.info("Faculty supervisor updated: {}", updatedFacultySupervisor);
+
+			log.info("Faculty supervisor updated successfully with id: {}", facultySupervisor.getId());
 			return responseDto;
 		} catch (Exception e) {
 			log.error("Error occurred while updating faculty supervisor: {}", e.getMessage());
