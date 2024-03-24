@@ -2,7 +2,8 @@ import random
 from datetime import date
 
 from data import data_pool as data
-
+from .Hash import hash_password
+hashed_password = hash_password("123") #Change here for default password
 
 def generate_student(conn, facultyIds, count):
 
@@ -36,7 +37,7 @@ def generate_student(conn, facultyIds, count):
                         username, password, email, user_type, language, activity
                     )
                     VALUES (
-                        '{(name[0] + surname).lower() + i.__str__()}', '123', '{(name[0] + surname).lower() + i.__str__()}@ogu.edu.tr', 'STUDENT', '1', {activity}
+                        '{(name[0] + surname).lower() + i.__str__()}', '{hashed_password}', '{(name[0] + surname).lower() + i.__str__()}@ogu.edu.tr', 'STUDENT', '1', {activity}
                     ) RETURNING id
                 """
 
