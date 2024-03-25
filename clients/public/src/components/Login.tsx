@@ -11,7 +11,9 @@ function Login() {
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [ForgotPasswordMessage, setForgotPasswordMessage] = useState("");
     const handleForgotPassword = () => {
+		setForgotPasswordMessage("")
         setShowModal(true);
     };
     const handleModalClose = () => {
@@ -26,14 +28,13 @@ function Login() {
         }).then((response) => {
             setIsLoading(false);
             if (response.ok === true) {
-                toast.success("Link başarıyla gönderildi")
-                setShowModal(false);
+                setForgotPasswordMessage("Link başarıyla gönderildi")
             } else
-                toast.error("Lütfen geçerli bir mail adresi giriniz.")
+                setForgotPasswordMessage("! Lütfen geçerli bir mail adresi giriniz.")
 
         }).catch((error) => {
             setIsLoading(false);
-            toast.error("Bir hata oluştu!", {autoClose: 2000})
+            setForgotPasswordMessage("Bir hata oluştu!")
 
         });
         setIsLoading(true);
@@ -126,6 +127,7 @@ function Login() {
                                     required
                                 />
                             </div>
+                            {ForgotPasswordMessage && <div className="forgot-password-message">{ForgotPasswordMessage}</div>}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" className="cancel-btn" onClick={handleModalClose}>
