@@ -6,7 +6,7 @@ function Header() {
   return (
     <header>
       <div className="header-content">
-        <Link to={`${root_path}/dashboard`} className="nav-link">
+        <Link to={`${root_path}`} className="nav-link">
           <h1 className="header-title">Staj Yönetim Sistemi</h1>
         </Link>
         <button className="header-button">
@@ -15,7 +15,7 @@ function Header() {
           </Link>
         </button>
         <button className="header-login">
-          <Link to={`${root_path}`} className="nav-link">
+          <Link to={`${root_path}/login`} className="nav-link">
             Giriş Yap
           </Link>
         </button>

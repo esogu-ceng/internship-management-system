@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -129,4 +131,13 @@ public class InternshipController {
 	public ResponseEntity<Long> countAllInternships() {
 		return ResponseEntity.ok(internshipService.countAllInternships());
 	}
+	@GetMapping("/count-by-year")
+	public List<Object[]> countInternshipsByYear() {
+        return internshipService.countInternshipsByYear();
+    }
+	@GetMapping("/count-by-month")
+	public List<Object[]> countInternshipsByMonth() {
+        return internshipService.countInternshipsByMonth();
+    }
+	
 }

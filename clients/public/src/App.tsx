@@ -18,10 +18,10 @@ function App() {
             <Header />
             <ToastContainer />
                 <Routes>
-                    <Route path={`${root_path}`} element={<Login />} />
+                    <Route path={`${root_path}`} element={<Dashboard />} />
                     <Route path={`${root_path}/reset-password`} element={<ResetPassword />} />
                     <Route path={`${root_path}/companies`} element={<Companies />} />
-                    <Route path={`${root_path}/dashboard`} element={<Dashboard />} />
+                    <Route path={`${root_path}/login`} element={<Login />} />
         
                 </Routes>
             <Footer />
