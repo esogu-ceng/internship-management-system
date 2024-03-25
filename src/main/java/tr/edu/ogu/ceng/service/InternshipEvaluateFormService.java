@@ -48,10 +48,10 @@ public class InternshipEvaluateFormService {
         String filePath = setting.getValue() + "\\" + fileName;
 
         try {
-            log.info("File upload started");
+            log.info("File upload started: {}", fileName);
             Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            log.error("File upload failed");
+            log.error("An error occurred while uploading file: {}", e.getMessage());
             e.printStackTrace();
         }
 
@@ -66,9 +66,9 @@ public class InternshipEvaluateFormService {
             internshipEvaluateForm.setInternship(internship);
             internshipEvaluateForm.setCompany(company);
             internshipEvaluateFormRepository.save(internshipEvaluateForm);
-            log.info("File upload completed");
+            log.info("Internship evaluate form saved successfully with id: {}", internshipEvaluateForm.getId());
         } else {
-            log.error("Wrong internship ID or company ID");
+            log.error("Wrong internship ID : {} or company ID : {}", dto.getInternship().getId(), dto.getCompany().getId());
             throw new IllegalArgumentException("Hatalı internship ID veya company ID");
         }
         return internshipEvaluateForm;
@@ -80,7 +80,9 @@ public class InternshipEvaluateFormService {
     }
 
     public Page<InternshipEvaluateForm> getAllInternshipEvaluateForms(Pageable pageable) {
-        log.info("Getting all internship evaluate forms");
+
+        log.info("Getting internship evaluate forms with page number: {}", pageable.getPageNumber());
+
         return internshipEvaluateFormRepository.findAll(pageable);
     }
     

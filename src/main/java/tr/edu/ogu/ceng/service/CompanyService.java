@@ -28,7 +28,8 @@ public class CompanyService {
 		ModelMapper modelMapper = new ModelMapper();
 		Page<Company> companies = companyRepository.findAll(pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
-		log.info("All companies fetched");
+		log.info("Pageable companies fetched page number: {}" , pageable.getPageNumber());
+
 		return companyDtos;
 
 	}

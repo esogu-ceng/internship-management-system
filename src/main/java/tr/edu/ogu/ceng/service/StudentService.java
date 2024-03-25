@@ -63,7 +63,7 @@ public class StudentService {
 			// Check if the student list is empty
 			if (students.isEmpty()){
 				log.warn("The student list is empty.");
-				return null;
+				return Page.empty();
 			}
 			Page<StudentResponseDto> studentDtos = students
 					.map(student -> modelMapper.map(student, StudentResponseDto.class));
@@ -211,6 +211,7 @@ public class StudentService {
 			Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
 			if (students.isEmpty()) {
 				log.warn("The student list is empty.");
+
 			}
 			Page<StudentResponseDto> studentDtos = students
 					.map(student -> modelMapper.map(student, StudentResponseDto.class));

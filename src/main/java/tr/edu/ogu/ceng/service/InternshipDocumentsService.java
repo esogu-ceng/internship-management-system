@@ -60,7 +60,7 @@ public class InternshipDocumentsService {
 			headers.add("Pragma", "no-cache");
 			headers.add("Expires", "0");
 			InputStreamResource resource = new InputStreamResource(new FileInputStream(file2Upload));
-			log.info("Internship documents retrieved successfully.");
+			log.info("Internship document downloaded successfully. Document name is: {}", file2Upload.getName());
 			return ResponseEntity.ok()
 					.headers(headers)
 					.contentLength(file2Upload.length())
