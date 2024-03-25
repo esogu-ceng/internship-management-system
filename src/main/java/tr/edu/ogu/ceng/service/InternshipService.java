@@ -44,8 +44,6 @@ public class InternshipService {
 	private final ModelMapper modelMapper;
 	private CompanyService companyService;
 	private StudentService studentService;
-
-
 	/**
 	 * Adds a new internship
 	 * @param internshipDto
