@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.mail.internet.MimeMessage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,6 +25,7 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.InvalidTokenException;
 import tr.edu.ogu.ceng.service.Exception.PasswordsNotMatchedException;
 
+@Slf4j
 @Service
 public class ForgotPasswordService {
 	@Autowired
@@ -64,10 +66,14 @@ public class ForgotPasswordService {
 	public void updatePassword(ResetPasswordDto resetPasswordDto) throws Exception {
 		ModelMapper modelMapper = new ModelMapper();
 		String hash = resetPasswordDto.getHash();
-		if (!resetPasswordDto.getPassword().equals(resetPasswordDto.getConfirmPassword()))
+		if (!resetPasswordDto.getPassword().equals(resetPasswordDto.getConfirmPassword())){
+			log.error("Passwords do not match! Password: {}, Confirm");
 			throw new PasswordsNotMatchedException();
-		if (resetRequestCache.getIfPresent(hash) == null)
+		}
+		if (resetRequestCache.getIfPresent(hash) == null){
+			log.error("Invalid token! Token: {}", hash);
 			throw new InvalidTokenException();
+		}
 
 		String email = resetRequestCache.getIfPresent(hash);
 		User user = userService.findByEmail(email);
@@ -75,7 +81,9 @@ public class ForgotPasswordService {
 		UserRequestDto userRequestDto = modelMapper.map(user, UserRequestDto.class);
 		userService.updateUser(userRequestDto);
 		resetRequestCache.invalidate(hash);
+		log.info("Password reset for user: {}", email);
 	}
+
 
 
 }
