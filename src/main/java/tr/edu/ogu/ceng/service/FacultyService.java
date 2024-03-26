@@ -108,5 +108,7 @@ public class FacultyService {
 
 		return modelMapper.map(faculty, FacultyDto.class);
 	}
-
+	public Long countFaculties() {
+		return facultyRepository.count();
+	}
 }
