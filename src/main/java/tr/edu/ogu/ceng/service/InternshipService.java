@@ -45,7 +45,12 @@ public class InternshipService {
 	private final ModelMapper modelMapper;
 	private CompanyService companyService;
 	private StudentService studentService;
-
+	/**
+	 * Adds a new internship
+	 * @param internshipDto
+	 * @return InternshipResponseDto
+	 * @throws Exception
+	 */
 	public InternshipResponseDto addInternship(InternshipRequestDto internshipDto) {
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
 		try {
