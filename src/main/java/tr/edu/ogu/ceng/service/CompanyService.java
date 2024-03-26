@@ -28,7 +28,8 @@ public class CompanyService {
 		ModelMapper modelMapper = new ModelMapper();
 		Page<Company> companies = companyRepository.findAll(pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
-		log.info("Pageable companies fetched");
+		log.info("Pageable companies fetched page number: {}" , pageable.getPageNumber());
+
 		return companyDtos;
 
 	}
@@ -36,7 +37,7 @@ public class CompanyService {
 	public CompanyDto updateCompany(CompanyDto companyDto) {
 		try {
 			if (!companyRepository.existsById(companyDto.getId())) {
-				log.warn("There is no company with the entered ID.");
+				log.warn("Company not found with id {}", companyDto.getId());
 				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 			}
 			ModelMapper modelMapper = new ModelMapper();
@@ -49,6 +50,7 @@ public class CompanyService {
 					company.getDescription());
 			return modelMapper.map(company, CompanyDto.class);
 		} catch (EntityNotFoundException e) {
+			log.error("Failed to update company. Error message: {}", e.getMessage());
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
@@ -60,17 +62,19 @@ public class CompanyService {
 			throw new EntityNotFoundException();
 		}
 		ModelMapper modelMapper = new ModelMapper();
+		log.info("Company with ID {} fetched", id);
 		return modelMapper.map(company, CompanyDto.class);
 	}
 
 	public Page<CompanyDto> searchCompanies(String name, Pageable pageable) {
 		if (name.length() < 3) {
-			log.warn("Lenght of company name is less than 3 characters long.");
+			log.warn("Length of company name is less than 3 characters long.");
 			throw new InvalidArgumentException("Name should be at least 3 characters long.");
 		}
 		ModelMapper modelMapper = new ModelMapper();
 		Page<Company> companies = companyRepository.findByNameContainingIgnoreCase(name, pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
+		log.info("Companies with name containing {} fetched", name);
 		return companyDtos;
 	}
 
@@ -82,7 +86,7 @@ public class CompanyService {
 			company.setCreateDate(dateTime);
 			company.setUpdateDate(dateTime);
 			companyRepository.save(company);
-			log.info("The company has been added successfully.");
+			log.info("Company with ID {} has been added: {}", company.getId(), company.getName());
 			return modelMapper.map(company, CompanyDto.class);
 		} catch (Exception e) {
 			log.error("Failed to add company. Error message: {}", e.getMessage());
@@ -97,7 +101,7 @@ public class CompanyService {
 		}
 
 		companyRepository.deleteById(id);
-		log.info("Company has been deleted successfully.");
+		log.info("Company with ID {} has been deleted", id);
 		return true;
 	}
 

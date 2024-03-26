@@ -3,7 +3,7 @@ import React from "react";
 function Footer() {
   return (
     <footer>
-      <p>© 2023 Kurumsal Java dersi için hazırlanan tüm materyaller Kurumsal "Kurumsal Java" şirketine aittir ve telif hakları saklıdır. İzinsiz kullanımı yasaktır.</p>
+      <p>© Osmangazi Üniversitesi Bilgisayar Mühendisliği öğrencileri tarafından hazırlanmıştır. Tüm hakları Osmangazi Üniversitesi Bilgisayar Mühendisliği'ne aittir. Tag: v1.0</p>
     </footer>
   );
 }

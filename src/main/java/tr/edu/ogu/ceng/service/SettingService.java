@@ -35,6 +35,7 @@ public class SettingService {
 		try {
 			Setting setting = settingRepository.findByKey(key);
 			if (setting == null) {
+				log.warn("Setting not found with key: {}", key);
 				throw new EntityNotFoundException("Setting not found with key: " + key);
 			}
 			log.info("Setting retrieved successfully with key: {}", key);
@@ -49,6 +50,7 @@ public class SettingService {
 		try {
 			Setting setting = settingRepository.findByKey(key);
 			if (setting == null) {
+				log.warn("Setting not found with key: {}", key);
 				throw new EntityNotFoundException("Setting not found with key: " + key);
 			}
 			log.info("Value retrieved successfully for setting with key: {}", key);
