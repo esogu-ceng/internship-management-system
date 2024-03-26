@@ -21,13 +21,13 @@ function Dashboard() {
     const [internshipCountApproved, setInternshipCountApproved] = useState(null);
     const navigate = useNavigate();
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8000/api', //API kök URL'si
+        baseURL: 'http://localhost:8080/api', //API kök URL'si
       });
     //Yıllık staj verileri için API'den veri çekme
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/internship/count-by-year');
+                const response = await axios.get('/api/public/count-by-year');
                 setInternshipDataYear(response.data); // API'den dönen veriyi state'e kaydet
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -40,7 +40,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/internship/count-by-month');
+                const response = await axios.get('/api/public/count-by-month');
                 setInternshipDataMonth(response.data); // API'den dönen veriyi state'e kaydet
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -76,7 +76,7 @@ function Dashboard() {
 
     //Toplam staj, firma, öğrenci ve fakülte sayılarını API'den çekme
     useEffect(() => {
-        fetch('/api/company/count')
+        fetch('/api/public/count/company')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -92,7 +92,7 @@ function Dashboard() {
             });
     }, []);
     useEffect(() => {
-        fetch('/api/student/count')
+        fetch('/api/public/count/student')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -108,7 +108,7 @@ function Dashboard() {
             });
     }, []);
     useEffect(() => {
-        fetch('/api/faculty/count')
+        fetch('/api/public/count/faculty')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -124,7 +124,7 @@ function Dashboard() {
             });
     }, []);
     useEffect(() => {
-        fetch('/api/internship/count/all')
+        fetch('/api/public/count/all')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -140,7 +140,7 @@ function Dashboard() {
             });
     }, []);
     useEffect(() => {
-        fetch('/api/internship/count/approved')
+        fetch('/api/public/count/approved')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -156,7 +156,7 @@ function Dashboard() {
             });
     }, []);
     useEffect(() => {
-        fetch('/api/internship/count/pending')
+        fetch('/api/public/count/pending')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -172,7 +172,7 @@ function Dashboard() {
             });
     }, []);
     useEffect(() => {
-        fetch('/api/internship/count/rejected')
+        fetch('/api/public/count/rejected')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
