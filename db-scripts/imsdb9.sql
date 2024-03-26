@@ -8,3 +8,9 @@ DROP COLUMN IF EXISTS id_registry_office, DROP COLUMN IF EXISTS id_registry_reas
 
 --CLEAR TABLE BEFORE EXECUTE NEXT LINE
 ALTER TABLE IF EXISTS public.ims_students ADD COLUMN IF NOT EXISTS address character varying NOT NULL;
+
+--DELETE app_port and app_host lines from settings
+DELETE FROM ims_settings WHERE key = 'app_host';
+DELETE FROM ims_settings WHERE key = 'app_port';
+
+
