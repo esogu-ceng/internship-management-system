@@ -35,7 +35,7 @@ import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/public/api")
 public class PublicController {
 	@Autowired
 	InternshipService internshipService;

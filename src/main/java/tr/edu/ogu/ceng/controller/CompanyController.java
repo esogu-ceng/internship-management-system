@@ -80,6 +80,4 @@ public class CompanyController {
 		Long count = companyService.countCompanies();
 		return ResponseEntity.ok(count);
 	}
-	
-	
 }
