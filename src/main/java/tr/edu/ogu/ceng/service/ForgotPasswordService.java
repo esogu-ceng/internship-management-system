@@ -29,11 +29,36 @@ public class ForgotPasswordService {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	SettingService settingService;
+	@Autowired
+	private EmailService emailService;
+
 
 
 
 	private static Cache<String, String> resetRequestCache = CacheBuilder.newBuilder().maximumSize(1000)
 			.expireAfterWrite(5, TimeUnit.MINUTES).build();
+
+
+	public void sendResetPasswordEmail(EmailReceiverDto emailReceiver) throws Exception {
+		if (userService.findByEmail(emailReceiver.getEmail()) == null)
+			throw new EntityNotFoundException("User with " + emailReceiver.getEmail() + " does not exist!");
+
+
+		String resetHash = UUID.randomUUID().toString();
+		resetRequestCache.put(resetHash, emailReceiver.getEmail());
+
+		String subject = "You may reset your password.";
+		String resetPasswordUrl = settingService.findValueByKey("app_host") + ":"
+				+ settingService.findValueByKey("app_port") + "/public/reset-password?hash=" + resetHash;
+		String emailText = "Please click the link below to reset your password. <br> <a href=\"" + resetPasswordUrl
+				+ "\">Reset Password</a>";
+
+		emailService.sendEmail((emailReceiver.getEmail()),subject,emailText);
+
+	}
+
 
 
 	public void updatePassword(ResetPasswordDto resetPasswordDto) throws Exception {

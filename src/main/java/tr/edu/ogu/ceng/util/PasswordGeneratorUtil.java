@@ -1,21 +1,12 @@
-package tr.edu.ogu.ceng.service;
+package tr.edu.ogu.ceng.util;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
-import org.springframework.stereotype.Service;
 
+public class PasswordGeneratorUtil {
 
-
-@Service
-
-
-public class PasswordGeneratorService {
-
-    public  String generateSecurePassword() {
-
+    public static String generateSecurePassword() {
         // create character rule for lower case
         CharacterRule LCR = new CharacterRule(EnglishCharacterData.LowerCase);
         // set number of lower case characters
@@ -42,8 +33,7 @@ public class PasswordGeneratorService {
         // call generatePassword() method of PasswordGenerator class to get Passay generated password
         String password = passGen.generatePassword(8, SR, LCR, UCR, DR);
 
-        // return Passay generated password to the main() method
+        // return Passay generated password to the calling method
         return password;
     }
-
 }

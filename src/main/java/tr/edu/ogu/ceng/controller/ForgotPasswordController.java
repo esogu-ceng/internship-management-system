@@ -24,7 +24,7 @@ public class ForgotPasswordController {
 	
 	 @PostMapping("/forgot-password")
 	 public ResponseEntity<String> sendPasswordResetEmail(@RequestBody EmailReceiverDto email) throws Exception{
-			 emailService.sendResetPasswordEmail(email);
+			 forgotPasswordService.sendResetPasswordEmail(email);
 			 return ResponseEntity.ok("Reset password e-mail sent successfully!");
 	 }
 	 @PostMapping("/update-password")

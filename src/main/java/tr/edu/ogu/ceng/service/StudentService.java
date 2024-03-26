@@ -24,6 +24,7 @@ import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.util.PasswordGeneratorUtil;
 
 @Slf4j
 @Service
@@ -33,10 +34,14 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-    private final FacultyRepository facultyRepository;
+
     private final FacultyService facultyService;
     private final FacultySupervisorService facultySupervisorService;
     private ModelMapper modelMapper;
+
+    private EmailService emailService;
+
+
 
     public StudentResponseDto getStudent(long id) {
         try {
@@ -72,6 +77,7 @@ public class StudentService {
         }
     }
 
+
     @Transactional
     public Student addStudent(Student student) {
         LocalDateTime now = LocalDateTime.now();
@@ -86,6 +92,27 @@ public class StudentService {
 
         return savedStudent;
     }
+    @Transactional
+    public Student addStudentAndSendMail(Student student) {
+        Student savedStudent =addStudent(student);
+        if (savedStudent != null) {
+            String emailSubject = " Şifre Hatırlatıcı";
+            String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
+                    + "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
+                    + "UserName: " + savedStudent.getUser().getUsername() + "\n\n"+
+                      "Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
+                    + "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
+                    + "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
+                    + "İyi günler dileriz,\n";
+
+            emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
+        }
+
+        return savedStudent;
+
+
+    }
+
 
     public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
         modelMapper = new ModelMapper();
