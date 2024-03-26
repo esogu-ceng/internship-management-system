@@ -1,17 +1,36 @@
-/** @format */
-
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import useSupervisorManagement from "../hooks/useSupervisorManagement";
-
 import { tableHeaders } from "../constants";
-
 import AddModalForm from "./AddModalForm";
 import UpdateModalForm from "./UpdateModalForm";
 import Pagination from "./Pagination";
 import { CompanySupervisor } from "../types/CompanySupervisors";
 
-const CompanySupervisorsPage = () => {
+interface ConfirmationBoxProps {
+  onConfirm: (confirmed: boolean) => void;
+}
+
+const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({ onConfirm }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleConfirm = (confirmed: boolean) => {
+    setIsVisible(false);
+    onConfirm(confirmed);
+  };
+
+  return (
+    <div className="confirmation-box" style={{ display: isVisible ? "block" : "none" }}>
+      <p>Silmek istediğinize emin misiniz?</p>
+      <div className="confirmation-buttons">
+        <button className="yes" onClick={() => handleConfirm(true)}>Evet</button>
+        <button className="no" onClick={() => handleConfirm(false)}>Hayır</button>
+      </div>
+    </div>
+  );
+};
+
+const CompanySupervisorsPage: React.FC = () => {
   const navigate = useNavigate();
   const {
     isAddModalOpen,
@@ -29,27 +48,37 @@ const CompanySupervisorsPage = () => {
     companies,
   } = useSupervisorManagement();
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const handleDeleteConfirmation = (confirmed: boolean) => {
+    if (confirmed && deletingId) {
+      deleteCompanySupervisor(deletingId);
+    }
+    setDeletingId(null);
+    setShowConfirmation(false);
+  };
+
+  const handleDeleteCompanySupervisor = (id: number) => {
+    setDeletingId(id);
+    setShowConfirmation(true);
+  };
+
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);
     document.body.style.overflow = "hidden";
-  }
+  };
 
   const handleOpenUpdateModal = (supervisor: CompanySupervisor) => {
-      setSelectedCompanySupervisor(supervisor);
-      setIsUpdateModalOpen(true);
-       document.body.style.overflow = "hidden";
-  }
+    setSelectedCompanySupervisor(supervisor);
+    setIsUpdateModalOpen(true);
+    document.body.style.overflow = "hidden";
+  };
 
   const handleCloseUpdateModal = () => {
     setIsUpdateModalOpen(false);
     document.body.style.overflow = "auto";
-  }
-
-  const handleDeleteCompanySupervisor = (id: number) => {
-    if (!window.confirm("Silmek istediğinize emin misiniz?")) return;
-    deleteCompanySupervisor(id);
-  }
-
+  };
 
   return (
     <div className="container">
@@ -68,13 +97,16 @@ const CompanySupervisorsPage = () => {
           onClose={handleCloseUpdateModal}
         />
       )}
+      {showConfirmation && (
+        <ConfirmationBox onConfirm={handleDeleteConfirmation} />
+      )}
       <button className="add-button" onClick={handleOpenAddModal}>
         <span>+ Şirket Yetkilisi Ekle</span>
       </button>
 
       {companySupervisors?.length > 0 ? (
         <>
-          <table>
+          <table className="company-supervisors-table">
             <thead>
               <tr>
                 {tableHeaders.map((header) => (
@@ -91,7 +123,8 @@ const CompanySupervisorsPage = () => {
                     <div
                       className={`status-indicator ${
                         supervisor.user.activity ? "active" : "inactive"
-                      }`}></div>
+                      }`}
+                    ></div>
                     <span>{supervisor.user.activity ? "Aktif" : "Pasif"}</span>
                   </td>
                   <td>{supervisor.company.name}</td>
@@ -102,20 +135,13 @@ const CompanySupervisorsPage = () => {
                   <td>{supervisor.company.scope}</td>
                   <td>
                     <div className="edit-buttons">
-                      <button
-                        onClick={() => handleOpenUpdateModal(supervisor)}>
+                      <button className="edit-button" onClick={() => handleOpenUpdateModal(supervisor)}>
                         Düzenle
                       </button>{" "}
-                      <button
-                        onClick={() => {
-                          navigate(
-                            `/admin/companySupervisors/${supervisor.id}`
-                          );
-                        }}>
+                      <button className="detail-button" onClick={() => { navigate(`/admin/companySupervisors/${supervisor.id}`); }}>
                         Detay
                       </button>{" "}
-                      <button
-                        onClick={() => handleDeleteCompanySupervisor(supervisor.id)}>
+                      <button className="delete-button" onClick={() => handleDeleteCompanySupervisor(supervisor.id)}>
                         Sil
                       </button>{" "}
                     </div>
