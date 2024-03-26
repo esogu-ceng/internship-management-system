@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.mail.internet.MimeMessage;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +28,15 @@ import tr.edu.ogu.ceng.service.Exception.PasswordsNotMatchedException;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class ForgotPasswordService {
-	@Autowired
+
 	private UserService userService;
-
-	@Autowired
-	SettingService settingService;
-	@Autowired
+	private SettingService settingService;
 	private EmailService emailService;
-
-
-
 
 	private static Cache<String, String> resetRequestCache = CacheBuilder.newBuilder().maximumSize(1000)
 			.expireAfterWrite(5, TimeUnit.MINUTES).build();
-
 
 	public void sendResetPasswordEmail(EmailReceiverDto emailReceiver) throws Exception {
 		if (userService.findByEmail(emailReceiver.getEmail()) == null)
@@ -60,8 +55,6 @@ public class ForgotPasswordService {
 		emailService.sendEmail((emailReceiver.getEmail()),subject,emailText);
 
 	}
-
-
 
 	public void updatePassword(ResetPasswordDto resetPasswordDto) throws Exception {
 		ModelMapper modelMapper = new ModelMapper();
@@ -83,7 +76,5 @@ public class ForgotPasswordService {
 		resetRequestCache.invalidate(hash);
 		log.info("Password reset for user: {}", email);
 	}
-
-
 
 }

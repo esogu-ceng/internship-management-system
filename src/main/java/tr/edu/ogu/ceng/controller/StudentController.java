@@ -32,14 +32,11 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDto> getStudent(@PathVariable(name = "id") long id) {
         StudentResponseDto studentResponseDto = studentService.getStudent(id);
         return ResponseEntity.ok(studentResponseDto);
     }
-
 
     @GetMapping("/getAll")
     public Page<StudentResponseDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -67,8 +64,6 @@ public class StudentController {
         return students;
     }
 
-
-
     @PostMapping
     public StudentResponseDto addStudent(@RequestBody StudentRequestDto studentRequestDto) {
         ModelMapper modelMapper = new ModelMapper();
@@ -77,7 +72,6 @@ public class StudentController {
         student.setUser(user);
         return modelMapper.map(studentService.addStudent(student), StudentResponseDto.class);
     }
-
 
     @PutMapping
     public StudentResponseDto updateStudent(@RequestBody StudentRequestDto studentDto) {

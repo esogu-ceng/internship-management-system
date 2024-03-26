@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -24,14 +25,10 @@ import java.util.concurrent.TimeUnit;
 import static tr.edu.ogu.ceng.enums.UserType.*;
 
 @Service
+@AllArgsConstructor
 public class EmailService {
 
-    @Autowired
     private SettingService settingService;
-
-
-
-
 
     public  void sendEmail(String sendTo,String subject,String message) {
         try {
@@ -50,9 +47,6 @@ public class EmailService {
         }
     }
 
-
-
-
     // Method to get JavaMailSender instance
     private JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -68,5 +62,3 @@ public class EmailService {
         return mailSender;
     }
 }
-
-

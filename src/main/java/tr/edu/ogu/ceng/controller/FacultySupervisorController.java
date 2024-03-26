@@ -43,14 +43,6 @@ public class FacultySupervisorController {
 	@Autowired
 	StudentService studentService;
 
-
-
-
-
-
-
-
-
 	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
@@ -76,8 +68,6 @@ public class FacultySupervisorController {
 	@PostMapping ("/addStudent")
 	public StudentResponseDto addStudentUnderFacultySupervisor(@RequestBody StudentRequestDto studentRequestDto) {
 
-
-
 		ModelMapper modelMapper = new ModelMapper();
 		User user = modelMapper.map(studentRequestDto.getUser(), User.class);
 		Student student = modelMapper.map(studentRequestDto, Student.class);
@@ -85,11 +75,6 @@ public class FacultySupervisorController {
 		return modelMapper.map(studentService.addStudentAndSendMail(student), StudentResponseDto.class);
 
     }
-
-
-
-
-
 
 	@PutMapping
 	public ResponseEntity<FacultySupervisorResponseDto> updateFacultySupervisor(

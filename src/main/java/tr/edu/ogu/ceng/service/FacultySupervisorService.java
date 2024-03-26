@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,6 @@ import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
-import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
@@ -33,7 +31,6 @@ public class FacultySupervisorService {
 	private UserService userService;
 	private ModelMapper modelMapper;
 	private MessageResource messageResource;
-
 
 	/**
 	 * Adds a new Faculty Supervisor and related User definition
@@ -151,7 +148,5 @@ public class FacultySupervisorService {
 			throw e;
 		}
 	}
-
-
 
 }
