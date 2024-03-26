@@ -24,36 +24,40 @@ import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.util.PasswordGeneratorUtil;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class StudentService {
 
-	private final StudentRepository studentRepository;
-	private final UserRepository userRepository;
-	private final UserService userService;
-	private final FacultyRepository facultyRepository;
-	private final FacultyService facultyService;
-	private final FacultySupervisorService facultySupervisorService;
-	private ModelMapper modelMapper;
+    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-	public StudentResponseDto getStudent(long id) {
-		try {
-			Student student = studentRepository.findById(id).orElse(null);
-			if (student == null) {
-				log.warn("Student with ID {} not found.", id);
-				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
-			}
-			log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
-					student.getName(), student.getSurname());
-			ModelMapper modelMapper = new ModelMapper();
-			return modelMapper.map(student, StudentResponseDto.class);
-		} catch (EntityNotFoundException e) {
-			log.error("An error occurred while getting student: {}", e.getMessage());
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
-		}
-	}
+    private final FacultyService facultyService;
+    private final FacultySupervisorService facultySupervisorService;
+    private ModelMapper modelMapper;
+
+    private EmailService emailService;
+
+
+
+    public StudentResponseDto getStudent(long id) {
+        try {
+            Student student = studentRepository.findById(id).orElse(null);
+            if (student == null) {
+                log.warn("There is no student with the entered ID.");
+                throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+            }
+            log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
+                    student.getName(), student.getSurname());
+            ModelMapper modelMapper = new ModelMapper();
+            return modelMapper.map(student, StudentResponseDto.class);
+        } catch (EntityNotFoundException e) {
+            throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
+        }
+    }
 
 	public Page<StudentResponseDto> getAllStudents(Pageable pageable) {
 		try {
@@ -74,21 +78,42 @@ public class StudentService {
 		}
 	}
 
-	@Transactional
-	public Student addStudent(Student student) {
-		LocalDateTime now = LocalDateTime.now();
-		student.setCreateDate(now);
-		student.setUpdateDate(now);
-		student.getUser().setUserType(UserType.STUDENT);
-		student.getUser().setCreateDate(now);
-		student.getUser().setUpdateDate(now);
-		student.setUser(userRepository.save(student.getUser()));
-		Student savedStudent = studentRepository.save(student);
-		log.info("Student with ID {} has been successfully added. Email: {}, Student No: {}", savedStudent.getId(),
-				savedStudent.getUser().getEmail(), savedStudent.getStudentNo());
 
-		return savedStudent;
-	}
+    @Transactional
+    public Student addStudent(Student student) {
+        LocalDateTime now = LocalDateTime.now();
+        student.setCreateDate(now);
+        student.setUpdateDate(now);
+        student.getUser().setUserType(UserType.STUDENT);
+        student.getUser().setCreateDate(now);
+        student.getUser().setUpdateDate(now);
+        student.setUser(userRepository.save(student.getUser()));
+        Student savedStudent = studentRepository.save(student);
+        log.info("The student was successfully added: {}", savedStudent);
+
+        return savedStudent;
+    }
+    @Transactional
+    public Student addStudentAndSendMail(Student student) {
+        Student savedStudent =addStudent(student);
+        if (savedStudent != null) {
+            String emailSubject = " Şifre Hatırlatıcı";
+            String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
+                    + "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
+                    + "UserName: " + savedStudent.getUser().getUsername() + "\n\n"+
+                      "Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
+                    + "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
+                    + "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
+                    + "İyi günler dileriz,\n";
+
+            emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
+        }
+
+        return savedStudent;
+
+
+    }
+
 
 	public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
 		modelMapper = new ModelMapper();
