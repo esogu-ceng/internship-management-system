@@ -37,13 +37,13 @@ public class InternshipDocumentsService {
 	public Page<InternshipDocumentsResponseDto> getAllInternshipDocumentsByInternshipId(Long internshipId, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting internship documents by id: {} with pageable: {}", internshipId, pageable);
 			Page<InternshipDocument> internshipDocuments = internshipDocumentsRepository.findAllDocumentByInternshipId(internshipId, pageable);
 			if (internshipDocuments.isEmpty()) {
 				log.warn("The internship documents list is empty.");
 			}
 			Page<InternshipDocumentsResponseDto> internshipDocumentsDtos = internshipDocuments.map(
 					internshipDocument -> modelMapper.map(internshipDocument, InternshipDocumentsResponseDto.class));
+			log.info("Internship documents retrieved successfully.");
 			return internshipDocumentsDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internship documents: {}", e.getMessage());
@@ -60,7 +60,7 @@ public class InternshipDocumentsService {
 			headers.add("Pragma", "no-cache");
 			headers.add("Expires", "0");
 			InputStreamResource resource = new InputStreamResource(new FileInputStream(file2Upload));
-
+			log.info("Internship document downloaded successfully. Document name is: {}", file2Upload.getName());
 			return ResponseEntity.ok()
 					.headers(headers)
 					.contentLength(file2Upload.length())
