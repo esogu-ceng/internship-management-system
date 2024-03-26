@@ -164,6 +164,7 @@ const useFacultySupervisorManagement = () => {
     setError(null);
     const successMessage = "Fakülte sorumlusu başarıyla silindi!";
     const errorMessage = "Fakülte sorumlusu silinirken hata oluştu!";
+    
     try {
       const url = `/api/facultySupervisor/${id}`;
       const response = await fetch(url, {
@@ -178,28 +179,25 @@ const useFacultySupervisorManagement = () => {
         throw new Error(errorMessage);
       }
 
+      const data = await response.json();
+      if(!data){
+        toast.error(errorMessage);
+        return;
+      }
+
+
       if (!pagination) return;
       const updatedTotalItems = pagination.totalElements - 1;
       const updatedTotalPages = Math.ceil(updatedTotalItems / pagination.size);
 
-      if (facultySupervisors.length === 1 && pagination.number > 0) {
-        let paginationNumbers = pagination.number - 1;
-        if (paginationNumbers < 0) {
-          paginationNumbers = 0;
-        }
-        getAllFacultySupervisors(paginationNumbers);
-      } else if (pagination.number >= updatedTotalPages) {
-        let paginationNumbers = updatedTotalPages - 1;
-        if (paginationNumbers < 0) {
-          paginationNumbers = 0;
-        }
-        getAllFacultySupervisors(paginationNumbers);
-      } else {
-        let paginationNumbers = pagination.number;
-        if (paginationNumbers < 0) {
-          paginationNumbers = 0;
-        }
-        getAllFacultySupervisors(paginationNumbers);
+      if (facultySupervisors.length === 1 && pagination.number > 0) {        
+        getAllFacultySupervisors(pagination.number - 1);
+      }
+      else if (pagination.number >= updatedTotalPages) {
+        getAllFacultySupervisors(updatedTotalPages - 1);
+      }
+      else {
+        getAllFacultySupervisors(pagination.number);
       }
       toast.success(successMessage); // Display success message
     } catch (error) {

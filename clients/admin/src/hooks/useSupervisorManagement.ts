@@ -191,12 +191,14 @@ const useSupervisorManagement = () => {
       if (!pagination) return;
       const updatedTotalItems = pagination.totalElements - 1;
       const updatedTotalPages = Math.ceil(updatedTotalItems / pagination.size);
-
+      
       if (companySupervisors.length === 1 && pagination.number > 0) {
         getAllCompanySupervisors(pagination.number - 1);
-      } else if (pagination.number >= updatedTotalPages) {
+      } 
+      else if (pagination.number >= updatedTotalPages) {
         getAllCompanySupervisors(updatedTotalPages - 1);
-      } else {
+      } 
+      else {
         getAllCompanySupervisors(pagination.number);
       }
 

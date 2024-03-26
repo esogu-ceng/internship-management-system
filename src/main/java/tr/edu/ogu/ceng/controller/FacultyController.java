@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,5 +55,9 @@ public class FacultyController {
 	public FacultyDto getById(@PathVariable Long id) {
 		return facultyService.getFacultyById(id);
 	}
-
+	@GetMapping("/count")
+	public ResponseEntity<Long> getFacultyCount() {
+		Long count = facultyService.countFaculties();
+		return ResponseEntity.ok(count);
+	}
 }

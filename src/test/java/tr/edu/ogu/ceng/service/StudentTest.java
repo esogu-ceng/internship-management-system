@@ -3,7 +3,8 @@ package tr.edu.ogu.ceng.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
+
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
@@ -29,6 +30,7 @@ public class StudentTest {
 	StudentRepository studentRepository;
 	@Mock
 	StudentService studentService;
+
 	@Mock
 	UserRepository userRepository;
 	@Mock
@@ -39,14 +41,19 @@ public class StudentTest {
 	FacultyRepository facultyRepository;
 	@Mock
 	FacultySupervisorService facultySupervisorService;
+
+   @Mock
+  EmailService emailService;
 	@Mock
 	ModelMapper modelMapper;
+
+
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userService, facultyRepository,
-				facultyService, facultySupervisorService, new ModelMapper());
+		studentService = new StudentService(studentRepository, userRepository, userService,facultyService
+				, facultySupervisorService, new ModelMapper(),emailService);
 	}
 
 	@Test
@@ -89,6 +96,12 @@ public class StudentTest {
 		assertEquals(student.getBirthPlace(), actual.getBirthPlace());
 		assertEquals(student.getBirthDate(), actual.getBirthDate());
 		assertEquals(student.getAddress(), actual.getAddress());
+
+
 	}
+
+
+
+
 
 }

@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -237,6 +238,14 @@ public class InternshipService {
 		log.info("Counting all internships");
 		return internshipRepository.count();
 	}
+	public List<Object[]> countInternshipsByYear() {
+	        return internshipRepository.countInternshipsByYear();
+	    }
+
+	public List<Object[]> countInternshipsByMonth() {
+		return internshipRepository.countInternshipsByMonth();
+	}
+	
 
 
 }
