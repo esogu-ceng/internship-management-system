@@ -15,8 +15,6 @@ const settingRows: SettingRow[] = [
   { field: "Mail Username", dataField: "mail_username" },
   { field: "Mail Password", dataField: "mail_password" },
   { field: "Upload Directory", dataField: "upload_directory" },
-  { field: "App Host", dataField: "app_host" },
-  { field: "App Port", dataField: "app_port" },
 ];
 
 function GetSettings() {
