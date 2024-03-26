@@ -28,7 +28,11 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 public class InternshipController {
 	@Autowired
 	InternshipService internshipService;
-
+	/**
+	 * Adds a new internship record.
+	 * @param internshipDto
+	 * @return ResponseEntity<InternshipResponseDto>
+	 */
 	@PostMapping()
 	public ResponseEntity<InternshipResponseDto> addInternship(@RequestBody InternshipRequestDto internshipDto) {
 		return ResponseEntity.ok(internshipService.addInternship(internshipDto));
