@@ -30,7 +30,6 @@ public class WebSecurityConfig {
 				.cors().disable()
 				.authorizeRequests()
 				.antMatchers("/public/**").permitAll()
-				.antMatchers("/api/public/**").permitAll()
 				.antMatchers("/api/company/getAllCompanies").permitAll()
 				.antMatchers("/facultysupervisor/**", "**/facultysupervisor/**")
 				.hasAuthority(UserType.FACULTYSUPERVISOR.name()).antMatchers("/student/**", "**/student/**")
@@ -39,7 +38,7 @@ public class WebSecurityConfig {
 				.hasAuthority(UserType.ADMIN.name()).anyRequest().authenticated().and().formLogin()
 				.loginPage("/public/").loginProcessingUrl("/login")
 				.successHandler(authenticationSuccessHandler()).failureHandler(authenticationFailureHandler()).and()
-				.logout().logoutSuccessUrl("/public/?logout=true/").deleteCookies("JSESSIONID").and()
+				.logout().logoutSuccessUrl("/public/?logout=true").deleteCookies("JSESSIONID").and()
 				.httpBasic().and().build();
 	}
 
