@@ -95,4 +95,3 @@ export const StudentAdd : React.FC<ModalProps> = ({isOpen, onClose, children }) 
       </div>
     );
 };
-

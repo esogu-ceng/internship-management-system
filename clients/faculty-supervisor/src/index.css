@@ -1,16 +1,21 @@
 @import 'tailwindcss/base';
+
 @import 'tailwindcss/components';
+
 @import 'tailwindcss/utilities';
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+		'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+		'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+		monospace;
 }
 
 /* Rest of the CSS code remains the same */
@@ -27,6 +32,8 @@ footer {
    padding: 10px;
    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
  }
+ 
+ /*
  header {
    display: flex;
    justify-content: center;
@@ -50,6 +57,7 @@ footer {
    text-align: center;
    text-decoration: none;
  }
+ 
  .navbar {
    display: flex;
  }
@@ -117,63 +125,76 @@ footer {
    flex-wrap: wrap;
    margin-top: 50px;
  }
- .dashboard-card {
-   background-color: #f6f6f6;
-   border: none;
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-   padding: 20px;
-   border-radius: 15px;
-   width: 300px;
-   height: 200px;
-   margin: 20px;
-   transition: transform 0.3s ease-in-out;
- }
- .dashboard-card:hover {
-   transform: translateY(-5px); 
-   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
- }
- .dashboard-card:nth-child(1) {
-   background-color: #ff6363;
- } 
- .dashboard-card:nth-child(2) {
-   background-color: #76d7c4;
- }
- .dashboard-card:nth-child(3) {
-   background-color: #f7dc6f;
- }
- .dashboard-card:nth-child(4) {
-  background-color: #c371ef;
- }
- .dashboard-card:nth-child(5) {
-  background-color: #f16f32;
- }
- .dashboard-card:nth-child(6) {
-  background-color: #d55399;
- }
- @media (max-width: 768px) {
-   .app-container {
-     flex-direction: column;
-     align-items: center;
-   }
- }
- .dashboard-container {
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: center;
- }
- .dashboard-card h2 {
-   margin: 0;
-   font-size: 24px;
-   margin-bottom: 10px;
-   color: white;
-   font-weight: bold;
- }
- .dashboard-card p {
-   margin: 0;
-   font-size: 16px;
-   color: #666;
- }
- .dashboard-card:hover {
-   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-   background-color: #eabce5;
- }
+ */
+.dashboard-card {
+	background-color: #f6f6f6;
+	border: none;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	border-radius: 15px;
+	width: 300px;
+	height: 200px;
+	margin: 20px;
+	transition: transform 0.3s ease-in-out;
+}
+
+.dashboard-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-card:nth-child(1) {
+	background-color: #ff6363;
+}
+
+.dashboard-card:nth-child(2) {
+	background-color: #76d7c4;
+}
+
+.dashboard-card:nth-child(3) {
+	background-color: #f7dc6f;
+}
+
+.dashboard-card:nth-child(4) {
+	background-color: #c371ef;
+}
+
+.dashboard-card:nth-child(5) {
+	background-color: #f16f32;
+}
+
+.dashboard-card:nth-child(6) {
+	background-color: #d55399;
+}
+
+@media ( max-width : 768px) {
+	.app-container {
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
+.dashboard-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.dashboard-card h2 {
+	margin: 0;
+	font-size: 24px;
+	margin-bottom: 10px;
+	color: white;
+	font-weight: bold;
+}
+
+.dashboard-card p {
+	margin: 0;
+	font-size: 16px;
+	color: #666;
+}
+
+.dashboard-card:hover {
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+	background-color: #eabce5;
+}
