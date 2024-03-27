@@ -238,6 +238,7 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={11}
                       maxLength={11}
+                      pattern="^[1-9]{1}[0-9]{9}[02468]{1}$"
                       placeholder={"11122233344"}
                     />
                   </div>
@@ -256,6 +257,8 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={8}
                       maxLength={12}
+                      //12 digit pattern
+
                       placeholder={"152120201000"}
                     />
                   </div>

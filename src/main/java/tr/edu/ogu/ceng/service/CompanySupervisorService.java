@@ -7,17 +7,21 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.security.UserPrincipal;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
 
@@ -27,6 +31,7 @@ import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
 public class CompanySupervisorService {
 
 	private final CompanySupervisorRepository repository;
+	private final CompanyRepository companyRepository;
 	private final ModelMapper mapper;
 	private final UserService userService;
 
@@ -55,6 +60,11 @@ public class CompanySupervisorService {
 
 		log.info("Company Supervisor is added to database id: {}, name: {}",companySupervisor.getId() ,companySupervisor.getName());
 		return createdCompanySupervisor;
+	}
+
+	public Company getUsersCompany() {
+		User user = ((UserPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+		return companyRepository.findCompanyByCompanyUserId(user.getId());
 	}
 
 	public CompanySupervisorResponseDto addCompany(CompanySupervisorRequestDto request) {
