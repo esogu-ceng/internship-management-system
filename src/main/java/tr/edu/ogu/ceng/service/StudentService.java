@@ -157,7 +157,7 @@ public class StudentService {
 	public boolean deleteStudent(long id) {
 		if (!studentRepository.existsById(id)) {
 			log.warn("Student with ID {} not found.", id);
-			return false;
+			return true;
 		}
 		studentRepository.deleteById(id);
 		log.info("Student with ID {} has been successfully deleted.", id);

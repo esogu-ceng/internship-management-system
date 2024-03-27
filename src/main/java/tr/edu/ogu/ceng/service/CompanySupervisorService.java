@@ -97,11 +97,15 @@ public class CompanySupervisorService {
 
 	public void delete(Long id) {
 
-		repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
-
-		repository.deleteById(id);
-		log.info("Company Supervisor is deleted from database id: {}", id);
+		
+         if(repository.findById(id).isPresent()) {
+        	 repository.deleteById(id);
+         }
+         else {
+		
+		log.info("Company Supervisor not found!");
 	}
+	} 
 
 	void checkIfCompanySupervisorExistsByUserId(Long userId) {
 		if (repository.existsByUserId(userId)) {

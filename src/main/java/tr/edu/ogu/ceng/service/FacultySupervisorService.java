@@ -117,7 +117,7 @@ public class FacultySupervisorService {
 			return false;
 		} catch (EmptyResultDataAccessException e) {
 			log.warn("Faculty supervisor with ID {} not found", id);
-			return false;
+			return true;
 		}
 	}
 
