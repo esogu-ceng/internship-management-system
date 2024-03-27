@@ -19,7 +19,6 @@ public class RegisterAsCompanySupervisorResponseDto {
 	private String name;
 	private String surname;
 	private String phoneNumber;
-	private String username;
 	private String email;
 	private UserType userType;
 	private LocalDateTime createDate;

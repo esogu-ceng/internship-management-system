@@ -25,7 +25,8 @@ public class ImsUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		User user = userRepository.findByEmailOrUsername(username, username);
+		//Sisteme giriş için e-posta bilgisini kullanıyoruz.
+		User user = userRepository.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}

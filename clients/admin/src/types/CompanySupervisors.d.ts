@@ -5,7 +5,6 @@ export interface CompanySupervisorCreate {
   surname: string;
   phoneNumber: string;
   user: {
-    username: string;
     password: string;
     email: string;
   };
@@ -37,7 +36,6 @@ export interface CompanySupervisor {
 
 export interface User {
   id: number;
-  username: string;
   password: string;
   email: string;
   activity: boolean;

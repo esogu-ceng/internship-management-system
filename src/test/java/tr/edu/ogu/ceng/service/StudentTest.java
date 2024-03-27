@@ -72,11 +72,11 @@ public class StudentTest {
 		// FIXME This test case will be extended to mock all used repository methods
 		// like facultyRepository.get etc.
 		LocalDateTime dateTime = LocalDateTime.now();
-		var savedUser = new User(1002L, "TEST", "passwordHash", "", null, dateTime, dateTime, null, false);
+		var savedUser = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		var SavedStudent = new Student(6L, "test", "test", "test", "test", null, null, null,
 				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
 
-		var user = new User(1002L, "TEST", "passwordHash", "", null, dateTime, dateTime, null, false);
+		var user = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		user.setId(null);
 		var student = new Student(6L, "test", "test", "test", "test", null, null, null,
 				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");

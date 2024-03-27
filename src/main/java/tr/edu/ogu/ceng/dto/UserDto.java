@@ -16,7 +16,6 @@ import tr.edu.ogu.ceng.enums.UserType;
 @Builder
 public class UserDto {
 	private Long id;
-	private String username;
 	@NotBlank(message = "{password.not.blank}")
 	private String password;
 	private String email;

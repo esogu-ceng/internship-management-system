@@ -72,7 +72,7 @@ function Login() {
                     if (response.redirected === true) {
                         window.location.href = response.url
                     } else
-                        toast.error('Kullanıcı adı ya da parola yanlış!', {autoClose: 2000});
+                        toast.error('E-posta ya da parola yanlış!', {autoClose: 2000});
                 }
             ).catch((error) => {
             toast.error("Bir hata oluştu!", {autoClose: 2000})
@@ -87,7 +87,7 @@ function Login() {
             <div className="login-page">
                 <Form className="form-login" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="exampleInputEmail1">Kullanıcı adı</label>
+                        <label htmlFor="exampleInputEmail1">E-mail</label>
                         <input
                             type="text"
                             className="form-control"

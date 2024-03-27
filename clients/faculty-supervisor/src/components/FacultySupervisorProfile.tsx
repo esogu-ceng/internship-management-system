@@ -66,7 +66,7 @@ function FacultySupervisorProfile() {
 
                 {facultySupervisorDatas &&
                     facultySupervisorDatas.map(facultySupervisorData => (
-                        <div key={facultySupervisorData.username} className="grid grid-cols-2 gap-4 px-2 w-full">
+                        <div key={facultySupervisorData.email} className="grid grid-cols-2 gap-4 px-2 w-full">
                             <div
                                 className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                                 <p className="text-sm text-gray-600">İsim </p>
@@ -80,14 +80,6 @@ function FacultySupervisorProfile() {
                                 <p className="text-sm text-gray-600">Soyisim</p>
                                 <p className="text-base font-medium text-navy-700">
                                     {facultySupervisorData.surname}
-                                </p>
-                            </div>
-
-                            <div
-                                className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
-                                <p className="text-sm text-gray-600">Kullanıcı Adı</p>
-                                <p className="text-base font-medium text-navy-700">
-                                    {facultySupervisorData.username}
                                 </p>
                             </div>
 

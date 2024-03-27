@@ -41,10 +41,10 @@ public class UserTest {
 	void is_user_saved_successfully() {
 		String rawPassword = "Test";
 		LocalDateTime dateTime = LocalDateTime.now();
-		var userToSave = new User(1002L, "TEST", rawPassword, "Test@test.com", UserType.STUDENT, dateTime, dateTime,
+		var userToSave = new User(1002L, rawPassword, "Test@test.com", UserType.STUDENT, dateTime, dateTime,
 				null, false);
 
-		var savedUser = new User(1002L, "TEST", passwordEncoder.encode(rawPassword), "Test@test.com", UserType.STUDENT,
+		var savedUser = new User(1002L, passwordEncoder.encode(rawPassword), "Test@test.com", UserType.STUDENT,
 				dateTime, dateTime, null, false);
 
 		when(userRepository.existsById(any(Long.class))).thenReturn(false);
@@ -54,7 +54,6 @@ public class UserTest {
 
 		assertNotNull(actual);
 		assertEquals(userToSave.getId(), actual.getId());
-		assertEquals(userToSave.getUsername(), actual.getUsername());
 		assertTrue(passwordEncoder.matches(rawPassword, actual.getPassword()));
 		assertEquals(userToSave.getEmail(), actual.getEmail());
 		assertEquals(userToSave.getUserType(), actual.getUserType());

@@ -13,7 +13,6 @@ function StudentProfile() {
                 const studentData = {
                     ...data,
                     email:data.email,
-                    username:data.username,
                     createDate: new Date(data.createDate),
                 };
                 setStudentDatas([studentData]);
@@ -28,7 +27,6 @@ function StudentProfile() {
                         ...studentData,
                         ...data,
                         userId: data.user.id,
-                        username: data.user.username,
                         email: data.user.email,
                         facultyId: data.faculty.id,
                         createDate: new Date(data.createDate),
@@ -71,7 +69,7 @@ function StudentProfile() {
 
                 {studentDatas &&
                     studentDatas.map(studentData => (
-                        <div key={studentData.username} className="grid grid-cols-2 gap-4 px-2 w-full">
+                        <div key={studentData.email} className="grid grid-cols-2 gap-4 px-2 w-full">
                             <div
                                 className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                                 <p className="text-sm text-gray-600">İsim </p>
@@ -85,14 +83,6 @@ function StudentProfile() {
                                 <p className="text-sm text-gray-600">Soyisim</p>
                                 <p className="text-base font-medium text-navy-700">
                                     {studentData.surname}
-                                </p>
-                            </div>
-
-                            <div
-                                className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
-                                <p className="text-sm text-gray-600">Kullanıcı Adı</p>
-                                <p className="text-base font-medium text-navy-700">
-                                    {studentData.username}
                                 </p>
                             </div>
 

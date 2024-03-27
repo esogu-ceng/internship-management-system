@@ -25,7 +25,6 @@ public class StudentRequestDto {
 	private long facultyId;
 	private String password;
 	private String confirmPassword;
-	private String username;
 	private String email;
 	private String address;
 }

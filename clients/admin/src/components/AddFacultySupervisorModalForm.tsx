@@ -7,7 +7,6 @@ interface State {
   phoneNumber: string;
   supervisorNo: string;
   user: {
-    username: string;
     password: string;
     email: string;
   };
@@ -28,7 +27,6 @@ const initialState: State = {
   phoneNumber: "",
   supervisorNo: "",
   user: {
-    username: "",
     password: "",
     email: "",
   },
@@ -181,22 +179,6 @@ const AddModalForm: React.FC<Props> = ({
                   required
                   min={0}
                   placeholder="örn: 26"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="username" className="form-label">
-                  Kullanıcı Adı:
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  name="user.username"
-                  value={state.user.username}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  maxLength={50}
-                  placeholder={"Kullanıcı Adı"}
                 />
               </div>
               <div className="form-group">
