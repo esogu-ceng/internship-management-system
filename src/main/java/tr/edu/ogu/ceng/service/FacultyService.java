@@ -62,6 +62,7 @@ public class FacultyService {
 		if (facultyRequestDto.getId() == null) {
 			throw new IllegalArgumentException("Faculty Id cannot be null");
 		}
+
 		Faculty faculty = facultyRepository.findById(facultyRequestDto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Faculty not found!"));
 

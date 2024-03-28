@@ -23,6 +23,7 @@ import tr.edu.ogu.ceng.dto.InternshipEvaluateFormDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipEvaluateFormRequestDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
@@ -37,6 +38,7 @@ public class InternshipEvaluateFormService {
     private final CompanyRepository companyRepository;
     private final SettingRepository settingsRepository;
     private final ModelMapper modelMapper;
+    private MessageResource messageResource;
 
     public InternshipEvaluateForm formFileUpload(MultipartFile file, InternshipEvaluateFormDto dto) {
         InternshipEvaluateForm internshipEvaluateForm = new InternshipEvaluateForm();
@@ -63,7 +65,7 @@ public class InternshipEvaluateFormService {
             internshipEvaluateForm.setCompany(company);
             internshipEvaluateFormRepository.save(internshipEvaluateForm);
         } else {
-            throw new IllegalArgumentException("Hatalı internship ID veya company ID");
+            throw new IllegalArgumentException(messageResource.getMessage("internship.or.company.id.wrong"));
         }
         return internshipEvaluateForm;
     }

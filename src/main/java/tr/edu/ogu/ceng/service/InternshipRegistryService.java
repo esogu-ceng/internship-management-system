@@ -23,6 +23,7 @@ import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.InternshipRegistry;
 
 @Slf4j
@@ -42,6 +43,7 @@ public class InternshipRegistryService {
 	private UserRepository userRepository;
 	private FacultyRepository facultyRepository;
 	private ModelMapper modelMapper;
+	private MessageResource messageResource;
 
 	public boolean deleteInternshipRegistry(long id) {
 		if (!internshipRegistryRepository.existsById(id)) {
@@ -58,7 +60,7 @@ public class InternshipRegistryService {
 		InternshipRegistry internshipRegistry = modelMapper.map(requestDto, InternshipRegistry.class);
 		if (!internshipRegistryRepository.existsById(internshipRegistry.getId())) {
 			log.warn("Internship registry with ID {} not found", internshipRegistry.getId());
-			throw new EntityNotFoundException("Internship Registry not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		try {
@@ -114,7 +116,7 @@ public class InternshipRegistryService {
 	public InternshipRegistryResponseDto getInternshipRegistry(Long id) {
 		if (!internshipRegistryRepository.existsById(id)) {
 			log.warn("Internship registry with ID {} not found", id);
-			throw new EntityNotFoundException("Internship Registry not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 		try {
 			ModelMapper modelMapper = new ModelMapper();

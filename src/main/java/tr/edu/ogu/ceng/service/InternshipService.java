@@ -26,6 +26,7 @@ import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.Student;
 
@@ -44,6 +45,7 @@ public class InternshipService {
 	private final ModelMapper modelMapper;
 	private CompanyService companyService;
 	private StudentService studentService;
+	private MessageResource messageResource;
 
 	public InternshipResponseDto addInternship(InternshipRequestDto internshipDto) {
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
@@ -90,7 +92,7 @@ public class InternshipService {
 		try {
 			if (!internshipRepository.existsById(id)) {
 				log.warn("Internship not found!");
-				throw new EntityNotFoundException("Internship not found!");
+				throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 			}
 
 			Optional<Internship> internshipOptional = internshipRepository.findById(id);
@@ -107,7 +109,7 @@ public class InternshipService {
 			return modelMapper.map(internshipOptional.orElseThrow(), CompanyDto.class);
 		} catch (Exception e) {
 			log.error("Error occured while getting the Company by InternshipId", id);
-			throw new EntityNotFoundException("Error occured while getting the Company by InternshipId!");
+			throw new EntityNotFoundException(messageResource.getMessage("error.getting.company.with.internshipId", id));
 		}
 	}
 
@@ -126,7 +128,7 @@ public class InternshipService {
 
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		LocalDateTime dateTime = LocalDateTime.now();
@@ -176,7 +178,7 @@ public class InternshipService {
 	public StudentResponseDto getStudentByInternshipId(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		Internship internship = internshipRepository.findById(id).orElse(null);

@@ -2,9 +2,11 @@ package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
 
+import javax.mail.Message;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -30,7 +32,11 @@ public class FacultySupervisorService {
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserService userService;
 	private ModelMapper modelMapper;
+
+	@Autowired
 	private MessageResource messageResource;
+
+
 
 	/**
 	 * Adds a new Faculty Supervisor and related User definition
@@ -65,7 +71,7 @@ public class FacultySupervisorService {
 
 		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
 		if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
-			throw new EntityNotFoundException("Faculty supervisor not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 
 		try {
 			LocalDateTime now = LocalDateTime.now();
@@ -90,8 +96,7 @@ public class FacultySupervisorService {
 
 	public FacultySupervisorResponseDto getFacultySupervisor(Long id) {
 		if (!facultySupervisorRepository.existsById(id)) {
-			String message = messageResource.getMessage("not.found");
-			throw new EntityNotFoundException(message);
+			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 		}
 		try {
 			ModelMapper modelMapper = new ModelMapper();
