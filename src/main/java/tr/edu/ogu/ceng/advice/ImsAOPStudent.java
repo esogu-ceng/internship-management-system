@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.service.Exception.ServiceException;
 
 @Aspect
@@ -19,16 +20,19 @@ public class ImsAOPStudent {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private MessageResource messageResource;
+
 	@Before("execution(* tr.edu.ogu.ceng.service.StudentService.addStudent(..)) && args(studentDto)")
 	public void beforeAddStudent(StudentDto studentDto) {
 		boolean existingStudentTcNo = studentRepository.existsByTckn(studentDto.getTckn());
 		boolean existingStudentStudenNo = studentRepository.existsByStudentNo(studentDto.getStudentNo());
-		if (existingStudentTcNo == true && existingStudentStudenNo == true) {
-			throw new ServiceException("Bu TC kimlik numarası ve Öğrenci numarası zaten kayıtlı.");
-		} else if (existingStudentTcNo == true) {
-			throw new ServiceException("Bu TC kimlik numarası zaten kayıtlı.");
-		} else if (existingStudentStudenNo == true) {
-			throw new ServiceException("Bu öğrenci numarası zaten kayıtlı.");
+		if (existingStudentTcNo && existingStudentStudenNo) {
+			throw new ServiceException(messageResource.getMessage("student.already.registered"));
+		} else if (existingStudentTcNo) {
+			throw new ServiceException(messageResource.getMessage("tckn.already.registered"));
+		} else if (existingStudentStudenNo) {
+			throw new ServiceException(messageResource.getMessage("student.no.already.registered"));
 		}
 	}
 
@@ -49,15 +53,15 @@ public class ImsAOPStudent {
 		boolean existingUsername = userRepository.existsByUsername(username);
 
 		if (existingStudentTcNo && existingStudentStudenNo) {
-			throw new ServiceException("Bu TC kimlik numarası ve Öğrenci numarası zaten kayıtlı.");
+			throw new ServiceException(messageResource.getMessage("student.already.registered"));
 		} else if (existingStudentTcNo) {
-			throw new ServiceException("Bu TC kimlik numarası zaten kayıtlı.");
+			throw new ServiceException(messageResource.getMessage("tckn.already.registered"));
 		} else if (existingStudentStudenNo) {
-			throw new ServiceException("Bu öğrenci numarası zaten kayıtlı.");
+			throw new ServiceException(messageResource.getMessage("student.no.already.registered"));
 		} else if (existingUsername) {
-			throw new ServiceException("Bu username zaten kayıtlı");
+			throw new ServiceException(messageResource.getMessage("username.already.registered"));
 		} else if (existingEmail) {
-			throw new ServiceException("Bu email zaten kayıtlı");
+			throw new ServiceException(messageResource.getMessage("email.already.registered"));
 		}
 
 	}
@@ -65,21 +69,20 @@ public class ImsAOPStudent {
 	private void validateTckno(String tckno) {
 		String regex = "^[0-9]{11}$";
 		if (!tckno.matches(regex)) {
-			throw new ServiceException("TCKNO 11 haneli ve sadece sayılardan oluşmalıdır!");
+			throw new ServiceException(messageResource.getMessage("tckn.invalid"));
 		}
 	}
 
 	private void validateStudentNo(String studentNo) {
 		String regex = "^[0-9]+$";
 		if (!studentNo.matches(regex)) {
-			throw new ServiceException("Öğrenci numarası sadece sayılardan oluşmalıdır!");
+			throw new ServiceException(messageResource.getMessage("student.no.invalid"));
 		}
 	}
-	
+
 	private void checkIfPasswordsMatchingValidation(StudentDto request) {
 		if (!request.getPassword().equals(request.getConfirmPassword()))
-			throw new ServiceException("Şifreler eşleşmiyor!");
-
+			throw new ServiceException(messageResource.getMessage("password.mismatch"));
 	}
 
 }

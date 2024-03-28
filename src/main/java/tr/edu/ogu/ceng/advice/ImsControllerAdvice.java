@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.advice;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import lombok.extern.slf4j.Slf4j;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.service.Exception.DataAccessException;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.ServiceException;
@@ -18,6 +20,9 @@ import tr.edu.ogu.ceng.service.Exception.ServiceException;
 @Slf4j
 @ControllerAdvice
 public class ImsControllerAdvice {
+
+	@Autowired
+	private MessageResource messageResource;
 
 	@ExceptionHandler(DataAccessException.class)
 	public ResponseEntity<ErrorResponseDTO> dataAccessException(DataAccessException ex) {
@@ -65,7 +70,7 @@ public class ImsControllerAdvice {
 	public ResponseEntity<ErrorResponseDTO> globalException(Exception ex) {
 		log.error(ex.getMessage());
 		ex.printStackTrace(); // FIXME hold when development stage
-		ErrorResponseDTO errorResponse = new ErrorResponseDTO("500", "Beklenmeyen bir hata oluştu");
+		ErrorResponseDTO errorResponse = new ErrorResponseDTO("500", messageResource.getMessage("unexpected.error"));
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

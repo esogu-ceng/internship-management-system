@@ -21,6 +21,7 @@ import com.google.common.cache.CacheBuilder;
 import tr.edu.ogu.ceng.dto.EmailReceiverDto;
 import tr.edu.ogu.ceng.dto.ResetPasswordDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.InvalidTokenException;
@@ -33,14 +34,18 @@ public class ForgotPasswordService {
 
 	private UserService userService;
 	private SettingService settingService;
-	private EmailService emailService;
+  private EmailService emailService;
+
+	@Autowired
+	private MessageResource messageResource;
+
 
 	private static Cache<String, String> resetRequestCache = CacheBuilder.newBuilder().maximumSize(1000)
 			.expireAfterWrite(5, TimeUnit.MINUTES).build();
 
 	public void sendResetPasswordEmail(EmailReceiverDto emailReceiver) throws Exception {
 		if (userService.findByEmail(emailReceiver.getEmail()) == null)
-			throw new EntityNotFoundException("User with " + emailReceiver.getEmail() + " does not exist!");
+			throw new EntityNotFoundException(messageResource.getMessage("user.with.email.not.exists", emailReceiver.getEmail()));
 
 
 		String resetHash = UUID.randomUUID().toString();
