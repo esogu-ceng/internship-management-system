@@ -69,7 +69,8 @@ public class InternshipRegistryService {
 					.setCreateDate(internshipRegistryRepository.getById(internshipRegistry.getId()).getCreateDate());
 			internshipRegistry.setUpdateDate(dateTime);
 			InternshipRegistry updatedInternshipRegistry = internshipRegistryRepository.save(internshipRegistry);
-			log.info("Internship registry updated: {}", updatedInternshipRegistry);
+
+			log.info("Internship registry updated id: {}, name: {}", updatedInternshipRegistry.getId(), updatedInternshipRegistry.getName());
 			return modelMapper.map(updatedInternshipRegistry, InternshipRegistryResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while updating internship registry: {}", e.getMessage());
@@ -87,7 +88,8 @@ public class InternshipRegistryService {
 			internshipRegistry.setCreateDate(dateTime);
 			internshipRegistry.setUpdateDate(dateTime);
 			addedInternshipRegistry = internshipRegistryRepository.save(internshipRegistry);
-			log.info("Internship registry saved: {}", internshipRegistry);
+
+			log.info("Internship registry added id: {}, name: {}", addedInternshipRegistry.getId(), addedInternshipRegistry.getName());
 			return modelMapper.map(addedInternshipRegistry, InternshipRegistryResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while saving internship registry: {}", e.getMessage());
@@ -98,7 +100,7 @@ public class InternshipRegistryService {
 	public Page<InternshipRegistryResponseDto> getAllInternshipRegistiries(Long internshipId, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting internship registriries by id: {} with pageable: {}", internshipId, pageable);
+
 			Page<InternshipRegistry> internshipRegistries = internshipRegistryRepository
 					.findAllByInternshipId(internshipId, pageable);
 			if (internshipRegistries.isEmpty()) {
@@ -106,6 +108,7 @@ public class InternshipRegistryService {
 			}
 			Page<InternshipRegistryResponseDto> internshipRegistryDtos = internshipRegistries.map(
 					internshipRegistry -> modelMapper.map(internshipRegistry, InternshipRegistryResponseDto.class));
+			log.info("Getting all internship registries");
 			return internshipRegistryDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internship registries: {}", e.getMessage());
@@ -120,6 +123,7 @@ public class InternshipRegistryService {
 		}
 		try {
 			ModelMapper modelMapper = new ModelMapper();
+			log.info("Getting internship registry by id: {}", id);
 			return modelMapper.map(internshipRegistryRepository.getById(id), InternshipRegistryResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while getting internship registry: {}", e.getMessage());

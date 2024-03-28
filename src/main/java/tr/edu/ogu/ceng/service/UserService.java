@@ -95,19 +95,22 @@ public class UserService {
 
 	public User updateUser(User user) {
 		if (!userRepository.existsById(user.getId())) {
+			log.warn("User not found with id: {}", user.getId());
 			throw new EntityNotFoundException("User not found!");
 		}
+		log.info("User updated successfully with id: {}", user.getId());
 		return userRepository.save(user);
 	}
 
 	public String encodeUserPassword(String rawPass) {
+		log.info("Encoding user password.");
 		return passwordEncoder.encode(rawPass);
 	}
 
 	public UserResponseDto updateUser(UserRequestDto userDto) {
 		try {
 			if (!userRepository.existsById(userDto.getId())) {
-				log.warn("There is no user with the entered ID.");
+				log.warn("User not found with id: {}", userDto.getId());
 				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 			}
 			ModelMapper modelMapper = new ModelMapper();
@@ -119,6 +122,7 @@ public class UserService {
 			log.info("User with ID {} has been updated", user.getId());
 			return modelMapper.map(user, UserResponseDto.class);
 		} catch (tr.edu.ogu.ceng.service.Exception.EntityNotFoundException e) {
+			log.error("An error occurred while updating user: {}", e.getMessage());
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
@@ -149,11 +153,15 @@ public class UserService {
 		UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		UserDto loggedInUser = modelMapper.map(userPrincipal.getUser(), UserDto.class);
+
+		log.info("Getting logged in user with id: {} and email: {}", loggedInUser.getId(), loggedInUser.getEmail());
+
 		return loggedInUser;
 	}
 
 	public User GetUserById(Long UserId) {
 		User user = userRepository.getById(UserId);
+		log.info("Getting user by id: {}", UserId);
 		return user;
 	}
 }

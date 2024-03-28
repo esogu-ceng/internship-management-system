@@ -40,13 +40,15 @@ public class CompanySupervisorService {
 		Page<CompanySupervisor> companySupervisors = repository.findAll(pageable);
 		Page<CompanySupervisorResponseDto> response = companySupervisors
 				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorResponseDto.class));
-
+		log.info("Company Supervisors are fetched from database");
 		return response;
 	}
 
 	public CompanySupervisorResponseDto getById(Long id) {
 		CompanySupervisor companySupervisor = repository.findById(id).orElseThrow();
 		CompanySupervisorResponseDto response = mapper.map(companySupervisor, CompanySupervisorResponseDto.class);
+
+		log.info("Company Supervisor is fetched from database id: {}, name: {}", companySupervisor.getId() ,companySupervisor.getName());
 		return response;
 	}
 
@@ -55,6 +57,8 @@ public class CompanySupervisorService {
 		companySupervisor.setCreateDate(LocalDateTime.now());
 		companySupervisor.setUpdateDate(LocalDateTime.now());
 		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
+
+		log.info("Company Supervisor is added to database id: {}, name: {}",companySupervisor.getId() ,companySupervisor.getName());
 		return createdCompanySupervisor;
 	}
 
@@ -74,6 +78,7 @@ public class CompanySupervisorService {
 		companySupervisor.setUpdateDate(now);
 		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
 
+		log.info("CompanySupervisorResponseDto is mapped to CompanySupervisor entity id: {}, name: {}",companySupervisor.getId() ,companySupervisor.getName());
 		return mapper.map(createdCompanySupervisor, CompanySupervisorResponseDto.class);
 
 	}
@@ -82,6 +87,7 @@ public class CompanySupervisorService {
 		CompanySupervisor companySupervisor = repository.findById(request.getId())
 				.orElseThrow(() -> new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound")));
 		if (companySupervisor.getUser().getId() != request.getUser().getId()) {
+		    log.error("Company Supervisor not found with the user id: " + request.getUser().getId());
 			// checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
 		}
 		request.setCreateDate(companySupervisor.getCreateDate());
@@ -90,16 +96,21 @@ public class CompanySupervisorService {
 		CompanySupervisor updatedCompanySupervisor = repository.save(companySupervisor);
 
 		CompanySupervisorDto response = mapper.map(updatedCompanySupervisor, CompanySupervisorDto.class);
+		log.info("Company Supervisor is updated in database id: {}, name: {}", companySupervisor.getId() ,companySupervisor.getName());
 		return response;
 	}
 
 	public void delete(Long id) {
+
 		repository.findById(id).orElseThrow(() -> new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound")));
+
 		repository.deleteById(id);
+		log.info("Company Supervisor is deleted from database id: {}", id);
 	}
 
 	void checkIfCompanySupervisorExistsByUserId(Long userId) {
 		if (repository.existsByUserId(userId)) {
+			log.warn("Company Supervisor already exists with the user id: " + userId);
 			throw new UserAlreadyExistsException();
 		}
 	}
@@ -111,11 +122,13 @@ public class CompanySupervisorService {
 				.map(companySupervisor -> mapper.map(companySupervisor, CompanySupervisorDto.class))
 				.collect(Collectors.toList());
 
+		log.info("Company Supervisors are fetched from database");
 		return companySupervisorDtos;
 	}
 
 	public CompanySupervisorDto getCompanySupervisorByUserId(Long userId) {
 		CompanySupervisor companySupervisor = repository.findCompanySupervisorByUserId(userId);
+		log.info("Company Supervisor is fetched from database id: {}, name: {}", companySupervisor.getId() ,companySupervisor.getName());
 		return mapper.map(companySupervisor, CompanySupervisorDto.class);
 	}
 }

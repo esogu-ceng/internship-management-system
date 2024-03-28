@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.PasswordsNotMatchedException;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RegisterAsCompanySupervisorService {
@@ -45,12 +47,19 @@ public class RegisterAsCompanySupervisorService {
 		response.setEmail(createdUser.getEmail());
 		response.setUserType(createdUser.getUserType());
 
+		log.info("Company supervisor registered successfully with username: {} and id: {}", createdUser.getUsername(),
+				createdUser.getId());
 		return response;
 	}
 
 	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorRequestDto request) {
-		if (!request.getPassword().toString().equals(request.getConfirmPassword().toString()))
+		if (!request.getPassword().toString().equals(request.getConfirmPassword().toString())){
+			log.error("Passwords are not matching");
 			throw new PasswordsNotMatchedException();
+		}
+		else {
+			log.info("Passwords are matching");
+		}
 	}
 
 }
