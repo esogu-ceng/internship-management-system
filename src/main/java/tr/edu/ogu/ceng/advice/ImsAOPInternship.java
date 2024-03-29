@@ -10,7 +10,10 @@ import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.service.Exception.ServiceException;
+
+import java.util.Locale;
 
 @Slf4j
 @Aspect
@@ -24,6 +27,9 @@ public class ImsAOPInternship {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	@Autowired
+	private MessageResource messageResource;
+
 	@Before("execution(* tr.edu.ogu.ceng.service.InternshipService.updateInternship(..)) && args(internshipDto) || execution(* tr.edu.ogu.ceng.service.InternshipService.addInternship(..)) && args(internshipDto)")
 	public void beforeAddAndUpdateInternship(InternshipRequestDto internshipDto) {
 		boolean existingFacultySupervisorId = facultySupervisorRepository
@@ -32,15 +38,15 @@ public class ImsAOPInternship {
 		boolean existingCompanyId = companyRepository.existsById(internshipDto.getCompanyId());
 
 		if (!existingFacultySupervisorId) {
-			throw new ServiceException("Fakülte sorumlusu bulunamadı!"); // TODO - EntityNotFoundException with message.
+			throw new ServiceException(messageResource.getMessage("facultySupervisorNotFound"));
 		} else if (!existingStudentId) {
-			throw new ServiceException("Öğrenci bulunamadı!"); // TODO - EntityNotFoundException with message.
+			throw new ServiceException(messageResource.getMessage("studentNotFound"));
 		} else if (!existingCompanyId) {
-			throw new ServiceException("Şirket bulunamadı!"); // TODO - EntityNotFoundException with message.
+			throw new ServiceException(messageResource.getMessage("companyNotFound"));
 		} else if (internshipDto.getDays() < 0) {
-			throw new ServiceException("Staj gün sayısı negatif olamaz!");
+			throw new ServiceException(messageResource.getMessage("negativeDays"));
 		} else if (internshipDto.getStartDate().compareTo(internshipDto.getEndDate()) > 0) {
-			throw new ServiceException("Staj bitiş tarihi başlangıç tarihinden önce olamaz!");
+			throw new ServiceException(messageResource.getMessage("invalidDates"));
 		}
 
 	}
