@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.UserPrincipal;
 import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
@@ -29,7 +31,6 @@ public class UserService {
 	private UserRepository userRepository;
 
 	private PasswordEncoder passwordEncoder;
-
 	public Page<UserDto> getAllUsers(Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
