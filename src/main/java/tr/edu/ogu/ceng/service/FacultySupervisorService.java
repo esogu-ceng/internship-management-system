@@ -97,9 +97,8 @@ public class FacultySupervisorService {
 
 	public FacultySupervisorResponseDto getFacultySupervisor(Long id) {
 		if (!facultySupervisorRepository.existsById(id)) {
-
-			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 			log.warn("Faculty supervisor not found with id: {}", id);
+			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 		}
 		try {
 			ModelMapper modelMapper = new ModelMapper();
