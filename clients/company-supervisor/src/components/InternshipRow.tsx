@@ -3,12 +3,14 @@ import { Internship } from '../types/InternshipType';
 import Modal from '../components/StudentInfo';
 import { InternshipDocument } from './InternshipDocument';
 import InternshipEvaluateForm from '../components/InternshipEvaluateForm';
+import InternshipApprove from "./InternshipApprove";
+import InternshipReject from "./InternshipReject";
 
 export const InternshipRow = ({ internship, company }: { internship: Internship, company: number }) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(<></>);
   const [popUpState, setPopUpState] = useState<boolean>(false);
-
+  const [confirmPopUpState ,setconfirmPopUpState]=useState<boolean>(false);
   const getStatusColor = (status: string) => {
     const statusClasses: { [key: string]: string } = {
       APPROVED: 'bg-green-200 p-20 rounded-full',
@@ -38,6 +40,20 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
     console.log('Running handleInternshipBooks');
     setPopUpScreen(<InternshipDocument internship_id={internship_id} />);
 
+  };
+  const handleInternshipApproval = (internship_id: number) => {
+    setPopUpState(true);
+    console.log(internship_id);
+    setPopUpScreen(
+        <InternshipApprove id={internship_id}></InternshipApprove> // Burada ID'yi belirtin
+    );
+  };
+  const handleInternshipReject = (internship_id: number) => {
+    setPopUpState(true);
+    console.log(internship_id);
+    setPopUpScreen(
+        <InternshipReject id={internship_id}></InternshipReject> // Burada ID'yi belirtin
+    );
   };
   const handleCompanyEvaluation = () => {
     setPopUpState(true);
@@ -116,40 +132,40 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
       <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
         <div className="flex space-x-3">
           <button
-            className="relative text-indigo-600 hover:text-indigo-900"
-            onMouseEnter={() => handleButtonHover('studentInfo')}
-            onMouseLeave={() => handleButtonHover(null)}
-            onClick={() => handleStudentInfo()}
+              className="relative text-indigo-600 hover:text-indigo-900"
+              onMouseEnter={() => handleButtonHover('studentInfo')}
+              onMouseLeave={() => handleButtonHover(null)}
+              onClick={() => handleStudentInfo()}
           >
             <svg
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+                className="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             >
               <circle cx="12" cy="7" r="4"></circle>
               <path d="M2 20C2 14.4772 6.47715 10 12 10C17.5228 10 22 14.4772 22 20"></path>
             </svg>
             {hoveredButton == 'studentInfo' &&
-              buttonHoverPopUp('Öğrenci Bilgileri')}
+                buttonHoverPopUp('Öğrenci Bilgileri')}
           </button>
           <button
-            className="relative text-indigo-600 hover:text-indigo-900"
-            onMouseEnter={() => handleButtonHover('internshipBooks')}
-            onMouseLeave={() => handleButtonHover(null)}
-            onClick={() => handleInternshipBooks(internship.id)}
+              className="relative text-indigo-600 hover:text-indigo-900"
+              onMouseEnter={() => handleButtonHover('internshipBooks')}
+              onMouseLeave={() => handleButtonHover(null)}
+              onClick={() => handleInternshipBooks(internship.id)}
           >
             <svg
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+                className="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             >
               <path d="M9 19V5H21V19H9Z"></path>
               <path d="M9 3L9 19"></path>
@@ -157,47 +173,152 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
               <path d="M3 3L3 19"></path>
             </svg>
             {hoveredButton == 'internshipBooks' &&
-              buttonHoverPopUp('Staj Defteri')}
+                buttonHoverPopUp('Staj Defteri')}
           </button>
           <button
-            className="relative text-indigo-600 hover:text-indigo-900"
-            onMouseEnter={() => handleButtonHover('companyEvaluation')}
-            onMouseLeave={() => handleButtonHover(null)}
-            onClick={() => handleCompanyEvaluation()}
+              className="relative text-indigo-600 hover:text-indigo-900"
+              onMouseEnter={() => handleButtonHover('companyEvaluation')}
+              onMouseLeave={() => handleButtonHover(null)}
+              onClick={() => handleCompanyEvaluation()}
           >
             <svg
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+                className="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             >
               <path d="M22 11.07V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
             {hoveredButton == 'companyEvaluation' &&
-              buttonHoverPopUp('Şirket Değerlendirmesi')}
+                buttonHoverPopUp('Şirket Değerlendirmesi')}
           </button>
+          {internship.status === "REJECTED" ? (
+
+              <button
+                  className="relative text-indigo-600 hover:text-indigo-900"
+                  onClick={() => handleInternshipApproval(internship.id)}
+                      onMouseEnter={() => handleButtonHover('internshipApprove')}
+                      onMouseLeave={() => handleButtonHover(null)}
+
+              >
+                <svg
+                    className="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <polyline points="17 11 19 13 23 9"></polyline>
+                </svg>
+                {hoveredButton == 'internshipApprove' &&
+                    buttonHoverPopUp('Onayla')}
+              </button>
+          ) : internship.status === "APPROVED" ? (
+
+              <button
+                  className="relative text-indigo-600 hover:text-indigo-900"
+                  onMouseEnter={() => handleButtonHover('internshipReject')}
+                  onMouseLeave={() => handleButtonHover(null)}
+
+                  onClick={() => handleInternshipReject(internship.id)}>
+
+                <svg
+                    className="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <line x1="18" y1="8" x2="23" y2="13"></line>
+                  <line x1="23" y1="8" x2="18" y2="13"></line>
+
+                </svg>
+                {hoveredButton == 'internshipReject' &&
+                    buttonHoverPopUp('Reddet')}
+              </button>
+          ) : (
+              <div>
+                <button
+                    className="relative text-indigo-600 hover:text-indigo-900"
+                    onMouseEnter={() => handleButtonHover('internshipApprove')}
+                    onMouseLeave={() => handleButtonHover(null)}
+                    onClick={() => handleInternshipApproval(internship.id)}>
+                  <svg
+                      className="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <polyline points="17 11 19 13 23 9"></polyline>
+
+                  </svg>
+                  {hoveredButton == 'internshipApprove' &&
+                      buttonHoverPopUp('Onayla')}
+                </button>
+                {" "}
+                <button
+                    className="relative text-indigo-600 hover:text-indigo-900"
+                    onMouseEnter={() => handleButtonHover('internshipReject')}
+                    onMouseLeave={() => handleButtonHover(null)}
+                    onClick={() => handleInternshipReject(internship.id)}>
+                  <svg
+                      className="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="18" y1="8" x2="23" y2="13"></line>
+                    <line x1="23" y1="8" x2="18" y2="13"></line>
+
+                  </svg>
+                  {hoveredButton == 'internshipReject' &&
+                      buttonHoverPopUp('Reddet')}
+                </button>
+              </div>
+          )}
         </div>
       </td>
       {popUpState && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
-          <div className="z-50 flex flex-col items-center rounded-lg bg-white p-8">
-            {popUpScreen}
-            <br />
-            <button
-              className="mt-4 rounded bg-indigo-500 px-4 py-2 font-bold text-white hover:bg-indigo-600"
-              style={{ backgroundColor: '#3A4F7A' }}
-              onClick={onClosePopUp}
-            >
-              Kapat
-            </button>
-          </div>
-        </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+            <div className="z-50 flex flex-col items-center rounded-lg bg-white p-8">
+              {popUpScreen}
+              <button
+                  className="mt-4 rounded bg-indigo-500 px-4 py-2 font-bold text-white hover:bg-indigo-600"
+                  style={{ backgroundColor: '#3A4F7A' }}
+                  onClick={onClosePopUp}
+              >
+                Kapat
+              </button>
+            </div>
+          </div >
       )}
+
+
+
     </tr>
+
   );
 };
