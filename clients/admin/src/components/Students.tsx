@@ -50,10 +50,10 @@ const StudentsPage = () => {
   };
 
   const handleDeleteUser = (id: number) => {
-    // ask for confirmation before deleting
-    if (!window.confirm("Silmek istediğinize emin misiniz?")) return;
-    // delete the student
-    deleteStudent(id);
+    const confirmDelete = window.confirm("Öğrenci kaydını silmek istediğinden eminmisiniz");
+    if(confirmDelete){
+      deleteStudent(id);
+    }
   };
 
   return (
