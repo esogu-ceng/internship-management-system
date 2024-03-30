@@ -101,8 +101,8 @@ public class InternshipService {
 	public CompanyDto getCompanyByInternshipId(Long id) {
 		try {
 			if (!internshipRepository.existsById(id)) {
-				throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 				log.warn("Internship not found with id {}", id);
+				throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 			}
 
 			Optional<Internship> internshipOptional = internshipRepository.findById(id);

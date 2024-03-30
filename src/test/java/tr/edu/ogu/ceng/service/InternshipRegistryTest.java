@@ -30,6 +30,7 @@ import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
@@ -64,6 +65,8 @@ public class InternshipRegistryTest {
 
 	@Mock
 	FacultyRepository facultyRepository;
+	@Mock
+	MessageResource messageResource;
 
 	InternshipStatus status = InternshipStatus.APPROVED;
 
@@ -72,7 +75,7 @@ public class InternshipRegistryTest {
 		MockitoAnnotations.initMocks(this);
 		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository,
 				internshipRegistryService, internshipRepository, studentRepository, companyRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper());
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(),messageResource);
 	}
 
 	@Test

@@ -70,8 +70,8 @@ public class InternshipEvaluateFormService {
             internshipEvaluateFormRepository.save(internshipEvaluateForm);
             log.info("Internship evaluate form saved successfully with id: {}", internshipEvaluateForm.getId());
         } else {
-            throw new IllegalArgumentException(messageResource.getMessage("internship.or.company.id.wrong"));
             log.error("Wrong internship ID : {} or company ID : {}", dto.getInternship().getId(), dto.getCompany().getId());
+            throw new IllegalArgumentException(messageResource.getMessage("internship.or.company.id.wrong"));
         }
         return internshipEvaluateForm;
     }
