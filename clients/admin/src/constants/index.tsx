@@ -1,7 +1,7 @@
 export const routes = [
-  { href: "/admin/students", text: "Öğrenciler" },
-  { href: "/admin/companySupervisors", text: "Şirket Sorumluları" },
-  { href: "/admin/facultySupervisors", text: "Fakülte Sorumluları" },
-  { href: "/admin/companies", text: "Şirketler" },
-  { href: "/admin/setting", text: "Ayarlar" },
+  { href: "students", text: "Öğrenciler" },
+  { href: "companySupervisors", text: "Şirket Sorumluları" },
+  { href: "facultySupervisors", text: "Fakülte Sorumluları" },
+  { href: "companies", text: "Şirketler" },
+  { href: "setting", text: "Ayarlar" },
 ];

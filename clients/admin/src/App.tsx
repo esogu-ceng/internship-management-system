@@ -19,7 +19,6 @@ import Companies from "./components/Companies";
 import CompanySupervisorDetail from "./components/CompanySupervisorDetail";
 
 function App() {
-  const root_path: string | undefined = process.env.PUBLIC_URL;
   return (
     <React.StrictMode>
       <ToastContainer />
@@ -27,21 +26,21 @@ function App() {
         <Header />
         <div className="app-container">
           <Routes>
-            <Route path={`${root_path}`} element={<AdminDashboard />} />
-            <Route path={`${root_path}/settings`} element={<GetSettings />} />
+            <Route path={``} element={<AdminDashboard />} />
+            <Route path={`settings`} element={<GetSettings />} />
             <Route
-              path={`${root_path}/companySupervisors`}
+              path={`companySupervisors`}
               element={<CompanySupervisors />}
             />
-            <Route path={`${root_path}/companySupervisors/:id`} element={<CompanySupervisorDetail />} />
+            <Route path={`companySupervisors/:id`} element={<CompanySupervisorDetail />} />
 
             <Route
-              path={`${root_path}/facultySupervisors`}
+              path={`facultySupervisors`}
               element={<FacultySupervisors />}
             />
-            <Route path={`${root_path}/profile`} element={<AdminProfile />} />
-            <Route path={`${root_path}/students`} element={<Students />} />
-            <Route path={`${root_path}/companies`} element={<Companies />} />
+            <Route path={`profile`} element={<AdminProfile />} />
+            <Route path={`students`} element={<Students />} />
+            <Route path={`companies`} element={<Companies />} />
           </Routes>
         </div>
         <Footer />
