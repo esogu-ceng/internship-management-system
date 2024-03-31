@@ -62,18 +62,59 @@ public class InternshipController {
 		return internshipService.deleteInternship(id);
 	}
 
-	@PutMapping("/approve/{id}")
-	public InternshipStatus approveInternship(@PathVariable(name = "id") long id) {
-		return internshipService.chanceInternshipStatus(id, InternshipStatus.APPROVED);
-	}
-	@PutMapping("/pending/{id}")
-	public InternshipStatus pendingInternship(@PathVariable(name = "id") long id) {
-		return internshipService.chanceInternshipStatus(id, InternshipStatus.PENDING);
+	@PutMapping("/applied/{id}")
+	public InternshipStatus applyInternship(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.APPLIED);
 	}
 
-	@PutMapping("/reject/{id}")
-	public InternshipStatus rejectInternship(@PathVariable(name = "id") long id) {
-		return internshipService.chanceInternshipStatus(id, InternshipStatus.REJECTED);
+	@PutMapping("/company-approved/{id}")
+	public InternshipStatus approveInternshipByCompany(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_APPROVED);
+	}
+
+	@PutMapping("/faculty-approved/{id}")
+	public InternshipStatus approveInternshipByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_APPROVED);
+	}
+
+	@PutMapping("/ongoing/{id}")
+	public InternshipStatus markInternshipAsOngoing(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.ONGOING);
+	}
+
+	@PutMapping("/company-evaluation-stage/{id}")
+	public InternshipStatus moveToInternshipEvaluationStageByCompany(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_EVALUATION_STAGE);
+	}
+
+	@PutMapping("/faculty-evaluation-stage/{id}")
+	public InternshipStatus moveToInternshipEvaluationStageByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_EVALUATION_STAGE);
+	}
+
+	@PutMapping("/success/{id}")
+	public InternshipStatus markInternshipAsSuccess(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.SUCCESS);
+	}
+
+	@PutMapping("/faculty-rejected/{id}")
+	public InternshipStatus rejectInternshipByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_REJECTED);
+	}
+
+	@PutMapping("/company-rejected/{id}")
+	public InternshipStatus rejectInternshipByCompany(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_REJECTED);
+	}
+
+	@PutMapping("/faculty-invalid/{id}")
+	public InternshipStatus markInternshipAsInvalidByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_INVALID);
+	}
+
+	@PutMapping("/canceled/{id}")
+	public InternshipStatus cancelInternship(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.CANCELED);
 	}
 
 	@GetMapping("/student/{id}")
@@ -109,20 +150,60 @@ public class InternshipController {
 				.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
 		return internships;
 	}
-
-	@GetMapping("/count/approved")
-	public ResponseEntity<Long> countApprovedInternships() {
-		return ResponseEntity.ok(internshipService.countApprovedInternships());
+	
+	@GetMapping("/count/applied")
+	public ResponseEntity<Long> countAppliedInternships() {
+		return ResponseEntity.ok(internshipService.countAppliedInternships());
 	}
-
-	@GetMapping("/count/rejected")
-	public ResponseEntity<Long> countRejectedInternships() {
-		return ResponseEntity.ok(internshipService.countRejectedInternships());
+	
+	@GetMapping("/count/company-approved")
+	public ResponseEntity<Long> countCompanyApprovedInternships() {
+		return ResponseEntity.ok(internshipService.countCompanyApprovedInternships());
 	}
-
-	@GetMapping("/count/pending")
-	public ResponseEntity<Long> countInProcessInternships() {
-		return ResponseEntity.ok(internshipService.countPendingInternships());
+	
+	@GetMapping("/count/faculty-approved")
+	public ResponseEntity<Long> countFacultyApprovedInternships() {
+		return ResponseEntity.ok(internshipService.countFacultyApprovedInternships());
+	}
+	
+	@GetMapping("/count/ongoing")
+	public ResponseEntity<Long> countOngoingInternships() {
+		return ResponseEntity.ok(internshipService.countOngoingInternships());
+	}
+	
+	@GetMapping("/count/company-evaluation-stage")
+	public ResponseEntity<Long> countCompanyEvaluationStageInternships() {
+		return ResponseEntity.ok(internshipService.countCompanyEvaluationStageInternships());
+	}
+	
+	@GetMapping("/count/faculty-evaluation-stage")
+	public ResponseEntity<Long> countFacultyEvaluationStageInternships() {
+		return ResponseEntity.ok(internshipService.countFacultyEvaluationStageInternships());
+	}
+	
+	@GetMapping("/count/success")
+	public ResponseEntity<Long> countSuccessInternships() {
+		return ResponseEntity.ok(internshipService.countSuccessInternships());
+	}
+	
+	@GetMapping("/count/faculty-rejected")
+	public ResponseEntity<Long> countFacultyRejectedInternships() {
+		return ResponseEntity.ok(internshipService.countFacultyRejectedInternships());
+	}
+	
+	@GetMapping("/count/company-rejected")
+	public ResponseEntity<Long> countCompanyRejectedInternships() {
+		return ResponseEntity.ok(internshipService.countCompanyRejectedInternships());
+	}
+	
+	@GetMapping("/count/faculty-invalid")
+	public ResponseEntity<Long> countFacultyInvalidInternships() {
+		return ResponseEntity.ok(internshipService.countFacultyInvalidInternships());
+	}
+	
+	@GetMapping("/count/canceled")
+	public ResponseEntity<Long> countCanceledInternships() {
+		return ResponseEntity.ok(internshipService.countCanceledInternships());
 	}
 	
 	@GetMapping("/count/DistinctStudents")
