@@ -12,7 +12,6 @@ import tr.edu.ogu.ceng.enums.UserType;
 @Builder
 public class UserRequestDto {
 	private Long id;
-	private String username;
 	private String password;
 	private String email;
 	private UserType userType;

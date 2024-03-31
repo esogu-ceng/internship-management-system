@@ -40,17 +40,15 @@ public class ImsAOPStudent {
 	public void beforeRegisterAsStudent(StudentDto request) {
 		validateStudentNo(request.getStudentNo());
 		validateTckno(request.getTckn());
-		checkIfStudentAlreadyRegistered(request.getStudentNo(), request.getTckn(), request.getEmail(),
-				request.getUsername());
+		checkIfStudentAlreadyRegistered(request.getStudentNo(), request.getTckn(), request.getEmail());
 		checkIfPasswordsMatchingValidation(request);
 
 	}
 
-	private void checkIfStudentAlreadyRegistered(String studentNo, String tckno, String email, String username) {
+	private void checkIfStudentAlreadyRegistered(String studentNo, String tckno, String email) {
 		boolean existingStudentTcNo = studentRepository.existsByTckn(tckno);
 		boolean existingStudentStudenNo = studentRepository.existsByStudentNo(studentNo);
 		boolean existingEmail = userRepository.existsByEmail(email);
-		boolean existingUsername = userRepository.existsByUsername(username);
 
 		if (existingStudentTcNo && existingStudentStudenNo) {
 			throw new ServiceException(messageResource.getMessage("student.already.registered"));
@@ -58,8 +56,6 @@ public class ImsAOPStudent {
 			throw new ServiceException(messageResource.getMessage("tckn.already.registered"));
 		} else if (existingStudentStudenNo) {
 			throw new ServiceException(messageResource.getMessage("student.no.already.registered"));
-		} else if (existingUsername) {
-			throw new ServiceException(messageResource.getMessage("username.already.registered"));
 		} else if (existingEmail) {
 			throw new ServiceException(messageResource.getMessage("email.already.registered"));
 		}
