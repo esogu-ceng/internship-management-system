@@ -55,6 +55,10 @@ public class UserService {
 			user.setUpdateDate(dateTime);
 			user.setPassword(encodeUserPassword(user.getPassword()));
 			user.setActivity(true);
+			if (userRepository.existsById(user.getId())) {
+				log.warn("User already exists with id: {}", user.getId());
+				throw new EntityNotFoundException("User already exists!");
+			}
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());
 			return savedUser;
