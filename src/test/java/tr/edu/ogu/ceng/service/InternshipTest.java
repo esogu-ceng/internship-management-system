@@ -66,7 +66,7 @@ public class InternshipTest {
 	@Mock
 	MessageResource messageResource;
 
-	InternshipStatus status = InternshipStatus.PENDING;
+	InternshipStatus status = InternshipStatus.APPLIED;
 
 	@BeforeEach
 	public void init() {
@@ -92,7 +92,7 @@ public class InternshipTest {
 		var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test", null, localDateTime,
 				localDateTime, null, modelFaculty, "address");
 
-		var modelInternship = new Internship(1L, InternshipStatus.APPROVED, null, null, 0, localDateTime, localDateTime,
+		var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 0, localDateTime, localDateTime,
 				modelStudent, modelCompany, modelFacultySupervisor);
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
@@ -120,7 +120,7 @@ public class InternshipTest {
 				.updateDate(localDateTime).build();
 
 		// TODO @ Change when the InternshipRequestDto manipulated
-		var Dtointernship = InternshipRequestDto.builder().id(1L).status(InternshipStatus.APPROVED)
+		var Dtointernship = InternshipRequestDto.builder().id(1L).status(InternshipStatus.FACULTY_APPROVED)
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.days(1).studentId(1004L).companyId(9001L).facultySupervisorId(400L).build();
 
