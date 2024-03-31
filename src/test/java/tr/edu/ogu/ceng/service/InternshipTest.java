@@ -63,7 +63,6 @@ public class InternshipTest {
 	@Mock
 	StudentService studentService;
 
-	@Mock
 	MessageResource messageResource;
 
 	InternshipStatus status = InternshipStatus.PENDING;
@@ -73,7 +72,7 @@ public class InternshipTest {
 		MockitoAnnotations.initMocks(this);
 		internshipService = new InternshipService(internshipRepository, studentRepository, companyRepository,
 				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), companyService,
-				studentService,messageResource);
+				studentService, messageResource);
 	}
 
 	@Test

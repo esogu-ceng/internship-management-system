@@ -2,7 +2,6 @@ package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
 
-import javax.mail.Message;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -35,8 +34,6 @@ public class FacultySupervisorService {
 
 	@Autowired
 	private MessageResource messageResource;
-
-
 
 	/**
 	 * Adds a new Faculty Supervisor and related User definition

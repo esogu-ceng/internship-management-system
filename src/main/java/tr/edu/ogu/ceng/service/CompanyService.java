@@ -1,12 +1,8 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,10 +21,8 @@ import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 @AllArgsConstructor
 public class CompanyService {
 
-	@Autowired
 	private CompanyRepository companyRepository;
 
-	@Autowired
 	private MessageResource messageResource;
 
 	public Page<CompanyDto> getAllCompanies(Pageable pageable) {
@@ -36,7 +30,7 @@ public class CompanyService {
 		Page<Company> companies = companyRepository.findAll(pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
 
-		log.info("Pageable companies fetched page number: {}" , pageable.getPageNumber());
+		log.info("Pageable companies fetched page number: {}", pageable.getPageNumber());
 		return companyDtos;
 	}
 

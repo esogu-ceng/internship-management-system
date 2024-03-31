@@ -65,7 +65,7 @@ public class InternshipRegistryTest {
 
 	@Mock
 	FacultyRepository facultyRepository;
-	@Mock
+
 	MessageResource messageResource;
 
 	InternshipStatus status = InternshipStatus.APPROVED;
@@ -75,7 +75,7 @@ public class InternshipRegistryTest {
 		MockitoAnnotations.initMocks(this);
 		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository,
 				internshipRegistryService, internshipRepository, studentRepository, companyRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(),messageResource);
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), messageResource);
 	}
 
 	@Test

@@ -48,9 +48,9 @@ public class InternshipService {
 	private StudentService studentService;
 	private MessageResource messageResource;
 
-
 	/**
 	 * Adds a new internship
+	 * 
 	 * @param internshipDto
 	 * @return InternshipResponseDto
 	 * @throws Exception
@@ -233,23 +233,23 @@ public class InternshipService {
 		log.info("Counting pending internships");
 		return internshipRepository.countByStatus(InternshipStatus.PENDING);
 	}
+
 	public long countDistinctStudents() {
 		log.info("Counting distinct students");
-	    return internshipRepository.countDistinctStudents();
+		return internshipRepository.countDistinctStudents();
 	}
-	
+
 	public Long countAllInternships() {
 		log.info("Counting all internships");
 		return internshipRepository.count();
 	}
+
 	public List<Object[]> countInternshipsByYear() {
-	        return internshipRepository.countInternshipsByYear();
-	    }
+		return internshipRepository.countInternshipsByYear();
+	}
 
 	public List<Object[]> countInternshipsByMonth() {
 		return internshipRepository.countInternshipsByMonth();
 	}
-	
-
 
 }
