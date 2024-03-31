@@ -83,7 +83,7 @@ public class InternshipTest {
 
 		var modelCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", localDateTime,
 				localDateTime);
-		var modelUser = new User(3L, "Username", "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+		var modelUser = new User(3L, "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
 				localDateTime, null, false);
 		var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
 		var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
@@ -105,7 +105,7 @@ public class InternshipTest {
 		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 
-		var DtoUser = UserDto.builder().id(1L).username("Username").password("password").email("email")
+		var DtoUser = UserDto.builder().id(1L).password("password").email("email")
 				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 
 		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(1L).name("Name").surname("Surname")

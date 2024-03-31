@@ -202,7 +202,6 @@ public class StudentService {
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 
 		User user = new User();
-		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setUserType(UserType.STUDENT);
