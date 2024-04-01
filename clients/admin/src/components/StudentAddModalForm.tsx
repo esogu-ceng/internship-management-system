@@ -13,7 +13,6 @@ interface State {
   birthPlace: string;
   birthDate: Date;
   user: {
-    username: string;
     password: string;
     confirmPassword: string;
     email: string;
@@ -41,7 +40,6 @@ const initialState: State = {
   birthPlace: "",
   birthDate: new Date(""),
   user: {
-    username: "",
     password: "",
     confirmPassword: "",
     email: "",
@@ -372,22 +370,6 @@ const AddModalForm: React.FC<Props> = ({
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="username" className="form-label">
-                      Kullanıcı Adı:
-                    </label>
-                    <input
-                      type="text"
-                      id="username"
-                      name="user.username"
-                      value={state.user.username}
-                      onChange={handleChange}
-                      className="form-input"
-                      required
-                      maxLength={50}
-                      placeholder={"Kullanıcı Adı"}
-                    />
-                  </div>
 
                   <div className="form-group">
                     <label htmlFor="email" className="form-label">

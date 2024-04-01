@@ -18,7 +18,7 @@ export const Root = () => {
 
   const fetchInternships = (number: number) => {
 
-    fetch(`/api/internships?pageNo=${number - 1}`, {
+    fetch(`/company-supervisor/internships?pageNo=${number - 1}`, {
       method: 'GET',
     })
       .then((response) => response.json())

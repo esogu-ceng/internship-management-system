@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
+import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
@@ -27,8 +27,12 @@ import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
+import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.Student;
+import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.security.AuthService;
 
 @Slf4j
 @Service
@@ -38,15 +42,19 @@ public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
 	private StudentRepository studentRepository;
-	private CompanyRepository companyRepository;
+	private CompanySupervisorRepository companySupervisorRepository;
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserRepository userRepository;
 	private FacultyRepository facultyRepository;
 	private final ModelMapper modelMapper;
 	private CompanyService companyService;
 	private StudentService studentService;
+	private MessageResource messageResource;
+	private AuthService authService;
+
 	/**
 	 * Adds a new internship
+	 * 
 	 * @param internshipDto
 	 * @return InternshipResponseDto
 	 * @throws Exception
@@ -98,7 +106,7 @@ public class InternshipService {
 		try {
 			if (!internshipRepository.existsById(id)) {
 				log.warn("Internship not found with id {}", id);
-				throw new EntityNotFoundException("Internship not found!");
+				throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 			}
 
 			Optional<Internship> internshipOptional = internshipRepository.findById(id);
@@ -116,7 +124,7 @@ public class InternshipService {
 			return modelMapper.map(internshipOptional.orElseThrow(), CompanyDto.class);
 		} catch (Exception e) {
 			log.error("Error occured while getting the Company by InternshipId", id);
-			throw new EntityNotFoundException("Error occured while getting the Company by InternshipId!");
+			throw new EntityNotFoundException(messageResource.getMessage("error.getting.company.with.internshipId", id));
 		}
 	}
 
@@ -135,7 +143,7 @@ public class InternshipService {
 
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		LocalDateTime dateTime = LocalDateTime.now();
@@ -185,7 +193,7 @@ public class InternshipService {
 	public StudentResponseDto getStudentByInternshipId(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		Internship internship = internshipRepository.findById(id).orElse(null);
@@ -229,23 +237,41 @@ public class InternshipService {
 		log.info("Counting pending internships");
 		return internshipRepository.countByStatus(InternshipStatus.PENDING);
 	}
+
 	public long countDistinctStudents() {
 		log.info("Counting distinct students");
-	    return internshipRepository.countDistinctStudents();
+		return internshipRepository.countDistinctStudents();
 	}
-	
+
 	public Long countAllInternships() {
 		log.info("Counting all internships");
 		return internshipRepository.count();
 	}
+
 	public List<Object[]> countInternshipsByYear() {
-	        return internshipRepository.countInternshipsByYear();
-	    }
+		return internshipRepository.countInternshipsByYear();
+	}
 
 	public List<Object[]> countInternshipsByMonth() {
 		return internshipRepository.countInternshipsByMonth();
 	}
-	
 
+	public Page<InternshipResponseDto> getAllInternshipsCompany(Pageable pageable) {
+		try {
+			User authUser = authService.getAuthUser();
+			CompanySupervisor companySupervisor = companySupervisorRepository.findCompanySupervisorByUserId(authUser.getId());
+			Page<Internship> internships = internshipRepository.findAllByCompanyId(companySupervisor.getCompany().getId(), pageable);
+			if (internships.isEmpty()) {
+				log.warn("The internship list is empty.");
+			}
+			Page<InternshipResponseDto> internshipDtos = internships
+					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			log.info("Internships has been found by company id: {}", companySupervisor.getCompany().getId());
+			return internshipDtos;
+		} catch (Exception e) {
+			log.error("An error occured while getting internships: {}", e.getMessage());
+			throw e;
+		}
+	}
 
 }

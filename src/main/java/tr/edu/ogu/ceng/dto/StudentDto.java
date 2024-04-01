@@ -28,7 +28,6 @@ public class StudentDto {
 	private FacultyDto faculty;
 	private String password;
 	private String confirmPassword;
-	private String username;
 	private String email;
 	private String address;
 }
