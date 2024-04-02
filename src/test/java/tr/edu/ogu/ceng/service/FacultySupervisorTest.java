@@ -48,7 +48,7 @@ public class FacultySupervisorTest {
 		LocalDateTime localDateTime = LocalDateTime.now();
 
 		var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
-		var modelUser = new User(3L, "Username", "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+		var modelUser = new User(3L, "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
 				localDateTime, new Language(1L, "Türkçe", "tr", "tr", "TR", "Türkiye"), true);
 		var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
 				localDateTime, modelUser, modelFaculty);

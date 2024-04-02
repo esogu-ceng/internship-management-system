@@ -5,20 +5,31 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faKey} from '@fortawesome/free-solid-svg-icons';
+
+const initialError = {
+    title: "",
+    message: "",
+};
+
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [ForgotPasswordMessage, setForgotPasswordMessage] = useState("");
+    const [error, setError] = useState(initialError);
+  
     const handleForgotPassword = () => {
 		setForgotPasswordMessage("")
         setShowModal(true);
     };
+
     const handleModalClose = () => {
+        setError(initialError);
+        setEmail("");
         setShowModal(false);
     };
+
     const handleResetPassword = () => {
         fetch('/public/forgot-password', {
             method: 'POST',
@@ -28,9 +39,14 @@ function Login() {
         }).then((response) => {
             setIsLoading(false);
             if (response.ok === true) {
-                setForgotPasswordMessage("Link başarıyla gönderildi")
-            } else
-                setForgotPasswordMessage("! Lütfen geçerli bir mail adresi giriniz.")
+                setError(initialError)
+                toast.success("Link başarıyla gönderildi")
+                setShowModal(false);
+            } else{
+                setError({
+                    title: "E-postanız bulunamadı!",
+                    message: "Lütfen sistem yöneticisi ile iletişime geçin!",
+                  });            }
 
         }).catch((error) => {
             setIsLoading(false);
@@ -39,6 +55,7 @@ function Login() {
         });
         setIsLoading(true);
     };
+
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         var formData = new FormData();
@@ -53,11 +70,10 @@ function Login() {
             body: formData
         })
             .then((response) => {
-                    console.log(response)
                     if (response.redirected === true) {
                         window.location.href = response.url
                     } else
-                        toast.error('Kullanıcı adı ya da parola yanlış!', {autoClose: 2000});
+                        toast.error('E-posta ya da parola yanlış!', {autoClose: 2000});
                 }
             ).catch((error) => {
             toast.error("Bir hata oluştu!", {autoClose: 2000})
@@ -72,7 +88,7 @@ function Login() {
             <div className="login-page">
                 <Form className="form-login" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="exampleInputEmail1">Kullanıcı adı</label>
+                        <label htmlFor="exampleInputEmail1">E-mail</label>
                         <input
                             type="text"
                             className="form-control"
@@ -127,7 +143,12 @@ function Login() {
                                     required
                                 />
                             </div>
-                            {ForgotPasswordMessage && <div className="forgot-password-message">{ForgotPasswordMessage}</div>}
+                            {error.message && (
+                                <div className="error-container">
+                                    <h2>{error.title}</h2>
+                                    <p>{error.message}</p>
+                                </div>
+                            )}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" className="cancel-btn" onClick={handleModalClose}>

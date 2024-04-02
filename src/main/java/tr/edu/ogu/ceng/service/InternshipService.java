@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,18 +15,14 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.Student;
 
@@ -36,15 +33,16 @@ import tr.edu.ogu.ceng.model.Student;
 public class InternshipService {
 	@Autowired
 	private InternshipRepository internshipRepository;
-	private StudentRepository studentRepository;
-	private CompanyRepository companyRepository;
-	private FacultySupervisorRepository facultySupervisorRepository;
-	private UserRepository userRepository;
-	private FacultyRepository facultyRepository;
 	private final ModelMapper modelMapper;
-	private CompanyService companyService;
-	private StudentService studentService;
+	private MessageResource messageResource;
 
+	/**
+	 * Adds a new internship
+	 * 
+	 * @param internshipDto
+	 * @return InternshipResponseDto
+	 * @throws Exception
+	 */
 	public InternshipResponseDto addInternship(InternshipRequestDto internshipDto) {
 		Internship internship = modelMapper.map(internshipDto, Internship.class);
 		try {
@@ -52,7 +50,8 @@ public class InternshipService {
 			internship.setCreateDate(dateTime);
 			internship.setUpdateDate(dateTime);
 			internship = internshipRepository.save(internship);
-			log.info("Insternship has been added successfully.");
+
+			log.info("Internship has been saved successfully with id = {}.", internship.getId());
 			return modelMapper.map(internship, InternshipResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while saving internship: {}", e.getMessage());
@@ -83,14 +82,15 @@ public class InternshipService {
 			log.warn("Internship not found with id {}!", id);
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
+		log.info("Internship has been found with id = {}.", id);
 		return modelMapper.map(internship, InternshipResponseDto.class);
 	}
 
 	public CompanyDto getCompanyByInternshipId(Long id) {
 		try {
 			if (!internshipRepository.existsById(id)) {
-				log.warn("Internship not found!");
-				throw new EntityNotFoundException("Internship not found!");
+				log.warn("Internship not found with id {}", id);
+				throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 			}
 
 			Optional<Internship> internshipOptional = internshipRepository.findById(id);
@@ -104,10 +104,11 @@ public class InternshipService {
 						.addMapping(src -> src.getCompany().getScope(), CompanyDto::setScope)
 						.addMapping(src -> src.getCompany().getDescription(), CompanyDto::setDescription);
 			});
+			log.info("Company has been found by InternshipId: {}", id);
 			return modelMapper.map(internshipOptional.orElseThrow(), CompanyDto.class);
 		} catch (Exception e) {
 			log.error("Error occured while getting the Company by InternshipId", id);
-			throw new EntityNotFoundException("Error occured while getting the Company by InternshipId!");
+			throw new EntityNotFoundException(messageResource.getMessage("error.getting.company.with.internshipId", id));
 		}
 	}
 
@@ -118,7 +119,7 @@ public class InternshipService {
 		}
 
 		internshipRepository.deleteById(id);
-		log.info("Intership has been deleted successfully.");
+		log.info("Internship has been deleted with id = {}.", id);
 		return true;
 	}
 
@@ -126,7 +127,7 @@ public class InternshipService {
 
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		LocalDateTime dateTime = LocalDateTime.now();
@@ -143,13 +144,13 @@ public class InternshipService {
 	public Page<InternshipResponseDto> getAllInternshipsByStudentId(Long studentId, Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			log.info("Getting all internships by student id: {} with pageable: {}", studentId, pageable);
 			Page<Internship> internships = internshipRepository.findAllByStudentId(studentId, pageable);
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
 			Page<InternshipResponseDto> internshipDtos = internships
 					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			log.info("Internships has been found by student id: {}", studentId);
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
@@ -159,13 +160,13 @@ public class InternshipService {
 
 	public Page<InternshipResponseDto> getAllInternshipsByCompanyId(Long companyId, Pageable pageable) {
 		try {
-			log.info("Getting all internships by company id: {} with pageable: {}", companyId, pageable);
 			Page<Internship> internships = internshipRepository.findAllByCompanyId(companyId, pageable);
 			if (internships.isEmpty()) {
 				log.warn("The internship list is empty.");
 			}
 			Page<InternshipResponseDto> internshipDtos = internships
 					.map(internship -> modelMapper.map(internship, InternshipResponseDto.class));
+			log.info("Internships has been found by company id: {}", companyId);
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
@@ -176,12 +177,12 @@ public class InternshipService {
 	public StudentResponseDto getStudentByInternshipId(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException("Internship not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("internshipRegistryNotFound"));
 		}
 
 		Internship internship = internshipRepository.findById(id).orElse(null);
 		Student student = internship.getStudent();
-
+		log.info("Student has been found by InternshipId: {}", id);
 		return modelMapper.map(student, StudentResponseDto.class);
 	}
 
@@ -198,6 +199,7 @@ public class InternshipService {
 			}
 			Page<InternshipResponseCompanyDto> internshipDtos = internships
 					.map(internship -> modelMapper.map(internship, InternshipResponseCompanyDto.class));
+			log.info("Internships has been found by faculty supervisor id: {}", faculty_supervisor_id);
 			return internshipDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
@@ -206,23 +208,36 @@ public class InternshipService {
 	}
 
 	public long countApprovedInternships() {
+		log.info("Counting approved internships");
 		return internshipRepository.countByStatus(InternshipStatus.APPROVED);
 	}
 
 	public long countRejectedInternships() {
+		log.info("Counting rejected internships");
 		return internshipRepository.countByStatus(InternshipStatus.REJECTED);
 	}
 
 	public long countPendingInternships() {
+		log.info("Counting pending internships");
 		return internshipRepository.countByStatus(InternshipStatus.PENDING);
 	}
+
 	public long countDistinctStudents() {
-	    return internshipRepository.countDistinctStudents();
+		log.info("Counting distinct students");
+		return internshipRepository.countDistinctStudents();
 	}
-	
+
 	public Long countAllInternships() {
+		log.info("Counting all internships");
 		return internshipRepository.count();
 	}
 
+	public List<Object[]> countInternshipsByYear() {
+		return internshipRepository.countInternshipsByYear();
+	}
+
+	public List<Object[]> countInternshipsByMonth() {
+		return internshipRepository.countInternshipsByMonth();
+	}
 
 }
