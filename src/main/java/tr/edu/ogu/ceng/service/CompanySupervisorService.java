@@ -73,7 +73,7 @@ public class CompanySupervisorService {
 
 		checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
 		CompanySupervisor companySupervisor = mapper.map(request, CompanySupervisor.class);
-		companySupervisor.setUser(userService.saveUser(user));
+		companySupervisor.setUser(userService.addUser(user));
 		companySupervisor.setCreateDate(now);
 		companySupervisor.setUpdateDate(now);
 		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);

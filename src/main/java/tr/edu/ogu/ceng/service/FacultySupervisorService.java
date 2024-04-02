@@ -56,7 +56,7 @@ public class FacultySupervisorService {
 		user.setUpdateDate(now);
 		user.setUserType(UserType.FACULTYSUPERVISOR);
 
-		facultySupervisor.setUser(userService.saveUser(user));
+		facultySupervisor.setUser(userService.addUser(user));
 		facultySupervisor.setCreateDate(now);
 		facultySupervisor.setUpdateDate(now);
 

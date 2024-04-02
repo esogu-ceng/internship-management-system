@@ -43,7 +43,7 @@ public class UserController {
 	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
 		ModelMapper modelMapper = new ModelMapper();
 		User user = modelMapper.map(userDto, User.class);
-		User savedUser = userService.saveUser(user);
+		User savedUser = userService.addUser(user);
 
 		UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
 		return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);

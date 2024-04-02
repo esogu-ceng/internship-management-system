@@ -34,7 +34,7 @@ public class RegisterAsCompanySupervisorService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		User user = modelMapper.map(userDto, User.class);
-		User createdUser = userService.saveUser(user);
+		User createdUser = userService.addUser(user);
 
 		CompanySupervisorDto companySupervisorDto = mapper.map(request, CompanySupervisorDto.class);
 		CompanySupervisor companySupervisor = modelMapper.map(companySupervisorDto, CompanySupervisor.class);

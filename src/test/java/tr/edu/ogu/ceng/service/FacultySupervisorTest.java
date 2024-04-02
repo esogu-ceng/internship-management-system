@@ -54,7 +54,7 @@ public class FacultySupervisorTest {
 				localDateTime, modelUser, modelFaculty);
 
 		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
-		when(userService.saveUser(any(User.class))).thenReturn(modelUser);
+		when(userService.addUser(any(User.class))).thenReturn(modelUser);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
 		var facultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,

@@ -50,7 +50,7 @@ public class UserTest {
 		when(userRepository.existsById(any(Long.class))).thenReturn(false);
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
-		var actual = userService.saveUser(userToSave);
+		var actual = userService.addUser(userToSave);
 
 		assertNotNull(actual);
 		assertEquals(userToSave.getId(), actual.getId());
