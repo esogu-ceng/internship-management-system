@@ -48,7 +48,7 @@ public class UserService {
 		}
 	}
 
-	public User addUser(User user) {
+	public User saveUser(User user) {
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(dateTime);
