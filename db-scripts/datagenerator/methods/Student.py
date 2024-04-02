@@ -37,7 +37,7 @@ def generate_student(conn, facultyIds, count):
                        password, email, user_type, language, activity
                    )
                    VALUES (
-                       '{hashed_password}', 'student{i+1}@ogu.edu.tr', 'COMPANYSUPERVISOR', '1', {activity}
+                       '{hashed_password}', 'student{i+1}@ogu.edu.tr', 'STUDENT', '1', {activity}
                    ) RETURNING id
                """
 

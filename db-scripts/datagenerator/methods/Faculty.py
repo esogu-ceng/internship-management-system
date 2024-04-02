@@ -35,7 +35,7 @@ def generate_faculty_facultySupervisor(conn, count):
                        password, email, user_type, language, activity
                    )
                    VALUES (
-                       '{hashed_password}', 'faculty{i+1}@ogu.edu.tr', 'COMPANYSUPERVISOR', '1', {activity}
+                       '{hashed_password}', 'faculty{i+1}@ogu.edu.tr', 'FACULTYSUPERVISOR', '1', {activity}
                    ) RETURNING id
                """
 
