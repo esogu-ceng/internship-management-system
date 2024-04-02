@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -33,10 +32,11 @@ public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
 	private final UserService userService;
-	private final FacultyRepository facultyRepository;
+
 	private final FacultyService facultyService;
 	private final FacultySupervisorService facultySupervisorService;
 	private ModelMapper modelMapper;
+	private EmailService emailService;
 
 	public StudentResponseDto getStudent(long id) {
 		try {
@@ -59,9 +59,10 @@ public class StudentService {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all students with pageable: {}", pageable);
 			Page<Student> students = studentRepository.findAll(pageable);
-			if (studentRepository.findAll() == null) {
+			// Check if the student list is empty
+			if (students.isEmpty()) {
 				log.warn("The student list is empty.");
-				return null;
+				return Page.empty();
 			}
 			Page<StudentResponseDto> studentDtos = students
 					.map(student -> modelMapper.map(student, StudentResponseDto.class));
@@ -87,11 +88,32 @@ public class StudentService {
 		return savedStudent;
 	}
 
+	@Transactional
+	public Student addStudentAndSendMail(Student student) {
+		Student savedStudent = addStudent(student);
+		if (savedStudent != null) {
+			String emailSubject = " Şifre Hatırlatıcı";
+			String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
+					+ "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
+					+ "UserName: " + savedStudent.getUser().getEmail() + "\n\n" +
+					"Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
+					+ "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
+					+ "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
+					+ "İyi günler dileriz,\n";
+
+			emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
+		}
+
+		return savedStudent;
+
+	}
+
 	public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
 		modelMapper = new ModelMapper();
 		LocalDateTime now = LocalDateTime.now();
 
 		if (studentRequestDto.getId() == null) {
+			log.warn("Student ID cannot be null.");
 			throw new IllegalArgumentException("Student ID cannot be null");
 		}
 		Student student = studentRepository.findById(studentRequestDto.getId())
@@ -113,7 +135,10 @@ public class StudentService {
 		Student updatedStudent;
 		try {
 			updatedStudent = studentRepository.save(student);
-			log.info("Student updated: {}", updatedStudent);
+
+			log.info("Student with ID {} has been successfully updated. Email: {}, Student No: {}", updatedStudent.getId(),
+					updatedStudent.getUser().getEmail(), updatedStudent.getStudentNo());
+
 		} catch (Exception e) {
 			log.error("Error occurred while updating student: {}", e.getMessage());
 			throw e;
@@ -124,14 +149,21 @@ public class StudentService {
 	@Transactional
 	public boolean deleteStudent(long id) {
 		if (!studentRepository.existsById(id)) {
-			log.warn("The deletion could not be performed as there is no student with the entered ID.");
+			log.warn("Student with ID {} not found.", id);
 			return false;
 		}
 		studentRepository.deleteById(id);
-		log.info("The student with the entered ID has been deleted.");
+		log.info("Student with ID {} has been successfully deleted.", id);
 		return true;
 	}
 
+	/**
+	 * Search student by name, surname or student number.
+	 * 
+	 * @param pageable
+	 * @param keyword
+	 * @return Page<StudentResponseDto>
+	 */
 	public Page<StudentResponseDto> searchStudent(Pageable pageable, String keyword) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
@@ -151,9 +183,10 @@ public class StudentService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			Student student = studentRepository.findByUserId(id);
+			log.info("Student with ID {} has email: {}", student.getId(), student.getUser().getEmail());
 			return modelMapper.map(student, StudentDto.class);
 		} catch (Exception e) {
-			log.error("An error occurred while getting students with given user ID", e.getMessage());
+			log.error("An error occurred while getting student by user ID: {}", e.getMessage());
 			throw e;
 		}
 	}
@@ -163,7 +196,6 @@ public class StudentService {
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 
 		User user = new User();
-		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setUserType(UserType.STUDENT);
@@ -178,7 +210,8 @@ public class StudentService {
 		student.setUpdateDate(LocalDateTime.now());
 		student.setCreateDate(LocalDateTime.now());
 		studentRepository.save(student);
-		log.info("Registration successful.");
+
+		log.info("Student registered with ID: {} and email: {}", student.getId(), student.getUser().getEmail());
 
 		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;
@@ -194,14 +227,20 @@ public class StudentService {
 			Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
 			if (students.isEmpty()) {
 				log.warn("The student list is empty.");
+
 			}
 			Page<StudentResponseDto> studentDtos = students
 					.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			log.info("Getting all students with pageable: {}", pageable);
 			return studentDtos;
 		} catch (Exception e) {
 			log.error("An error occured while getting students: {}", e.getMessage());
 			throw e;
 		}
+	}
+
+	public Long countStudents() {
+		return studentRepository.count();
 	}
 
 }

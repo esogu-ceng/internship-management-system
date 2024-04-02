@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,8 @@ public class FacultySupervisorService {
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserService userService;
 	private ModelMapper modelMapper;
+
+	@Autowired
 	private MessageResource messageResource;
 
 	/**
@@ -65,7 +68,7 @@ public class FacultySupervisorService {
 
 		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
 		if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
-			throw new EntityNotFoundException("Faculty supervisor not found!");
+			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 
 		try {
 			LocalDateTime now = LocalDateTime.now();
@@ -80,7 +83,8 @@ public class FacultySupervisorService {
 					FacultySupervisorResponseDto.class);
 			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
 			responseDto.setUser(responseDto.getUser());
-			log.info("Faculty supervisor updated: {}", updatedFacultySupervisor);
+
+			log.info("Faculty supervisor updated successfully with id: {}", facultySupervisor.getId());
 			return responseDto;
 		} catch (Exception e) {
 			log.error("Error occurred while updating faculty supervisor: {}", e.getMessage());
@@ -90,11 +94,12 @@ public class FacultySupervisorService {
 
 	public FacultySupervisorResponseDto getFacultySupervisor(Long id) {
 		if (!facultySupervisorRepository.existsById(id)) {
-			String message = messageResource.getMessage("not.found");
-			throw new EntityNotFoundException(message);
+			log.warn("Faculty supervisor not found with id: {}", id);
+			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 		}
 		try {
 			ModelMapper modelMapper = new ModelMapper();
+			log.info("Faculty supervisor found with id: {}", id);
 			return modelMapper.map(facultySupervisorRepository.getById(id), FacultySupervisorResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while getting faculty supervisor: {}", e.getMessage());
@@ -124,6 +129,7 @@ public class FacultySupervisorService {
 			}
 			Page<FacultySupervisorResponseDto> facultySupervisorDtos = facultySupervisors
 					.map(facultySupervisor -> modelMapper.map(facultySupervisor, FacultySupervisorResponseDto.class));
+			log.info("Faculty supervisor list retrieved successfully.");
 			return facultySupervisorDtos;
 		} catch (Exception e) {
 			log.error("An error occurred while getting faculty supervisors: {}", e.getMessage());
@@ -135,6 +141,7 @@ public class FacultySupervisorService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			FacultySupervisor facultysupervisor = facultySupervisorRepository.findByUserId(userId);
+			log.info("Faculty supervisor found with user ID: {}", userId);
 			return modelMapper.map(facultysupervisor, FacultySupervisorResponseDto.class);
 		} catch (Exception e) {
 			log.error("An error occurred while getting facultySupervisor with given user ID", e.getMessage());

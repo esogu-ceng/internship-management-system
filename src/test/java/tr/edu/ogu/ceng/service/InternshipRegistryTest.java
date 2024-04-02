@@ -30,6 +30,7 @@ import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
@@ -65,6 +66,8 @@ public class InternshipRegistryTest {
 	@Mock
 	FacultyRepository facultyRepository;
 
+	MessageResource messageResource;
+
 	InternshipStatus status = InternshipStatus.APPROVED;
 
 	@BeforeEach
@@ -72,7 +75,7 @@ public class InternshipRegistryTest {
 		MockitoAnnotations.initMocks(this);
 		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository,
 				internshipRegistryService, internshipRepository, studentRepository, companyRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper());
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), messageResource);
 	}
 
 	@Test
@@ -82,7 +85,7 @@ public class InternshipRegistryTest {
 
 		var modelCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", localDateTime,
 				localDateTime);
-		var modelUser = new User(3L, "Username", "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+		var modelUser = new User(3L, "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
 				localDateTime, new Language(), true);
 
 		var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
@@ -110,7 +113,7 @@ public class InternshipRegistryTest {
 		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();
 
-		var DtoUser = UserDto.builder().id(3L).username("Username").password("password").email("email")
+		var DtoUser = UserDto.builder().id(3L).password("password").email("email")
 				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
 
 		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(4L).name("Name").surname("Surname")

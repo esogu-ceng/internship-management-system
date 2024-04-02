@@ -43,12 +43,6 @@ const CompanySupervisorDetail = () => {
             </span>
           </p>
           <p className="detail-info">
-            <span className="detail-info-title">Kullanıcı Adı:</span>{" "}
-            <span className="detail-info-value">
-              {selectedCompanySupervisor.user.username}
-            </span>
-          </p>
-          <p className="detail-info">
             <span className="detail-info-title">Email:</span>{" "}
             <span className="detail-info-value">
               {selectedCompanySupervisor.user.email}
