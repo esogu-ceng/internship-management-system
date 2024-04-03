@@ -5,10 +5,10 @@ import { InternshipDocument } from './InternshipDocument';
 import InternshipEvaluateForm from '../components/InternshipEvaluateForm';
 import InternshipApprove from "./InternshipApprove";
 import InternshipReject from "./InternshipReject";
-
-export const InternshipRow = ({ internship, company }: { internship: Internship, company: number }) => {
+export const InternshipRow = ({ internship, company, triggerFetchInternships }: { internship: Internship, company: number,triggerFetchInternships: () => void }) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(<></>);
+  const [confirmPopUpScreen, setConfirmPopScreen] = useState<ReactNode>(<></>);
   const [popUpState, setPopUpState] = useState<boolean>(false);
   const [confirmPopUpState ,setconfirmPopUpState]=useState<boolean>(false);
   const getStatusColor = (status: string) => {
@@ -20,10 +20,10 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
 
     return statusClasses[status] || '';
   };
-
   const handleButtonHover = (buttonName: string | null) => {
     setHoveredButton(buttonName);
   };
+
   const handleStudentInfo = () => {
     setPopUpState(true);
     console.log('Running handleStudentInfo');
@@ -39,20 +39,23 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
     setPopUpState(true);
     console.log('Running handleInternshipBooks');
     setPopUpScreen(<InternshipDocument internship_id={internship_id} />);
-
   };
   const handleInternshipApproval = (internship_id: number) => {
-    setPopUpState(true);
+    setconfirmPopUpState(true);
     console.log(internship_id);
-    setPopUpScreen(
-        <InternshipApprove id={internship_id}></InternshipApprove> // Burada ID'yi belirtin
+    setConfirmPopScreen(
+        <InternshipApprove id={internship.id} onClosePopUp={onClosePopUp} handleInternshipStatusComplete={handleInternshipStatusComplete} />
     );
   };
+  const handleInternshipStatusComplete = () => {
+    console.log("reloading ..");
+    triggerFetchInternships();
+  };
   const handleInternshipReject = (internship_id: number) => {
-    setPopUpState(true);
+    setconfirmPopUpState(true);
     console.log(internship_id);
-    setPopUpScreen(
-        <InternshipReject id={internship_id}></InternshipReject> // Burada ID'yi belirtin
+    setConfirmPopScreen(
+        <InternshipReject id={internship.id} onClosePopUp={onClosePopUp} handleInternshipStatusComplete={handleInternshipStatusComplete}></InternshipReject>
     );
   };
   const handleCompanyEvaluation = () => {
@@ -70,6 +73,7 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
   };
   const onClosePopUp = () => {
     setPopUpState(false);
+    setconfirmPopUpState(false);
   };
 
   const buttonHoverPopUp = (hoverText: string | null) => {
@@ -315,9 +319,14 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
             </div>
           </div >
       )}
-
-
-
+      {confirmPopUpState && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+            <div className="z-50 flex flex-col items-center rounded-lg bg-white p-8">
+              {confirmPopUpScreen}
+            </div>
+          </div >
+      )}
     </tr>
 
   );
