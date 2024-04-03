@@ -15,7 +15,6 @@ const tableHeaders = [
   "Doğum Yeri",
   "Doğum Tarihi",
   "Adres",
-  "Kullanıcı Adı",
   "Email",
   "Aktiflik Durumu",
   "Düzenle/Sil",
@@ -114,7 +113,6 @@ const StudentsPage = () => {
                   .join("-")}
               </td>
               <td>{student.address}</td>
-              <td>{student.user.username}</td>
               <td>{student.user.email}</td>
               <td>
                 <input

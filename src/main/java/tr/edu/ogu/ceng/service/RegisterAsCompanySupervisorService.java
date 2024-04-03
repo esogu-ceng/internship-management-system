@@ -43,11 +43,10 @@ public class RegisterAsCompanySupervisorService {
 
 		RegisterAsCompanySupervisorResponseDto response = mapper.map(createdCompanySupervisor,
 				RegisterAsCompanySupervisorResponseDto.class);
-		response.setUsername(createdUser.getUsername());
 		response.setEmail(createdUser.getEmail());
 		response.setUserType(createdUser.getUserType());
 
-		log.info("Company supervisor registered successfully with username: {} and id: {}", createdUser.getUsername(),
+		log.info("Company supervisor registered successfully with e-mail: {} and id: {}", createdUser.getEmail(),
 				createdUser.getId());
 		return response;
 	}

@@ -4,7 +4,6 @@ export interface FacultySupervisorCreate {
     phoneNumber: string;
     supervisorNo: string;
     user: {
-      username: string;
       password: string;
       email: string;
     };
@@ -67,7 +66,6 @@ export interface Faculty {
 
 export interface User {
     id: number;
-    username: string;
     password: string;
     email: string;
     activity: boolean;
