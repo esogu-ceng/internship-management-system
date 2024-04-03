@@ -48,10 +48,12 @@ public class InternshipRegistryService {
 	public boolean deleteInternshipRegistry(long id) {
 		if (!internshipRegistryRepository.existsById(id)) {
 			log.warn("Internship registry with ID {} not found", id);
-			return false;
 		}
-		internshipRegistryRepository.deleteById(id);
-		log.info("Internship registry deleted with ID: {}", id);
+		else
+		{
+			internshipRegistryRepository.deleteById(id);
+			log.info("Internship registry deleted with ID: {}", id);
+		}
 		return true;
 	}
 

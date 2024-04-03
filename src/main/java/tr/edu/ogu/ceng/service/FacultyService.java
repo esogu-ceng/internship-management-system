@@ -81,19 +81,20 @@ public class FacultyService {
 		return modelMapper.map(updatedFaculty, FacultyDto.class);
 	}
 
-	public boolean deleteFaculty(Long id) {
+	
+	public boolean deleteFaculty(Long id) {	
 		try {
 			if (!facultyRepository.existsById(id)) {
 				log.warn("Faculty with ID {} not found", id);
-				return false;
 			}
-			facultyRepository.deleteById(id);
-			log.info("Faculty deleted with id: {}", id);
-			return true;
+			else {
+				facultyRepository.deleteById(id);
+				log.info("Faculty deleted with id: {}", id);
+			}		
 		} catch (Exception e) {
 			log.error("Failed to delete faculty with ID {}. Error message: {}", id, e.getMessage());
-			return false;
 		}
+		return true;
 	}
 
 	public FacultyDto getFacultyById(Long id) {

@@ -115,11 +115,11 @@ public class InternshipService {
 	public boolean deleteInternship(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			return false;
 		}
-
-		internshipRepository.deleteById(id);
-		log.info("Internship has been deleted with id = {}.", id);
+		else{
+			internshipRepository.deleteById(id);
+			log.info("Internship has been deleted with id = {}.", id);
+		}
 		return true;
 	}
 

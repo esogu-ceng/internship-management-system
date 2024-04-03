@@ -100,13 +100,12 @@ public class CompanyService {
 	public boolean deleteCompany(long id) {
 		if (!companyRepository.existsById(id)) {
 			log.warn(messageResource.getMessage("company.service.warn.company.not.found.with.id", id));
-			return false;
 		}
-
-		companyRepository.deleteById(id);
-
-		log.info("Company with ID {} has been deleted", id);
-
+		else
+		{
+			companyRepository.deleteById(id);
+			log.info("Company with ID {} has been deleted", id);
+		}
 		return true;
 	}
 

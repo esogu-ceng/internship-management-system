@@ -82,15 +82,16 @@ public class UserService {
 		try {
 			if (!userRepository.existsById(id)) {
 				log.warn("User not found with id: {}", id);
-				throw new EntityNotFoundException("User Not Found!");
 			}
-			userRepository.deleteById(id);
-			log.info("User deleted successfully with id: {}", id);
-			return true;
+			else
+			{
+				userRepository.deleteById(id);
+				log.info("User deleted successfully with id: {}", id);
+			}
 		} catch (Exception e) {
 			log.error("An error occurred while deleting user with id: {}: {}", id, e.getMessage());
-			return false;
 		}
+		return true;
 	}
 
 	public User updateUser(User user) {

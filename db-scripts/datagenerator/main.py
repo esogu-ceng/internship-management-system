@@ -10,7 +10,7 @@ dummy_section = 'dummy_section'
 config[dummy_section] = {}
 
 # Read the properties file
-with open('src/main/resources/application-dev.properties', 'r') as file:
+with open('../../src/main/resources/application-dev.properties', 'r') as file:
     config_text = file.read()
 
 # Populate the dummy section with properties
@@ -30,9 +30,9 @@ ONLY_CLEAR = False
 # BENİ DÜZENLE
 conn = psycopg2.connect(
     host="localhost",
-    database=database_url,
-    user=database_username,
-    password=database_password
+    database="internship-management-system",
+    user="postgres",
+    password="123456"
 )
 
 # SAYILARI DEĞİŞTİREBİLİRSİNİZ
