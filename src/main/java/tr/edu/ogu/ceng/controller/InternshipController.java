@@ -66,57 +66,7 @@ public class InternshipController {
 	public InternshipStatus applyInternship(@PathVariable(name = "id") long id) {
 	    return internshipService.chanceInternshipStatus(id, InternshipStatus.APPLIED);
 	}
-
-	@PutMapping("/company-approved/{id}")
-	public InternshipStatus approveInternshipByCompany(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_APPROVED);
-	}
-
-	@PutMapping("/faculty-approved/{id}")
-	public InternshipStatus approveInternshipByFaculty(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_APPROVED);
-	}
-
-	@PutMapping("/ongoing/{id}")
-	public InternshipStatus markInternshipAsOngoing(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.ONGOING);
-	}
-
-	@PutMapping("/company-evaluation-stage/{id}")
-	public InternshipStatus moveToInternshipEvaluationStageByCompany(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_EVALUATION_STAGE);
-	}
-
-	@PutMapping("/faculty-evaluation-stage/{id}")
-	public InternshipStatus moveToInternshipEvaluationStageByFaculty(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_EVALUATION_STAGE);
-	}
-
-	@PutMapping("/success/{id}")
-	public InternshipStatus markInternshipAsSuccess(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.SUCCESS);
-	}
-
-	@PutMapping("/faculty-rejected/{id}")
-	public InternshipStatus rejectInternshipByFaculty(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_REJECTED);
-	}
-
-	@PutMapping("/company-rejected/{id}")
-	public InternshipStatus rejectInternshipByCompany(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_REJECTED);
-	}
-
-	@PutMapping("/faculty-invalid/{id}")
-	public InternshipStatus markInternshipAsInvalidByFaculty(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_INVALID);
-	}
-
-	@PutMapping("/canceled/{id}")
-	public InternshipStatus cancelInternship(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.CANCELED);
-	}
-
+	
 	@GetMapping("/student/{id}")
 	public Page<InternshipResponseDto> getAllInternshipsByStudentId(@PathVariable(name = "id") Long studentId,
 			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
