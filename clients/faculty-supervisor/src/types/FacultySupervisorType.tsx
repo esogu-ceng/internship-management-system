@@ -7,7 +7,6 @@ export type FacultySupervisor = {
     email: string;
     facultyId: number;
     facultyName: string;
-    username: string;
     userType: string;
     userId: number;
     createDate: Date;

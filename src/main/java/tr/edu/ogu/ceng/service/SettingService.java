@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dto.SettingDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Setting;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
@@ -21,6 +22,9 @@ public class SettingService {
 	@Autowired
 	private SettingRepository settingRepository;
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private MessageResource messageResource;
 
 	public SettingDto updateSetting(String key, SettingDto settingDto) {
 		Setting setting = settingRepository.findByKey(key);
@@ -51,7 +55,7 @@ public class SettingService {
 			Setting setting = settingRepository.findByKey(key);
 			if (setting == null) {
 				log.warn("Setting not found with key: {}", key);
-				throw new EntityNotFoundException("Setting not found with key: " + key);
+				throw new EntityNotFoundException(messageResource.getMessage("settingNotFoundWithKey", key));
 			}
 			log.info("Value retrieved successfully for setting with key: {}", key);
 			return setting.getValue();
