@@ -17,9 +17,8 @@ import FacultySupervisors from "./components/FacultySupervisors";
 import Companies from "./components/Companies";
 
 import CompanySupervisorDetail from "./components/CompanySupervisorDetail";
-
+const root_path: string | undefined = process.env.PUBLIC_URL;
 function App() {
-  const root_path: string | undefined = process.env.PUBLIC_URL;
   return (
     <React.StrictMode>
       <ToastContainer />
@@ -27,7 +26,7 @@ function App() {
         <Header />
         <div className="app-container">
           <Routes>
-            <Route path={`${root_path}`} element={<AdminDashboard />} />
+            <Route path={`${root_path}/`} element={<AdminDashboard />} />
             <Route path={`${root_path}/settings`} element={<GetSettings />} />
             <Route
               path={`${root_path}/companySupervisors`}
