@@ -111,7 +111,7 @@ public class CompanySupervisorService {
 			log.info("Company Supervisor is deleted from user table - id: {}", userid);				
 		}
 		else
-			throw new EntityNotFoundException("Company Supervisor not found!");	
+			throw new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound"));
 	}
 
 	void checkIfCompanySupervisorExistsByUserId(Long userId) {
