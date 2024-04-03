@@ -4,7 +4,7 @@
 	"private": true,
 	"proxy": "http://localhost:8080",
 	"dependencies": {
-		"@ant-design/icons": "^5.3.5",
+		"@ant-design/icons": "^5.3.6",
 		"@emotion/react": "^11.11.0",
 		"@emotion/styled": "^11.11.0",
 		"@fortawesome/fontawesome-svg-core": "^1.2.35",
