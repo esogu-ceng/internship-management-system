@@ -1,6 +1,10 @@
 package tr.edu.ogu.ceng.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -37,6 +42,9 @@ public class StudentService {
 	private final FacultySupervisorService facultySupervisorService;
 	private ModelMapper modelMapper;
 	private EmailService emailService;
+
+	// FOR FILE UPLOAD
+	private final String FOLDER_PATH =  System.getProperty("user.dir") + "/storage/cvs/";
 
 	public StudentResponseDto getStudent(long id) {
 		try {
@@ -241,6 +249,52 @@ public class StudentService {
 
 	public Long countStudents() {
 		return studentRepository.count();
+	}
+
+
+	public String uploadCvToFileSystem(String studentNo, MultipartFile file) throws IOException {
+
+		Optional<Student> student = studentRepository.findByStudentNo(studentNo);
+
+		if(student.isEmpty()) {
+			log.warn("Student not found studentNo: {}", studentNo);
+			throw new EntityNotFoundException("Student not found!");
+		}
+
+		if(!file.getContentType().equals("application/pdf")) {
+			log.warn("File is not pdf file!");
+			throw new IllegalArgumentException("File is not pdf file!");
+		}
+
+		String filePath = FOLDER_PATH + student.get().getStudentNo() + ".pdf";
+
+		// Create directories if they do not exist
+		new File(FOLDER_PATH).mkdirs();
+
+		student.get().setCvPath(filePath);
+
+		studentRepository.save(student.get());
+
+		file.transferTo(new File(filePath));
+		log.info("File uploaded successfully for this studentNo : {}", student.get().getStudentNo());
+		return "file uploaded successfully : " + filePath;
+	}
+
+	public byte[] downloadCvFromFileSystem(String studentNo) throws IOException {
+		Optional<Student> student = studentRepository.findByStudentNo(studentNo);
+
+		if(student.isEmpty()) {
+			log.warn("Student not found studentNo: {}", studentNo);
+			throw new EntityNotFoundException("Student not found!");
+		}
+		String filePath = student.get().getCvPath();
+
+		if(filePath == null) {
+			throw new EntityNotFoundException("CV not found!");
+		}
+		byte[] cv = Files.readAllBytes(new File(filePath).toPath());
+		log.info("File downloaded successfully for this studentNo : {}", student.get().getStudentNo());
+		return cv;
 	}
 
 }

@@ -74,12 +74,12 @@ public class StudentTest {
 		LocalDateTime dateTime = LocalDateTime.now();
 		var savedUser = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		var SavedStudent = new Student(6L, "test", "test", "test", "test", null, null, null,
-				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address",null);
 
 		var user = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		user.setId(null);
 		var student = new Student(6L, "test", "test", "test", "test", null, null, null,
-				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address",null);
 		student.setId(null);
 
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);

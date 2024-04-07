@@ -84,7 +84,7 @@ public class InternshipTest {
 				localDateTime, modelUser, modelFaculty);
 
 		var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test", null, localDateTime,
-				localDateTime, null, modelFaculty, "address");
+				localDateTime, null, modelFaculty, "address",null);
 
 		var modelInternship = new Internship(1L, InternshipStatus.APPROVED, null, null, 0, localDateTime, localDateTime,
 				modelStudent, modelCompany, modelFacultySupervisor);
