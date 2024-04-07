@@ -28,7 +28,7 @@ public class InternshipJournalsController {
     @Autowired
     private InternshipJournalsService internshipJournalsService;
 
-    @PostMapping("/upload")
+    @PostMapping("/")
 	public ResponseEntity<InternshipJournalsResponseDto> addInternshipJournal(@RequestBody InternshipJournalsRequestDto internshipJournalsRequestDto) {
         System.out.println(internshipJournalsRequestDto.getStartingDate().getClass().getSimpleName());
 		return ResponseEntity.ok(internshipJournalsService.addInternshipJournal(internshipJournalsRequestDto));
