@@ -31,7 +31,7 @@ public class InternshipJournal {
 	private Long id;
 
 	@Column(name = "unit_name")
-	private String unit_name;
+	private String unitName;
 
 	@Column(name = "journal", nullable = false)
 	private String journal;
@@ -62,7 +62,7 @@ public class InternshipJournal {
 	private CompanySupervisor supervisor;
 
 	@Column(name = "confirmation", nullable = false)
-	private int confirmation;
+	private boolean confirmation;
 	
 
 }
