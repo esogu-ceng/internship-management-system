@@ -58,7 +58,7 @@ public class InternshipJournal {
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "company_supervisor_id", nullable = false)
+	@JoinColumn(name = "company_supervisor_id")
 	private CompanySupervisor supervisor;
 
 	@Column(name = "confirmation", nullable = false)
