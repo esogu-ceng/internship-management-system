@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -238,6 +240,22 @@ public class InternshipService {
 
 	public List<Object[]> countInternshipsByMonth() {
 		return internshipRepository.countInternshipsByMonth();
+	}
+	@Scheduled(cron = "0 0 2 * * *") // Her gün saat 02:00'da çalışacak şekilde ayarlandı.
+	public void updateInternshipStatus() {
+		LocalDate today = LocalDate.now();
+		LocalDateTime now = LocalDateTime.now();
+
+		List<Internship> internships = internshipRepository
+				.findByStatusAndStartDateAndStatus(
+						InternshipStatus.APPROVED, today);
+
+		internships.forEach(internship -> {
+			internship.setStatus(InternshipStatus.InPROGRESS);
+			internship.setUpdateDate(now);
+			internshipRepository.save(internship);
+			log.info("Internship {} status updated to 'STAJ Yapılıyor'.", internship.getId());
+		});
 	}
 
 }

@@ -1,5 +1,6 @@
 package tr.edu.ogu.ceng.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -33,5 +34,9 @@ public interface InternshipRepository extends JpaRepository<Internship, Long> {
             "GROUP BY EXTRACT(MONTH FROM i.startDate) " +
             "ORDER BY EXTRACT(MONTH FROM i.startDate)")
 	List<Object[]> countInternshipsByMonth();
-	
+
+	@Query("SELECT i FROM Internship i WHERE i.status = :status " +
+			"AND i.startDate = :start_date AND i.status = :status")
+	List<Internship> findByStatusAndStartDateAndStatus(
+			InternshipStatus status, LocalDate startDate);
 }
