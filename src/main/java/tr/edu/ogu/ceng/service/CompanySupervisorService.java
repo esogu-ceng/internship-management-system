@@ -13,14 +13,18 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
+import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
+import tr.edu.ogu.ceng.dto.requests.RegisterAsCompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
+import tr.edu.ogu.ceng.service.Exception.UnconfirmedMailAddressException;
 import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
 
 @Slf4j
@@ -31,6 +35,7 @@ public class CompanySupervisorService {
 	private final CompanySupervisorRepository repository;
 	private final ModelMapper mapper;
 	private final UserService userService;
+	private final CompanyService companyService;
 
 	@Autowired
 	private MessageResource messageResource;
@@ -64,6 +69,7 @@ public class CompanySupervisorService {
 
 	public CompanySupervisorResponseDto addCompany(CompanySupervisorRequestDto request) {
 
+		checkIfSupervisorEmailAddressMatchingConfirmedCompanyEmailAddress(request);
 		LocalDateTime now = LocalDateTime.now();
 
 		User user = mapper.map(request.getUser(), User.class);
@@ -130,5 +136,19 @@ public class CompanySupervisorService {
 		CompanySupervisor companySupervisor = repository.findCompanySupervisorByUserId(userId);
 		log.info("Company Supervisor is fetched from database id: {}, name: {}", companySupervisor.getId() ,companySupervisor.getName());
 		return mapper.map(companySupervisor, CompanySupervisorDto.class);
+	}
+
+	private void checkIfSupervisorEmailAddressMatchingConfirmedCompanyEmailAddress(CompanySupervisorRequestDto request) {
+		CompanyDto companyDto = companyService.getCompany(request.getCompanyId());
+
+		String supervisorMail = request.getUser().getEmail();
+		String companyMail = companyDto.getEmail();
+
+		String confirmedCompanyEmailAddress = companyMail.substring(companyMail.indexOf("@"));
+
+		if (!supervisorMail.endsWith(confirmedCompanyEmailAddress)) {
+			log.error("Supervisor's e-mail address does not match confirmed company's e-mail address!");
+			throw new UnconfirmedMailAddressException();
+		}
 	}
 }
