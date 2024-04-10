@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.lang.model.type.IntersectionType;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.postgresql.util.PGTime;
@@ -28,7 +30,7 @@ import tr.edu.ogu.ceng.dao.InternshipDocumentsRepository;
 import tr.edu.ogu.ceng.dao.InternshipJournalsRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.InternshipJournalsDto;
-
+import tr.edu.ogu.ceng.model.InternshipDocument;
 import tr.edu.ogu.ceng.model.InternshipJournal;
 
 @Slf4j
@@ -57,4 +59,25 @@ public class InternshipJournalsService {
             
 		}
     }
+
+
+    public List<InternshipJournal> getAllInternshipJournalsByInternshipId(Long internshipId) {
+        List<InternshipJournal> internshipJournals = internshipJournalsRepository.findAllJournalByInternshipId(internshipId);
+        if (internshipJournals.isEmpty()) {
+            log.warn("The internship documents list is empty.");
+        }
+        return internshipJournals;
+    }
+    
+
+
+   
+    public InternshipJournal getInternshipJournalById(Long journalId) {
+        return internshipJournalsRepository.findById(journalId).orElse(null);
+    }
+
+    public InternshipJournal updateInternshipJournal(InternshipJournal internshipJournal) {
+        return internshipJournalsRepository.save(internshipJournal);
+    }
+    
 }
