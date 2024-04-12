@@ -33,7 +33,7 @@ public class UserController {
 
 	@GetMapping("/getAll")
 	public Page<UserDto> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "username") String sortBy) {
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "id") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		Page<UserDto> users = userService.getAllUsers(pageable);
 		return users;

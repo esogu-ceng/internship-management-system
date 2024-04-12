@@ -118,6 +118,7 @@ public class UserService {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(userRepository.getById(userDto.getId()).getCreateDate());
 			user.setUpdateDate(dateTime);
+			user.setPassword(encodeUserPassword(user.getPassword()));
 			user = userRepository.save(user);
 			log.info("User with ID {} has been updated", user.getId());
 			return modelMapper.map(user, UserResponseDto.class);
