@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
+import tr.edu.ogu.ceng.model.Language;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
@@ -43,6 +44,9 @@ public class UserController {
 	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
 		ModelMapper modelMapper = new ModelMapper();
 		User user = modelMapper.map(userDto, User.class);
+		Language language = new Language();
+		language.setId((long) 1);
+		user.setLanguage(language);
 		User savedUser = userService.saveUser(user);
 
 		UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
