@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.CompanyPublicDto;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -33,7 +34,16 @@ public class CompanyService {
 		log.info("Pageable companies fetched page number: {}", pageable.getPageNumber());
 		return companyDtos;
 	}
+	
+    public Page<CompanyPublicDto> getPublicAllCompanies(Pageable pageable) {
+		ModelMapper modelMapper = new ModelMapper();
+		Page<Company> companies = companyRepository.findAll(pageable);
+		Page<CompanyPublicDto> companyPublicDtos = companies.map(company -> modelMapper.map(company, CompanyPublicDto.class));
 
+		log.info("Pageable companies fetched page number: {}", pageable.getPageNumber());
+		return companyPublicDtos;
+    }
+ 
 	public CompanyDto updateCompany(CompanyDto companyDto) {
 		try {
 			if (!companyRepository.existsById(companyDto.getId())) {
