@@ -101,13 +101,13 @@ public class CompanySupervisorService {
 	}
 
 	public void delete(Long id) {
-		var Supervisor_User = repository.findById(id);
-		if(Supervisor_User.isPresent())
+		var supervisorUser = repository.findById(id);
+		if(supervisorUser.isPresent())
 		{		
-			long userid = Supervisor_User.get().getUser().getId();
+			long userId = supervisorUser.get().getUser().getId();
 			repository.deleteById(id);
 			log.info("Company Supervisor is deleted from supervisor table - id: {}", id);		
-			log.info("Company Supervisor is deleted from user table - id: {}", userid);	
+			log.info("Company Supervisor is deleted from user table - id: {}", userId);	
 		}
 		else
 			throw new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound"));
