@@ -16,17 +16,35 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
   onClose,
   children,
 }) => {
-  const [internshipId, setInternshipId] = useState<number>(_internshipId);
   const [loading, setLoading] = useState<boolean>(true);
   const [internshipEvalFrom, setInternshipEvalFrom] =
     useState<InternshipEvalFrom>();
   const [onEdit, setOnEdit] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(null);
   const [isExists, setIsExists] = useState<boolean>(false);
   const [isNew, setIsNew] = useState<boolean>(!isExists);
   const [currentVal, setCurrentVal] = useState<string | undefined>('');
-
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  
+  
+  const internshipEvalQuestions = [
+      "Öğrencinin kendine amaçlar ve hedefler belirleyip uygulama yeteneği.",
+      "Öğrencinin zamanı etkin kullanabilme yeteneği.",
+      "Öğrencinin verilen isi vaktinde bitirebilme yeteneği.",
+      "Öğrencinin görev ve sorumluluk alma konusundaki hevesi.",
+      "Öğrencinin öğrenme hırs ve isteği.",
+      "Öğrencinin bilgilerini ve görüşlerini anlatabilme yeteneği.",
+      "Öğrencinin kurum çalışanları ile yapıcı ve olumlu iletişim kurabilme yeteneği.",
+      "Öğrencinin stajdaki genel başarısı.",
+  ];
+  const checkboxLabels = [
+      "Çok Yüksek",
+      "Yüksek",
+      "Orta",
+      "Düşük",
+      "Çok Düşük"
+  ];
+    
   useEffect(() => {
     fetch(`/api/internship-evaluate-forms/getByInternshipId/${_internshipId}`, {
       method: 'GET',
@@ -54,7 +72,14 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
       id: internshipEvalFrom?.id,
       name: internshipEvalFrom?.name,
       surname: internshipEvalFrom?.surname,
-      filePath: textareaRef.current?.value,
+      question1: selectedOptions[0],
+      question2: selectedOptions[1],
+      question3: selectedOptions[2],
+      question4: selectedOptions[3],
+      question5: selectedOptions[4],
+      question6: selectedOptions[5],
+      question7: selectedOptions[6],
+      question8: selectedOptions[7],
       internshipId: _internshipId,
       companyId: _companyId,
     };
@@ -76,7 +101,14 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
     const dataToSave: Partial<InternshipEvalFrom> = {
         name: "sampleName",
         surname: "sampleSurname",
-        filePath: textareaRef.current?.value,
+        question1: selectedOptions[0],
+        question2: selectedOptions[1],
+        question3: selectedOptions[2],
+        question4: selectedOptions[3],
+        question5: selectedOptions[4],
+        question6: selectedOptions[5],
+        question7: selectedOptions[6],
+        question8: selectedOptions[7],
         internshipId: _internshipId,
         companyId: _companyId,
       };
@@ -106,9 +138,17 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCurrentVal(e.target.value);
-  };
+  const handleEvalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked, value } = event.target;
+    const numberValue = parseInt(value);  
+
+    if (checked) {
+      setSelectedOptions([...selectedOptions, numberValue]);
+    } else {
+      setSelectedOptions(selectedOptions.filter((option) => option !== numberValue));
+    }
+  };  
+    
   const onClosePopUp = () => {
     setPopUpScreen(null);
   };
@@ -169,31 +209,36 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
               {onEdit ? '\u2713' : '\u270E'}
             </button>
           </div>
-          <div style={{ overflowY: 'auto' }}>
-            <div style={{ height: '5px' }} />
-            <div style={{ width: '100%', overflowX: 'auto' }}>
-              <div style={{ border: '2px solid #3A4F7A', padding: '10px' }}>
-                <textarea
-                  style={{
-                    height: '400px',
-                    width: '400px',
-                    border: 'none',
-                    outline: 'none',
-                    resize: 'none',
-                    padding: '0',
-                    margin: '0',
-                  }}
-                  ref={textareaRef}
-                  readOnly={!onEdit}
-                  value={currentVal}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
+          {internshipEvalQuestions.map((question) => (
+            <div key={question} style={{ marginTop: 10 }}> 
+              <label htmlFor={`question-${question}`} style={{ fontWeight: 'bold', textOverflow:"ellipsis"}}>
+                {question}
+              </label>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: 5 }}> 
+                {checkboxLabels.map((label, index) => (
+                  <div key={label} style={{ marginRight: 10 }}> 
+                    <input
+                      type="radio"
+                      id={`option-${question}-${label}`}
+                      value={index}
+                      name={`question-${question}`}
+                      onChange={handleEvalChange}
+                      disabled={!onEdit}
+                      style={{ marginRight: 5, cursor: 'pointer'}}
+                    />
+                    <label
+                      htmlFor={`option-${question}-${label}`}
+                      style={{ cursor: 'pointer' }} 
+                    >
+                      {label}
+                    </label>
+                  </div>
+                ))}
+                </div>
             </div>
-          </div>
+          ))}           
         </div>
       )}
-
       <div>{popUpScreen}</div>
     </div>
   );
