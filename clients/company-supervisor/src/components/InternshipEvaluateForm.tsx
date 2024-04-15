@@ -19,12 +19,10 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [internshipEvalFrom, setInternshipEvalFrom] =
     useState<InternshipEvalFrom>();
-  const [onEdit, setOnEdit] = useState(false);
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(null);
   const [isExists, setIsExists] = useState<boolean>(false);
   const [isNew, setIsNew] = useState<boolean>(!isExists);
-  const [currentVal, setCurrentVal] = useState<string | undefined>('');
-  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<number[]>(new Array(8).fill(0));
   
   
   const internshipEvalQuestions = [
@@ -42,7 +40,7 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
       "Yüksek",
       "Orta",
       "Düşük",
-      "Çok Düşük"
+      "Fikrim Yok"
   ];
     
   useEffect(() => {
@@ -52,9 +50,12 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
       .then((response) => response.json())
       .then((data) => {
         setInternshipEvalFrom(data);
+        setSelectedOptions(
+            Object.keys(data).filter(key => key.startsWith('question'))
+                .map(key => data[key])
+        );
         setIsExists(true);
         setIsNew(false);
-        setCurrentVal(data.filePath);
       })
       .catch((error) => {
         setIsNew(true);
@@ -126,28 +127,31 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
     setPopUpConfirm();
   };
 
-  const handleClick = () => {
-    setOnEdit(!onEdit);
-    if (onEdit) {
-      if (isNew) {
-        saveNew();
-        setIsNew(false);
-      } else {
-        saveEdit();
-      }
+  const handleSubmit = () => {   
+    if (isNew) {
+      saveNew();
+      setIsNew(false);
+    } else {
+      saveEdit();
     }
   };
 
   const handleEvalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked, value } = event.target;
-    const numberValue = parseInt(value);  
-
+    const { checked, value} = event.target;
+    const numberValue = parseInt(value);
+    const questionIndex = parseInt(event.target.name.split('-')[1]);
+    
     if (checked) {
-      setSelectedOptions([...selectedOptions, numberValue]);
+        setSelectedOptions((selectedOptions) => {
+            const newSelectedOptions = [...selectedOptions];
+            newSelectedOptions[questionIndex] = numberValue;
+            return newSelectedOptions;
+            }
+        );
     } else {
       setSelectedOptions(selectedOptions.filter((option) => option !== numberValue));
     }
-  };  
+  };   
     
   const onClosePopUp = () => {
     setPopUpScreen(null);
@@ -177,7 +181,7 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="w-full rounded-md bg-white p-5 pt-0">
+    <div className="w-full rounded-md bg-white">
       <h2 style={{ textAlign: 'center', fontWeight: 'bold', color: '#3A4F7A' }}>
         SİRKET DEĞERLENDİRMESİ
       </h2>
@@ -196,22 +200,9 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
         </div>
       ) : (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'right' }}>
-            <button
-              style={{ width: '50px' }}
-              className={`mt-4 rounded px-4 py-2 ${
-                onEdit
-                  ? 'border border-green-500 px-4 py-2 text-base text-green-500 transition-colors hover:bg-green-50'
-                  : 'border border-yellow-500 px-4 py-2 text-base text-yellow-500 transition-colors hover:bg-yellow-50'
-              }`}
-              onClick={handleClick}
-            >
-              {onEdit ? '\u2713' : '\u270E'}
-            </button>
-          </div>
-          {internshipEvalQuestions.map((question) => (
+          {internshipEvalQuestions.map((question, questionIndex) => (
             <div key={question} style={{ marginTop: 10 }}> 
-              <label htmlFor={`question-${question}`} style={{ fontWeight: 'bold', textOverflow:"ellipsis"}}>
+              <label htmlFor={`question-${questionIndex}`} style={{ fontWeight: 'bold', textOverflow:"ellipsis"}}>
                 {question}
               </label>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: 5 }}> 
@@ -219,15 +210,15 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
                   <div key={label} style={{ marginRight: 10 }}> 
                     <input
                       type="radio"
-                      id={`option-${question}-${label}`}
+                      id={`option-${questionIndex}-${label}`}
                       value={index}
-                      name={`question-${question}`}
+                      name={`question-${questionIndex}`}
                       onChange={handleEvalChange}
-                      disabled={!onEdit}
                       style={{ marginRight: 5, cursor: 'pointer'}}
+                      checked={selectedOptions[questionIndex] === index} 
                     />
                     <label
-                      htmlFor={`option-${question}-${label}`}
+                      htmlFor={`option-${questionIndex}-${label}`}
                       style={{ cursor: 'pointer' }} 
                     >
                       {label}
@@ -236,7 +227,13 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
                 ))}
                 </div>
             </div>
-          ))}           
+          ))}
+          <div className="update-eval-buttons" style={{marginTop:20, marginRight:0}}>
+            <button type="submit" className='submit-button' onClick={handleSubmit}>Kaydet</button>
+            <button type="button" className="cancel-button" onClick={onClose}>
+              İptal
+            </button>
+          </div>            
         </div>
       )}
       <div>{popUpScreen}</div>
