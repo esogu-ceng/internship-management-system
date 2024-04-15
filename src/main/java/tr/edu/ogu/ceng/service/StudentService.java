@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
+
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,6 +28,8 @@ import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
+import tr.edu.ogu.ceng.service.Exception.IllegalArgumentException;
 
 @Slf4j
 @Service
@@ -258,12 +260,12 @@ public class StudentService {
 
 		if(student.isEmpty()) {
 			log.warn("Student not found studentNo: {}", studentNo);
-			throw new EntityNotFoundException("Student not found!");
+			throw new EntityNotFoundException("Öğrenci numarası bulunamadı lütfen geçerli öğrenci numarası giriniz.");
 		}
 
 		if(!file.getContentType().equals("application/pdf")) {
 			log.warn("File is not pdf file!");
-			throw new IllegalArgumentException("File is not pdf file!");
+			throw new IllegalArgumentException("Dosya formatı sadece pdf olmalıdır!" + file.getContentType());
 		}
 
 		String filePath = FOLDER_PATH + student.get().getStudentNo() + ".pdf";
@@ -277,7 +279,7 @@ public class StudentService {
 
 		file.transferTo(new File(filePath));
 		log.info("File uploaded successfully for this studentNo : {}", student.get().getStudentNo());
-		return "file uploaded successfully : " + filePath;
+		return "Dosya başarıyla kaydedildi. : " + filePath;
 	}
 
 	public byte[] downloadCvFromFileSystem(String studentNo) throws IOException {
@@ -285,12 +287,12 @@ public class StudentService {
 
 		if(student.isEmpty()) {
 			log.warn("Student not found studentNo: {}", studentNo);
-			throw new EntityNotFoundException("Student not found!");
+			throw new EntityNotFoundException("Öğrenci numarası bulunamadı lütfen geçerli öğrenci numarası giriniz.");
 		}
 		String filePath = student.get().getCvPath();
 
 		if(filePath == null) {
-			throw new EntityNotFoundException("CV not found!");
+			throw new EntityNotFoundException("Öğrencinin CV'si bulunamadı.");
 		}
 		byte[] cv = Files.readAllBytes(new File(filePath).toPath());
 		log.info("File downloaded successfully for this studentNo : {}", student.get().getStudentNo());
