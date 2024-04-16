@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -26,6 +28,7 @@ import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
+import tr.edu.ogu.ceng.model.Setting;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -39,14 +42,13 @@ public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
 	private final UserService userService;
+	private final SettingRepository settingRepository;
 
 	private final FacultyService facultyService;
 	private final FacultySupervisorService facultySupervisorService;
 	private ModelMapper modelMapper;
 	private EmailService emailService;
 
-	// FOR FILE UPLOAD
-	private final String FOLDER_PATH =  System.getProperty("user.dir") + "/storage/cvs/";
 
 	public StudentResponseDto getStudent(long id) {
 		try {
@@ -257,6 +259,10 @@ public class StudentService {
 	public String uploadCvToFileSystem(String studentNo, MultipartFile file) throws IOException {
 
 		Optional<Student> student = studentRepository.findByStudentNo(studentNo);
+		Setting setting =  settingRepository.findByKey("cv_directory");
+		String FOLDER_PATH = setting.getValue() + "/";
+
+
 
 		if(student.isEmpty()) {
 			log.warn("Student not found studentNo: {}", studentNo);
@@ -277,13 +283,14 @@ public class StudentService {
 
 		studentRepository.save(student.get());
 
-		file.transferTo(new File(filePath));
+		file.transferTo(new File(filePath).toPath());
 		log.info("File uploaded successfully for this studentNo : {}", student.get().getStudentNo());
 		return "Dosya başarıyla kaydedildi. : " + filePath;
 	}
 
 	public byte[] downloadCvFromFileSystem(String studentNo) throws IOException {
 		Optional<Student> student = studentRepository.findByStudentNo(studentNo);
+
 
 		if(student.isEmpty()) {
 			log.warn("Student not found studentNo: {}", studentNo);

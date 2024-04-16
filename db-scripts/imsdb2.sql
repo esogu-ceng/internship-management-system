@@ -1,1 +1,0 @@
-ALTER TABLE ims_students ADD COLUMN cv_path TEXT;

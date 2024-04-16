@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.FacultyRepository;
+import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -35,6 +36,9 @@ public class StudentTest {
 	UserRepository userRepository;
 	@Mock
 	UserService userService;
+
+	@Mock
+	SettingRepository settingRepository;
 	@Mock
 	FacultyService facultyService;
 	@Mock
@@ -52,7 +56,7 @@ public class StudentTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userService,facultyService
+		studentService = new StudentService(studentRepository, userRepository, userService,settingRepository,facultyService
 				, facultySupervisorService, new ModelMapper(),emailService);
 	}
 
