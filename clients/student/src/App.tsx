@@ -5,6 +5,10 @@ import Footer from "./components/Footer";
 import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
 import StudentProfile from './components/StudentProfile';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import Modal from 'react-modal';
 
 import "./index.css";
 
