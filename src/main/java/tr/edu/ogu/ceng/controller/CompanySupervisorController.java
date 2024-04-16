@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.CompanySupervisorAdminRequestDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.service.CompanySupervisorService;
@@ -47,6 +48,12 @@ public class CompanySupervisorController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public CompanySupervisorResponseDto add(@RequestBody CompanySupervisorRequestDto request) {
 		return service.addCompany(request);
+	}
+
+	@PostMapping("/checkAdd")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public CompanySupervisorResponseDto add(@RequestBody CompanySupervisorAdminRequestDto request) {
+		return service.addcheckCompany(request);
 	}
 
 	@PutMapping
