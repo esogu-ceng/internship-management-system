@@ -27,10 +27,13 @@ import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
+import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Internship;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.AuthService;
+import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
 
 @Slf4j
 @Service
@@ -216,7 +219,34 @@ public class InternshipService {
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
 			throw e;
+		}	
+	}
+
+	public boolean markInternshipCompleted(Long facultySupervisorId, Long internshipId) {
+		// 1. Retrieve the faculty supervisor
+		FacultySupervisor facultySupervisor = facultySupervisorRepository.findById(facultySupervisorId).orElse(null);
+		if (facultySupervisor == null) {
+			log.warn("Faculty supervisor not found with id: {}", facultySupervisorId);
+			throw new EntityNotFoundException("Faculty supervisor not found!");
 		}
+	
+		// 2. Retrieve the internship
+		Internship internship = internshipRepository.findById(internshipId).orElse(null);
+		if (internship == null) {
+			log.warn("Internship not found with id: {}", internshipId);
+			throw new EntityNotFoundException("Internship not found!");
+		}
+	
+		// 3. Update internship status to "SUCCESS"
+		internship.setStatus(InternshipStatus.SUCCESS);
+		LocalDateTime now = LocalDateTime.now();
+		internship.setUpdateDate(now);
+	
+		// 4. Save the updated internship
+		internshipRepository.save(internship);
+	
+		log.info("Internship with id {} marked as completed by faculty supervisor with id {}", internshipId, facultySupervisorId);
+		return true;
 	}
 
 	public long countApprovedInternships() {
@@ -269,5 +299,5 @@ public class InternshipService {
 			throw e;
 		}
 	}
-
+	
 }
