@@ -2,11 +2,15 @@ package tr.edu.ogu.ceng.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,12 +64,12 @@ public class InternshipTest {
 
 	InternshipStatus status = InternshipStatus.PENDING;
 
+	@SuppressWarnings("deprecation")
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		internshipService = new InternshipService(internshipRepository, studentRepository, companySupervisorRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), companyService,
-				studentService, messageResource, authService);
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), messageResource, authService);
 	}
 
 	@Test
@@ -107,5 +111,25 @@ public class InternshipTest {
 		assertEquals(modelInternship.getCompany().getId(), actual.getCompanyId());
 		assertEquals(modelInternship.getStudent().getId(), actual.getStudent().getId());
 		assertEquals(modelInternship.getFacultySupervisor().getId(), actual.getFacultySupervisorId());
+	}
+
+	@Test
+	public void is_internship_mark_completed() {
+			Long facultySupervisorId = 1L;
+			Long internshipId = 1L;
+
+			FacultySupervisor mockFacultySupervisor = new FacultySupervisor();
+			Internship mockInternship = new Internship();
+
+			when(facultySupervisorRepository.findById(facultySupervisorId)).thenReturn(Optional.of(mockFacultySupervisor));
+			when(internshipRepository.findById(internshipId)).thenReturn(Optional.of(mockInternship));
+
+			boolean result = internshipService.markInternshipCompleted(facultySupervisorId, internshipId);
+
+			assertTrue(result);
+			assertEquals(InternshipStatus.SUCCESS, mockInternship.getStatus());
+			verify(facultySupervisorRepository, times(1)).findById(facultySupervisorId);
+			verify(internshipRepository, times(1)).findById(internshipId);
+			verify(internshipRepository, times(1)).save(mockInternship);
 	}
 }
