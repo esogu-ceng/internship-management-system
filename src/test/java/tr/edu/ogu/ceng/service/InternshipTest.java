@@ -14,12 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.*;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
@@ -29,22 +24,22 @@ import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
-import tr.edu.ogu.ceng.model.Company;
-import tr.edu.ogu.ceng.model.Faculty;
-import tr.edu.ogu.ceng.model.FacultySupervisor;
-import tr.edu.ogu.ceng.model.Internship;
-import tr.edu.ogu.ceng.model.Student;
-import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.model.*;
+import tr.edu.ogu.ceng.security.AuthService;
 
 public class InternshipTest {
 	@Mock
 	InternshipRepository internshipRepository;
 
 	@Mock
+	AuthService authService;
+	@Mock
 	StudentRepository studentRepository;
-
+	@Mock
+	CompanySupervisorRepository companySupervisorRepository;
 	@Mock
 	CompanyRepository companyRepository;
+
 
 	@Mock
 	FacultySupervisorRepository facultySupervisorRepository;
@@ -70,9 +65,9 @@ public class InternshipTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		internshipService = new InternshipService(internshipRepository, studentRepository, companyRepository,
+		internshipService = new InternshipService(internshipRepository, studentRepository, companySupervisorRepository,
 				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), companyService,
-				studentService, messageResource);
+				studentService, messageResource, authService);
 	}
 
 	@Test
