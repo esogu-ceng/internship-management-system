@@ -58,6 +58,11 @@ const StudentsPage = () => {
     return searchString.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  const handleOnClose = () => {
+    setIsUpdateModalOpen(false);
+    document.body.style.overflow = "auto";
+  };
+
   return (
     <div className="container">
       {isAddModalOpen && (
@@ -72,7 +77,7 @@ const StudentsPage = () => {
         <UpdateModalForm
           studentDto={selectedStudent}
           onUpdateStudent={updateStudent}
-          onClose={() => setIsUpdateModalOpen(false)}
+          onClose={handleOnClose}
           faculties={faculties}
         />
       )}
