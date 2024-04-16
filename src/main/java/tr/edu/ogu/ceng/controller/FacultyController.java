@@ -58,7 +58,7 @@ public class FacultyController {
 		return facultyService.deleteFaculty(id);
 	}
 	
-	@GetMapping("/")
+	@GetMapping()
 	public ResponseEntity<FacultyDto> getById() {
 	    Long userId = authenticationService.getCurrentUserId();
 	    if (userId == null) {

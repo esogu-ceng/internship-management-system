@@ -22,6 +22,7 @@ import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.AuthenticationService;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -32,6 +33,9 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    @Autowired 
+    AuthenticationService authenticationService;
+    
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDto> getStudent(@PathVariable(name = "id") long id) {
         StudentResponseDto studentResponseDto = studentService.getStudent(id);
@@ -95,15 +99,21 @@ public class StudentController {
         return studentService.getStudentByUserId(userId);
     }
 
-    @GetMapping("/supervisor/{id}")
-    public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(@PathVariable("id") Long faculty_supervisor_id,
-            @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
+    @GetMapping("/supervisor")
+    public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "id") String sortBy) {
+        Long facultySupervisorId = authenticationService.getCurrentUserId();
+        if (facultySupervisorId == null) {
+            return null; // veya uygun bir hata işleme mekanizması
+        }
         Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-        Page<StudentResponseDto> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id,
+        Page<StudentResponseDto> students = studentService.getAllStudentsByFacultySupervisorId(facultySupervisorId,
                 pageable);
         return students;
     }
+
     @GetMapping("/count")
 	public ResponseEntity<Long> getCompanyCount() {
 		Long count = studentService.countStudents();
