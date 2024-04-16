@@ -198,6 +198,12 @@ button.header-button {
 .password-check{
     list-style-type: disc;
 }
+
+button.header-login {
+    color: darkblue;
+    font-weight: bold;
+    right: 0;
+}
 .error-container {
     background-color: rgb(252, 165, 165, 0.25);
     padding: 12px 20px 2px;

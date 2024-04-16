@@ -1,0 +1,51 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.container{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.dataTable{
+ 
+ background-color: white;
+    color: white;
+    padding: 10px;
+    margin-top: 100px;
+    width: 85%;
+    height: 13%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    
+    background-color: transparent;
+    
+}
+.grid-container {
+    
+    margin-bottom: 100px;
+    width: 90%;
+    height: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 10px;
+  gap: 10px;
+
+}
+
+.grid-container > div {
+
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+#login-button{
+    background-color: blueviolet;
+    color: white;
+    position: absolute;
+    top:70px;
+    left: 100px;;
+
+}

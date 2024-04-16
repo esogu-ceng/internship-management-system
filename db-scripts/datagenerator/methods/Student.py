@@ -33,13 +33,13 @@ def generate_student(conn, facultyIds, count):
         faculty_id = random.choice(facultyIds)
         activity = data.activityRandomizer()
         insert_query = f"""
-                    INSERT INTO public.ims_users (
-                        username, password, email, user_type, language, activity
-                    )
-                    VALUES (
-                        '{(name[0] + surname).lower() + i.__str__()}', '{hashed_password}', '{(name[0] + surname).lower() + i.__str__()}@ogu.edu.tr', 'STUDENT', '1', {activity}
-                    ) RETURNING id
-                """
+                   INSERT INTO public.ims_users (
+                       password, email, user_type, language, activity
+                   )
+                   VALUES (
+                       '{hashed_password}', 'student{i+1}@ogu.edu.tr', 'STUDENT', '1', {activity}
+                   ) RETURNING id
+               """
 
         cur.execute(insert_query)
         id_of_new_row = cur.fetchone()[0]
