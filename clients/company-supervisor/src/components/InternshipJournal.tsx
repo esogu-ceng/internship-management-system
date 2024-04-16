@@ -14,7 +14,6 @@ const InternshipJournals: React.FC<{ internship_id: number }> = ({ internship_id
     const fetchInternshipJournals = async () => {
       try {
         const response = await axios.get(`/api/internshipjournals/internship/${internship_id}`);
-        console.log(response)
         setInternshipJournals(response.data);
         setJournalName(response.data[0]?.journal || 'loading');
  
