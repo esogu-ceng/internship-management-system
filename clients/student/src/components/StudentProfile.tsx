@@ -27,7 +27,7 @@ function StudentProfile() {
                   })
                     .then(response => response.json())
                     .then(data => {
-                     console.log(data);
+                   
                       const updatedStudentData = {
                         ...studentData,
                         ...data,

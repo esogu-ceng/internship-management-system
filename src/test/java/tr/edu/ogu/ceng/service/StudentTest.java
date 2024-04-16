@@ -58,7 +58,7 @@ public class StudentTest {
 
 	@Test
 	public void when_resultIsNotNull_then_returnValidDTO() {
-		when(studentRepository.findById(6L)).thenThrow(new javax.persistence.EntityNotFoundException());
+		when(studentRepository.findById(6L)).thenThrow(new EntityNotFoundException());
 
 		assertThrows(EntityNotFoundException.class, () -> {
 			studentService.getStudent(6L);

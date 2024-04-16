@@ -29,9 +29,9 @@ const CvDropzone: FC<CvDropzoneProps> = (props) => {
       toast.error('Lütfen sadece pdf dosyası yükleyin')
       return
     }
-    // max file size 5mb = 5 * 1024 * 1024 = 5242880
-    if (files[0].size > 5242880) {
-      toast.error('Dosya boyutu 5mb dan büyük olamaz')
+    // max file size 1mb = 1024 * 1024 = 1048576 bytes
+    if (files[0].size > 1048576) {
+      toast.error('Dosya boyutu 1mb dan büyük olamaz')
       return
     }
 
