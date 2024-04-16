@@ -9,7 +9,7 @@ const InternshipApplication = () => {
     fetch('/api/company/getAllCompanies') // Assuming this endpoint returns all companies
       .then(response => response.json())
       .then(data => {
-        console.log('data: ', data);
+        
         setCompanies(data.content); // Assuming the companies are in the `content` property
         setLoading(false);
       })
