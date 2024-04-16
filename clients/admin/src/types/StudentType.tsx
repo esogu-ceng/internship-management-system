@@ -62,13 +62,11 @@ export interface StudentPagedResponse
 
 export interface User {
   id: number;
-  username: string;
   email: string;
   activity: boolean;
 }
 
 export interface UserCreate {
-  username: string;
   password: string;
   email: string;
 }

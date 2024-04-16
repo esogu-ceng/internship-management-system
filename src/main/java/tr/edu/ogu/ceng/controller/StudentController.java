@@ -104,5 +104,9 @@ public class StudentController {
                 pageable);
         return students;
     }
-
+    @GetMapping("/count")
+	public ResponseEntity<Long> getCompanyCount() {
+		Long count = studentService.countStudents();
+		return ResponseEntity.ok(count);
+	}
 }

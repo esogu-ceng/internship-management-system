@@ -31,13 +31,14 @@ def generate_faculty_facultySupervisor(conn, count):
         activity = activityRandomizer()
 
         insert_query = f"""
-                    INSERT INTO public.ims_users (
-                        username, password, email, user_type, language, activity
-                    )
-                    VALUES (
-                        '{(name[0] + surname).lower() + i.__str__()}fs', '{hashed_password}', '{(name[0] + surname).lower() + i.__str__()}fs@ogu.edu.tr', 'FACULTYSUPERVISOR', '1', {activity}
-                    ) RETURNING id
-                """
+                   INSERT INTO public.ims_users (
+                       password, email, user_type, language, activity
+                   )
+                   VALUES (
+                       '{hashed_password}', 'faculty{i+1}@ogu.edu.tr', 'FACULTYSUPERVISOR', '1', {activity}
+                   ) RETURNING id
+               """
+
         cur.execute(insert_query)
         user_id = cur.fetchone()[0]
         conn.commit()

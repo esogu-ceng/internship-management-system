@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -33,16 +32,17 @@ public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
 	private final UserService userService;
-	private final FacultyRepository facultyRepository;
+
 	private final FacultyService facultyService;
 	private final FacultySupervisorService facultySupervisorService;
 	private ModelMapper modelMapper;
+	private EmailService emailService;
 
 	public StudentResponseDto getStudent(long id) {
 		try {
 			Student student = studentRepository.findById(id).orElse(null);
 			if (student == null) {
-				log.warn("Student with ID {} not found.", id);
+				log.warn("There is no student with the entered ID.");
 				throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 			}
 			log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
@@ -50,7 +50,6 @@ public class StudentService {
 			ModelMapper modelMapper = new ModelMapper();
 			return modelMapper.map(student, StudentResponseDto.class);
 		} catch (EntityNotFoundException e) {
-			log.error("An error occurred while getting student: {}", e.getMessage());
 			throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
 		}
 	}
@@ -61,7 +60,7 @@ public class StudentService {
 			log.info("Getting all students with pageable: {}", pageable);
 			Page<Student> students = studentRepository.findAll(pageable);
 			// Check if the student list is empty
-			if (students.isEmpty()){
+			if (students.isEmpty()) {
 				log.warn("The student list is empty.");
 				return Page.empty();
 			}
@@ -84,10 +83,29 @@ public class StudentService {
 		student.getUser().setUpdateDate(now);
 		student.setUser(userRepository.save(student.getUser()));
 		Student savedStudent = studentRepository.save(student);
-		log.info("Student with ID {} has been successfully added. Email: {}, Student No: {}", savedStudent.getId(),
-				savedStudent.getUser().getEmail(), savedStudent.getStudentNo());
+		log.info("The student was successfully added: {}", savedStudent);
 
 		return savedStudent;
+	}
+
+	@Transactional
+	public Student addStudentAndSendMail(Student student) {
+		Student savedStudent = addStudent(student);
+		if (savedStudent != null) {
+			String emailSubject = " Şifre Hatırlatıcı";
+			String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
+					+ "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
+					+ "UserName: " + savedStudent.getUser().getEmail() + "\n\n" +
+					"Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
+					+ "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
+					+ "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
+					+ "İyi günler dileriz,\n";
+
+			emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
+		}
+
+		return savedStudent;
+
 	}
 
 	public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
@@ -139,13 +157,13 @@ public class StudentService {
 		return true;
 	}
 
-  /**
-     * Search student by name, surname or student number.
-     * 
-     * @param pageable
-     * @param keyword
-     * @return Page<StudentResponseDto>
-     */
+	/**
+	 * Search student by name, surname or student number.
+	 * 
+	 * @param pageable
+	 * @param keyword
+	 * @return Page<StudentResponseDto>
+	 */
 	public Page<StudentResponseDto> searchStudent(Pageable pageable, String keyword) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
@@ -178,7 +196,6 @@ public class StudentService {
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
 
 		User user = new User();
-		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setUserType(UserType.STUDENT);
@@ -195,7 +212,6 @@ public class StudentService {
 		studentRepository.save(student);
 
 		log.info("Student registered with ID: {} and email: {}", student.getId(), student.getUser().getEmail());
-
 
 		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;
@@ -221,6 +237,10 @@ public class StudentService {
 			log.error("An error occured while getting students: {}", e.getMessage());
 			throw e;
 		}
+	}
+
+	public Long countStudents() {
+		return studentRepository.count();
 	}
 
 }

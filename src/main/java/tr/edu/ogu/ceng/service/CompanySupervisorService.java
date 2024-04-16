@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -29,6 +31,9 @@ public class CompanySupervisorService {
 	private final CompanySupervisorRepository repository;
 	private final ModelMapper mapper;
 	private final UserService userService;
+
+	@Autowired
+	private MessageResource messageResource;
 
 	public Page<CompanySupervisorResponseDto> getAll(Pageable pageable) {
 
@@ -80,7 +85,7 @@ public class CompanySupervisorService {
 
 	public CompanySupervisorDto update(CompanySupervisorDto request) {
 		CompanySupervisor companySupervisor = repository.findById(request.getId())
-				.orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
+				.orElseThrow(() -> new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound")));
 		if (companySupervisor.getUser().getId() != request.getUser().getId()) {
 		    log.error("Company Supervisor not found with the user id: " + request.getUser().getId());
 			// checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
@@ -97,7 +102,7 @@ public class CompanySupervisorService {
 
 	public void delete(Long id) {
 
-		repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Company Supervisor not found!"));
+		repository.findById(id).orElseThrow(() -> new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound")));
 
 		repository.deleteById(id);
 		log.info("Company Supervisor is deleted from database id: {}", id);
