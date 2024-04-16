@@ -1,5 +1,7 @@
 package tr.edu.ogu.ceng.dao;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +23,17 @@ public interface InternshipRepository extends JpaRepository<Internship, Long> {
 	
 	@Query(value = "SELECT COUNT(DISTINCT student_id) FROM ims_internships", nativeQuery = true)
 	long countDistinctStudents();
+	
+	@Query(value = "SELECT EXTRACT(YEAR FROM i.startDate) AS year, COUNT(*) AS count " +
+             "FROM Internship i " +
+             "GROUP BY EXTRACT(YEAR FROM i.startDate) " +
+             "ORDER BY EXTRACT(YEAR FROM i.startDate)")
+	List<Object[]> countInternshipsByYear();
+	
+	@Query(value = "SELECT EXTRACT(MONTH FROM i.startDate) AS month, COUNT(*) AS count " +
+            "FROM Internship i " +
+            "GROUP BY EXTRACT(MONTH FROM i.startDate) " +
+            "ORDER BY EXTRACT(MONTH FROM i.startDate)")
+	List<Object[]> countInternshipsByMonth();
+	
 }

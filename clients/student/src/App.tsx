@@ -17,7 +17,7 @@ function App() {
 				<Header />
 				<div className="app-container">
 					<Routes>
-						<Route path={`${root_path}`} element={<InternshipDashboard />} />
+						<Route path={`${root_path}/`} element={<InternshipDashboard />} />
 						<Route path={`${root_path}/AllInternships`} element={<AllInternships />} />
 						<Route path={`${root_path}/profile`} element={<StudentProfile />} />
 						<Route path={`${root_path}/internship-application`} element={< InternshipApplication/>} />

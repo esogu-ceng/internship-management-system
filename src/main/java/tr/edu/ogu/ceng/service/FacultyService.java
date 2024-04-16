@@ -63,6 +63,7 @@ public class FacultyService {
 			log.warn("Faculty Id cannot be null");
 			throw new IllegalArgumentException("Faculty Id cannot be null");
 		}
+
 		Faculty faculty = facultyRepository.findById(facultyRequestDto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Faculty not found!"));
 
@@ -108,5 +109,7 @@ public class FacultyService {
 
 		return modelMapper.map(faculty, FacultyDto.class);
 	}
-
+	public Long countFaculties() {
+		return facultyRepository.count();
+	}
 }

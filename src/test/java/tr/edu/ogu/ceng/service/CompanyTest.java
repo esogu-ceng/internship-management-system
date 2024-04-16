@@ -15,19 +15,22 @@ import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
 
 class CompanyTest {
 
 	@Mock
 	CompanyRepository companyRepository;
+
+	MessageResource messageResource;
 	CompanyService companyService;
 	ModelMapper modelMapper;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		companyService = new CompanyService(companyRepository);
+		companyService = new CompanyService(companyRepository, messageResource);
 	}
 
 	@Test
