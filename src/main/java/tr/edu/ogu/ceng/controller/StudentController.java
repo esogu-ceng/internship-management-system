@@ -22,6 +22,7 @@ import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.AuthenticationService;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -31,11 +32,20 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+    
+    @Autowired 
+    AuthenticationService authenticationService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponseDto> getStudent(@PathVariable(name = "id") long id) {
-        StudentResponseDto studentResponseDto = studentService.getStudent(id);
-        return ResponseEntity.ok(studentResponseDto);
+    public ResponseEntity<StudentDto> getStudent() {
+    	 Long userId = authenticationService.getCurrentUserId();
+
+         if (userId == null) {
+             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+         }
+
+         StudentDto studentResponseDto = studentService.getStudentByUserId(userId);
+         return ResponseEntity.ok(studentResponseDto);
     }
 
     @GetMapping("/getAll")
@@ -90,9 +100,20 @@ public class StudentController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/byUserId/{userId}")
-    public StudentDto getStudentByUserId(@PathVariable Long userId) {
-        return studentService.getStudentByUserId(userId);
+    @GetMapping("/byUserId")
+    public ResponseEntity<StudentDto> getStudentByUserId() {
+        Long userId = authenticationService.getCurrentUserId();
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        StudentDto studentDto = studentService.getStudentByUserId(userId);
+        if (studentDto != null) {
+            return ResponseEntity.ok(studentDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/supervisor/{id}")
