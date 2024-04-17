@@ -51,24 +51,23 @@ function Dashboard() {
 
         fetchData();
     }, []);
-    
-   
     useEffect(() => {
-        fetchInfoFromIMS();
-    }, []);
+        infoGetMethod();
+       
+      }, []); 
     
-    // bilgiyi çekme fonksiyonu
-    const fetchInfoFromIMS = async () => {
-        try {
-            const response = await axiosInstance.get('/setting/info'); // API'den bilgiyi getir
-            setInfo(response.data.value); // API'den dönen bilgiyi state'e kaydet
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-        
-    };
-   
-
+      const infoGetMethod = () => {
+        fetch(`/api/setting/${"info"}`, {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setInfo(data); // Gelen veriyi state'e kaydediyoruz
+          })
+          .catch((error) => {
+            console.error("Bir hata oluştu:", error);
+          });
+      };
     //Yıllık staj verileri için grafik çizme ve filtreleme
     const drawChartYear = () => {
         const currentYear = new Date().getFullYear();
@@ -218,18 +217,22 @@ function Dashboard() {
         title: "Staj Durumu",
         colors: ["#5dfa02", "#ebc634", "#b32614"]
     };
+    //const infoText = JSON.stringify(info);
+    const infoText = (info as any)?.value || '';
+
+
     return (
         <div className="container">
              <div>
-             <div className="dataTable">
-        <table className="table">
-            <tbody>
-                <tr>
-                    <td dangerouslySetInnerHTML={{ __html: info }} />
-                </tr>
-            </tbody>
-        </table>
-    </div>
+             <div className="dataBox" style={{ marginTop: "100px" }}>
+    <textarea
+        value={infoText}
+        readOnly
+        className="textBox"
+    />
+</div>
+
+
              </div>
              
             <div className="dataTable">
