@@ -19,6 +19,7 @@ function Dashboard() {
     const [internshipCountRejected, setInternshipCountRejected] = useState(null);
     const [internshipCountPending, setInternshipCountPending] = useState(null);
     const [internshipCountApproved, setInternshipCountApproved] = useState(null);
+    const [info, setInfo] = useState("");
     const navigate = useNavigate();
     const URL = process.env.REACT_APP_API_BASE_URI+'public/api/';
     const axiosInstance = axios.create({
@@ -50,7 +51,23 @@ function Dashboard() {
 
         fetchData();
     }, []);
-
+    
+   
+    useEffect(() => {
+        fetchInfoFromIMS();
+    }, []);
+    
+    // bilgiyi çekme fonksiyonu
+    const fetchInfoFromIMS = async () => {
+        try {
+            const response = await axiosInstance.get('/setting/info'); // API'den bilgiyi getir
+            setInfo(response.data.value); // API'den dönen bilgiyi state'e kaydet
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+        
+    };
+   
 
     //Yıllık staj verileri için grafik çizme ve filtreleme
     const drawChartYear = () => {
@@ -203,6 +220,18 @@ function Dashboard() {
     };
     return (
         <div className="container">
+             <div>
+             <div className="dataTable">
+        <table className="table">
+            <tbody>
+                <tr>
+                    <td dangerouslySetInnerHTML={{ __html: info }} />
+                </tr>
+            </tbody>
+        </table>
+    </div>
+             </div>
+             
             <div className="dataTable">
                 <table className="table ">
                     <thead>
@@ -269,3 +298,7 @@ function Dashboard() {
 }
 
 export default Dashboard;
+function setInfo(data: any) {
+    throw new Error("Function not implemented.");
+}
+
