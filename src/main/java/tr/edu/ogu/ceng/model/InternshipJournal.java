@@ -65,5 +65,8 @@ public class InternshipJournal {
 	private boolean confirmation;
 	
 
-}
 
+
+
+
+}
