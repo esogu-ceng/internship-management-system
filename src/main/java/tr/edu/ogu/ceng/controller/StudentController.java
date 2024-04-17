@@ -34,16 +34,21 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDto> getStudent(@PathVariable(name = "id") long id) {
-        StudentResponseDto studentResponseDto = studentService.getStudent(id);
-        return ResponseEntity.ok(studentResponseDto);
+        Student student = studentService.getStudent(id);
+        ModelMapper modelMapper = new ModelMapper();
+        StudentResponseDto studentDto = modelMapper.map(student, StudentResponseDto.class);
+        return ResponseEntity.ok(studentDto);
     }
 
     @GetMapping("/getAll")
     public Page<StudentResponseDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+        ModelMapper modelMapper = new ModelMapper();
         Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-        Page<StudentResponseDto> students = studentService.getAllStudents(pageable);
-        return students;
+        Page<Student> students = studentService.getAllStudents(pageable);
+        Page<StudentResponseDto> studentDtos = students
+                .map(student -> modelMapper.map(student, StudentResponseDto.class));
+        return studentDtos;
     }
 
     /**
@@ -59,9 +64,12 @@ public class StudentController {
     public Page<StudentResponseDto> searchStudent(@PathVariable(name = "keyWord") String keyWord,
             @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "name") String sortBy) {
+        ModelMapper modelMapper = new ModelMapper();
         Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-        Page<StudentResponseDto> students = studentService.searchStudent(pageable, keyWord);
-        return students;
+        Page<Student> students = studentService.searchStudent(pageable, keyWord);
+        Page<StudentResponseDto> studentResponseDtos = students
+                .map(student -> modelMapper.map(student, StudentResponseDto.class));
+        return studentResponseDtos;
     }
 
     @PostMapping
@@ -75,7 +83,9 @@ public class StudentController {
 
     @PutMapping
     public StudentResponseDto updateStudent(@RequestBody StudentRequestDto studentDto) {
-        return studentService.updateStudent(studentDto);
+        ModelMapper modelMapper = new ModelMapper();
+        Student updateStudent = studentService.updateStudent(modelMapper.map(studentDto, Student.class));
+        return modelMapper.map(updateStudent, StudentResponseDto.class);
     }
 
     @DeleteMapping("/{id}")
@@ -86,27 +96,34 @@ public class StudentController {
     @PostMapping("/registerasstudent")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<StudentResponseDto> registerAsStudent(@RequestBody StudentDto request) {
+        
         StudentResponseDto response = studentService.registerAsStudent(request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/byUserId/{userId}")
     public StudentDto getStudentByUserId(@PathVariable Long userId) {
-        return studentService.getStudentByUserId(userId);
+        ModelMapper modelMapper = new ModelMapper();
+        Student student = studentService.getStudentByUserId(userId);
+        return modelMapper.map(student, StudentDto.class);
     }
 
     @GetMapping("/supervisor/{id}")
     public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(@PathVariable("id") Long faculty_supervisor_id,
             @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "id") String sortBy) {
+        ModelMapper modelMapper = new ModelMapper();
         Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-        Page<StudentResponseDto> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id,
+        Page<Student> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id,
                 pageable);
-        return students;
+                Page<StudentResponseDto> studentDtos = students
+					.map(student -> modelMapper.map(student, StudentResponseDto.class));
+        return studentDtos;
     }
+
     @GetMapping("/count")
-	public ResponseEntity<Long> getCompanyCount() {
-		Long count = studentService.countStudents();
-		return ResponseEntity.ok(count);
-	}
+    public ResponseEntity<Long> getCompanyCount() {
+        Long count = studentService.countStudents();
+        return ResponseEntity.ok(count);
+    }
 }

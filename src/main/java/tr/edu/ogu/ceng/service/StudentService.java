@@ -42,7 +42,7 @@ public class StudentService {
     private ModelMapper modelMapper;
     private EmailService emailService;
 
-    public StudentResponseDto getStudent(long id) {
+    public Student getStudent(long id) {
         try {
             Student student = studentRepository.findById(id).orElse(null);
             if (student == null) {
@@ -51,16 +51,15 @@ public class StudentService {
             }
             log.info("Student with ID {} has {} number: {}, {}. ", student.getId(), student.getStudentNo(),
                     student.getName(), student.getSurname());
-            ModelMapper modelMapper = new ModelMapper();
-            return modelMapper.map(student, StudentResponseDto.class);
+            
+            return student;
         } catch (EntityNotFoundException e) {
             throw new tr.edu.ogu.ceng.service.Exception.EntityNotFoundException();
         }
     }
 
-	public Page<StudentResponseDto> getAllStudents(Pageable pageable) {
+	public Page<Student> getAllStudents(Pageable pageable) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all students with pageable: {}", pageable);
 			Page<Student> students = studentRepository.findAll(pageable);
 			// Check if the student list is empty
@@ -68,9 +67,8 @@ public class StudentService {
 				log.warn("The student list is empty.");
 				return Page.empty();
 			}
-			Page<StudentResponseDto> studentDtos = students
-					.map(student -> modelMapper.map(student, StudentResponseDto.class));
-			return studentDtos;
+			
+			return students;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students: {}", e.getMessage());
 			throw e;
@@ -114,26 +112,25 @@ public class StudentService {
     }
 
 
-	public StudentResponseDto updateStudent(StudentRequestDto studentRequestDto) {
-		modelMapper = new ModelMapper();
+	public Student updateStudent(Student studentController) {
 		LocalDateTime now = LocalDateTime.now();
 
-		if (studentRequestDto.getId() == null) {
+		if (studentController.getId() == null) {
 			log.warn("Student ID cannot be null.");
 			throw new IllegalArgumentException("Student ID cannot be null");
 		}
-		Student student = studentRepository.findById(studentRequestDto.getId())
+		Student student = studentRepository.findById(studentController.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Student not found!"));
 
 		UserType userTypeDto = student.getUser().getUserType();
 		User user = student.getUser();
 		user.setUserType(userTypeDto);
 		user.setUpdateDate(now);
-		user.setEmail(studentRequestDto.getUser().getEmail());
-		// user.setPassword(studentRequestDto.getUser().getPassword());
-		// user.setUsername(studentRequestDto.getUser().getUsername());
+		user.setEmail(studentController.getUser().getEmail());
+		// user.setPassword(studentController.getUser().getPassword());
+		// user.setUsername(studentController.getUser().getUsername());
 
-		student = modelMapper.map(studentRequestDto, Student.class);
+		student = studentController;
 		student.setUser(userService.saveUser(user));
 
 		student.setCreateDate(studentRepository.getById(student.getId()).getCreateDate());
@@ -149,7 +146,7 @@ public class StudentService {
 			log.error("Error occurred while updating student: {}", e.getMessage());
 			throw e;
 		}
-		return modelMapper.map(updatedStudent, StudentResponseDto.class);
+		return updatedStudent;
 	}
 
 	@Transactional
@@ -170,27 +167,25 @@ public class StudentService {
      * @param keyword
      * @return Page<StudentResponseDto>
      */
-	public Page<StudentResponseDto> searchStudent(Pageable pageable, String keyword) {
+	public Page<Student> searchStudent(Pageable pageable, String keyword) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
+			
 			log.info("Getting students by name, surname or studentNo: {} with pageable: {}", keyword, pageable);
 			Page<Student> students = studentRepository.findByNameOrSurnameOrStudentNo(keyword, keyword, keyword,
 					pageable);
-			Page<StudentResponseDto> studentResponseDtos = students
-					.map(student -> modelMapper.map(student, StudentResponseDto.class));
-			return studentResponseDtos;
+			
+			return students;
 		} catch (Exception e) {
 			log.error("An error occurred while getting students by name: {}: {}", keyword, e.getMessage());
 			throw e;
 		}
 	}
 
-	public StudentDto getStudentByUserId(Long id) {
+	public Student getStudentByUserId(Long id) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
 			Student student = studentRepository.findByUserId(id);
 			log.info("Student with ID {} has email: {}", student.getId(), student.getUser().getEmail());
-			return modelMapper.map(student, StudentDto.class);
+			return student;
 		} catch (Exception e) {
 			log.error("An error occurred while getting student by user ID: {}", e.getMessage());
 			throw e;
@@ -200,7 +195,9 @@ public class StudentService {
 	public StudentResponseDto registerAsStudent(StudentDto request) {
 
 		FacultyDto facultyDto = facultyService.getFacultyById(request.getFaculty().getId());
-
+		System.out.println("\n\n\n");
+		System.out.println(request);
+		System.out.println("\n\n\n");
 		User user = new User();
 		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
@@ -226,21 +223,18 @@ public class StudentService {
 
 	}
 
-	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
+	public Page<Student> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
 		FacultySupervisorResponseDto facultySupervisorDto = facultySupervisorService
 				.getFacultySupervisor(faculty_supervisor_id);
 		Long faculty_id = facultySupervisorDto.getFacultyId();
 		try {
-			ModelMapper modelMapper = new ModelMapper();
 			Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
 			if (students.isEmpty()) {
 				log.warn("The student list is empty.");
-
 			}
-			Page<StudentResponseDto> studentDtos = students
-					.map(student -> modelMapper.map(student, StudentResponseDto.class));
+			
 			log.info("Getting all students with pageable: {}", pageable);
-			return studentDtos;
+			return students;
 		} catch (Exception e) {
 			log.error("An error occured while getting students: {}", e.getMessage());
 			throw e;
