@@ -117,7 +117,6 @@ public class InternshipTest {
 		assertEquals(modelInternship.getStudent().getId(), actual.getStudent().getId());
 		assertEquals(modelInternship.getFacultySupervisor().getId(), actual.getFacultySupervisorId());
 	}
-
 	@Test
 	public void is_markInternshipCompleted_success_withEvaluation() throws Exception {
 
@@ -170,3 +169,5 @@ public class InternshipTest {
 	}
 
 }
+}
+

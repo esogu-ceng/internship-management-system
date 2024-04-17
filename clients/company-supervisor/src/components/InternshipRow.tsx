@@ -3,6 +3,8 @@ import { Internship } from '../types/InternshipType';
 import Modal from '../components/StudentInfo';
 import { InternshipDocument } from './InternshipDocument';
 import InternshipEvaluateForm from '../components/InternshipEvaluateForm';
+import InternshipJournal  from './InternshipJournal';
+
 
 export const InternshipRow = ({ internship }: { internship: Internship }) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -39,6 +41,13 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
     setPopUpScreen(<InternshipDocument internship_id={internship_id} />);
 
   };
+
+  const handleInternshipJournals = (internship_id: number) => {
+    setPopUpState(true);
+    console.log('Running handleInternshipJournals');
+    setPopUpScreen(<InternshipJournal internship_id={internship_id} />);
+  };
+  
   const handleCompanyEvaluation = () => {
     setPopUpState(true);
     console.log('Running handleCompanyEvaluation');
@@ -135,6 +144,7 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
             {hoveredButton == 'studentInfo' &&
               buttonHoverPopUp('Öğrenci Bilgileri')}
           </button>
+
           <button
             className="relative text-indigo-600 hover:text-indigo-900"
             onMouseEnter={() => handleButtonHover('internshipBooks')}
@@ -156,8 +166,9 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
               <path d="M3 3L3 19"></path>
             </svg>
             {hoveredButton == 'internshipBooks' &&
-              buttonHoverPopUp('Staj Defteri')}
+              buttonHoverPopUp('Staj Belgeleri')}
           </button>
+
           <button
             className="relative text-indigo-600 hover:text-indigo-900"
             onMouseEnter={() => handleButtonHover('companyEvaluation')}
@@ -179,6 +190,34 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
             {hoveredButton == 'companyEvaluation' &&
               buttonHoverPopUp('Şirket Değerlendirmesi')}
           </button>
+
+          {internship.status === 'APPROVED' && (
+            <button
+              className="relative text-indigo-600 hover:text-indigo-900"
+              onMouseEnter={() => handleButtonHover('internshipJournals')}
+              onMouseLeave={() => handleButtonHover(null)}
+              onClick={() => handleInternshipJournals(internship.id)}
+            >
+              <svg
+                className="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="15" x2="21" y2="15"></line>
+              </svg>
+              {hoveredButton === 'internshipJournals' &&
+                buttonHoverPopUp('Staj Defteri')}
+            </button>
+          )}
+          
         </div>
       </td>
       {popUpState && (

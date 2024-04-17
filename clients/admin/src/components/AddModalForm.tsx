@@ -1,4 +1,5 @@
 /** @format */
+import punycode from 'punycode';
 
 import React, { useReducer } from "react";
 import {
@@ -75,6 +76,7 @@ const AddModalForm: React.FC<Props> = ({
   onAddCompanySupervisors,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const punycode = require('punycode');
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -96,6 +98,7 @@ const AddModalForm: React.FC<Props> = ({
     onAddCompanySupervisors({
       ...state,
       companyId: parseInt(state.companyId),
+      user: {...state.user, email: punycode.toUnicode(state.user.email)},
     });
     handleClose()
   };
