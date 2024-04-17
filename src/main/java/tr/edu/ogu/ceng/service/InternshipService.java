@@ -331,6 +331,11 @@ public class InternshipService {
 		return internshipRepository.countInternshipsByMonth();
 	}
 
+	public List<Object[]> countApprovedInternshipsforCompany(){
+		log.info("Counting approved internships for company");
+		return internshipRepository.countApprovedInternshipsforCompany();
+	}
+
 	public Page<InternshipResponseDto> getAllInternshipsCompany(Pageable pageable) {
 		try {
 			User authUser = authService.getAuthUser();

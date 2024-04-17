@@ -31,6 +31,7 @@ public class WebSecurityConfig {
 				.authorizeRequests()
 				.antMatchers("/public/**").permitAll()
 				.antMatchers("/api/company/getAllCompanies").permitAll()
+				.antMatchers("/api/internship/count/companyStudent").permitAll()
 				.antMatchers("/facultysupervisor/**", "**/facultysupervisor/**")
 				.hasAuthority(UserType.FACULTYSUPERVISOR.name()).antMatchers("/student/**", "**/student/**")
 				.hasAuthority(UserType.STUDENT.name()).antMatchers("/companysupervisor/**", "**/companysupervisor/**")
