@@ -139,7 +139,7 @@ public class CompanySupervisorService {
 
 		checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
 		CompanySupervisor companySupervisor = mapper.map(request, CompanySupervisor.class);
-		companySupervisor.setUser(userService.saveUser(user));
+		companySupervisor.setUser(userService.addUser(user));
 		companySupervisor.setCreateDate(now);
 		companySupervisor.setUpdateDate(now);
 		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
@@ -167,11 +167,16 @@ public class CompanySupervisorService {
 	}
 
 	public void delete(Long id) {
-
-		repository.findById(id).orElseThrow(() -> new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound")));
-
-		repository.deleteById(id);
-		log.info("Company Supervisor is deleted from database id: {}", id);
+		var supervisorUser = repository.findById(id);
+		if(supervisorUser.isPresent())
+		{		
+			long userId = supervisorUser.get().getUser().getId();
+			repository.deleteById(id);
+			log.info("Company Supervisor is deleted from supervisor table - id: {}", id);		
+			log.info("Company Supervisor is deleted from user table - id: {}", userId);	
+		}
+		else
+			throw new EntityNotFoundException(messageResource.getMessage("companySupervisorNotFound"));
 	}
 
 	void checkIfCompanySupervisorExistsByUserId(Long userId) {

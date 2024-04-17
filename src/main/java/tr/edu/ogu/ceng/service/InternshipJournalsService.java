@@ -79,5 +79,4 @@ public class InternshipJournalsService {
     public InternshipJournal updateInternshipJournal(InternshipJournal internshipJournal) {
         return internshipJournalsRepository.save(internshipJournal);
     }
-    
 }

@@ -223,16 +223,8 @@ export const InternshipRow = ({ internship }: { internship: Internship }) => {
       {popUpState && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
-          <div className="z-50 flex flex-col items-center rounded-lg bg-white p-8">
+          <div className="z-50 flex flex-col items-center rounded-lg bg-white p-8 ">
             {popUpScreen}
-            <br />
-            <button
-              className="mt-4 rounded bg-indigo-500 px-4 py-2 font-bold text-white hover:bg-indigo-600"
-              style={{ backgroundColor: '#3A4F7A' }}
-              onClick={onClosePopUp}
-            >
-              Kapat
-            </button>
           </div>
         </div>
       )}
