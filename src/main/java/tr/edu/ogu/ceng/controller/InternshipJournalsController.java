@@ -20,9 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import lombok.extern.java.Log;
-import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+
 import tr.edu.ogu.ceng.dto.InternshipJournalsDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
+import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipDocumentsResponseDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.model.InternshipJournal;
@@ -35,13 +36,11 @@ public class InternshipJournalsController {
 
     @Autowired
     private InternshipJournalsService internshipJournalsService;
-    
+    private final ModelMapper modelMapper = new ModelMapper();    
 
     @PostMapping("/")
 	public ResponseEntity<InternshipJournalsDto> addInternshipJournal(@RequestBody InternshipJournalsDto internshipJournalsDto) {
         
-        ModelMapper modelMapper = new ModelMapper();
-
         InternshipJournal internshipJournal = modelMapper.map(internshipJournalsDto, InternshipJournal.class);
        
         LocalDateTime dateTime = LocalDateTime.now();
@@ -107,7 +106,4 @@ public ResponseEntity<List<InternshipJournalsDto>> getAllInternshipJournals(
         return ResponseEntity.ok().body("{\"message\": \"All internship journals have been confirmed successfully.\"}");
 
     }
-
-
-   
 }
