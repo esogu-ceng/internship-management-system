@@ -187,7 +187,7 @@ const AddModalForm: React.FC<Props> = ({
                     </div>
                   </div>
                 )}
-                <form onSubmit={handleSubmit} className="modal-form">
+                <form onSubmit={handleSubmit} className="modal-form grid grid-cols-2 gap-4">
                   <div className="form-group">
                     <label htmlFor="name" className="form-label">
                       Ad:
