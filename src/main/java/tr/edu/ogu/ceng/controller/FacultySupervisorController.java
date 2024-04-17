@@ -4,7 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +27,8 @@ import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.security.UserPrincipal;
+import tr.edu.ogu.ceng.service.AuthenticationService;
 import tr.edu.ogu.ceng.service.EmailService;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
 import tr.edu.ogu.ceng.service.StudentService;
@@ -42,7 +47,10 @@ public class FacultySupervisorController {
 
 	@Autowired
 	StudentService studentService;
-
+	
+	@Autowired
+	AuthenticationService authenticationService;
+	
 	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
@@ -85,18 +93,35 @@ public class FacultySupervisorController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisor(@PathVariable(name = "id") long id) {
-		FacultySupervisorResponseDto facultySupervisorResponseDto = facultySupervisorService.getFacultySupervisor(id);
-		return ResponseEntity.ok(facultySupervisorResponseDto);
+	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisor(@PathVariable(name = "id") long id, Authentication authentication) {
+	    UserPrincipal currentUser = (UserPrincipal) authentication.getPrincipal();
+	    // İsteği yapan kullanıcı yetkilendirilmiş mi kontrolü
+	    if (!currentUser.getUser().getId().equals(id)) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+	    }
+	    FacultySupervisorResponseDto facultySupervisorResponseDto = facultySupervisorService.getFacultySupervisor(id);
+	    return ResponseEntity.ok(facultySupervisorResponseDto);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteFacultySupervisor(@PathVariable(name = "id") long id) {
-		return ResponseEntity.ok(facultySupervisorService.deleteFacultySupervisor(id));
+	public ResponseEntity<Boolean> deleteFacultySupervisor(@PathVariable(name = "id") long id, Authentication authentication) {
+	    UserPrincipal currentUser = (UserPrincipal) authentication.getPrincipal();
+	    // İsteği yapan kullanıcı yetkilendirilmiş mi kontrolü
+	    if (!currentUser.getUser().getId().equals(id)) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+	    }
+	    return ResponseEntity.ok(facultySupervisorService.deleteFacultySupervisor(id));
 	}
 
-	@GetMapping("/byUserId/{userId}")
-	public FacultySupervisorResponseDto getFacultySupervisorByUserId(@PathVariable Long userId) {
-		return facultySupervisorService.getFacultySupervisorByUserId(userId);
+	@GetMapping("/byUserId") 
+	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisorByUserId() {
+	    Long userId = authenticationService.getCurrentUserId();
+	    if (userId == null) {
+	        // Kullanıcı oturum açmamış veya kimlik doğrulanmamışsa uygun bir hata işleyin veya null döndürün
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
+	    return ResponseEntity.ok(facultySupervisorService.getFacultySupervisorByUserId(userId));
 	}
+
+
 }

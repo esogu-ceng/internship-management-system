@@ -13,7 +13,6 @@ interface State {
   birthPlace: string;
   birthDate: Date;
   user: {
-    username: string;
     password: string;
     confirmPassword: string;
     email: string;
@@ -41,7 +40,6 @@ const initialState: State = {
   birthPlace: "",
   birthDate: new Date(""),
   user: {
-    username: "",
     password: "",
     confirmPassword: "",
     email: "",
@@ -189,7 +187,7 @@ const AddModalForm: React.FC<Props> = ({
                     </div>
                   </div>
                 )}
-                <form onSubmit={handleSubmit} className="modal-form">
+                <form onSubmit={handleSubmit} className="modal-form grid grid-cols-2 gap-4">
                   <div className="form-group">
                     <label htmlFor="name" className="form-label">
                       Ad:
@@ -238,7 +236,9 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={11}
                       maxLength={11}
+                      pattern="^[1-9]{1}[0-9]{9}[02468]{1}$"
                       placeholder={"11122233344"}
+                      title="0'la başlayamaz ve 11 haneli olmalıdır."
                     />
                   </div>
 
@@ -256,7 +256,11 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={8}
                       maxLength={12}
+                      //12 digit pattern
+
                       placeholder={"152120201000"}
+                      pattern= "[1-9][0-9]{11}"
+                      title={"Öğrenci numarası 12 haneli olmalıdır."}
                     />
                   </div>
 
@@ -369,22 +373,6 @@ const AddModalForm: React.FC<Props> = ({
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="username" className="form-label">
-                      Kullanıcı Adı:
-                    </label>
-                    <input
-                      type="text"
-                      id="username"
-                      name="user.username"
-                      value={state.user.username}
-                      onChange={handleChange}
-                      className="form-input"
-                      required
-                      maxLength={50}
-                      placeholder={"Kullanıcı Adı"}
-                    />
-                  </div>
 
                   <div className="form-group">
                     <label htmlFor="email" className="form-label">

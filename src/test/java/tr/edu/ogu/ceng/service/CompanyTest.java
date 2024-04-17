@@ -22,15 +22,15 @@ class CompanyTest {
 
 	@Mock
 	CompanyRepository companyRepository;
-	CompanyService companyService;
 
 	MessageResource messageResource;
+	CompanyService companyService;
 	ModelMapper modelMapper;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		companyService = new CompanyService(companyRepository,messageResource);
+		companyService = new CompanyService(companyRepository, messageResource);
 	}
 
 	@Test

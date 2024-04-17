@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.controller;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.CompanySupervisorAdminRequestDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.service.CompanySupervisorService;
@@ -26,7 +29,7 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/company-supervisor")
+@RequestMapping("/api/companysupervisor")
 public class CompanySupervisorController {
 	@Autowired
 	private final CompanySupervisorService service;
@@ -43,10 +46,22 @@ public class CompanySupervisorController {
 		return service.getById(id);
 	}
 
+	@GetMapping("/company")
+	public CompanyDto getCompany() {
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(service.getUsersCompany(), CompanyDto.class);
+	}
+
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public CompanySupervisorResponseDto add(@RequestBody CompanySupervisorRequestDto request) {
 		return service.addCompany(request);
+	}
+
+	@PostMapping("/checkAdd")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public CompanySupervisorResponseDto add(@RequestBody CompanySupervisorAdminRequestDto request) {
+		return service.addcheckCompany(request);
 	}
 
 	@PutMapping

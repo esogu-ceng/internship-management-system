@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import useStudentManagement from "../hooks/useStudentManagement";
-
 import AddModalForm from "./StudentAddModalForm";
 import UpdateModalForm from "./StudentUpdateModalForm";
 import Pagination from "./Pagination";
@@ -15,7 +15,6 @@ const tableHeaders = [
   "Doğum Yeri",
   "Doğum Tarihi",
   "Adres",
-  "Kullanıcı Adı",
   "Email",
   "Aktiflik Durumu",
   "Düzenle/Sil",
@@ -39,21 +38,28 @@ const StudentsPage = () => {
     handleCheckboxChange,
   } = useStudentManagement();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleOpenModal = () => {
     setIsAddModalOpen(true);
     document.body.style.overflow = "hidden";
   };
 
-  const handleOnClose = () => {
-    setIsUpdateModalOpen(false);
-    document.body.style.overflow = "auto";
-  };
-
-  const handleDeleteUser = (id: number) => {
+  const handleDeleteUser = (id:number) => {
     // ask for confirmation before deleting
     if (!window.confirm("Silmek istediğinize emin misiniz?")) return;
     // delete the student
     deleteStudent(id);
+  };
+
+  const filteredStudents = students.filter((student) => {
+    const searchString = `${student.name} ${student.surname} ${student.tckn} ${student.studentNo}`;
+    return searchString.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const handleOnClose = () => {
+    setIsUpdateModalOpen(false);
+    document.body.style.overflow = "auto";
   };
 
   return (
@@ -78,6 +84,14 @@ const StudentsPage = () => {
         <span>+ Öğrenci Ekle</span>
       </button>
 
+      <input
+        className="search-input"
+        type="text"
+        placeholder="İsim, Soyisim, T.C. Kimlik No veya Öğrenci No ara"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
       <table>
         <thead>
           <tr>
@@ -87,7 +101,7 @@ const StudentsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {students?.map((student) => (
+          {filteredStudents.map((student) => (
             <tr key={student.id}>
               <td>{student.name}</td>
               <td>{student.surname}</td>
@@ -104,7 +118,6 @@ const StudentsPage = () => {
                   .join("-")}
               </td>
               <td>{student.address}</td>
-              <td>{student.user.username}</td>
               <td>{student.user.email}</td>
               <td>
                 <input

@@ -1,12 +1,8 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.CompanyPublicDto;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
@@ -25,10 +22,8 @@ import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 @AllArgsConstructor
 public class CompanyService {
 
-	@Autowired
 	private CompanyRepository companyRepository;
 
-	@Autowired
 	private MessageResource messageResource;
 
 	public Page<CompanyDto> getAllCompanies(Pageable pageable) {
@@ -36,10 +31,19 @@ public class CompanyService {
 		Page<Company> companies = companyRepository.findAll(pageable);
 		Page<CompanyDto> companyDtos = companies.map(company -> modelMapper.map(company, CompanyDto.class));
 
-		log.info("Pageable companies fetched page number: {}" , pageable.getPageNumber());
+		log.info("Pageable companies fetched page number: {}", pageable.getPageNumber());
 		return companyDtos;
 	}
+	
+    public Page<CompanyPublicDto> getPublicAllCompanies(Pageable pageable) {
+		ModelMapper modelMapper = new ModelMapper();
+		Page<Company> companies = companyRepository.findAll(pageable);
+		Page<CompanyPublicDto> companyPublicDtos = companies.map(company -> modelMapper.map(company, CompanyPublicDto.class));
 
+		log.info("Pageable companies fetched page number: {}", pageable.getPageNumber());
+		return companyPublicDtos;
+    }
+ 
 	public CompanyDto updateCompany(CompanyDto companyDto) {
 		try {
 			if (!companyRepository.existsById(companyDto.getId())) {
@@ -106,13 +110,12 @@ public class CompanyService {
 	public boolean deleteCompany(long id) {
 		if (!companyRepository.existsById(id)) {
 			log.warn(messageResource.getMessage("company.service.warn.company.not.found.with.id", id));
-			return false;
 		}
-
-		companyRepository.deleteById(id);
-
-		log.info("Company with ID {} has been deleted", id);
-
+		else
+		{
+			companyRepository.deleteById(id);
+			log.info("Company with ID {} has been deleted", id);
+		}
 		return true;
 	}
 
