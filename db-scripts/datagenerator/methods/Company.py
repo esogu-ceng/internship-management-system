@@ -48,13 +48,14 @@ def generate_company_companySupervisor(conn, count):
         activity = data.activityRandomizer()
 
         insert_query = f"""
-                           INSERT INTO public.ims_users (
-                               username, password, email, user_type, language, activity
-                           )
-                           VALUES (
-                               '{(name[0] + surname).lower() + i.__str__()}cs', '{hashed_password}', '{(name[0] + surname).lower() + i.__str__()}cs@ogu.edu.tr', 'COMPANYSUPERVISOR', '1', {activity}
-                           ) RETURNING id
-                       """
+                   INSERT INTO public.ims_users (
+                       password, email, user_type, language, activity
+                   )
+                   VALUES (
+                       '{hashed_password}', 'company{i+1}@ogu.edu.tr', 'COMPANYSUPERVISOR', '1', {activity}
+                   ) RETURNING id
+               """
+
         cur.execute(insert_query)
         user_id = cur.fetchone()[0]
         conn.commit()

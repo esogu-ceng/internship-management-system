@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,8 @@ import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
+import tr.edu.ogu.ceng.security.UserPrincipal;
+import tr.edu.ogu.ceng.service.AuthenticationService;
 import tr.edu.ogu.ceng.service.InternshipService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -35,6 +38,8 @@ public class InternshipController {
 	 * @param internshipDto
 	 * @return ResponseEntity<InternshipResponseDto>
 	 */
+	@Autowired
+	AuthenticationService authenticationService;
 	@PostMapping()
 	public ResponseEntity<InternshipResponseDto> addInternship(@RequestBody InternshipRequestDto internshipDto) {
 		return ResponseEntity.ok(internshipService.addInternship(internshipDto));
@@ -91,16 +96,20 @@ public class InternshipController {
 		return internshipService.getStudentByInternshipId(id);
 	}
 
-	@GetMapping("/supervisor/{id}")
+	@GetMapping("/supervisor")
 	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(
-			@PathVariable(name = "id") Long faculty_supervisor_id, @RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "id") String sortBy) {
-		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<InternshipResponseCompanyDto> internships = internshipService
-				.getAllInternshipsByFacultySupervisorId(faculty_supervisor_id, pageable);
-		return internships;
+	        @RequestParam(defaultValue = "0") Integer pageNo,
+	        @RequestParam(defaultValue = "10") Integer limit,
+	        @RequestParam(defaultValue = "id") String sortBy) {
+	    Long facultySupervisorId = authenticationService.getCurrentUserId(); // Oturum açmış kullanıcının kimliğini alıyoruz
+	    if (facultySupervisorId == null) {
+	        // Kullanıcı oturum açmamışsa uygun bir hata işleyin veya null döndürün
+	        // Burada size bağlı, örneğin ResponseEntity.status(HttpStatus.UNAUTHORIZED).build() kullanabilirsiniz.
+	        return null; // veya uygun bir hata işleme mekanizması
+	    }
+	    Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+	    return internshipService.getAllInternshipsByFacultySupervisorId(facultySupervisorId, pageable);
 	}
-	
 	@GetMapping("/count/applied")
 	public ResponseEntity<Long> countAppliedInternships() {
 		return ResponseEntity.ok(internshipService.countAppliedInternships());

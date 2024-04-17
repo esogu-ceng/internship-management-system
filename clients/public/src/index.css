@@ -204,18 +204,24 @@ button.header-login {
     font-weight: bold;
     right: 0;
 }
-.error-container {
-    background-color: rgb(252, 165, 165, 0.25);
+.message-container {
     padding: 12px 20px 2px;
     margin: 14px 0 2px;
     border-radius: 12px;
-    color: #dc2626;
 }
-.error-container h2 {
+.message-container.error {
+    background-color: rgb(252, 165, 165, 0.25); /* Hata durumu için arka plan rengi */
+    color: #dc2626; /* Hata durumu için yazı rengi */
+}
+.message-container.success {
+    background-color: rgba(144, 238, 144, 0.25); /* Başarı durumu için arka plan rengi */
+    color: green; /* Başarı durumu için yazı rengi */
+}
+.message-container h2 {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 4px;
 }  
-.error-container p {
+.message-container p {
     font-size: 16px;
 }
