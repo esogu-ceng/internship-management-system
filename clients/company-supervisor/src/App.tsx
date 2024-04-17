@@ -3,11 +3,9 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import CompanyDashboard from './components/CompanyDashboard';
 import { Root } from './routes/Root';
 import { CompanyPage } from './routes/Company';
 import ErrorPage from './error-page';
-import { User } from './types/UserType';
 import CompanySupervisorProfile from './components/CompanySupervisorProfile';
 
 const HeaderLayout = () => (
@@ -21,11 +19,6 @@ const HeaderLayout = () => (
 );
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User>();
-  const [currentCompanyId, setcurrentCompanyId] = useState<number>(0);
-  //TODO: UPDATE HERE DYNAMICALLY
-
-  //TODO end
   const root_path: string | undefined = process.env.PUBLIC_URL;
 
   const router = createBrowserRouter([
@@ -35,15 +28,11 @@ const App: React.FC = () => {
       children: [
         {
           path: `${root_path}/`,
-          element: <CompanyDashboard />,
-        },
-        {
-          path: `${root_path}/internships`,
-          element: <Root _companyId={currentCompanyId} />,
+          element: <Root/>,
         },
         {
           path: `${root_path}/company`,
-          element: <CompanyPage _companyId={currentCompanyId} />,
+          element: <CompanyPage />,
         },
         {
           path: `${root_path}/profile`,
@@ -52,42 +41,6 @@ const App: React.FC = () => {
       ],
     },
   ]);
-
-  function getAuthUser() {
-    fetch('/api/user/company-supervisor/auth', {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUser(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function getCompanyId(userId: number | undefined) {
-    fetch(`/api/company-supervisor/getCompanySupervisorByUserId/${userId}`, {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setcurrentCompanyId(data.company.id);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  useEffect(() => {
-    getAuthUser();
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      getCompanyId(user?.id);
-    }
-  }, [user]);
 
   return (
     <div className="max-w-screen  min-h-screen w-screen justify-center">

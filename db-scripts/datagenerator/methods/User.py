@@ -3,10 +3,10 @@ def addADMIN(conn):
     cur = conn.cursor()
     insert_query = f"""
                 INSERT INTO public.ims_users (
-                    username, password, email, user_type, language, activity
+                    password, email, user_type, language, activity
                 )
                 VALUES (
-                    'ykartal@ogu.edu.tr', '$2a$10$0JcB6.kytS7h215ptvjVxOitKMeth3IQriCXmLUUFvStp.6wKqftm', 'ykartal@ogu.edu.tr', 'ADMIN', '1', true
+                    '$2a$10$0JcB6.kytS7h215ptvjVxOitKMeth3IQriCXmLUUFvStp.6wKqftm', 'ykartal@ogu.edu.tr', 'ADMIN', '1', true
                 ) RETURNING id
             """
     cur.execute(insert_query)

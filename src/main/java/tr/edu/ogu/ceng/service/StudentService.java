@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -22,11 +20,9 @@ import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
-import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.util.PasswordGeneratorUtil;
 
 @Slf4j
 @Service
@@ -63,7 +59,7 @@ public class StudentService {
 			log.info("Getting all students with pageable: {}", pageable);
 			Page<Student> students = studentRepository.findAll(pageable);
 			// Check if the student list is empty
-			if (students.isEmpty()){
+			if (students.isEmpty()) {
 				log.warn("The student list is empty.");
 				return Page.empty();
 			}
@@ -75,42 +71,40 @@ public class StudentService {
 		}
 	}
 
+	@Transactional
+	public Student addStudent(Student student) {
+		LocalDateTime now = LocalDateTime.now();
+		student.setCreateDate(now);
+		student.setUpdateDate(now);
+		student.getUser().setUserType(UserType.STUDENT);
+		student.getUser().setCreateDate(now);
+		student.getUser().setUpdateDate(now);
+		student.setUser(userRepository.save(student.getUser()));
+		Student savedStudent = studentRepository.save(student);
+		log.info("The student was successfully added: {}", savedStudent);
 
-    @Transactional
-    public Student addStudent(Student student) {
-        LocalDateTime now = LocalDateTime.now();
-        student.setCreateDate(now);
-        student.setUpdateDate(now);
-        student.getUser().setUserType(UserType.STUDENT);
-        student.getUser().setCreateDate(now);
-        student.getUser().setUpdateDate(now);
-        student.setUser(userRepository.save(student.getUser()));
-        Student savedStudent = studentRepository.save(student);
-        log.info("The student was successfully added: {}", savedStudent);
+		return savedStudent;
+	}
 
-        return savedStudent;
-    }
-    @Transactional
-    public Student addStudentAndSendMail(Student student) {
-        Student savedStudent =addStudent(student);
-        if (savedStudent != null) {
-            String emailSubject = " Şifre Hatırlatıcı";
-            String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
-                    + "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
-                    + "UserName: " + savedStudent.getUser().getUsername() + "\n\n"+
-                      "Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
-                    + "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
-                    + "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
-                    + "İyi günler dileriz,\n";
+	@Transactional
+	public Student addStudentAndSendMail(Student student) {
+		Student savedStudent = addStudent(student);
+		if (savedStudent != null) {
+			String emailSubject = " Şifre Hatırlatıcı";
+			String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
+					+ "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
+					+ "UserName: " + savedStudent.getUser().getEmail() + "\n\n" +
+					"Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
+					+ "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
+					+ "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
+					+ "İyi günler dileriz,\n";
 
-            emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
-        }
+			emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
+		}
 
-        return savedStudent;
+		return savedStudent;
 
-
-    }
-
+	}
 
 	public Student updateStudent(Student studentController) {
 		LocalDateTime now = LocalDateTime.now();
@@ -199,7 +193,6 @@ public class StudentService {
 		System.out.println(request);
 		System.out.println("\n\n\n");
 		User user = new User();
-		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setUserType(UserType.STUDENT);
@@ -216,7 +209,6 @@ public class StudentService {
 		studentRepository.save(student);
 
 		log.info("Student registered with ID: {} and email: {}", student.getId(), student.getUser().getEmail());
-
 
 		StudentResponseDto response = modelMapper.map(student, StudentResponseDto.class);
 		return response;
@@ -240,7 +232,8 @@ public class StudentService {
 			throw e;
 		}
 	}
-    public Long countStudents() {
+
+	public Long countStudents() {
 		return studentRepository.count();
 	}
 
