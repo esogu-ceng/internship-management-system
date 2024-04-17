@@ -68,7 +68,7 @@ public class InternshipRegistryTest {
 
 	MessageResource messageResource;
 
-	InternshipStatus status = InternshipStatus.APPROVED;
+	InternshipStatus status = InternshipStatus.FACULTY_APPROVED;
 
 	@BeforeEach
 	public void init() {
@@ -96,7 +96,7 @@ public class InternshipRegistryTest {
 				new Timestamp(2000, 01, 01, 0, 0, 0, 0), localDateTime, localDateTime, modelUser, modelFaculty,
 				"address");
 
-		var modelInternship = new Internship(1L, InternshipStatus.APPROVED, null, null, 20, localDateTime,
+		var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 20, localDateTime,
 				localDateTime, modelStudent, modelCompany, modelFacultySupervisor);
 
 		var modelInternshipRegistry = new InternshipRegistry(1L, "C:/Users/root/test", "internshipRegistry1", "pdf",

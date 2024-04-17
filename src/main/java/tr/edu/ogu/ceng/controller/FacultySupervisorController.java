@@ -23,6 +23,7 @@ import tr.edu.ogu.ceng.dto.requests.FacultySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Student;
@@ -31,6 +32,7 @@ import tr.edu.ogu.ceng.security.UserPrincipal;
 import tr.edu.ogu.ceng.service.AuthenticationService;
 import tr.edu.ogu.ceng.service.EmailService;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
+import tr.edu.ogu.ceng.service.InternshipService;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 import tr.edu.ogu.ceng.util.PasswordGeneratorUtil;
@@ -47,10 +49,8 @@ public class FacultySupervisorController {
 
 	@Autowired
 	StudentService studentService;
-	
-	@Autowired
-	AuthenticationService authenticationService;
-	
+	InternshipService internshipService;
+
 	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
@@ -122,6 +122,38 @@ public class FacultySupervisorController {
 	    }
 	    return ResponseEntity.ok(facultySupervisorService.getFacultySupervisorByUserId(userId));
 	}
+	@PutMapping("/faculty-approved/{id}")
+	public InternshipStatus approveInternshipByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_APPROVED);
+	}
+	
+	@PutMapping("/ongoing/{id}")
+	public InternshipStatus markInternshipAsOngoing(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.ONGOING);
+	}
 
+	@PutMapping("/faculty-evaluation-stage/{id}")
+	public InternshipStatus moveToInternshipEvaluationStageByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_EVALUATION_STAGE);
+	}
+	
+	@PutMapping("/faculty-rejected/{id}")
+	public InternshipStatus rejectInternshipByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_REJECTED);
+	}
 
+	@PutMapping("/faculty-invalid/{id}")
+	public InternshipStatus markInternshipAsInvalidByFaculty(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_INVALID);
+	}
+
+	@PutMapping("/success/{id}")
+	public InternshipStatus markInternshipAsSuccess(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.SUCCESS);
+	}
+
+	@PutMapping("/canceled/{id}")
+	public InternshipStatus cancelInternship(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.CANCELED);
+	}
 }

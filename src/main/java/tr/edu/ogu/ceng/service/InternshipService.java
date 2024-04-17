@@ -258,21 +258,61 @@ public class InternshipService {
 	}
 	
 
-	public long countApprovedInternships() {
-		log.info("Counting approved internships");
-		return internshipRepository.countByStatus(InternshipStatus.APPROVED);
+	public long countAppliedInternships() {
+		log.info("Counting internships in application stage");
+		return internshipRepository.countByStatus(InternshipStatus.APPLIED);
 	}
-
-	public long countRejectedInternships() {
-		log.info("Counting rejected internships");
-		return internshipRepository.countByStatus(InternshipStatus.REJECTED);
+	
+	public long countCompanyApprovedInternships() {
+		log.info("Counting internships approved by company");
+		return internshipRepository.countByStatus(InternshipStatus.COMPANY_APPROVED);
 	}
-
-	public long countPendingInternships() {
-		log.info("Counting pending internships");
-		return internshipRepository.countByStatus(InternshipStatus.PENDING);
+	
+	public long countFacultyApprovedInternships() {
+		log.info("Counting internships approved by faculty");
+		return internshipRepository.countByStatus(InternshipStatus.FACULTY_APPROVED);
 	}
-
+	
+	public long countOngoingInternships() {
+		log.info("Counting ongoing internships");
+		return internshipRepository.countByStatus(InternshipStatus.ONGOING);
+	}
+  
+	public long countCompanyEvaluationStageInternships() {
+		log.info("Counting internships in company evaluation stage");
+		return internshipRepository.countByStatus(InternshipStatus.COMPANY_EVALUATION_STAGE);
+	}
+	
+	public long countFacultyEvaluationStageInternships() {
+		log.info("Counting internships in faculty evaluation stage");
+		return internshipRepository.countByStatus(InternshipStatus.FACULTY_EVALUATION_STAGE);
+	}
+	
+	public long countSuccessInternships() {
+		log.info("Counting successfully done internships");
+		return internshipRepository.countByStatus(InternshipStatus.SUCCESS);
+	}
+	
+	public long countFacultyRejectedInternships() {
+		log.info("Counting internships rejected by faculty");
+		return internshipRepository.countByStatus(InternshipStatus.FACULTY_REJECTED);
+	}
+	
+	public long countCompanyRejectedInternships() {
+		log.info("Counting internships rejected by company");
+		return internshipRepository.countByStatus(InternshipStatus.COMPANY_REJECTED);
+	}
+	
+	public long countFacultyInvalidInternships() {
+		log.info("Counting invalid internships");
+		return internshipRepository.countByStatus(InternshipStatus.FACULTY_INVALID);
+	}
+	
+	public long countCanceledInternships() {
+		log.info("Counting canceled internships");
+		return internshipRepository.countByStatus(InternshipStatus.CANCELED);
+	}
+	
 	public long countDistinctStudents() {
 		log.info("Counting distinct students");
 		return internshipRepository.countDistinctStudents();

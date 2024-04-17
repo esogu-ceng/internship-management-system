@@ -67,7 +67,7 @@ public class InternshipTest {
 
 	MessageResource messageResource;
 
-	InternshipStatus status = InternshipStatus.PENDING;
+	InternshipStatus status = InternshipStatus.APPLIED;
 
 	@SuppressWarnings("deprecation")
 	@BeforeEach
@@ -93,7 +93,7 @@ public class InternshipTest {
 		var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test", null, localDateTime,
 				localDateTime, null, modelFaculty, "address");
 
-		var modelInternship = new Internship(1L, InternshipStatus.APPROVED, null, null, 0, localDateTime, localDateTime,
+		var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 0, localDateTime, localDateTime,
 				modelStudent, modelCompany, modelFacultySupervisor);
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
@@ -103,7 +103,25 @@ public class InternshipTest {
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 		when(internshipRepository.save(any(Internship.class))).thenReturn(modelInternship);
 
-		var Dtointernship = InternshipRequestDto.builder().id(1L).status(InternshipStatus.APPROVED)
+		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
+				.build();
+
+		var DtoUser = UserDto.builder().id(1L).password("password").email("email")
+				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
+
+		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(1L).name("Name").surname("Surname")
+				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
+
+		var Dtostudent = StudentDto.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
+				.grade("test").phoneNumber("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
+				.createDate(localDateTime).updateDate(localDateTime).faculty(DtoFaculty).address("address").build();
+
+		var Dtocompany = CompanyDto.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
+				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
+				.updateDate(localDateTime).build();
+
+		// TODO @ Change when the InternshipRequestDto manipulated
+		var Dtointernship = InternshipRequestDto.builder().id(1L).status(InternshipStatus.FACULTY_APPROVED)
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.days(1).studentId(1004L).companyId(9001L).facultySupervisorId(400L).build();
 
