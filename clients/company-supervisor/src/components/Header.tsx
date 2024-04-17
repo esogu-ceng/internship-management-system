@@ -16,7 +16,7 @@ export const Header = () => {
                 </NavLink>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    <NavLink to={`${root_path}/internships`}>
+                    <NavLink to={`${root_path}/`}>
                       {({ isActive }) => (
                         <p
                           className={`${
