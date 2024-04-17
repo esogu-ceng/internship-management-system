@@ -3,7 +3,6 @@ import { InternshipEvalFrom } from '../types/InternshipEvalFromType';
 
 type ModalProps = {
   _internshipId: number;
-  _companyId: number;
   isOpen: boolean;
   onClose: () => void;
   children?: React.ReactNode;
@@ -11,7 +10,6 @@ type ModalProps = {
 
 const InternshipEvaluateForm: React.FC<ModalProps> = ({
   _internshipId,
-  _companyId,
   isOpen,
   onClose,
   children,
@@ -56,7 +54,6 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
       surname: internshipEvalFrom?.surname,
       filePath: textareaRef.current?.value,
       internshipId: _internshipId,
-      companyId: _companyId,
     };
     fetch(`/api/internship-evaluate-forms/`, {
       method: 'PUT',
@@ -78,7 +75,6 @@ const InternshipEvaluateForm: React.FC<ModalProps> = ({
         surname: "sampleSurname",
         filePath: textareaRef.current?.value,
         internshipId: _internshipId,
-        companyId: _companyId,
       };
       fetch(`/api/internship-evaluate-forms/`, {
         method: 'POST',
