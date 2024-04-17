@@ -3,8 +3,7 @@ package tr.edu.ogu.ceng.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
@@ -46,18 +45,16 @@ public class StudentTest {
 	@Mock
 	FacultySupervisorService facultySupervisorService;
 
-   @Mock
-  EmailService emailService;
+	@Mock
+	EmailService emailService;
 	@Mock
 	ModelMapper modelMapper;
-
-
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userService,settingRepository,facultyService
-				, facultySupervisorService, new ModelMapper(),emailService);
+		studentService = new StudentService(studentRepository, userRepository, userService, facultyService, facultySupervisorService,
+				new ModelMapper(), emailService, settingRepository);
 	}
 
 	@Test
@@ -78,12 +75,12 @@ public class StudentTest {
 		LocalDateTime dateTime = LocalDateTime.now();
 		var savedUser = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		var SavedStudent = new Student(6L, "test", "test", "test", "test", null, null, null,
-				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address",null);
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address", null);
 
 		var user = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		user.setId(null);
 		var student = new Student(6L, "test", "test", "test", "test", null, null, null,
-				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address",null);
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address", null);
 		student.setId(null);
 
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
@@ -101,11 +98,6 @@ public class StudentTest {
 		assertEquals(student.getBirthDate(), actual.getBirthDate());
 		assertEquals(student.getAddress(), actual.getAddress());
 
-
 	}
-
-
-
-
 
 }

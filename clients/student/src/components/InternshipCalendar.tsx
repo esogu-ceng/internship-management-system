@@ -15,7 +15,7 @@ interface Event {
   approved: boolean;
 }
  
-const App: React.FC = () => {
+const InternshipCalender: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
@@ -43,7 +43,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
+    <div className="InternshipCalender">
       <h1>Öğrenci Staj Takvimi</h1>
       <Calendar
         localizer={localizer}
@@ -63,4 +63,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default InternshipCalender;

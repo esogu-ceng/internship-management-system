@@ -111,3 +111,5 @@ yarn-debug.log*
 yarn-error.log*
 
 files
+/.apt_generated/
+/.apt_generated_tests/

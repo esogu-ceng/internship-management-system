@@ -148,7 +148,7 @@ const [errorMessage, setErrorMessage] = useState<string>('');
     
       <button className="create-button-container right-align" 
         onClick={handleCreateModalOpen}>
-        <FontAwesomeIcon className="plusicon"icon={faPlus} />
+        <FontAwesomeIcon className="plusicon"icon={'plus'} />
         Create Company
       </button>
       

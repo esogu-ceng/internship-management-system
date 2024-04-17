@@ -47,7 +47,7 @@ public class UserController {
 		Language language = new Language();
 		language.setId((long) 1);
 		user.setLanguage(language);
-		User savedUser = userService.saveUser(user);
+		User savedUser = userService.addUser(user);
 
 		UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
 		return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);

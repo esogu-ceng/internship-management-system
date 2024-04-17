@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
 import StudentProfile from './components/StudentProfile';
-import IntershipCalender from "./components/InternshipCalendar"
+import InternshipCalender from "./components/InternshipCalendar"
 import InternshipApplication from "./components/InternshipApplications";
 import "./index.css";
 import { ToastContainer } from "react-toastify";
@@ -24,7 +24,7 @@ function App() {
 						<Route path={`${root_path}`} element={<InternshipDashboard />} />
 						<Route path={`${root_path}/AllInternships`} element={<AllInternships />} />
 						<Route path={`${root_path}/profile`} element={<StudentProfile />} />
-						<Route path={`${root_path}/calendar`} element={<InternshipCalendar />} />
+						<Route path={`${root_path}/calendar`} element={<InternshipCalender />} />
 						<Route path={`${root_path}/internship-application`} element={< InternshipApplication/>} />
 					</Routes>
 				</div>
