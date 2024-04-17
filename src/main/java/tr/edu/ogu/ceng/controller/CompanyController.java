@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.CompanyPublicDto;
 import tr.edu.ogu.ceng.service.CompanyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -35,10 +36,10 @@ public class CompanyController {
 	}
 	
 	@GetMapping("/getAllCompanies")
-	public ResponseEntity<Page<CompanyDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<CompanyPublicDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
+		Page<CompanyPublicDto> companies = companyService.getPublicAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
 	

@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import tr.edu.ogu.ceng.dto.requests.CompanySupervisorAdminRequestDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
+import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.service.CompanySupervisorService;
+import tr.edu.ogu.ceng.service.InternshipService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
 @RestController
@@ -32,6 +35,7 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 public class CompanySupervisorController {
 	@Autowired
 	private final CompanySupervisorService service;
+	InternshipService internshipService;
 
 	@GetMapping
 	public Page<CompanySupervisorResponseDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -57,6 +61,12 @@ public class CompanySupervisorController {
 		return service.addCompany(request);
 	}
 
+	@PostMapping("/checkAdd")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public CompanySupervisorResponseDto add(@RequestBody CompanySupervisorAdminRequestDto request) {
+		return service.addcheckCompany(request);
+	}
+
 	@PutMapping
 	public CompanySupervisorDto update(@RequestBody CompanySupervisorDto request) {
 		return service.update(request);
@@ -76,5 +86,20 @@ public class CompanySupervisorController {
 	@GetMapping("/getCompanySupervisorByUserId/{userId}")
 	public CompanySupervisorDto getCompanySupervisorByUserId(@PathVariable Long userId) {
 		return service.getCompanySupervisorByUserId(userId);
+	}
+
+	@PutMapping("/company-approved/{id}")
+	public InternshipStatus approveInternshipByCompany(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_APPROVED);
+	}
+
+	@PutMapping("/company-evaluation-stage/{id}")
+	public InternshipStatus moveToInternshipEvaluationStageByCompany(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_EVALUATION_STAGE);
+	}
+	
+	@PutMapping("/company-rejected/{id}")
+	public InternshipStatus rejectInternshipByCompany(@PathVariable(name = "id") long id) {
+	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_REJECTED);
 	}
 }
