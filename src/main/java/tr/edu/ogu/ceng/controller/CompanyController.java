@@ -36,7 +36,7 @@ public class CompanyController {
 	}
 
 	@GetMapping("/getAllCompanies")
-	public ResponseEntity<Page<CompanyDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+	public ResponseEntity<Page<CompanyPublicDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
 																  @RequestParam(defaultValue = "10") Integer limit,
 																  @RequestParam(defaultValue = "name") String sortBy) {
 		long totalCompanies = companyService.countCompanies(); // Get the total count of companies
