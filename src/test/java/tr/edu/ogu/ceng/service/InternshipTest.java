@@ -3,6 +3,7 @@ package tr.edu.ogu.ceng.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,6 +29,7 @@ import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.*;
 import tr.edu.ogu.ceng.security.AuthService;
+import tr.edu.ogu.ceng.service.InternshipEvaluateFormService;
 
 public class InternshipTest {
 	@Mock
@@ -56,6 +58,9 @@ public class InternshipTest {
 	InternshipService internshipService;
 
 	@Mock
+	InternshipEvaluateFormRepository internshipEvaluateFormRepository;
+
+	@Mock
 	CompanyService companyService;
 	@Mock
 	StudentService studentService;
@@ -69,7 +74,7 @@ public class InternshipTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		internshipService = new InternshipService(internshipRepository, studentRepository, companySupervisorRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), messageResource, authService);
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), messageResource, authService, internshipEvaluateFormRepository);
 	}
 
 	@Test
@@ -114,22 +119,54 @@ public class InternshipTest {
 	}
 
 	@Test
-	public void is_internship_mark_completed() {
-			Long facultySupervisorId = 1L;
-			Long internshipId = 1L;
+	public void is_markInternshipCompleted_success_withEvaluation() throws Exception {
 
-			FacultySupervisor mockFacultySupervisor = new FacultySupervisor();
-			Internship mockInternship = new Internship();
+		// Mock data
+		LocalDateTime now = LocalDateTime.now();
+		Long internshipId = 1L;
+		Long facultySupervisorId = 2L;
+		Optional<Internship> internship = Optional.of(new Internship(internshipId, InternshipStatus.PENDING, null, null, 0, now, now, null, null, null));
+		Optional<FacultySupervisor> facultySupervisor = Optional.of(new FacultySupervisor(facultySupervisorId, "Name", "Surname", "Phone", "No", now, now, null, null));
+		InternshipEvaluateForm companyEvaluation = new InternshipEvaluateForm(); // Mock company evaluation
 
-			when(facultySupervisorRepository.findById(facultySupervisorId)).thenReturn(Optional.of(mockFacultySupervisor));
-			when(internshipRepository.findById(internshipId)).thenReturn(Optional.of(mockInternship));
+		// Mock repositories (assuming you have mocks set up)
+		when(internshipRepository.findById(internshipId)).thenReturn(internship);
+		when(facultySupervisorRepository.findById(facultySupervisorId)).thenReturn(facultySupervisor);
+		when(internshipEvaluateFormRepository.findByInternshipId(internshipId)).thenReturn(companyEvaluation);
 
-			boolean result = internshipService.markInternshipCompleted(facultySupervisorId, internshipId);
+		// Call the method
+		boolean isCompleted = internshipService.markInternshipCompleted(facultySupervisorId, internshipId);
 
-			assertTrue(result);
-			assertEquals(InternshipStatus.SUCCESS, mockInternship.getStatus());
-			verify(facultySupervisorRepository, times(1)).findById(facultySupervisorId);
-			verify(internshipRepository, times(1)).findById(internshipId);
-			verify(internshipRepository, times(1)).save(mockInternship);
+		// Assertions
+		assertTrue(isCompleted);
+		assertEquals(InternshipStatus.SUCCESS, internship.get().getStatus());
 	}
+
+	@Test
+	public void is_markInternshipCompleted_failure_noEvaluation() throws Exception {
+
+		// Mock data
+		LocalDateTime now = LocalDateTime.now();
+		Long internshipId = 1L;
+		Long facultySupervisorId = 2L;
+		Optional<Internship> internship = Optional.of(new Internship(internshipId, InternshipStatus.PENDING, null, null, 0, now, now, null, null, null));
+		Optional<FacultySupervisor> facultySupervisor = Optional.of(new FacultySupervisor(facultySupervisorId, "Name", "Surname", "Phone", "No", now, now, null, null));
+		
+		// Mock repositories (assuming you have mocks set up)
+		when(internshipRepository.findById(internshipId)).thenReturn(internship);
+		when(facultySupervisorRepository.findById(facultySupervisorId)).thenReturn(facultySupervisor);
+		when(internshipEvaluateFormRepository.findByInternshipId(internshipId)).thenReturn(null); // No company evaluation
+
+		// Expected exception
+		Exception expectedException = new Exception("Internship is not evaluated by the company yet!");
+
+		// Call the method with expected exception
+		try {
+			internshipService.markInternshipCompleted(facultySupervisorId, internshipId);
+			fail("Expected exception not thrown!");
+		} catch (Exception e) {
+			assertEquals(expectedException.getMessage(), e.getMessage());
+		}
+	}
+
 }
