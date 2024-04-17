@@ -77,4 +77,7 @@ public class Student {
 	@Column(name = "address", nullable = false)
 	private String address;
 
+	@Column(name = "cv_path", nullable = true)
+	private String cvPath;
+
 }

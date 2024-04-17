@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faKey} from '@fortawesome/free-solid-svg-icons';
 
-const initialError = {
+const initialMessage = {
     title: "",
     message: "",
 };
@@ -17,14 +17,16 @@ function Login() {
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(initialError);
+    const [error, setError] = useState(initialMessage);
+    const [success, setSuccess] = useState(initialMessage);
 
     const handleForgotPassword = () => {
         setShowModal(true);
     };
 
     const handleModalClose = () => {
-        setError(initialError);
+        setError(initialMessage);
+        setSuccess(initialMessage);
         setEmail("");
         setShowModal(false);
     };
@@ -38,10 +40,13 @@ function Login() {
         }).then((response) => {
             setIsLoading(false);
             if (response.ok === true) {
-                setError(initialError)
-                toast.success("Link başarıyla gönderildi")
-                setShowModal(false);
+                setError(initialMessage);
+                setSuccess({
+                    title: "Link başarıyla gönderildi.",
+                    message: "Lütfen e-mail adresinizi kontrol ediniz.",
+                  });
             } else{
+				setSuccess(initialMessage);
                 setError({
                     title: "E-postanız bulunamadı!",
                     message: "Lütfen sistem yöneticisi ile iletişime geçin!",
@@ -49,7 +54,11 @@ function Login() {
 
         }).catch((error) => {
             setIsLoading(false);
-            toast.error("Bir hata oluştu!", {autoClose: 2000})
+            setSuccess(initialMessage);
+            setError({
+            title: "Bir hata oluştu!",
+            message: "İnternet bağlantınızı kontrol edip tekrar deneyiniz.",
+            });
 
         });
         setIsLoading(true);
@@ -142,12 +151,12 @@ function Login() {
                                     required
                                 />
                             </div>
-                            {error.message && (
-                                <div className="error-container">
-                                    <h2>{error.title}</h2>
-                                    <p>{error.message}</p>
-                                </div>
-                            )}
+                            {(error.message || success.message) && (
+								<div className={`message-container ${error.message ? 'error' : ''} ${success.message ? 'success' : ''}`}>
+								<h2>{error.title || success.title}</h2>
+								<p>{error.message || success.message}</p>
+								</div>
+							)}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" className="cancel-btn" onClick={handleModalClose}>

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import tr.edu.ogu.ceng.model.Student;
 
+import java.util.Optional;
+
 public interface StudentRepository extends JpaRepository<Student, Long> {
 	Page<Student> findByNameOrSurnameOrStudentNo(String keyword1, String keyword2, String keyword3, Pageable pageable);
 	Page<Student> findAllByFacultyId(Long faculty_id, Pageable pageable);
@@ -18,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	boolean existsByTckn(String tcno);
 
 	boolean existsByStudentNo(String studentno);
+
+	Optional<Student> findByStudentNo(String studentNo);
 }
