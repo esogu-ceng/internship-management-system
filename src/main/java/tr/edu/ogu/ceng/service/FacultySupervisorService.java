@@ -53,7 +53,7 @@ public class FacultySupervisorService {
 		user.setUpdateDate(now);
 		user.setUserType(UserType.FACULTYSUPERVISOR);
 
-		facultySupervisor.setUser(userService.saveUser(user));
+		facultySupervisor.setUser(userService.addUser(user));
 		facultySupervisor.setCreateDate(now);
 		facultySupervisor.setUpdateDate(now);
 
@@ -109,16 +109,16 @@ public class FacultySupervisorService {
 
 	public boolean deleteFacultySupervisor(long id) {
 		try {
-			facultySupervisorRepository.deleteById(id);
-			log.info("Faculty supervisor deleted with id: {}", id);
-			return true;
+			if(facultySupervisorRepository.existsById(id)) {
+				facultySupervisorRepository.deleteById(id);
+				log.info("Faculty supervisor deleted with id: {}", id);
+			}		
 		} catch (DataIntegrityViolationException e) {
 			log.warn("Cannot delete faculty supervisor with ID {} due to integrity violation", id);
-			return false;
 		} catch (EmptyResultDataAccessException e) {
 			log.warn("Faculty supervisor with ID {} not found", id);
-			return false;
 		}
+		return true;
 	}
 
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(Pageable pageable) {

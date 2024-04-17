@@ -6,39 +6,61 @@ const Companies = () => {
   const pageSize = 10;
   const [companies, setCompanies] = useState<Company[] | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredCompanies, setFilteredCompanies] = useState<Company[] | null>(
-    null
-  );
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[] | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [internCounts, setInternCounts] = useState<[number, number][] | null>(null);
 
   useEffect(() => {
-    fetch("/api/company/getAllCompanies", {
-      method: "GET",
+    fetch('/api/company/getAllCompanies', {
+        method: 'GET'
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data: ", data.content);
-        const companiesData = data.content.map((company: Company) => ({
-          ...company,
-          startDate: new Date(company.startDate),
-          endDate: new Date(company.endDate),
-        }));
-        setCompanies(companiesData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+        .then(response => response.json())
+        .then(data => {
+            console.log('data: ', data.content);
+            const companiesData = data.content.map((company: Company) => ({
+                name: company.name,
+                address: company.address,
+                scope: company.scope,
+                description: company.description,
+                startDate: new Date(company.startDate),
+                endDate: new Date(company.endDate)
+            }));
+            setCompanies(companiesData);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}, []);
 
-  useEffect(() => {
+useEffect(() => {
     if (companies) {
-      const filtered = companies.filter((company: Company) =>
-        company.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredCompanies(filtered);
+        const filtered = companies.filter((company: Company) =>
+            company.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredCompanies(filtered);
+        // Get intern counts for filtered companies
+        fetch('/api/internship/count/companyStudent', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                setInternCounts(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
-  }, [companies, searchQuery]);
+}, [companies, searchQuery]);
 
+const getInternCountForCompany = (companyId: number) => {
+    if (internCounts) {
+        const countData = internCounts.find(([id, count]) => id === companyId);
+        if (countData) {
+            return countData[1];
+        }
+    }
+    return 0; // If no count data found, return 0
+}
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };

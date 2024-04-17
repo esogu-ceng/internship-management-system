@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.CompanyPublicDto;
 import tr.edu.ogu.ceng.service.CompanyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -40,8 +41,9 @@ public class CompanyController {
 																  @RequestParam(defaultValue = "name") String sortBy) {
 		long totalCompanies = companyService.countCompanies(); // Get the total count of companies
 		limit = Math.toIntExact(totalCompanies); // Set limit to totalCompanies
+
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
+		Page<CompanyPublicDto> companies = companyService.getPublicAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
 

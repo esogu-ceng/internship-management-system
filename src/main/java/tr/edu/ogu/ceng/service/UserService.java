@@ -48,13 +48,17 @@ public class UserService {
 		}
 	}
 
-	public User saveUser(User user) {
+	public User addUser(User user) {
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(dateTime);
 			user.setUpdateDate(dateTime);
 			user.setPassword(encodeUserPassword(user.getPassword()));
 			user.setActivity(true);
+			if (userRepository.existsById(user.getId())) {
+				log.warn("User already exists with id: {}", user.getId());
+				throw new EntityNotFoundException("User already exists!");
+			}
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());
 			return savedUser;
@@ -82,15 +86,16 @@ public class UserService {
 		try {
 			if (!userRepository.existsById(id)) {
 				log.warn("User not found with id: {}", id);
-				throw new EntityNotFoundException("User Not Found!");
 			}
-			userRepository.deleteById(id);
-			log.info("User deleted successfully with id: {}", id);
-			return true;
+			else
+			{
+				userRepository.deleteById(id);
+				log.info("User deleted successfully with id: {}", id);
+			}
 		} catch (Exception e) {
 			log.error("An error occurred while deleting user with id: {}: {}", id, e.getMessage());
-			return false;
 		}
+		return true;
 	}
 
 	public User updateUser(User user) {
@@ -118,6 +123,7 @@ public class UserService {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(userRepository.getById(userDto.getId()).getCreateDate());
 			user.setUpdateDate(dateTime);
+			user.setPassword(encodeUserPassword(user.getPassword()));
 			user = userRepository.save(user);
 			log.info("User with ID {} has been updated", user.getId());
 			return modelMapper.map(user, UserResponseDto.class);
