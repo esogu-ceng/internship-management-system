@@ -19,6 +19,7 @@ function Dashboard() {
     const [internshipCountRejected, setInternshipCountRejected] = useState(null);
     const [internshipCountPending, setInternshipCountPending] = useState(null);
     const [internshipCountApproved, setInternshipCountApproved] = useState(null);
+    const [info, setInfo] = useState("");
     const navigate = useNavigate();
     const URL = process.env.REACT_APP_API_BASE_URI+'public/api/';
     const axiosInstance = axios.create({
@@ -50,8 +51,23 @@ function Dashboard() {
 
         fetchData();
     }, []);
-
-
+    useEffect(() => {
+        infoGetMethod();
+       
+      }, []); 
+    
+      const infoGetMethod = () => {
+        fetch(`/api/setting/${"info"}`, {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setInfo(data); // Gelen veriyi state'e kaydediyoruz
+          })
+          .catch((error) => {
+            console.error("Bir hata oluştu:", error);
+          });
+      };
     //Yıllık staj verileri için grafik çizme ve filtreleme
     const drawChartYear = () => {
         const currentYear = new Date().getFullYear();
@@ -201,8 +217,24 @@ function Dashboard() {
         title: "Staj Durumu",
         colors: ["#5dfa02", "#ebc634", "#b32614"]
     };
+    //const infoText = JSON.stringify(info);
+    const infoText = (info as any)?.value || '';
+
+
     return (
         <div className="container">
+             <div>
+             <div className="dataBox" style={{ marginTop: "100px" }}>
+    <textarea
+        value={infoText}
+        readOnly
+        className="textBox"
+    />
+</div>
+
+
+             </div>
+             
             <div className="dataTable">
                 <table className="table ">
                     <thead>
@@ -269,3 +301,7 @@ function Dashboard() {
 }
 
 export default Dashboard;
+function setInfo(data: any) {
+    throw new Error("Function not implemented.");
+}
+
