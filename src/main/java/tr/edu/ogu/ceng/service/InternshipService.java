@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
+import tr.edu.ogu.ceng.dao.InternshipEvaluateFormRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
@@ -29,6 +30,7 @@ import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Internship;
+import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.AuthService;
@@ -50,6 +52,7 @@ public class InternshipService {
 	private final ModelMapper modelMapper;
 	private MessageResource messageResource;
 	private AuthService authService;
+	private InternshipEvaluateFormRepository internshipEvaluateFormRepository;
 
 	/**
 	 * Adds a new internship
@@ -222,7 +225,8 @@ public class InternshipService {
 		}	
 	}
 
-	public boolean markInternshipCompleted(Long facultySupervisorId, Long internshipId) {
+	public boolean markInternshipCompleted(Long facultySupervisorId, Long internshipId) throws Exception {
+
 		// 1. Retrieve the faculty supervisor
 		FacultySupervisor facultySupervisor = facultySupervisorRepository.findById(facultySupervisorId).orElse(null);
 		if (facultySupervisor == null) {
@@ -237,17 +241,26 @@ public class InternshipService {
 			throw new EntityNotFoundException("Internship not found!");
 		}
 	
-		// 3. Update internship status to "SUCCESS"
+		// 3. Check if the internship has company evaluation
+		InternshipEvaluateFormService internshipEvaluateFormService = new InternshipEvaluateFormService(internshipEvaluateFormRepository, internshipRepository, null, null, modelMapper, messageResource);
+		InternshipEvaluateForm companyEvaluation = internshipEvaluateFormService.getByInternshipId(internshipId);
+		if (companyEvaluation == null) {
+			log.warn("Internship with id {} is not evaluated by the company yet.", internshipId);
+			throw new Exception("Internship is not evaluated by the company yet!"); 
+		}
+	
+		// 4. Update internship status to "SUCCESS"
 		internship.setStatus(InternshipStatus.SUCCESS);
 		LocalDateTime now = LocalDateTime.now();
 		internship.setUpdateDate(now);
 	
-		// 4. Save the updated internship
+		// 5. Save the updated internship
 		internshipRepository.save(internship);
 	
 		log.info("Internship with id {} marked as completed by faculty supervisor with id {}", internshipId, facultySupervisorId);
 		return true;
 	}
+	
 
 	public long countApprovedInternships() {
 		log.info("Counting approved internships");
@@ -299,5 +312,5 @@ public class InternshipService {
 			throw e;
 		}
 	}
-	
+
 }
