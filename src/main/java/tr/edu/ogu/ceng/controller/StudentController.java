@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.multipart.MultipartFile;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
@@ -24,6 +26,8 @@ import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/student")
@@ -109,4 +113,21 @@ public class StudentController {
 		Long count = studentService.countStudents();
 		return ResponseEntity.ok(count);
 	}
+
+    @PostMapping("/{studentNo}/cv")
+    public ResponseEntity<?> uploadCvToFIleSystem(@PathVariable String studentNo, @RequestParam("cv") MultipartFile file) throws IOException {
+        String uploadCv = studentService.uploadCvToFileSystem(studentNo, file);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(uploadCv);
+    }
+
+    @GetMapping("/{studentNo}/cv")
+    public ResponseEntity<?> downloadCvFromFileSystem(@PathVariable String studentNo) throws IOException {
+        byte[] cvData = studentService.downloadCvFromFileSystem(studentNo);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/pdf"))
+                .body(cvData);
+    }
+
 }

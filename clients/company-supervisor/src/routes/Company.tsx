@@ -11,7 +11,8 @@ const companyRows = [
   { field: 'ADRES', dataField: 'address' },
 ];
 
-export const CompanyPage = ({ _companyId }: { _companyId: number }) => {
+const URL = process.env.REACT_APP_API_BASE_URI+'api/companysupervisor';
+export const CompanyPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [companyInfo, setCompany] = useState<Company | undefined>();
   const [updatedCompanyInfo, setUpdatedCompanyInfo] = useState<Company | any>(
@@ -21,11 +22,16 @@ export const CompanyPage = ({ _companyId }: { _companyId: number }) => {
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(null);
 
   useEffect(() => {
-    fetch(`/api/company/${_companyId}`, {
+
+    fetch(URL+`/company`, {
       method: 'GET',
-    })
-      .then((response) => response.json())
+      credentials: 'include',
+      mode: 'no-cors',
+      headers: {
+            'Content-Type': 'application/json',
+        }}).then((response:Response) => response.json())
       .then((data) => {
+        console.log(data);
         setCompany(data);
         setLoading(false);
       })
