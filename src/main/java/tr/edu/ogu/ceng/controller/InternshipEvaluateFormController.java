@@ -32,6 +32,11 @@ public class InternshipEvaluateFormController {
 
     @Autowired
     private final InternshipEvaluateFormService internshipEvaluateFormService;
+    @PostMapping("/save")
+    public ResponseEntity<InternshipEvaluateFormDto> saveInternshipRegistry(@RequestBody InternshipEvaluateFormDto registryDto) {
+        InternshipEvaluateFormDto savedForm = internshipEvaluateFormService.saveInternshipEvalForm(registryDto);
+        return new ResponseEntity<>(savedForm, HttpStatus.CREATED);
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<InternshipEvaluateForm> formFileUpload(@RequestPart(required = false) MultipartFile file,

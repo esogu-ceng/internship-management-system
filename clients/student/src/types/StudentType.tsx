@@ -1,5 +1,5 @@
 export type Student = {
-    studentNo: number;
+    studentNo: string;
     name: string;
     surname: string;
     phoneNumber: string;
@@ -11,4 +11,5 @@ export type Student = {
     grade: string;
     address: string;
     createDate: Date;
+    cvPath: string | null;
 };

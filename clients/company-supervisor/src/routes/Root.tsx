@@ -3,7 +3,7 @@ import { InternshipRow } from '../components/InternshipRow';
 import { Internship } from '../types/InternshipType';
 import { PaginationButton } from '../components/PaginationButton';
 
-export const Root = ({ _companyId }: { _companyId: number }) => {
+export const Root = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [internships, setInternships] = useState<Internship[]>([]);
   const [currentSearch, setCurrentSearch] = useState('');
@@ -17,13 +17,12 @@ export const Root = ({ _companyId }: { _companyId: number }) => {
   }, []);
 
   const fetchInternships = (number: number) => {
-    console.log(number);
-    fetch(`/api/internship/companyid/${_companyId}?pageNo=${number - 1}`, {
+
+    fetch(`/company-supervisor/internships?pageNo=${number - 1}`, {
       method: 'GET',
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('data: ', data);
         setLoading(false);
         setInternships(data.content);
         setTotalPages(data.totalPages);
@@ -147,7 +146,6 @@ export const Root = ({ _companyId }: { _companyId: number }) => {
                         <InternshipRow
                           key={int.id}
                           internship={int}
-                          company={_companyId}
                         />
                       ))}
                   </tbody>
