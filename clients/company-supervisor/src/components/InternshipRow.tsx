@@ -4,7 +4,7 @@ import Modal from '../components/StudentInfo';
 import { InternshipDocument } from './InternshipDocument';
 import InternshipEvaluateForm from '../components/InternshipEvaluateForm';
 
-export const InternshipRow = ({ internship, company }: { internship: Internship, company: number }) => {
+export const InternshipRow = ({ internship }: { internship: Internship }) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [popUpScreen, setPopUpScreen] = useState<ReactNode>(<></>);
   const [popUpState, setPopUpState] = useState<boolean>(false);
@@ -45,7 +45,6 @@ export const InternshipRow = ({ internship, company }: { internship: Internship,
     setPopUpScreen(
       <InternshipEvaluateForm
        _internshipId={internship.id}
-       _companyId={company}
         isOpen={popUpState}
         onClose={onClosePopUp}
       ></InternshipEvaluateForm>

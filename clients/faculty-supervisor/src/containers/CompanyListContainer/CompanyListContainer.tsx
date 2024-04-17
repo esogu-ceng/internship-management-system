@@ -39,9 +39,6 @@ const [errorMessage, setErrorMessage] = useState<string>('');
     setCreateModalOpen(false);
   };
 
-  
-
-
   const fetchCompanies = async (page: number, size: number, sort: string) => {
     try {
       const { data } = await axios.get<PageableResponse<Company>>('/api/company/getAll', {
@@ -148,59 +145,45 @@ const [errorMessage, setErrorMessage] = useState<string>('');
 
   return (
     <div>
-       
-      <div className="pagination-settings">
-        <label>
-          Page Size:
-          <input
-            type="number"
-            value={pageSize}
-            onChange={e => setPageSize(parseInt(e.target.value))}
-          />
-        </label>
-        <label>
-          Sort By:
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
-            <option value="name">İsim</option>
-            <option value="address">Adres</option>
-            <option value="phoneNumber">Telefon Numarası</option>
-            <option value="faxNumber">Fax Numarası</option>
-            <option value="email">Email</option>
-            <option value="scope">Alan</option>
-            <option value="description">Açıklama</option>
-            <option value="createDate">Oluşturma Tarihi</option>
-            <option value="updateDate">Güncellenme Tarihi</option>
-            {/* Add other sortable fields here */}
-          </select>
-        </label>
-      </div>
-      <button className="create-button-container right-align" onClick={handleCreateModalOpen}><FontAwesomeIcon className="plusicon"icon={faPlus} />Create Company</button>
-      <div className="pagination-controls">
-        <button className="previous" onClick={handlePreviousPage} disabled={currentPage === 0}>
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </button>
-        <button className="next" onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
-          <FontAwesomeIcon icon={faChevronRight} />
-        </button>
-      </div>
+    
+      <button className="create-button-container right-align" 
+        onClick={handleCreateModalOpen}>
+        <FontAwesomeIcon className="plusicon"icon={faPlus} />
+        Create Company
+      </button>
       
       <CompanyList
         companies={companies}
         onUpdate={handleUpdateCompany}
         onDelete={handleDelete}
       />
-       {showErrorModal && <ErrorModal message={errorMessage} onClose={handleCloseErrorModal} />} {/* Show the error modal if showErrorModal is true */}
-       {showErrorModal && <ErrorModal message={errorMessage} onClose={handleCloseErrorModal} />}
 
-      {selectedCompany && (
+      <div className="pagination-controls">
+        <button className="previous" onClick={handlePreviousPage} disabled={currentPage === 0}>
+          Önceki
+        </button>
+
+        <button className="next" onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+          Sonraki
+        </button>
+      </div>
+
+      {showErrorModal ? <ErrorModal message={errorMessage} onClose={handleCloseErrorModal} /> : null} {/* Show the error modal if showErrorModal is true */}
+
+      {selectedCompany ? (
         <CompanyUpdateModal
           isOpen={isModalOpen}
           onClose={handleModalClose}
           onUpdate={handleUpdate}
           company={selectedCompany}
         />
-      )}
-       <CompanyCreateModal isOpen={isCreateModalOpen} onClose={handleCreateModalClose} onCreate={handleCreateCompany} />
+      ) : null}
+
+       <CompanyCreateModal 
+        isOpen={isCreateModalOpen} 
+        onClose={handleCreateModalClose} 
+        onCreate={handleCreateCompany} 
+       />
     </div>
   );
 };
