@@ -24,10 +24,14 @@ import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.CompanySupervisor;
+import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Internship;
+import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.AuthService;
+import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.UserRepository;
 
 @Slf4j
 @Service
@@ -44,6 +48,7 @@ public class InternshipService {
 	private final ModelMapper modelMapper;
 	private MessageResource messageResource;
 	private AuthService authService;
+	private InternshipEvaluateFormRepository internshipEvaluateFormRepository;
 
 	/**
 	 * Adds a new internship
@@ -124,11 +129,11 @@ public class InternshipService {
 	public boolean deleteInternship(Long id) {
 		if (!internshipRepository.existsById(id)) {
 			log.warn("Internship not found with id {}", id);
-			return false;
 		}
-
-		internshipRepository.deleteById(id);
-		log.info("Internship has been deleted with id = {}.", id);
+		else{
+			internshipRepository.deleteById(id);
+			log.info("Internship has been deleted with id = {}.", id);
+		}
 		return true;
 	}
 
@@ -213,8 +218,45 @@ public class InternshipService {
 		} catch (Exception e) {
 			log.error("An error occured while getting internships: {}", e.getMessage());
 			throw e;
-		}
+		}	
 	}
+
+	public boolean markInternshipCompleted(Long facultySupervisorId, Long internshipId) throws Exception {
+
+		// 1. Retrieve the faculty supervisor
+		FacultySupervisor facultySupervisor = facultySupervisorRepository.findById(facultySupervisorId).orElse(null);
+		if (facultySupervisor == null) {
+			log.warn("Faculty supervisor not found with id: {}", facultySupervisorId);
+			throw new EntityNotFoundException("Faculty supervisor not found!");
+		}
+	
+		// 2. Retrieve the internship
+		Internship internship = internshipRepository.findById(internshipId).orElse(null);
+		if (internship == null) {
+			log.warn("Internship not found with id: {}", internshipId);
+			throw new EntityNotFoundException("Internship not found!");
+		}
+	
+		// 3. Check if the internship has company evaluation
+		InternshipEvaluateFormService internshipEvaluateFormService = new InternshipEvaluateFormService(internshipEvaluateFormRepository, internshipRepository, null, null, modelMapper, messageResource);
+		InternshipEvaluateForm companyEvaluation = internshipEvaluateFormService.getByInternshipId(internshipId);
+		if (companyEvaluation == null) {
+			log.warn("Internship with id {} is not evaluated by the company yet.", internshipId);
+			throw new Exception("Internship is not evaluated by the company yet!"); 
+		}
+	
+		// 4. Update internship status to "SUCCESS"
+		internship.setStatus(InternshipStatus.SUCCESS);
+		LocalDateTime now = LocalDateTime.now();
+		internship.setUpdateDate(now);
+	
+		// 5. Save the updated internship
+		internshipRepository.save(internship);
+	
+		log.info("Internship with id {} marked as completed by faculty supervisor with id {}", internshipId, facultySupervisorId);
+		return true;
+	}
+	
 
 	public long countAppliedInternships() {
 		log.info("Counting internships in application stage");

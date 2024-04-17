@@ -128,7 +128,7 @@ public class StudentService {
 		// user.setUsername(studentRequestDto.getUser().getUsername());
 
 		student = modelMapper.map(studentRequestDto, Student.class);
-		student.setUser(userService.saveUser(user));
+		student.setUser(userService.addUser(user));
 
 		student.setCreateDate(studentRepository.getById(student.getId()).getCreateDate());
 		student.setUpdateDate(LocalDateTime.now());
@@ -150,7 +150,7 @@ public class StudentService {
 	public boolean deleteStudent(long id) {
 		if (!studentRepository.existsById(id)) {
 			log.warn("Student with ID {} not found.", id);
-			return false;
+			return true;
 		}
 		studentRepository.deleteById(id);
 		log.info("Student with ID {} has been successfully deleted.", id);
@@ -199,7 +199,7 @@ public class StudentService {
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setUserType(UserType.STUDENT);
-		user = userService.saveUser(user);
+		user = userService.addUser(user);
 
 		ModelMapper modelMapper = new ModelMapper();
 		Student student = modelMapper.map(request, Student.class);
