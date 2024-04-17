@@ -16,7 +16,10 @@ const Companies = () => {
             .then(data => {
                 console.log('data: ', data.content);
                 const companiesData = data.content.map((company: Company) => ({
-                    ...company,
+                    name: company.name,
+	                address: company.address,
+	                scope: company.scope,
+	                description: company.description,
                     startDate: new Date(company.startDate),
                     endDate: new Date(company.endDate)
                 }));
@@ -76,16 +79,7 @@ const Companies = () => {
                                 </th>
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Adres
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Telefon Numarası
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Fax Numarası
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Email Adresi
-                                </th>
+                                </th>                              
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Sektör
                                 </th>
@@ -108,15 +102,6 @@ const Companies = () => {
                                     </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p className="text-gray-900 whitespace-no-wrap">{company.address}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.phoneNumber}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.faxNumber}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.email}</p>
                                     </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p className="text-gray-900 whitespace-no-wrap">{company.scope}</p>
