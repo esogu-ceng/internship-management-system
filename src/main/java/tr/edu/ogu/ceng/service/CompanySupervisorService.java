@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -17,9 +18,8 @@ import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
-import tr.edu.ogu.ceng.dto.UserDto;
+import tr.edu.ogu.ceng.dto.requests.CompanySupervisorAdminRequestDto;
 import tr.edu.ogu.ceng.dto.requests.CompanySupervisorRequestDto;
-import tr.edu.ogu.ceng.dto.requests.RegisterAsCompanySupervisorRequestDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
@@ -41,6 +41,7 @@ public class CompanySupervisorService {
 	private final ModelMapper mapper;
 	private final UserService userService;
 	private final CompanyService companyService;
+	private final EmailService emailService;
 
 	@Autowired
 	private MessageResource messageResource;
@@ -60,6 +61,55 @@ public class CompanySupervisorService {
 
 		log.info("Company Supervisor is fetched from database id: {}, name: {}", companySupervisor.getId(), companySupervisor.getName());
 		return response;
+	}
+
+	public CompanySupervisorResponseDto addcheckCompany(CompanySupervisorAdminRequestDto request) {
+		Random random = new Random();
+		int min = 100000;
+	    int max = 999999;
+	    int randomNumber = random.nextInt(max - min + 1) + min;
+	    String randomPassword = String.valueOf(randomNumber);
+		LocalDateTime now = LocalDateTime.now();
+
+		User user = mapper.map(request.getUser(), User.class);
+		user.setCreateDate(now);
+		user.setUpdateDate(now);
+		user.setPassword(randomPassword);
+		user.setUserType(UserType.COMPANYSUPERVISOR);
+		log.info("User is mapped to User entity id: {}, name: {}", user.getId(), user.getEmail());
+
+		Long companyId = request.getCompany().getId();
+		if (companyId == null) {
+
+			Company company = mapper.map(request.getCompany(), Company.class);
+			company.setCreateDate(now);
+			company.setUpdateDate(now);
+			companyRepository.save(company);
+			companyId = company.getId();
+			request.getCompany().setId(companyId);
+			log.info("Company is mapped to Company entity id: {}, name: {}", company.getId(), company.getName());
+		}
+
+		checkIfCompanySupervisorExistsByUserId(request.getUser().getId());
+		CompanySupervisor companySupervisor = mapper.map(request, CompanySupervisor.class);
+		companySupervisor.setUser(userService.saveUser(user));
+		companySupervisor.setCreateDate(now);
+		companySupervisor.setUpdateDate(now);
+		CompanySupervisor createdCompanySupervisor = repository.save(companySupervisor);
+		
+		String emailSubject = "Yeni Şifre";
+		String emailBody = "Sayın " + companySupervisor.getName() + " " + companySupervisor.getSurname() + ",\n\n"
+				+ "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
+				+ "Şifre: " + companySupervisor.getUser().getPassword() + "\n\n"
+				+ "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
+				+ "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
+				+ "İyi günler dileriz,\n";
+
+		emailService.sendEmail(companySupervisor.getUser().getEmail(), emailSubject, emailBody);
+
+		log.info("CompanySupervisorResponseDto is mapped to CompanySupervisor entity id: {}, name: {}", companySupervisor.getId(), companySupervisor.getName());
+		return mapper.map(createdCompanySupervisor, CompanySupervisorResponseDto.class);
+
 	}
 
 	public CompanySupervisor add(CompanySupervisor companySupervisor) {
