@@ -94,7 +94,7 @@ public class InternshipRegistryTest {
 				localDateTime, modelUser, modelFaculty);
 		var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test",
 				new Timestamp(2000, 01, 01, 0, 0, 0, 0), localDateTime, localDateTime, modelUser, modelFaculty,
-				"address");
+				"address",null);
 
 		var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 20, localDateTime,
 				localDateTime, modelStudent, modelCompany, modelFacultySupervisor);

@@ -1,8 +1,13 @@
 package tr.edu.ogu.ceng.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
+
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -12,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
+import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
@@ -21,8 +28,11 @@ import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
+import tr.edu.ogu.ceng.model.Setting;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
+import tr.edu.ogu.ceng.service.Exception.IllegalArgumentException;
 
 @Slf4j
 @Service
@@ -32,11 +42,13 @@ public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
 	private final UserService userService;
+	private final SettingRepository settingRepository;
 
 	private final FacultyService facultyService;
 	private final FacultySupervisorService facultySupervisorService;
 	private ModelMapper modelMapper;
 	private EmailService emailService;
+
 
 	public StudentResponseDto getStudent(long id) {
 		try {
@@ -241,6 +253,57 @@ public class StudentService {
 
 	public Long countStudents() {
 		return studentRepository.count();
+	}
+
+
+	public String uploadCvToFileSystem(String studentNo, MultipartFile file) throws IOException {
+
+		Optional<Student> student = studentRepository.findByStudentNo(studentNo);
+		Setting setting =  settingRepository.findByKey("cv_directory");
+		String FOLDER_PATH = setting.getValue() + "/";
+
+
+
+		if(student.isEmpty()) {
+			log.warn("Student not found studentNo: {}", studentNo);
+			throw new EntityNotFoundException("Öğrenci numarası bulunamadı lütfen geçerli öğrenci numarası giriniz.");
+		}
+
+		if(!file.getContentType().equals("application/pdf")) {
+			log.warn("File is not pdf file!");
+			throw new IllegalArgumentException("Dosya formatı sadece pdf olmalıdır!" + file.getContentType());
+		}
+
+		String filePath = FOLDER_PATH + student.get().getStudentNo() + ".pdf";
+
+		// Create directories if they do not exist
+		new File(FOLDER_PATH).mkdirs();
+
+		student.get().setCvPath(filePath);
+
+		studentRepository.save(student.get());
+
+		file.transferTo(new File(filePath).toPath());
+		log.info("File uploaded successfully for this studentNo : {}", student.get().getStudentNo());
+		return "Dosya başarıyla kaydedildi. : " + filePath;
+	}
+
+	public byte[] downloadCvFromFileSystem(String studentNo) throws IOException {
+		Optional<Student> student = studentRepository.findByStudentNo(studentNo);
+
+
+		if(student.isEmpty()) {
+			log.warn("Student not found studentNo: {}", studentNo);
+			throw new EntityNotFoundException("Öğrenci numarası bulunamadı lütfen geçerli öğrenci numarası giriniz.");
+		}
+		String filePath = student.get().getCvPath();
+
+		if(filePath == null) {
+			throw new EntityNotFoundException("Öğrencinin CV'si bulunamadı.");
+		}
+		byte[] cv = Files.readAllBytes(new File(filePath).toPath());
+		log.info("File downloaded successfully for this studentNo : {}", student.get().getStudentNo());
+		return cv;
 	}
 
 }
