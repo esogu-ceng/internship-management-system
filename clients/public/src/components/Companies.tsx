@@ -7,6 +7,8 @@ const Companies = () => {
     const [companies, setCompanies] = useState<Company[] | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredCompanies, setFilteredCompanies] = useState<Company[] | null>(null);
+    const [internCounts, setInternCounts] = useState<[number, number][] | null>(null);
+
 
     useEffect(() => {
         fetch('/api/company/getAllCompanies', {
@@ -33,8 +35,32 @@ const Companies = () => {
                 company.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setFilteredCompanies(filtered);
+            // Get intern counts for filtered companies
+            fetch('/api/internship/count/companyStudent', {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setInternCounts(data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }, [companies, searchQuery]);
+
+    // Function to get intern count for a specific company
+    const getInternCountForCompany = (companyId: number) => {
+        if (internCounts) {
+            const countData = internCounts.find(([id, count]) => id === companyId);
+            if (countData) {
+                return countData[1];
+            }
+        }
+        return 0; // If no count data found, return 0
+    }
+
+
 
     return (
         <div className="bg-white p-5 rounded-md w-full pt-0">
@@ -58,62 +84,69 @@ const Companies = () => {
                 <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
                     <table className="min-w-full leading-normal">
                         <thead>
-                            <tr>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Firma Adı
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Adres
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Telefon Numarası
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Fax Numarası
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Email Adresi
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Sektör
-                                </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Açıklama
-                                </th>
-                            </tr>
+                        <tr>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Firma Adı
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Adres
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Telefon Numarası
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Fax Numarası
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Email Adresi
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Sektör
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Açıklama
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Stajyer Sayısı
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {filteredCompanies && filteredCompanies.map((company: Company) => (
-                                <tr key={company.id}>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        {/* Firma Adı */}
-                                        <div className="flex items-center">
-                                            {/* Render firma adı */}
-                                            <div className="ml-3">
-                                                <p className="text-gray-900 whitespace-no-wrap">{company.name}</p>
-                                            </div>
+                        {filteredCompanies && filteredCompanies.map((company: Company) => (
+                            <tr key={company.id}>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    {/* Firma Adı */}
+                                    <div className="flex items-center">
+                                        {/* Render firma adı */}
+                                        <div className="ml-3">
+                                            <p className="text-gray-900 whitespace-no-wrap">{company.name}</p>
                                         </div>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.address}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.phoneNumber}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.faxNumber}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.email}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.scope}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{company.description}</p>
-                                    </td>
-                                </tr>
-                            ))}
+                                    </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{company.address}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{company.phoneNumber}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{company.faxNumber}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{company.email}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{company.scope}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{company.description}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{getInternCountForCompany(company.id)}</p>
+                                </td>
+
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>

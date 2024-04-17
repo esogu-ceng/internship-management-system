@@ -143,5 +143,9 @@ public class InternshipController {
 	public List<Object[]> countInternshipsByMonth() {
         return internshipService.countInternshipsByMonth();
     }
-	
+
+	@GetMapping("/count/companyStudent")
+	public List<Object[]> countApprovedInternshipforCompany() {
+		return internshipService.countApprovedInternshipsforCompany();
+	}
 }
