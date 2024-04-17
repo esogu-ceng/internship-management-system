@@ -34,14 +34,19 @@ public class CompanyController {
 		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
-	
+
 	@GetMapping("/getAllCompanies")
-	public ResponseEntity<Page<CompanyPublicDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+	public ResponseEntity<Page<CompanyDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+																  @RequestParam(defaultValue = "10") Integer limit,
+																  @RequestParam(defaultValue = "name") String sortBy) {
+		long totalCompanies = companyService.countCompanies(); // Get the total count of companies
+		limit = Math.toIntExact(totalCompanies); // Set limit to totalCompanies
+
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		Page<CompanyPublicDto> companies = companyService.getPublicAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
+
 	
 	@PutMapping
 	public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyDto companyDto) {
