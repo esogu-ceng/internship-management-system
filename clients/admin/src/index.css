@@ -729,3 +729,12 @@ tr:hover {
 .cancel-button-1 {
   background-color: rgb(214, 0, 0) !important;
 }
+
+.search-input {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  width: 18%;
+  margin-left: 69%;
+}
