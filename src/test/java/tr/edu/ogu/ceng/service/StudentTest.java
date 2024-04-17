@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import tr.edu.ogu.ceng.dao.FacultyRepository;
+import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.model.Faculty;
@@ -35,6 +36,9 @@ public class StudentTest {
 	UserRepository userRepository;
 	@Mock
 	UserService userService;
+
+	@Mock
+	SettingRepository settingRepository;
 	@Mock
 	FacultyService facultyService;
 	@Mock
@@ -52,13 +56,13 @@ public class StudentTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		studentService = new StudentService(studentRepository, userRepository, userService,facultyService
+		studentService = new StudentService(studentRepository, userRepository, userService,settingRepository,facultyService
 				, facultySupervisorService, new ModelMapper(),emailService);
 	}
 
 	@Test
 	public void when_resultIsNotNull_then_returnValidDTO() {
-		when(studentRepository.findById(6L)).thenThrow(new javax.persistence.EntityNotFoundException());
+		when(studentRepository.findById(6L)).thenThrow(new EntityNotFoundException());
 
 		assertThrows(EntityNotFoundException.class, () -> {
 			studentService.getStudent(6L);
@@ -74,12 +78,12 @@ public class StudentTest {
 		LocalDateTime dateTime = LocalDateTime.now();
 		var savedUser = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		var SavedStudent = new Student(6L, "test", "test", "test", "test", null, null, null,
-				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address",null);
 
 		var user = new User(1002L, "passwordHash", "", null, dateTime, dateTime, null, false);
 		user.setId(null);
 		var student = new Student(6L, "test", "test", "test", "test", null, null, null,
-				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address");
+				new Timestamp(2000, 01, 01, 0, 0, 0, 0), dateTime, dateTime, savedUser, new Faculty(), "address",null);
 		student.setId(null);
 
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);

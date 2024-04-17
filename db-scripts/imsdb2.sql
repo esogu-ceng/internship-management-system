@@ -1,0 +1,1 @@
+INSERT INTO public.ims_settings VALUES (8, 'institution_name', 'Eskişehir Osmangazi Üniversitesi', NULL, NULL);
