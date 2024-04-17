@@ -246,7 +246,7 @@ public class InternshipService {
 		}
 	
 		// 4. Update internship status to "SUCCESS"
-		internship.setStatus(InternshipStatus.SUCCESS);
+		internship.setStatus(InternshipStatus.APPROVED);
 		LocalDateTime now = LocalDateTime.now();
 		internship.setUpdateDate(now);
 	
