@@ -64,8 +64,8 @@ public class InternshipTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		internshipService = new InternshipService(internshipRepository, studentRepository, companySupervisorRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), companyService,
-				studentService, messageResource, authService);
+				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper()
+				, messageResource, authService);
 	}
 
 	@Test

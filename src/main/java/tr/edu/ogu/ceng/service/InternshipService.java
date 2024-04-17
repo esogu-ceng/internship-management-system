@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dao.InternshipRepository;
+import tr.edu.ogu.ceng.dao.*;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
@@ -50,7 +47,7 @@ public class InternshipService {
 
 	/**
 	 * Adds a new internship
-	 * 
+	 *
 	 * @param internshipDto
 	 * @return InternshipResponseDto
 	 * @throws Exception
@@ -199,7 +196,7 @@ public class InternshipService {
 	}
 
 	public Page<InternshipResponseCompanyDto> getAllInternshipsByFacultySupervisorId(Long faculty_supervisor_id,
-			Pageable pageable) {
+																					 Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting all internships by faculty supervisor id: {} with pageable: {}", faculty_supervisor_id,
