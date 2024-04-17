@@ -31,7 +31,7 @@ public class InternshipJournal {
 	private Long id;
 
 	@Column(name = "unit_name")
-	private String unit_name;
+	private String unitName;
 
 	@Column(name = "journal", nullable = false)
 	private String journal;
@@ -58,12 +58,11 @@ public class InternshipJournal {
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "company_supervisor_id", nullable = false)
+	@JoinColumn(name = "company_supervisor_id")
 	private CompanySupervisor supervisor;
 
 	@Column(name = "confirmation", nullable = false)
-	private int confirmation;
+	private boolean confirmation;
 	
 
 }
-
