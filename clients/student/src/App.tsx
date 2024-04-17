@@ -5,11 +5,7 @@ import Footer from "./components/Footer";
 import InternshipDashboard from "./components/InternshipDashboard";
 import AllInternships from "./components/AllInternships";
 import StudentProfile from './components/StudentProfile';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Modal from 'react-modal';
-
+import IntershipCalender from "./components/InternshipCalendar"
 import "./index.css";
 
 function App() {
@@ -23,6 +19,7 @@ function App() {
 						<Route path={`${root_path}/`} element={<InternshipDashboard />} />
 						<Route path={`${root_path}/AllInternships`} element={<AllInternships />} />
 						<Route path={`${root_path}/profile`} element={<StudentProfile />} />
+						<Route path={`${root_path}/calendar`} element={<InternshipCalendar />} />
 					</Routes>
 				</div>
 				<Footer />

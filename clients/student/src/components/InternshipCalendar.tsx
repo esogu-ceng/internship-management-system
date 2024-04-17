@@ -14,7 +14,7 @@ interface Event {
   description?: string;
   approved: boolean;
 }
-
+ 
 const App: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
