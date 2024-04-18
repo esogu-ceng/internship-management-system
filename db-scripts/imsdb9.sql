@@ -13,4 +13,13 @@ ALTER TABLE IF EXISTS public.ims_students ADD COLUMN IF NOT EXISTS address chara
 DELETE FROM ims_settings WHERE key = 'app_host';
 DELETE FROM ims_settings WHERE key = 'app_port';
 
+-- Add show/disable and UI name to settings for now later will be implemented in Setting.py
+ALTER TABLE ims_settings ADD show_disable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE ims_settings ADD uiname varchar;
 
+-- Add attributes to existed rows in settigns
+UPDATE ims_settings SET uiname = 'Mail Host' WHERE key = 'mail_host';
+UPDATE ims_settings SET uiname = 'Mail Port' WHERE key = 'mail_port';
+UPDATE ims_settings SET uiname = 'Mail Username' WHERE key = 'mail_username';
+UPDATE ims_settings SET uiname = 'Mail Password' WHERE key = 'mail_password';
+UPDATE ims_settings SET uiname = 'Upload Directory' WHERE key = 'upload_directory';
