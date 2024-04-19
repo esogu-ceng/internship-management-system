@@ -1,5 +1,9 @@
+import { FolderViewOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { Student } from "../types/StudentType";
+import CvDropzone from "./CvDropzone";
+
 function StudentProfile() {
 	const [studentDatas, setStudentDatas] = useState<Student[] | null>(null);
 
@@ -58,6 +62,26 @@ function StudentProfile() {
 			});
 	}, []);
 
+	const handleViewCv = async () => {
+		if (!studentDatas) return;
+
+		try {
+			const res = await fetch(
+				"/api/student/" + studentDatas[0].studentNo + "/cv"
+			);
+
+			if (!res.ok) {
+				const data = await res.json();
+				toast.error(data.message);
+			}
+
+			const blob = await res.blob();
+			const url = URL.createObjectURL(blob);
+			window.open(url);
+		} catch (error: any) {
+			toast.error(error.message);
+		}
+	};
 	return (
 		<div className="flex flex-col justify-content-flex-start pt-10 items-center h-screen w-screen bg-gray-100">
 			<div className="relative flex flex-col justify-content-flex-start rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 p-3">
@@ -138,6 +162,30 @@ function StudentProfile() {
 								<p className="text-base font-medium text-navy-700">
 									{studentData.createDate.toLocaleDateString()}
 								</p>
+							</div>
+
+							<div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
+								<p className="text-sm text-gray-600">Özgeçmiş</p>
+								<div className="text-base font-medium text-navy-700">
+									{studentData.cvPath ? (
+										<div
+											className="flex gap-2 cursor-pointer hover:text-blue-500 transition duration-300"
+											onClick={handleViewCv}
+										>
+											<p>Görüntülemek için tıkayınız.</p>
+											<FolderViewOutlined className="text-2xl text-blue-400" />
+										</div>
+									) : (
+										"Özgeçmiş bulunamadı."
+									)}
+								</div>
+							</div>
+
+							<div className="col-span-2 flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
+								<CvDropzone
+									studentDatas={studentDatas}
+									setStudentDatas={setStudentDatas}
+								/>
 							</div>
 						</div>
 					))}

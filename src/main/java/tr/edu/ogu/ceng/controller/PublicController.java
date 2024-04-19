@@ -66,20 +66,62 @@ public class PublicController {
 	public List<Object[]> countInternshipsByMonth() {
         return internshipService.countInternshipsByMonth();
     }
-	@GetMapping("/count/approved")
-	public ResponseEntity<Long> countApprovedInternships() {
-		return ResponseEntity.ok(internshipService.countApprovedInternships());
+	
+	@GetMapping("/count/applied")
+	public ResponseEntity<Long> countAppliedInternships() {
+	    return ResponseEntity.ok(internshipService.countAppliedInternships());
 	}
 
-	@GetMapping("/count/rejected")
-	public ResponseEntity<Long> countRejectedInternships() {
-		return ResponseEntity.ok(internshipService.countRejectedInternships());
+	@GetMapping("/count/company-approved")
+	public ResponseEntity<Long> countCompanyApprovedInternships() {
+	    return ResponseEntity.ok(internshipService.countCompanyApprovedInternships());
 	}
 
-	@GetMapping("/count/pending")
-	public ResponseEntity<Long> countInProcessInternships() {
-		return ResponseEntity.ok(internshipService.countPendingInternships());
+	@GetMapping("/count/faculty-approved")
+	public ResponseEntity<Long> countFacultyApprovedInternships() {
+	    return ResponseEntity.ok(internshipService.countFacultyApprovedInternships());
 	}
+
+	@GetMapping("/count/ongoing")
+	public ResponseEntity<Long> countOngoingInternships() {
+	    return ResponseEntity.ok(internshipService.countOngoingInternships());
+	}
+
+	@GetMapping("/count/company-evaluation-stage")
+	public ResponseEntity<Long> countCompanyEvaluationStageInternships() {
+	    return ResponseEntity.ok(internshipService.countCompanyEvaluationStageInternships());
+	}
+
+	@GetMapping("/count/faculty-evaluation-stage")
+	public ResponseEntity<Long> countFacultyEvaluationStageInternships() {
+	    return ResponseEntity.ok(internshipService.countFacultyEvaluationStageInternships());
+	}
+
+	@GetMapping("/count/success")
+	public ResponseEntity<Long> countSuccessInternships() {
+	    return ResponseEntity.ok(internshipService.countSuccessInternships());
+	}
+
+	@GetMapping("/count/faculty-rejected")
+	public ResponseEntity<Long> countFacultyRejectedInternships() {
+	    return ResponseEntity.ok(internshipService.countFacultyRejectedInternships());
+	}
+
+	@GetMapping("/count/company-rejected")
+	public ResponseEntity<Long> countCompanyRejectedInternships() {
+	    return ResponseEntity.ok(internshipService.countCompanyRejectedInternships());
+	}
+
+	@GetMapping("/count/faculty-invalid")
+	public ResponseEntity<Long> countFacultyInvalidInternships() {
+	    return ResponseEntity.ok(internshipService.countFacultyInvalidInternships());
+	}
+
+	@GetMapping("/count/canceled")
+	public ResponseEntity<Long> countCanceledInternships() {
+	    return ResponseEntity.ok(internshipService.countCanceledInternships());
+	}
+	
 	@GetMapping("/count/faculty")
 	public ResponseEntity<Long> getFacultyCount() {
 		Long count = facultyService.countFaculties();

@@ -43,10 +43,10 @@ const CompanyList: React.FC<CompanyListProps> = ({ companies, onUpdate, onDelete
     <td>{updateDate}</td>
     <td>
       <button className="btnupdel" onClick={() => onUpdate(id)}>
-        <FontAwesomeIcon icon={faEdit} />
+        <FontAwesomeIcon icon={'edit'} />
       </button>
       <button className="btnupdel" onClick={() => onDelete(id)}>
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={'trash'} />
       </button>
     </td>
   </tr>
