@@ -102,6 +102,30 @@ public class StudentController {
 		return modelMapper.map(updateStudent, StudentResponseDto.class);
 	}
 
+	@GetMapping("/supervisor")
+	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(
+	        @RequestParam(defaultValue = "0") Integer pageNo,
+	        @RequestParam(defaultValue = "10") Integer limit,
+	        @RequestParam(defaultValue = "id") String sortBy) {
+	    Long facultySupervisorId = authenticationService.getCurrentUserId();
+	    if (facultySupervisorId == null) {
+	        return null; // veya uygun bir hata işleme mekanizması
+	    }
+	    Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
+	    
+	    // Öğrenci verilerini getir
+	    Page<Student> studentsPage = studentService.getAllStudentsByFacultySupervisorId(facultySupervisorId, pageable);
+	    
+	    // StudentResponseDto'ya dönüştürme işlemi
+	    Page<StudentResponseDto> studentResponsePage = studentsPage.map(student -> {
+	        ModelMapper modelMapper = new ModelMapper();
+	        return modelMapper.map(student, StudentResponseDto.class);
+	    });
+	    
+	    return studentResponsePage;
+	}
+
+
 	@DeleteMapping("/{id}")
 	public boolean deleteStudent(@PathVariable(name = "id") Long id) {
 		return studentService.deleteStudent(id);
@@ -113,19 +137,6 @@ public class StudentController {
 
 		StudentResponseDto response = studentService.registerAsStudent(request);
 		return ResponseEntity.ok(response);
-	}
-
-	@GetMapping("/supervisor/{id}")
-	public Page<StudentResponseDto> getAllStudentsByFacultySupervisorId(@PathVariable("id") Long faculty_supervisor_id,
-			@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer limit,
-			@RequestParam(defaultValue = "id") String sortBy) {
-		ModelMapper modelMapper = new ModelMapper();
-		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<Student> students = studentService.getAllStudentsByFacultySupervisorId(faculty_supervisor_id,
-				pageable);
-		Page<StudentResponseDto> studentDtos = students
-				.map(student -> modelMapper.map(student, StudentResponseDto.class));
-		return studentDtos;
 	}
 
 	@GetMapping("/count")
