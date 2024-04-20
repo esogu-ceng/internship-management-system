@@ -77,11 +77,24 @@ function Login() {
             method: 'POST',
             body: formData
         })
-            .then((response) => {
+            .then(async (response) => {
                     if (response.redirected === true) {
                         window.location.href = response.url
-                    } else
-                        toast.error('E-posta ya da parola yanlış!', {autoClose: 2000});
+                    }
+                    else {
+                        try {
+                            const data = await response.json();
+                            if (data && data.error && data.error.message.includes('pasif durumda')) {
+                                toast.error('Öğrenci Hesabınız pasif durumda!', {autoClose: 5000});
+                            } else {
+                                toast.error('E-posta ya da parola yanlış!');
+                            }
+                        } catch (error) {
+                            // Sunucudan gelen yanıtı işlerken bir hata oluştu
+                            toast.error('Sunucudan gelen yanıtı işlerken bir hata oluştu!');
+                            console.log(error);
+                        }
+                    }
                 }
             ).catch((error) => {
             toast.error("Bir hata oluştu!", {autoClose: 2000})

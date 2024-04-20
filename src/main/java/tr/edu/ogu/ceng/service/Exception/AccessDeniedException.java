@@ -6,4 +6,8 @@ public class AccessDeniedException extends ServiceException {
     public AccessDeniedException() {
         super("Access to the requested resource is denied.");
     }
+
+    public AccessDeniedException(String string) {
+        super(string);
+    }
 }

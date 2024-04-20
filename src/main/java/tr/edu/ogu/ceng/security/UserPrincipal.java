@@ -7,7 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.service.Exception.AccessDeniedException;
 
 @Getter
 @AllArgsConstructor
@@ -47,6 +49,12 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		boolean enabled = true;
+
+		if (user.isActivity() == false && user.getUserType() == UserType.STUDENT){
+			enabled = false;
+			throw new AccessDeniedException("Öğrenci " + user.getEmail() + " pasif durumda");
+		}
+		return enabled;
 	}
 }
