@@ -129,3 +129,27 @@ footer {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   background-color: #eabce5;
 } 
+
+.submit-button {
+    padding: 8px 12px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    padding: 8px 16px;
+    background-color: #b53535;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.update-eval-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}

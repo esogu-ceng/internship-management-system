@@ -187,7 +187,7 @@ const AddModalForm: React.FC<Props> = ({
                     </div>
                   </div>
                 )}
-                <form onSubmit={handleSubmit} className="modal-form">
+                <form onSubmit={handleSubmit} className="modal-form grid grid-cols-2 gap-4">
                   <div className="form-group">
                     <label htmlFor="name" className="form-label">
                       Ad:
@@ -236,8 +236,8 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={11}
                       maxLength={11}
+                      pattern="^[1-9]{1}[0-9]{9}[02468]{1}$"
                       placeholder={"11122233344"}
-                      pattern={"[1-9][0-9]{10}"}
                       title="0'la başlayamaz ve 11 haneli olmalıdır."
                     />
                   </div>
@@ -256,6 +256,8 @@ const AddModalForm: React.FC<Props> = ({
                       required
                       minLength={8}
                       maxLength={12}
+                      //12 digit pattern
+
                       placeholder={"152120201000"}
                       pattern= "[1-9][0-9]{11}"
                       title={"Öğrenci numarası 12 haneli olmalıdır."}

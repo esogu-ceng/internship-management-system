@@ -380,6 +380,9 @@ tr:hover {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  height: 50px;
+  margin-top: 20px;
+
 }
 
 /* Cancel Button */
@@ -390,6 +393,8 @@ tr:hover {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  height: 50px;
+  margin-top: 20px;
 }
 
 .update-modal {
