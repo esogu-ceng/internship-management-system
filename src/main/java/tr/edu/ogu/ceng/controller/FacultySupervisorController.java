@@ -103,12 +103,6 @@ public class FacultySupervisorController {
 		return ResponseEntity.ok(facultySupervisorService.deleteFacultySupervisor(id));
 	}
 
-	@GetMapping("/byUserId")
-	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisorByUserId() {
-		Long userId = authenticationService.getAuthUser().getId();
-		return ResponseEntity.ok(facultySupervisorService.getFacultySupervisorByUserId(userId));
-	}
-
 	@PutMapping("/faculty-approved/{id}")
 	public InternshipStatus approveInternshipByFaculty(@PathVariable(name = "id") long id) {
 		return internshipService.chanceInternshipStatus(id, InternshipStatus.FACULTY_APPROVED);

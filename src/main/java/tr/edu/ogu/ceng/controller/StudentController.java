@@ -24,9 +24,11 @@ import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
+import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.AuthService;
+import tr.edu.ogu.ceng.service.FacultySupervisorService;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
@@ -37,6 +39,7 @@ public class StudentController {
 
 	private StudentService studentService;
 	private AuthService authenticationService;
+	private FacultySupervisorService facultySupervisorService;
 
 	@GetMapping
 	public ResponseEntity<StudentResponseDto> getStudent() {
@@ -100,14 +103,13 @@ public class StudentController {
 	        @RequestParam(defaultValue = "0") Integer pageNo,
 	        @RequestParam(defaultValue = "10") Integer limit,
 	        @RequestParam(defaultValue = "id") String sortBy) {
-	    Long facultySupervisorId = authenticationService.getCurrentUserId();
-	    if (facultySupervisorId == null) {
-	        return null; // veya uygun bir hata işleme mekanizması
-	    }
+	    Long userId = authenticationService.getAuthUser().getId();
+	    FacultySupervisor facultySupervisor = facultySupervisorService.getFacultySupervisorByUserId(userId);
+	    
 	    Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 	    
 	    // Öğrenci verilerini getir
-	    Page<Student> studentsPage = studentService.getAllStudentsByFacultySupervisorId(facultySupervisorId, pageable);
+	    Page<Student> studentsPage = studentService.getAllStudents(facultySupervisor, pageable);
 	    
 	    // StudentResponseDto'ya dönüştürme işlemi
 	    Page<StudentResponseDto> studentResponsePage = studentsPage.map(student -> {

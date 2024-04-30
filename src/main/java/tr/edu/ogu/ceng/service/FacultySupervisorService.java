@@ -134,16 +134,10 @@ public class FacultySupervisorService {
 		}
 	}
 
-	public FacultySupervisorResponseDto getFacultySupervisorByUserId(Long userId) {
-		try {
-			ModelMapper modelMapper = new ModelMapper();
-			FacultySupervisor facultysupervisor = facultySupervisorRepository.findByUserId(userId);
-			log.info("Faculty supervisor found with user ID: {}", userId);
-			return modelMapper.map(facultysupervisor, FacultySupervisorResponseDto.class);
-		} catch (Exception e) {
-			log.error("An error occurred while getting facultySupervisor with given user ID", e.getMessage());
-			throw e;
-		}
+	public FacultySupervisor getFacultySupervisorByUserId(Long userId) {
+		FacultySupervisor facultySupervisor = facultySupervisorRepository.findByUserId(userId);
+		log.info("Faculty supervisor found with user ID: {}", userId);
+		return facultySupervisor;
 	}
 
 }
