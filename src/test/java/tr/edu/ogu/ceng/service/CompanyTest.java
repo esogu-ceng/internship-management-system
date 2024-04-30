@@ -34,8 +34,10 @@ class CompanyTest {
     @Mock
     CompanyService companyService;
 
+    @Mock
     MessageResource messageResource;
-	ModelMapper modelMapper;
+	
+    ModelMapper modelMapper;
 
 	@BeforeEach
 	public void init() {
