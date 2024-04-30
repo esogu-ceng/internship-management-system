@@ -3,7 +3,6 @@ package tr.edu.ogu.ceng.controller;
 import java.io.IOException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,33 +20,27 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
-import tr.edu.ogu.ceng.service.AuthenticationService;
+import tr.edu.ogu.ceng.security.AuthService;
 import tr.edu.ogu.ceng.service.StudentService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
 
-	@Autowired
-	StudentService studentService;
-
-	@Autowired
-	AuthenticationService authenticationService;
+	private StudentService studentService;
+	private AuthService authenticationService;
 
 	@GetMapping
 	public ResponseEntity<StudentResponseDto> getStudent() {
-		Long userId = authenticationService.getCurrentUserId();
-
-		if (userId == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-
+		Long userId = authenticationService.getAuthUser().getId();
 		Student student = studentService.getStudent(userId);
 		ModelMapper modelMapper = new ModelMapper();
 		StudentResponseDto studentDto = modelMapper.map(student, StudentResponseDto.class);

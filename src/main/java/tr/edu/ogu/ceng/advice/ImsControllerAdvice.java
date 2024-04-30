@@ -3,7 +3,6 @@ package tr.edu.ogu.ceng.advice;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.service.Exception.DataAccessException;
@@ -18,10 +18,10 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.ServiceException;
 
 @Slf4j
+@AllArgsConstructor
 @ControllerAdvice
 public class ImsControllerAdvice {
 
-	@Autowired
 	private MessageResource messageResource;
 
 	@ExceptionHandler(DataAccessException.class)

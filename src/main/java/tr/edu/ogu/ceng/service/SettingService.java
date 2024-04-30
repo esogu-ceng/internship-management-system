@@ -3,7 +3,6 @@ package tr.edu.ogu.ceng.service;
 import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -19,11 +18,8 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @Slf4j
 public class SettingService {
 
-	@Autowired
 	private SettingRepository settingRepository;
 	private ModelMapper modelMapper;
-
-	@Autowired
 	private MessageResource messageResource;
 
 	public SettingDto updateSetting(String key, SettingDto settingDto) {
