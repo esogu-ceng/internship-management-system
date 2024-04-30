@@ -86,6 +86,7 @@ public class UserService {
 		try {
 			if (!userRepository.existsById(id)) {
 				log.warn("User not found with id: {}", id);
+				return false;
 			}
 			else
 			{
@@ -94,6 +95,7 @@ public class UserService {
 			}
 		} catch (Exception e) {
 			log.error("An error occurred while deleting user with id: {}: {}", id, e.getMessage());
+			throw e;
 		}
 		return true;
 	}
