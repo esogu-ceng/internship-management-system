@@ -25,8 +25,8 @@ import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.security.AuthService;
 import tr.edu.ogu.ceng.security.UserPrincipal;
-import tr.edu.ogu.ceng.service.AuthenticationService;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
 import tr.edu.ogu.ceng.service.InternshipService;
 import tr.edu.ogu.ceng.service.StudentService;
@@ -40,7 +40,7 @@ public class FacultySupervisorController {
 	private FacultySupervisorService facultySupervisorService;
 	private StudentService studentService;
 	private InternshipService internshipService;
-	private AuthenticationService authenticationService;
+	private AuthService authenticationService;
 
 	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -101,16 +101,6 @@ public class FacultySupervisorController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 		return ResponseEntity.ok(facultySupervisorService.deleteFacultySupervisor(id));
-	}
-
-	@GetMapping("/byUserId")
-	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisorByUserId() {
-		Long userId = authenticationService.getCurrentUserId();
-		if (userId == null) {
-			// Kullanıcı oturum açmamış veya kimlik doğrulanmamışsa uygun bir hata işleyin veya null döndürün
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		return ResponseEntity.ok(facultySupervisorService.getFacultySupervisorByUserId(userId));
 	}
 
 	@PutMapping("/faculty-approved/{id}")

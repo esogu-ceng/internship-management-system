@@ -24,6 +24,7 @@ import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.Faculty;
+import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Setting;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
@@ -98,9 +99,8 @@ public class StudentService {
 		if (savedStudent != null) {
 			String emailSubject = " Şifre Hatırlatıcı";
 			String emailBody = "Sayın " + savedStudent.getName() + " " + savedStudent.getSurname() + ",\n\n"
-					+ "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n"
-					+ "UserName: " + savedStudent.getUser().getEmail() + "\n\n" +
-					"Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
+					+ "Yeni şifrenizi aşağıda bulabilirsiniz:\n\n" + "UserName: " + savedStudent.getUser().getEmail()
+					+ "\n\n" + "Şifre: " + savedStudent.getUser().getPassword() + "\n\n"
 					+ "Lütfen şifrenizi güvende tuttuğunuzdan ve kimseyle paylaşmadığınızdan emin olun.\n\n"
 					+ "Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin.\n\n"
 					+ "İyi günler dileriz,\n";
@@ -136,8 +136,8 @@ public class StudentService {
 		try {
 			updatedStudent = studentRepository.save(studentController);
 
-			log.info("Student with ID {} has been successfully updated. Email: {}, Student No: {}", updatedStudent.getId(),
-					updatedStudent.getUser().getEmail(), updatedStudent.getStudentNo());
+			log.info("Student with ID {} has been successfully updated. Email: {}, Student No: {}",
+					updatedStudent.getId(), updatedStudent.getUser().getEmail(), updatedStudent.getStudentNo());
 
 		} catch (Exception e) {
 			log.error("Error occurred while updating student: {}", e.getMessage());
@@ -218,22 +218,10 @@ public class StudentService {
 
 	}
 
-	public Page<Student> getAllStudentsByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable) {
-		FacultySupervisorResponseDto facultySupervisorDto = facultySupervisorService
-				.getFacultySupervisor(faculty_supervisor_id);
-		Long faculty_id = facultySupervisorDto.getFacultyId();
-		try {
-			Page<Student> students = studentRepository.findAllByFacultyId(faculty_id, pageable);
-			if (students.isEmpty()) {
-				log.warn("The student list is empty.");
-			}
-
-			log.info("Getting all students with pageable: {}", pageable);
-			return students;
-		} catch (Exception e) {
-			log.error("An error occured while getting students: {}", e.getMessage());
-			throw e;
-		}
+	public Page<Student> getAllStudents(FacultySupervisor facultySupervisor, Pageable pageable) {
+		Page<Student> students = studentRepository.findAllByFacultyId(facultySupervisor.getFaculty().getId(), pageable);
+		log.info("Getting all students with pageable: {}", pageable);
+		return students;
 	}
 
 	public Long countStudents() {
