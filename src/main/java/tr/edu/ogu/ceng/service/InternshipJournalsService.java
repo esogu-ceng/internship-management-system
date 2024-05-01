@@ -44,14 +44,14 @@ public class InternshipJournalsService {
 	private InternshipRepository internshipRepository;
 	private final ModelMapper modelMapper;
 
-    public InternshipJournalsDto addInternshipJournal(InternshipJournal internshipJournal){
+    public InternshipJournal addInternshipJournal(InternshipJournal internshipJournal){
         try {
             
             
             internshipJournal = internshipJournalsRepository.save(internshipJournal);
             
             log.info("Internship has been saved successfully with id = {}.", internshipJournal.getId());
-			return modelMapper.map(internshipJournal,InternshipJournalsDto.class);
+			return internshipJournal;
             
         } catch (Exception e) {
             log.error("Error occurred while saving internship: {}", e.getMessage());
