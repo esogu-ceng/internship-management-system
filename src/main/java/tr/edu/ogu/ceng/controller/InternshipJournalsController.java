@@ -47,8 +47,12 @@ public class InternshipJournalsController {
         internshipJournal.setCreateDate(dateTime);
 		internshipJournal.setUpdateDate(dateTime);
         internshipJournal.setConfirmation(false);
-        
-		return ResponseEntity.ok(internshipJournalsService.addInternshipJournal(modelMapper.map(internshipJournal,InternshipJournal.class)));
+
+        internshipJournal = internshipJournalsService.addInternshipJournal(modelMapper.map(internshipJournal,InternshipJournal.class));
+
+
+        InternshipJournalsDto internshipJournalDto = modelMapper.map(internshipJournal,InternshipJournalsDto.class);
+		return ResponseEntity.ok(internshipJournalDto);
             
         
         
