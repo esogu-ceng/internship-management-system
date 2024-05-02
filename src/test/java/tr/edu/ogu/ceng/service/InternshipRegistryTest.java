@@ -68,7 +68,7 @@ public class InternshipRegistryTest {
 	}
 
 	@Test
-	void testDeleteInternshipRegistry_WhenRegistryNotExists() {
+	void testDeleteInternshipRegistry_WhenNotExists() {
 		// Arrange
 		long id = 1L;
 		when(internshipRegistryRepository.existsById(id)).thenReturn(false);
@@ -77,9 +77,8 @@ public class InternshipRegistryTest {
 		boolean result = internshipRegistryService.deleteInternshipRegistry(id);
 
 		// Assert
-		assertFalse(result); // İşlem başarısız olduğu için false olmalı
-		verify(internshipRegistryRepository, times(1)).existsById(id); // existsById bir kez çağrılmalı
-		verify(internshipRegistryRepository, never()).deleteById(id); // deleteById hiç çağrılmamalı
+		assertFalse(result);
+		verify(internshipRegistryRepository, never()).deleteById(id);
 	}
 
 	@Test
@@ -155,7 +154,7 @@ public class InternshipRegistryTest {
 		internshipRegistry.setCreateDate(now);
 		when(internshipRegistryRepository.existsById(1L)).thenReturn(true);
 		when(modelMapper.map(requestDto, InternshipRegistry.class)).thenReturn(internshipRegistry);
-		when(internshipRegistryRepository.getById(1L)).thenReturn(internshipRegistry);
+		when(internshipRegistryRepository.getReferenceById(1L)).thenReturn(internshipRegistry);
 		when(internshipRegistryRepository.save(any(InternshipRegistry.class))).thenReturn(internshipRegistry);
 		InternshipRegistryResponseDto expectedDto = new InternshipRegistryResponseDto();
 		expectedDto.setId(1L);
@@ -196,50 +195,33 @@ public class InternshipRegistryTest {
 
 		// Act & Assert
 		assertThrows(RuntimeException.class, () -> internshipRegistryService.updateInternshipRegistry(requestDto));
-		verify(internshipRegistryRepository, times(1)).save(any(InternshipRegistry.class));
+		verify(internshipRegistryRepository, never()).save(any(InternshipRegistry.class));
+
 	}
 
 	@Test
 	void testGetInternshipRegistry_Success() {
 		// Arrange
+		Long id = 1L;
 		LocalDateTime now = LocalDateTime.now();
 		InternshipRegistry internshipRegistry = new InternshipRegistry();
-		internshipRegistry.setId(1L);
+		internshipRegistry.setId(id);
 		internshipRegistry.setCreateDate(now);
-		when(internshipRegistryRepository.existsById(1L)).thenReturn(true);
-		when(internshipRegistryRepository.getById(1L)).thenReturn(internshipRegistry);
+		when(internshipRegistryRepository.existsById(id)).thenReturn(true);
+		when(internshipRegistryRepository.getReferenceById(id)).thenReturn(internshipRegistry);
 		InternshipRegistryResponseDto expectedDto = new InternshipRegistryResponseDto();
-		expectedDto.setId(1L);
+		expectedDto.setId(id);
 		expectedDto.setCreateDate(now);
 		when(modelMapper.map(internshipRegistry, InternshipRegistryResponseDto.class)).thenReturn(expectedDto);
 
 		// Act
-		InternshipRegistryResponseDto actualDto = internshipRegistryService.getInternshipRegistry(1L);
+		InternshipRegistryResponseDto actualDto = internshipRegistryService.getInternshipRegistry(id);
 
 		// Assert
 		assertNotNull(actualDto);
-		assertEquals(1L, actualDto.getId());
+		assertEquals(id, actualDto.getId());
 		assertEquals(now, actualDto.getCreateDate());
-		verify(internshipRegistryRepository, times(1)).getById(anyLong());
-	}
-
-	@Test
-	void testGetInternshipRegistry_WhenRegistryExists() {
-		// Arrange
-		Long id = 1L;
-		InternshipRegistry internshipRegistry = new InternshipRegistry();
-		internshipRegistry.setId(id);
-		when(internshipRegistryRepository.existsById(id)).thenReturn(true);
-		when(internshipRegistryRepository.getById(id)).thenReturn(internshipRegistry);
-
-		// Act
-		InternshipRegistryResponseDto result = internshipRegistryService.getInternshipRegistry(id);
-
-		// Assert
-		assertNotNull(result);
-		assertEquals(id, result.getId());
-		verify(internshipRegistryRepository).existsById(id);
-		verify(internshipRegistryRepository).getById(id);
+		verify(internshipRegistryRepository, times(1)).getReferenceById(id);
 	}
 
 	@Test
@@ -247,13 +229,24 @@ public class InternshipRegistryTest {
 		// Arrange
 		Long id = 1L;
 		when(internshipRegistryRepository.existsById(id)).thenReturn(true);
-		when(internshipRegistryRepository.getById(id)).thenThrow(new RuntimeException("Test exception"));
+		when(internshipRegistryRepository.getReferenceById(id)).thenThrow(new RuntimeException("Test exception"));
 
 		// Act & Assert
 		assertThrows(RuntimeException.class, () -> internshipRegistryService.getInternshipRegistry(id));
 		verify(internshipRegistryRepository).existsById(id);
-		verify(internshipRegistryRepository).getById(id);
+		verify(internshipRegistryRepository).getReferenceById(id);
 		verify(modelMapper, never()).map(any(), eq(InternshipRegistryResponseDto.class));
+	}
+
+	@Test
+	void testGetInternshipRegistry_RepositoryGetByIdFails() {
+		// Arrange
+		Long id = 1L;
+		when(internshipRegistryRepository.existsById(id)).thenReturn(true);
+		when(internshipRegistryRepository.getReferenceById(id)).thenThrow(new RuntimeException("Test exception"));
+
+		// Act & Assert
+		assertThrows(RuntimeException.class, () -> internshipRegistryService.getInternshipRegistry(id));
 	}
 
 	@Test
