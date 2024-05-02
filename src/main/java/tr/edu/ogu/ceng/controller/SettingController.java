@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,17 +9,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.SettingDto;
 import tr.edu.ogu.ceng.service.SettingService;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/setting")
 public class SettingController {
-	@Autowired
+
 	private SettingService settingService;
 
 	/**
 	 * Gets value of the given key.
+	 * 
 	 * @param key - Key which is its value to be changed.
 	 * @return SettingDto
 	 */
@@ -33,6 +35,7 @@ public class SettingController {
 
 	/**
 	 * Updates setting with key value pair.
+	 * 
 	 * @param key - Key which is its value to be changed.
 	 * @body SettingDto
 	 * @return SettingDto
@@ -42,6 +45,5 @@ public class SettingController {
 		SettingDto updatedSetting = settingService.updateSetting(key, setting);
 		return ResponseEntity.ok(updatedSetting);
 	}
-
 
 }

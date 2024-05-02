@@ -30,4 +30,5 @@ public class StudentDto {
 	private String confirmPassword;
 	private String email;
 	private String address;
+	private String cvPath;
 }

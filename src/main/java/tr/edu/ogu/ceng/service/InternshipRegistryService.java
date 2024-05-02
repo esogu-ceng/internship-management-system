@@ -5,22 +5,14 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
-import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
@@ -30,28 +22,18 @@ import tr.edu.ogu.ceng.model.InternshipRegistry;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class InternshipRegistryService {
 
-	@Autowired
 	private InternshipRegistryRepository internshipRegistryRepository;
-	private InternshipRegistryService internshipRegistryService;
-	private InternshipRepository internshipRepository;
-	private StudentRepository studentRepository;
-	private CompanyRepository companyRepository;
-	private FacultySupervisorRepository facultySupervisorRepository;
-	private UserRepository userRepository;
-	private FacultyRepository facultyRepository;
-	private ModelMapper modelMapper;
 	private MessageResource messageResource;
 
 	public boolean deleteInternshipRegistry(long id) {
 		if (!internshipRegistryRepository.existsById(id)) {
 			log.warn("Internship registry with ID {} not found", id);
-			return false;
+		} else {
+			internshipRegistryRepository.deleteById(id);
+			log.info("Internship registry deleted with ID: {}", id);
 		}
-		internshipRegistryRepository.deleteById(id);
-		log.info("Internship registry deleted with ID: {}", id);
 		return true;
 	}
 
@@ -66,7 +48,7 @@ public class InternshipRegistryService {
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
 			internshipRegistry
-					.setCreateDate(internshipRegistryRepository.getById(internshipRegistry.getId()).getCreateDate());
+					.setCreateDate(internshipRegistryRepository.getReferenceById(internshipRegistry.getId()).getCreateDate());
 			internshipRegistry.setUpdateDate(dateTime);
 			InternshipRegistry updatedInternshipRegistry = internshipRegistryRepository.save(internshipRegistry);
 
@@ -124,7 +106,7 @@ public class InternshipRegistryService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Getting internship registry by id: {}", id);
-			return modelMapper.map(internshipRegistryRepository.getById(id), InternshipRegistryResponseDto.class);
+			return modelMapper.map(internshipRegistryRepository.getReferenceById(id), InternshipRegistryResponseDto.class);
 		} catch (Exception e) {
 			log.error("Error occurred while getting internship registry: {}", e.getMessage());
 			throw e;

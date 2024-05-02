@@ -299,9 +299,17 @@ company_data = [
     ("Anatolian Technology", "Teknoloji alanında faaliyet gösteren bir şirket.", "Teknoloji")]
 
 internship_status = [
-    "PENDING",
-    "APPROVED",
-    "REJECTED"
+    "APPLIED",
+	"COMPANY_APPROVED",
+	"FACULTY_APPROVED",
+	"ONGOING",
+	"COMPANY_EVALUATION_STAGE",
+	"FACULTY_EVALUATION_STAGE",
+	"SUCCESS",
+	"FACULTY_REJECTED",
+	"COMPANY_REJECTED",
+	"FACULTY_INVALID",
+	"CANCELED"
 ]
 
 facultyNames = [

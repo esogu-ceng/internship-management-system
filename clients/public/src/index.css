@@ -27,51 +27,6 @@ code {
 }
 
 form {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-footer {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #888;
-  color: #fff;
-  text-align: center;
-  padding: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-}
-
-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #8ac5d6;
-  color: #fff;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  width: 100%;
-  position: fixed;
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-}
-
-.header-title {
-  margin: 0;
-  font-size: 32px;
-  text-align: center;
-}
-form {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -105,19 +60,21 @@ header {
 
 .header-content {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     flex: 1 1;
     align-content: flex-start;
     gap: 20px;
     font-size: 18px;
-}
-
-.header-title {
-    margin: 0;
-    font-size: 32px;
     text-align: center;
 }
+
+.header-institution, .header-home {
+	flex: 1;
+    margin: 0;
+    font-size: 32px;
+}
+
 .form-login {
     border-radius: 5px;
     width: 300px;
@@ -190,32 +147,36 @@ li.invalid {
     background-color: gray;
     color: white;
 }
-
 button.header-button {
     color: darkblue;
     font-weight: bold;
+    margin-left: auto;
 }
 .password-check{
     list-style-type: disc;
 }
-
 button.header-login {
     color: darkblue;
     font-weight: bold;
-    right: 0;
 }
-.error-container {
-    background-color: rgb(252, 165, 165, 0.25);
+.message-container {
     padding: 12px 20px 2px;
     margin: 14px 0 2px;
     border-radius: 12px;
-    color: #dc2626;
 }
-.error-container h2 {
+.message-container.error {
+    background-color: rgb(252, 165, 165, 0.25); /* Hata durumu için arka plan rengi */
+    color: #dc2626; /* Hata durumu için yazı rengi */
+}
+.message-container.success {
+    background-color: rgba(144, 238, 144, 0.25); /* Başarı durumu için arka plan rengi */
+    color: green; /* Başarı durumu için yazı rengi */
+}
+.message-container h2 {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 4px;
 }  
-.error-container p {
+.message-container p {
     font-size: 16px;
 }
