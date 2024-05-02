@@ -2,9 +2,9 @@ package tr.edu.ogu.ceng.advice;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.StudentDto;
@@ -13,14 +13,11 @@ import tr.edu.ogu.ceng.service.Exception.ServiceException;
 
 @Aspect
 @Component
+@AllArgsConstructor
 public class ImsAOPStudent {
 
-	@Autowired
 	private StudentRepository studentRepository;
-	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
 	private MessageResource messageResource;
 
 	@Before("execution(* tr.edu.ogu.ceng.service.StudentService.addStudent(..)) && args(studentDto)")

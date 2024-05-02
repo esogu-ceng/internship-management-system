@@ -3,7 +3,6 @@ package tr.edu.ogu.ceng.controller;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -33,9 +32,8 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 @AllArgsConstructor
 @RequestMapping("/api/companysupervisor")
 public class CompanySupervisorController {
-	@Autowired
-	private final CompanySupervisorService service;
-	InternshipService internshipService;
+	private CompanySupervisorService service;
+	private InternshipService internshipService;
 
 	@GetMapping
 	public Page<CompanySupervisorResponseDto> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -90,16 +88,16 @@ public class CompanySupervisorController {
 
 	@PutMapping("/company-approved/{id}")
 	public InternshipStatus approveInternshipByCompany(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_APPROVED);
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_APPROVED);
 	}
 
 	@PutMapping("/company-evaluation-stage/{id}")
 	public InternshipStatus moveToInternshipEvaluationStageByCompany(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_EVALUATION_STAGE);
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_EVALUATION_STAGE);
 	}
-	
+
 	@PutMapping("/company-rejected/{id}")
 	public InternshipStatus rejectInternshipByCompany(@PathVariable(name = "id") long id) {
-	    return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_REJECTED);
+		return internshipService.chanceInternshipStatus(id, InternshipStatus.COMPANY_REJECTED);
 	}
 }
