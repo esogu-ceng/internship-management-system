@@ -2,8 +2,6 @@ package tr.edu.ogu.ceng.controller;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -15,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.responses.InternshipDocumentsResponseDto;
 import tr.edu.ogu.ceng.service.InternshipDocumentsService;
 import tr.edu.ogu.ceng.util.PageableUtil;
-import org.springframework.core.io.InputStreamResource;
 
 @RestController
 @RequestMapping("/api/internshipdocument")
+@AllArgsConstructor
 public class InternshipDocumentsController {
 
-	@Autowired
 	private InternshipDocumentsService internshipDocumentsService;
 
 	@GetMapping("/internship/{id}")
@@ -39,15 +37,15 @@ public class InternshipDocumentsController {
 
 	@GetMapping("/download")
 	public ResponseEntity<byte[]> download(@RequestParam(name = "fileId") Long fileId) throws IOException {
-		
+
 		byte[] fileContent = internshipDocumentsService.download(fileId);
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
 		headers.add("Pragma", "no-cache");
 		headers.add("Expires", "0");
 		return ResponseEntity.ok().headers(headers).contentLength(fileContent.length)
-		.contentType(MediaType.APPLICATION_OCTET_STREAM).body(fileContent);
-		 
+				.contentType(MediaType.APPLICATION_OCTET_STREAM).body(fileContent);
+
 	}
 }

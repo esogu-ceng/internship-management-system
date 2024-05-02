@@ -12,15 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipRegistryRepository;
-import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.FacultySupervisorDto;
@@ -49,23 +42,6 @@ public class InternshipRegistryTest {
 	InternshipRegistryService internshipRegistryService;
 
 	@Mock
-	InternshipRepository internshipRepository;
-
-	@Mock
-	StudentRepository studentRepository;
-
-	@Mock
-	CompanyRepository companyRepository;
-
-	@Mock
-	FacultySupervisorRepository facultySupervisorRepository;
-
-	@Mock
-	UserRepository userRepository;
-
-	@Mock
-	FacultyRepository facultyRepository;
-
 	MessageResource messageResource;
 
 	InternshipStatus status = InternshipStatus.FACULTY_APPROVED;
@@ -74,8 +50,7 @@ public class InternshipRegistryTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		internshipRegistryService = new InternshipRegistryService(internshipRegistryRepository,
-				internshipRegistryService, internshipRepository, studentRepository, companyRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, new ModelMapper(), messageResource);
+				messageResource);
 	}
 
 	@Test
@@ -94,7 +69,7 @@ public class InternshipRegistryTest {
 				localDateTime, modelUser, modelFaculty);
 		var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test",
 				new Timestamp(2000, 01, 01, 0, 0, 0, 0), localDateTime, localDateTime, modelUser, modelFaculty,
-				"address",null);
+				"address", null);
 
 		var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 20, localDateTime,
 				localDateTime, modelStudent, modelCompany, modelFacultySupervisor);
@@ -102,13 +77,7 @@ public class InternshipRegistryTest {
 		var modelInternshipRegistry = new InternshipRegistry(1L, "C:/Users/root/test", "internshipRegistry1", "pdf",
 				new Timestamp(2023, 04, 12, 0, 0, 0, 0), localDateTime, localDateTime, modelInternship);
 
-		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
-		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);
-		when(userRepository.save(any(User.class))).thenReturn(modelUser);
-		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
 		when(internshipRegistryRepository.save(any(InternshipRegistry.class))).thenReturn(modelInternshipRegistry);
-		when(internshipRepository.save(any(Internship.class))).thenReturn(modelInternship);
-		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 
 		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
 				.build();

@@ -2,9 +2,9 @@ package tr.edu.ogu.ceng.advice;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
@@ -13,21 +13,15 @@ import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.service.Exception.ServiceException;
 
-import java.util.Locale;
-
 @Slf4j
 @Aspect
 @Component
+@AllArgsConstructor
 public class ImsAOPInternship {
 
-	@Autowired
 	private StudentRepository studentRepository;
-	@Autowired
 	private FacultySupervisorRepository facultySupervisorRepository;
-	@Autowired
 	private CompanyRepository companyRepository;
-
-	@Autowired
 	private MessageResource messageResource;
 
 	@Before("execution(* tr.edu.ogu.ceng.service.InternshipService.updateInternship(..)) && args(internshipDto) || execution(* tr.edu.ogu.ceng.service.InternshipService.addInternship(..)) && args(internshipDto)")
