@@ -77,9 +77,9 @@ public class InternshipRegistryTest {
 		boolean result = internshipRegistryService.deleteInternshipRegistry(id);
 
 		// Assert
-		assertFalse(result);
-		verify(internshipRegistryRepository, times(1)).existsById(id);
-		verify(internshipRegistryRepository, never()).deleteById(id);
+		assertFalse(result); // İşlem başarısız olduğu için false olmalı
+		verify(internshipRegistryRepository, times(1)).existsById(id); // existsById bir kez çağrılmalı
+		verify(internshipRegistryRepository, never()).deleteById(id); // deleteById hiç çağrılmamalı
 	}
 
 	@Test
@@ -339,6 +339,5 @@ public class InternshipRegistryTest {
 		verify(internshipRegistryRepository).findAllByInternshipId(internshipId, pageable);
 		verifyNoMoreInteractions(internshipRegistryRepository);
 	}
-
 
 }
