@@ -45,10 +45,13 @@ public class FacultySupervisorController {
 	@GetMapping("/supervisors")
 	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+		ModelMapper modelMapper = new ModelMapper();
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<FacultySupervisorResponseDto> facultySupervisors = facultySupervisorService
-				.getAllFacultySupervisors(pageable);
-		return facultySupervisors;
+		Page<FacultySupervisor> facultySupervisor = facultySupervisorService.getAllFacultySupervisors(pageable);
+		Page<FacultySupervisorResponseDto> facultySupervisorsdto = facultySupervisor
+				.map(facultySupervisormap -> modelMapper.map(facultySupervisormap, FacultySupervisorResponseDto.class));
+		return facultySupervisorsdto;
+
 	}
 
 	@PostMapping("/saveFacultysupervisor")
@@ -77,24 +80,29 @@ public class FacultySupervisorController {
 	@PutMapping
 	public ResponseEntity<FacultySupervisorResponseDto> updateFacultySupervisor(
 			@RequestBody FacultySupervisorRequestDto facultySupervisorRequestDto) {
-		FacultySupervisorResponseDto updatedFacultySupervisor = facultySupervisorService
-				.updateFacultySupervisor(facultySupervisorRequestDto);
-		return ResponseEntity.ok(updatedFacultySupervisor);
+		ModelMapper modelMapper = new ModelMapper();
+		FacultySupervisor updatedFacultySupervisor = facultySupervisorService
+				.updateFacultySupervisor(modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class));
+		return ResponseEntity.ok(modelMapper.map(updatedFacultySupervisor, FacultySupervisorResponseDto.class));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisor(@PathVariable(name = "id") long id, Authentication authentication) {
+	public ResponseEntity<FacultySupervisorResponseDto> getFacultySupervisor(@PathVariable(name = "id") long id,
+			Authentication authentication) {
 		UserPrincipal currentUser = (UserPrincipal) authentication.getPrincipal();
+		ModelMapper modelMapper = new ModelMapper();
 		// İsteği yapan kullanıcı yetkilendirilmiş mi kontrolü
 		if (!currentUser.getUser().getId().equals(id)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-		FacultySupervisorResponseDto facultySupervisorResponseDto = facultySupervisorService.getFacultySupervisor(id);
+		FacultySupervisorResponseDto facultySupervisorResponseDto = modelMapper
+				.map(facultySupervisorService.getFacultySupervisor(id), FacultySupervisorResponseDto.class);
 		return ResponseEntity.ok(facultySupervisorResponseDto);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteFacultySupervisor(@PathVariable(name = "id") long id, Authentication authentication) {
+	public ResponseEntity<Boolean> deleteFacultySupervisor(@PathVariable(name = "id") long id,
+			Authentication authentication) {
 		UserPrincipal currentUser = (UserPrincipal) authentication.getPrincipal();
 		// İsteği yapan kullanıcı yetkilendirilmiş mi kontrolü
 		if (!currentUser.getUser().getId().equals(id)) {
