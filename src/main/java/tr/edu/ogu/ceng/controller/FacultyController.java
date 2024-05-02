@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.FacultyDto;
 import tr.edu.ogu.ceng.dto.requests.FacultyRequestDto;
 import tr.edu.ogu.ceng.service.FacultyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
+@AllArgsConstructor
 @RestController
-
 @RequestMapping("/api/faculty")
-
 public class FacultyController {
-	@Autowired
 	private FacultyService facultyService;
 
 	@GetMapping("/getAll")
@@ -50,11 +47,7 @@ public class FacultyController {
 	public boolean deleteFaculty(@PathVariable(name = "id") long id) {
 		return facultyService.deleteFaculty(id);
 	}
-	
-	@GetMapping("/{id}")
-	public FacultyDto getById(@PathVariable Long id) {
-		return facultyService.getFacultyById(id);
-	}
+
 	@GetMapping("/count")
 	public ResponseEntity<Long> getFacultyCount() {
 		Long count = facultyService.countFaculties();

@@ -18,7 +18,7 @@ public interface InternshipRepository extends JpaRepository<Internship, Long> {
 	Page<Internship> findAllByFacultySupervisorId(Long faculty_supervisor_id, Pageable pageable);
 
 	long countByStatus(InternshipStatus status);
-
+	
 	@Query(value = "SELECT COUNT(DISTINCT student_id) FROM ims_internships", nativeQuery = true)
 	long countDistinctStudents();
 	
@@ -33,5 +33,11 @@ public interface InternshipRepository extends JpaRepository<Internship, Long> {
             "GROUP BY EXTRACT(MONTH FROM i.startDate) " +
             "ORDER BY EXTRACT(MONTH FROM i.startDate)")
 	List<Object[]> countInternshipsByMonth();
+
+	@Query(value = "SELECT company_id, count(student_id) " +
+			"FROM ims_internships " +
+			"WHERE status = 'APPROVED' " +
+			"GROUP BY company_id;", nativeQuery = true	)
+	List<Object[]> countApprovedInternshipsforCompany();
 	
 }

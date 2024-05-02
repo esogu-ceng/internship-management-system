@@ -22,14 +22,29 @@ public class InternshipEvaluateForm {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "question1", nullable = true)
+	private Integer question1;
 
-	@Column(name = "surname", nullable = false)
-	private String surname;
+	@Column(name = "question2", nullable = true)
+	private Integer question2;
 
-	@Column(name = "file_path", nullable = false)
-	private String filePath;
+	@Column(name = "question3", nullable = true)
+	private Integer question3;
+
+	@Column(name = "question4", nullable = true)
+	private Integer question4;
+
+	@Column(name = "question5", nullable = true)
+	private Integer question5;
+
+	@Column(name = "question6", nullable = true)
+	private Integer question6;
+
+	@Column(name = "question7", nullable = true)
+	private Integer question7;
+
+	@Column(name = "question8", nullable = true)
+	private Integer question8;
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)

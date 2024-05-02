@@ -114,9 +114,11 @@ const useSupervisorManagement = () => {
         body: JSON.stringify(request),
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        toast.error(errorMessage)
-        throw new Error(errorMessage);
+        toast.error(responseData.message || errorMessage)
+        throw new Error(responseData.message || errorMessage);
       }
 
       getAllCompanySupervisors(pagination?.number || 0);

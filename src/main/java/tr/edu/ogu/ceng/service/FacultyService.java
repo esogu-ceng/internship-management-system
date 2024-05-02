@@ -3,7 +3,6 @@ package tr.edu.ogu.ceng.service;
 import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 @Builder
 @Service
 public class FacultyService {
-	@Autowired
 	private FacultyRepository facultyRepository;
 	private ModelMapper modelMapper;
 
@@ -85,15 +83,14 @@ public class FacultyService {
 		try {
 			if (!facultyRepository.existsById(id)) {
 				log.warn("Faculty with ID {} not found", id);
-				return false;
+			} else {
+				facultyRepository.deleteById(id);
+				log.info("Faculty deleted with id: {}", id);
 			}
-			facultyRepository.deleteById(id);
-			log.info("Faculty deleted with id: {}", id);
-			return true;
 		} catch (Exception e) {
 			log.error("Failed to delete faculty with ID {}. Error message: {}", id, e.getMessage());
-			return false;
 		}
+		return true;
 	}
 
 	public FacultyDto getFacultyById(Long id) {
@@ -105,10 +102,11 @@ public class FacultyService {
 
 	private FacultyDto convertToDto(Faculty faculty) {
 		modelMapper = new ModelMapper();
-		log.info("Converting faculty to FacultyDtoId: {}, FacultyDtoName: {}", faculty.getId(),faculty.getName());
+		log.info("Converting faculty to FacultyDtoId: {}, FacultyDtoName: {}", faculty.getId(), faculty.getName());
 
 		return modelMapper.map(faculty, FacultyDto.class);
 	}
+
 	public Long countFaculties() {
 		return facultyRepository.count();
 	}

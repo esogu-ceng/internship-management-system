@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.CompanyPublicDto;
 import tr.edu.ogu.ceng.service.CompanyService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/company")
 public class CompanyController {
 
-	@Autowired
-
-	CompanyService companyService;
+	private CompanyService companyService;
 
 	@GetMapping("/getAll")
 	public ResponseEntity<Page<CompanyDto>> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -33,15 +33,19 @@ public class CompanyController {
 		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
-	
+
 	@GetMapping("/getAllCompanies")
-	public ResponseEntity<Page<CompanyDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "name") String sortBy) {
+	public ResponseEntity<Page<CompanyPublicDto>> getPublicAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer limit,
+			@RequestParam(defaultValue = "name") String sortBy) {
+		long totalCompanies = companyService.countCompanies(); // Get the total count of companies
+		limit = Math.toIntExact(totalCompanies); // Set limit to totalCompanies
+
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
-		Page<CompanyDto> companies = companyService.getAllCompanies(pageable);
+		Page<CompanyPublicDto> companies = companyService.getPublicAllCompanies(pageable);
 		return ResponseEntity.ok(companies);
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyDto companyDto) {
 		CompanyDto updatedCompanyDto = companyService.updateCompany(companyDto);

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +17,6 @@ import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
-import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.UserPrincipal;
 import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
@@ -29,8 +27,8 @@ import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
 public class UserService {
 
 	private UserRepository userRepository;
-
 	private PasswordEncoder passwordEncoder;
+
 	public Page<UserDto> getAllUsers(Pageable pageable) {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
@@ -48,13 +46,17 @@ public class UserService {
 		}
 	}
 
-	public User saveUser(User user) {
+	public User addUser(User user) {
 		try {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(dateTime);
 			user.setUpdateDate(dateTime);
 			user.setPassword(encodeUserPassword(user.getPassword()));
 			user.setActivity(true);
+			if (userRepository.existsById(user.getId())) {
+				log.warn("User already exists with id: {}", user.getId());
+				throw new EntityNotFoundException("User already exists!");
+			}
 			User savedUser = userRepository.save(user);
 			log.info("User saved successfully with id: {}", savedUser.getId());
 			return savedUser;
@@ -82,15 +84,14 @@ public class UserService {
 		try {
 			if (!userRepository.existsById(id)) {
 				log.warn("User not found with id: {}", id);
-				throw new EntityNotFoundException("User Not Found!");
+			} else {
+				userRepository.deleteById(id);
+				log.info("User deleted successfully with id: {}", id);
 			}
-			userRepository.deleteById(id);
-			log.info("User deleted successfully with id: {}", id);
-			return true;
 		} catch (Exception e) {
 			log.error("An error occurred while deleting user with id: {}: {}", id, e.getMessage());
-			return false;
 		}
+		return true;
 	}
 
 	public User updateUser(User user) {
@@ -118,6 +119,7 @@ public class UserService {
 			LocalDateTime dateTime = LocalDateTime.now();
 			user.setCreateDate(userRepository.getById(userDto.getId()).getCreateDate());
 			user.setUpdateDate(dateTime);
+			user.setPassword(encodeUserPassword(user.getPassword()));
 			user = userRepository.save(user);
 			log.info("User with ID {} has been updated", user.getId());
 			return modelMapper.map(user, UserResponseDto.class);

@@ -1,7 +1,6 @@
 package tr.edu.ogu.ceng.controller;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,24 +15,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
+import tr.edu.ogu.ceng.model.Language;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
+@AllArgsConstructor
 @RestController
-
 @RequestMapping("/api/user")
-
 public class UserController {
-	@Autowired
 	private UserService userService;
 
 	@GetMapping("/getAll")
 	public Page<UserDto> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "username") String sortBy) {
+			@RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "id") String sortBy) {
 		Pageable pageable = PageableUtil.createPageRequest(pageNo, limit, sortBy);
 		Page<UserDto> users = userService.getAllUsers(pageable);
 		return users;
@@ -43,7 +42,10 @@ public class UserController {
 	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
 		ModelMapper modelMapper = new ModelMapper();
 		User user = modelMapper.map(userDto, User.class);
-		User savedUser = userService.saveUser(user);
+		Language language = new Language();
+		language.setId((long) 1);
+		user.setLanguage(language);
+		User savedUser = userService.addUser(user);
 
 		UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
 		return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);

@@ -1,3 +1,4 @@
+
 package tr.edu.ogu.ceng.service;
 
 import org.springframework.transaction.TransactionSystemException;
@@ -334,3 +335,4 @@ public class InternshipRegistryTest {
 	}
 
 }
+

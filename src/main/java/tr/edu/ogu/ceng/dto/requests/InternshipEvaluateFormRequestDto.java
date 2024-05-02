@@ -11,9 +11,14 @@ import tr.edu.ogu.ceng.model.Internship;
 @AllArgsConstructor
 public class InternshipEvaluateFormRequestDto {
 	private Long id;
-	private String name;
-	private String surname;
-	private String filePath;
 	private Long internshipId;
 	private Long companyId;
+	private int question1;
+	private int question2;
+	private int question3;
+	private int question4;
+	private int question5;
+	private int question6;
+	private int question7;
+	private int question8;
 }

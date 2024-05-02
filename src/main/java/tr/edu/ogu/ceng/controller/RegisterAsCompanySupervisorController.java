@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +17,11 @@ import tr.edu.ogu.ceng.service.RegisterAsCompanySupervisorService;
 @RequestMapping("/public/api/registerascompanysupervisor")
 public class RegisterAsCompanySupervisorController {
 
-	@Autowired
-	private final RegisterAsCompanySupervisorService service;
-	
+	private RegisterAsCompanySupervisorService service;
+
 	@PostMapping
-	@ResponseStatus(code=HttpStatus.CREATED)
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public RegisterAsCompanySupervisorResponseDto register(@RequestBody RegisterAsCompanySupervisorRequestDto request) {
-		
 		return service.register(request);
 	}
 }
