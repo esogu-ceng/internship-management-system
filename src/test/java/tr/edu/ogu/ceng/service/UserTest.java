@@ -1,6 +1,11 @@
 package tr.edu.ogu.ceng.service;
 
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -36,6 +41,7 @@ public class UserTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		modelMapper = new ModelMapper();
+		userService = new UserService(userRepository, new BCryptPasswordEncoder());
 		userService = new UserService(userRepository, passwordEncoder);
 		userService = new UserService(userRepository, passwordEncoder);
 	}
@@ -61,6 +67,66 @@ public class UserTest {
 		assertEquals(userToSave.getEmail(), actual.getEmail());
 		assertEquals(userToSave.getUserType(), actual.getUserType());
 
+	}
+
+  @Test
+	public void get_user_by_id_returns_correct_user() {
+		Long userId = 1L;
+		String userEmail = "test@example.com";
+		UserType userType = UserType.STUDENT;
+		LocalDateTime createDate = LocalDateTime.of(2024, 4, 30, 12, 0);
+		User user = new User(userId, "password", userEmail, userType, createDate, createDate, null, false);
+
+		when(userRepository.getById(userId)).thenReturn(user);
+
+		User resultUser = userService.GetUserById(userId);
+
+		assertEquals(userId, resultUser.getId());
+		assertEquals(userEmail, resultUser.getEmail());
+		assertEquals(userType, resultUser.getUserType());
+	}
+
+	@Test
+	public void find_user_by_email_returns_user_when_found() {
+		String email = "test@example.com";
+		User user = new User();
+		user.setId(1L);
+		user.setEmail(email);
+
+		when(userRepository.findByEmail(email)).thenReturn(user);
+
+		User foundUser = userService.findByEmail(email);
+
+		assertNotNull(foundUser);
+		assertEquals(email, foundUser.getEmail());
+		assertEquals(user.getId(), foundUser.getId());
+
+		verify(userRepository).findByEmail(email);
+	}
+
+	@Test
+	public void find_user_by_email_returns_null_when_not_found() {
+		String email = "nonexistent@example.com";
+
+		when(userRepository.findByEmail(email)).thenReturn(null);
+
+		User foundUser = userService.findByEmail(email);
+
+		assertNull(foundUser);
+		verify(userRepository).findByEmail(email);
+	}
+
+	@Test
+	public void find_user_by_email_throws_exception_when_error_occurs() {
+		String email = "test@example.com";
+
+		when(userRepository.findByEmail(email)).thenThrow(new RuntimeException("Something went wrong"));
+
+		assertThrows(RuntimeException.class, () -> {
+			userService.findByEmail(email);
+		});
+
+		verify(userRepository).findByEmail(email);
 	}
 
 	@Test
