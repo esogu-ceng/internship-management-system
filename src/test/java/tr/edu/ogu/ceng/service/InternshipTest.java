@@ -11,13 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import tr.edu.ogu.ceng.dao.CompanyRepository;
-import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
-import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
-import tr.edu.ogu.ceng.dao.InternshipEvaluateFormRepository;
-import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dao.*;
 import tr.edu.ogu.ceng.dto.*;
 
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
@@ -67,8 +61,8 @@ public class InternshipTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 
-		internshipService = new InternshipService(internshipRepository, studentRepository, companySupervisorRepository,
-				facultySupervisorRepository, userRepository, facultyRepository, modelMapper, messageResource, authService,
+		internshipService = new InternshipService(internshipRepository, companySupervisorRepository,
+				facultySupervisorRepository, modelMapper, messageResource, authService,
 				internshipEvaluateFormRepository);
 	}
 
@@ -101,7 +95,7 @@ public class InternshipTest {
 				.startDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0)).endDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
 				.days(1).studentId(1004L).companyId(9001L).facultySupervisorId(400L).build();
 		ModelMapper modelMapper = new ModelMapper();
-		InternshipService internshipService = new InternshipService(internshipRepository, studentRepository, companySupervisorRepository, facultySupervisorRepository, userRepository, facultyRepository, modelMapper, messageResource, authService, internshipEvaluateFormRepository);
+		InternshipService internshipService = new InternshipService(internshipRepository, companySupervisorRepository, facultySupervisorRepository, modelMapper, messageResource, authService, internshipEvaluateFormRepository);
 		var actual = internshipService.addInternship(Dtointernship);
 
 		assertNotNull(actual);
