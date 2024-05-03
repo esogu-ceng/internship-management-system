@@ -1,6 +1,14 @@
 package tr.edu.ogu.ceng.service;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import tr.edu.ogu.ceng.dto.UserDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -10,6 +18,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +29,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Assert;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import tr.edu.ogu.ceng.dao.UserRepository;
+import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.Exception.DataAccessException;
@@ -178,8 +192,24 @@ public class UserTest {
 		// Assert that an exception is thrown
 		assertThrows(RuntimeException.class, () -> userService.deleteUser(userId));
 	}
+	@Test
+    public void testGetAllUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(new User(1L, "password", "email", UserType.STUDENT, LocalDateTime.now(), LocalDateTime.now(), null, false));
+        users.add(new User(2L, "password", "email", UserType.STUDENT, LocalDateTime.now(), LocalDateTime.now(), null, false));
+        users.add(new User(3L, "password", "email", UserType.STUDENT, LocalDateTime.now(), LocalDateTime.now(), null, false));
 
-}
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<User> page = new PageImpl<>(users, pageable, users.size());
 
+        when(userRepository.findAll(pageable)).thenReturn(page);
 
+        Page<UserDto> result = userService.getAllUsers(pageable);
 
+        assertEquals(users.size(), result.getContent().size());
+        assertEquals(users.get(0).getId(), result.getContent().get(0).getId());
+        assertEquals(users.get(1).getId(), result.getContent().get(1).getId());
+        assertEquals(users.get(2).getId(), result.getContent().get(2).getId());
+    }
+
+	}
