@@ -19,11 +19,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table(name = "ims_internship_journals")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class InternshipJournal {
 
 	@Id
