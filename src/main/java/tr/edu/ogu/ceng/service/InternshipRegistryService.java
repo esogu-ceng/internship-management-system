@@ -1,3 +1,4 @@
+
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class InternshipRegistryService {
 	public boolean deleteInternshipRegistry(long id) {
 		if (!internshipRegistryRepository.existsById(id)) {
 			log.warn("Internship registry with ID {} not found", id);
+      return false;
 		} else {
 			internshipRegistryRepository.deleteById(id);
 			log.info("Internship registry deleted with ID: {}", id);
