@@ -224,6 +224,13 @@ public class InternshipJournalTest {
         assertEquals(modelInternshipJournal.getUnitName(), actualInternshipJournal.getUnitName());
         assertEquals(modelInternshipJournal.getJournal(), actualInternshipJournal.getJournal());
         assertEquals(modelInternshipJournal.getOperationTime(), actualInternshipJournal.getOperationTime());
+        assertEquals(modelInternshipJournal.getStartingDate(), actualInternshipJournal.getStartingDate());
+        assertEquals(modelInternshipJournal.getEndDate(), actualInternshipJournal.getEndDate());
+        assertEquals(modelInternshipJournal.getCreateDate(), actualInternshipJournal.getCreateDate());
+        assertEquals(modelInternshipJournal.getUpdateDate(), actualInternshipJournal.getUpdateDate());
+        assertEquals(modelInternshipJournal.getInternship().getId(), actualInternshipJournal.getInternship().getId());
+        assertEquals(modelInternshipJournal.getSupervisor().getId(), actualInternshipJournal.getSupervisor().getId());
+        assertEquals(modelInternshipJournal.isConfirmation(), actualInternshipJournal.isConfirmation());
     }
 
     @Test
@@ -264,6 +271,13 @@ public class InternshipJournalTest {
         assertEquals(modelInternshipJournal.getUnitName(), actual.getUnitName());
         assertEquals(modelInternshipJournal.getJournal(), actual.getJournal());
         assertEquals(modelInternshipJournal.getOperationTime(), actual.getOperationTime());
+        assertEquals(modelInternshipJournal.getStartingDate(), actual.getStartingDate());
+        assertEquals(modelInternshipJournal.getEndDate(), actual.getEndDate());
+        assertEquals(modelInternshipJournal.getCreateDate(), actual.getCreateDate());
+        assertEquals(modelInternshipJournal.getUpdateDate(), actual.getUpdateDate());
+        assertEquals(modelInternshipJournal.getInternship().getId(), actual.getInternship().getId());
+        assertEquals(modelInternshipJournal.getSupervisor().getId(), actual.getSupervisor().getId());
+        assertEquals(modelInternshipJournal.isConfirmation(), actual.isConfirmation());
     }
 
     @Test
