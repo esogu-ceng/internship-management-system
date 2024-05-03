@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +46,9 @@ import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
+
+import java.util.Collections;
+import java.util.List;
 
 
 public class InternshipJournalTest {
@@ -178,5 +182,116 @@ public class InternshipJournalTest {
         assertEquals(false, actual.isConfirmation());
     
     }
-    
+
+    @Test
+    public void testGetAllInternshipJournalsById() {
+        
+        Long internshipId = 1L;
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        var modelCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", localDateTime,
+                localDateTime);
+        var modelUser = new User(3L, "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+                localDateTime, null, false);
+        var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
+        var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
+                localDateTime, modelUser, modelFaculty);
+
+        var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test", null, localDateTime,
+                localDateTime, null, modelFaculty, "address", null);
+
+        var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 0, localDateTime, localDateTime,
+                modelStudent, modelCompany, modelFacultySupervisor);
+
+        var modelCompanySupervisor = new CompanySupervisor(1L, "Test", "Test", "Test", localDateTime, localDateTime, modelCompany, modelUser);
+
+        Timestamp startingTimestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.now());
+
+        var modelInternshipJournal = new InternshipJournal(1L, "Test", "Test", 2L, startingTimestamp, endTimestamp, localDateTime, localDateTime, modelInternship, modelCompanySupervisor, false);
+
+        when(internshipJournalsRepository.findAllJournalByInternshipId(internshipId)).thenReturn(List.of(modelInternshipJournal));
+
+        var actual = internshipJournalsService.getAllInternshipJournalsByInternshipId(internshipId);
+
+        assertNotNull(actual);
+        assertEquals(1, actual.size());
+
+        var actualInternshipJournal = actual.get(0);
+
+        assertEquals(modelInternshipJournal.getId(), actualInternshipJournal.getId());
+        assertEquals(modelInternshipJournal.getUnitName(), actualInternshipJournal.getUnitName());
+        assertEquals(modelInternshipJournal.getJournal(), actualInternshipJournal.getJournal());
+        assertEquals(modelInternshipJournal.getOperationTime(), actualInternshipJournal.getOperationTime());
+        assertEquals(modelInternshipJournal.getStartingDate(), actualInternshipJournal.getStartingDate());
+        assertEquals(modelInternshipJournal.getEndDate(), actualInternshipJournal.getEndDate());
+        assertEquals(modelInternshipJournal.getCreateDate(), actualInternshipJournal.getCreateDate());
+        assertEquals(modelInternshipJournal.getUpdateDate(), actualInternshipJournal.getUpdateDate());
+        assertEquals(modelInternshipJournal.getInternship().getId(), actualInternshipJournal.getInternship().getId());
+        assertEquals(modelInternshipJournal.getSupervisor().getId(), actualInternshipJournal.getSupervisor().getId());
+        assertEquals(modelInternshipJournal.isConfirmation(), actualInternshipJournal.isConfirmation());
+    }
+
+    @Test
+    public void testUpdateInternshipJournal() {
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        var modelCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", localDateTime,
+                localDateTime);
+        var modelUser = new User(3L, "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+                localDateTime, null, false);
+        var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
+        var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
+                localDateTime, modelUser, modelFaculty);
+
+        var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test", null, localDateTime,
+                localDateTime, null, modelFaculty, "address", null);
+
+        var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 0, localDateTime, localDateTime,
+                modelStudent, modelCompany, modelFacultySupervisor);
+
+        var modelCompanySupervisor = new CompanySupervisor(1L, "Test", "Test", "Test", localDateTime, localDateTime, modelCompany, modelUser);
+
+        Timestamp startingTimestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.now());
+
+        var modelInternshipJournal = new InternshipJournal(1L, "Test", "Test", 2L, startingTimestamp, endTimestamp, localDateTime, localDateTime, modelInternship, modelCompanySupervisor, false);
+
+        when(internshipJournalsRepository.save(any(InternshipJournal.class))).thenReturn(modelInternshipJournal);
+
+        var newInternshipJournal = new InternshipJournal(1L, "Test", "Test", 2L, startingTimestamp, endTimestamp, localDateTime, localDateTime, modelInternship, modelCompanySupervisor, false);
+
+        var actual = internshipJournalsService.updateInternshipJournal(newInternshipJournal);
+
+        assertNotNull(actual);
+
+        assertEquals(modelInternshipJournal.getId(), actual.getId());
+        assertEquals(modelInternshipJournal.getUnitName(), actual.getUnitName());
+        assertEquals(modelInternshipJournal.getJournal(), actual.getJournal());
+        assertEquals(modelInternshipJournal.getOperationTime(), actual.getOperationTime());
+        assertEquals(modelInternshipJournal.getStartingDate(), actual.getStartingDate());
+        assertEquals(modelInternshipJournal.getEndDate(), actual.getEndDate());
+        assertEquals(modelInternshipJournal.getCreateDate(), actual.getCreateDate());
+        assertEquals(modelInternshipJournal.getUpdateDate(), actual.getUpdateDate());
+        assertEquals(modelInternshipJournal.getInternship().getId(), actual.getInternship().getId());
+        assertEquals(modelInternshipJournal.getSupervisor().getId(), actual.getSupervisor().getId());
+        assertEquals(modelInternshipJournal.isConfirmation(), actual.isConfirmation());
+    }
+
+    @Test
+    public void testGetAllInternshipJournalsById_EmptyList() {
+        Long internshipId = 1L;
+
+        // Mock empty list
+        when(internshipJournalsRepository.findAllJournalByInternshipId(internshipId)).thenReturn(Collections.emptyList());
+
+        // Test the service method
+        var actual = internshipJournalsService.getAllInternshipJournalsByInternshipId(internshipId);
+
+        // Assert empty list and log message
+        assertTrue(actual.isEmpty());
+    }
+
 }
