@@ -223,6 +223,44 @@ public class InternshipJournalTest {
         assertEquals(modelInternshipJournal.getOperationTime(), actualInternshipJournal.getOperationTime());
     }
 
+    @Test
+    public void testUpdateInternshipJournal() {
 
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        var modelCompany = new Company(1L, "Test", "Test", "Test", "Test", "Test", "Test", "Test", localDateTime,
+                localDateTime);
+        var modelUser = new User(3L, "password", "email", UserType.FACULTYSUPERVISOR, localDateTime,
+                localDateTime, null, false);
+        var modelFaculty = new Faculty(1L, "Faculty", localDateTime, localDateTime);
+        var modelFacultySupervisor = new FacultySupervisor(4L, "Name", "Surname", "Phone", "No", localDateTime,
+                localDateTime, modelUser, modelFaculty);
+
+        var modelStudent = new Student(6L, "test", "test", "test", "test", "test", "test", "test", null, localDateTime,
+                localDateTime, null, modelFaculty, "address", null);
+
+        var modelInternship = new Internship(1L, InternshipStatus.FACULTY_APPROVED, null, null, 0, localDateTime, localDateTime,
+                modelStudent, modelCompany, modelFacultySupervisor);
+
+        var modelCompanySupervisor = new CompanySupervisor(1L, "Test", "Test", "Test", localDateTime, localDateTime, modelCompany, modelUser);
+
+        Timestamp startingTimestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.now());
+
+        var modelInternshipJournal = new InternshipJournal(1L, "Test", "Test", 2L, startingTimestamp, endTimestamp, localDateTime, localDateTime, modelInternship, modelCompanySupervisor, false);
+
+        when(internshipJournalsRepository.save(any(InternshipJournal.class))).thenReturn(modelInternshipJournal);
+
+        var newInternshipJournal = new InternshipJournal(1L, "Test", "Test", 2L, startingTimestamp, endTimestamp, localDateTime, localDateTime, modelInternship, modelCompanySupervisor, false);
+
+        var actual = internshipJournalsService.updateInternshipJournal(newInternshipJournal);
+
+        assertNotNull(actual);
+
+        assertEquals(modelInternshipJournal.getId(), actual.getId());
+        assertEquals(modelInternshipJournal.getUnitName(), actual.getUnitName());
+        assertEquals(modelInternshipJournal.getJournal(), actual.getJournal());
+        assertEquals(modelInternshipJournal.getOperationTime(), actual.getOperationTime());
+    }
 
 }
