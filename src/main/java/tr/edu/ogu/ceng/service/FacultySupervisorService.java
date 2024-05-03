@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -31,8 +30,6 @@ public class FacultySupervisorService {
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserService userService;
 	private ModelMapper modelMapper;
-
-	@Autowired
 	private MessageResource messageResource;
 
 	/**
@@ -63,36 +60,33 @@ public class FacultySupervisorService {
 		return savedfacultySupervisor;
 	}
 
-	public FacultySupervisorResponseDto updateFacultySupervisor(
-			FacultySupervisorRequestDto facultySupervisorRequestDto) {
+	public FacultySupervisor updateFacultySupervisor(FacultySupervisor facultySupervisor) {
 
-		FacultySupervisor facultySupervisor = modelMapper.map(facultySupervisorRequestDto, FacultySupervisor.class);
 		if (!facultySupervisorRepository.existsById(facultySupervisor.getId()))
 			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
 
 		try {
 			LocalDateTime now = LocalDateTime.now();
-			facultySupervisor.setUpdateDate(now);
+
 			User user = userService.GetUserById(facultySupervisor.getUser().getId());
+
+			facultySupervisor.setUpdateDate(now);
 			facultySupervisor.setUser(user);
 			facultySupervisor
 					.setCreateDate(facultySupervisorRepository.getById(facultySupervisor.getId()).getCreateDate());
+			facultySupervisor.setFaculty(facultySupervisor.getFaculty());
+			facultySupervisor.setUser(user);
 			FacultySupervisor updatedFacultySupervisor = facultySupervisorRepository.save(facultySupervisor);
 
-			FacultySupervisorResponseDto responseDto = modelMapper.map(updatedFacultySupervisor,
-					FacultySupervisorResponseDto.class);
-			responseDto.setFacultyId(facultySupervisorRequestDto.getFaculty().getId());
-			responseDto.setUser(responseDto.getUser());
-
 			log.info("Faculty supervisor updated successfully with id: {}", facultySupervisor.getId());
-			return responseDto;
+			return updatedFacultySupervisor;
 		} catch (Exception e) {
 			log.error("Error occurred while updating faculty supervisor: {}", e.getMessage());
 			throw e;
 		}
 	}
 
-	public FacultySupervisorResponseDto getFacultySupervisor(Long id) {
+	public FacultySupervisor getFacultySupervisor(Long id) {
 		if (!facultySupervisorRepository.existsById(id)) {
 			log.warn("Faculty supervisor not found with id: {}", id);
 			throw new EntityNotFoundException(messageResource.getMessage("facultySupervisorNotFound"));
@@ -100,7 +94,7 @@ public class FacultySupervisorService {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			log.info("Faculty supervisor found with id: {}", id);
-			return modelMapper.map(facultySupervisorRepository.getById(id), FacultySupervisorResponseDto.class);
+			return facultySupervisorRepository.getById(id);
 		} catch (Exception e) {
 			log.error("Error occurred while getting faculty supervisor: {}", e.getMessage());
 			throw e;
@@ -109,44 +103,43 @@ public class FacultySupervisorService {
 
 	public boolean deleteFacultySupervisor(long id) {
 		try {
-			if(facultySupervisorRepository.existsById(id)) {
+			if (facultySupervisorRepository.existsById(id)) {
 				facultySupervisorRepository.deleteById(id);
 				log.info("Faculty supervisor deleted with id: {}", id);
-			}		
+			}
 		} catch (DataIntegrityViolationException e) {
 			log.warn("Cannot delete faculty supervisor with ID {} due to integrity violation", id);
+			return false;
 		} catch (EmptyResultDataAccessException e) {
 			log.warn("Faculty supervisor with ID {} not found", id);
+			throw e;
 		}
 		return true;
 	}
 
-	public Page<FacultySupervisorResponseDto> getAllFacultySupervisors(Pageable pageable) {
+	public Page<FacultySupervisor> getAllFacultySupervisors(Pageable pageable) {
 		try {
 			Page<FacultySupervisor> facultySupervisors = facultySupervisorRepository.findAll(pageable);
 			if (facultySupervisors.isEmpty()) {
 				log.warn("The faculty supervisor list is empty.");
 			}
-			Page<FacultySupervisorResponseDto> facultySupervisorDtos = facultySupervisors
-					.map(facultySupervisor -> modelMapper.map(facultySupervisor, FacultySupervisorResponseDto.class));
 			log.info("Faculty supervisor list retrieved successfully.");
-			return facultySupervisorDtos;
+			return facultySupervisors;
 		} catch (Exception e) {
 			log.error("An error occurred while getting faculty supervisors: {}", e.getMessage());
 			throw e;
 		}
 	}
 
-	public FacultySupervisorResponseDto getFacultySupervisorByUserId(Long userId) {
+	public FacultySupervisor getFacultySupervisorByUserId(Long userId) {
 		try {
-			ModelMapper modelMapper = new ModelMapper();
 			FacultySupervisor facultysupervisor = facultySupervisorRepository.findByUserId(userId);
 			log.info("Faculty supervisor found with user ID: {}", userId);
-			return modelMapper.map(facultysupervisor, FacultySupervisorResponseDto.class);
+
+			return facultysupervisor;
 		} catch (Exception e) {
 			log.error("An error occurred while getting facultySupervisor with given user ID", e.getMessage());
 			throw e;
 		}
 	}
-
 }

@@ -13,13 +13,13 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipEvaluateFormRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.*;
+
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
@@ -51,12 +51,6 @@ public class InternshipTest {
 
 	@Mock
 	FacultySupervisorRepository facultySupervisorRepository;
-
-	@Mock
-	UserRepository userRepository;
-
-	@Mock
-	FacultyRepository facultyRepository;
 
 	@Mock
 	InternshipService internshipService;
@@ -99,27 +93,8 @@ public class InternshipTest {
 
 		when(studentRepository.save(any(Student.class))).thenReturn(modelStudent);
 		when(companyRepository.save(any(Company.class))).thenReturn(modelCompany);
-		when(userRepository.save(any(User.class))).thenReturn(modelUser);
-		when(facultyRepository.save(any(Faculty.class))).thenReturn(modelFaculty);
 		when(facultySupervisorRepository.save(any(FacultySupervisor.class))).thenReturn(modelFacultySupervisor);
 		when(internshipRepository.save(any(Internship.class))).thenReturn(modelInternship);
-
-		var DtoFaculty = FacultyDto.builder().id(1L).name("Faculty").createDate(localDateTime).updateDate(localDateTime)
-				.build();
-
-		var DtoUser = UserDto.builder().id(1L).password("password").email("email")
-				.userType(UserType.FACULTYSUPERVISOR).createDate(localDateTime).updateDate(localDateTime).build();
-
-		var DtoFacultySupervisor = FacultySupervisorDto.builder().id(1L).name("Name").surname("Surname")
-				.phoneNumber("Phone").supervisorNo("No").user(DtoUser).faculty(DtoFaculty).build();
-
-		var Dtostudent = StudentDto.builder().id(6L).name("test").surname("test").tckn("test").studentNo("test")
-				.grade("test").phoneNumber("test").birthDate(new Timestamp(2000, 01, 01, 0, 0, 0, 0))
-				.createDate(localDateTime).updateDate(localDateTime).faculty(DtoFaculty).address("address").build();
-
-		var Dtocompany = CompanyDto.builder().id(1L).name("Test").address("Test").phoneNumber("Test").faxNumber("Test")
-				.email("Test@test.com").scope("Test").description("Test").createDate(localDateTime)
-				.updateDate(localDateTime).build();
 
 		// TODO @ Change when the InternshipRequestDto manipulated
 		var Dtointernship = InternshipRequestDto.builder().id(1L).status(InternshipStatus.FACULTY_APPROVED)
