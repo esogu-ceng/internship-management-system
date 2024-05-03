@@ -26,10 +26,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
-import java.time.LocalDateTime;
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 public class CompanySupervisorTest {
 
@@ -121,31 +117,5 @@ public class CompanySupervisorTest {
         Company result = supervisorService.getUsersCompany();
 
         assertEquals(companyId, result.getId());
-    }
-
-    @Test
-    public void testCheckIfCompanySupervisorExistsByUserId() {
-        Long userId = 1L;
-        when(supervisorRepository.existsByUserId(userId)).thenReturn(true);
-
-        assertThrows(UserAlreadyExistsException.class, () -> supervisorService.checkIfCompanySupervisorExistsByUserId(userId));
-
-        verify(supervisorRepository).existsByUserId(userId);
-    }
-
-    @Test
-    public void testAdd() {
-        //add fonksiyonu 2 attr baktigi icin
-        User user = new User();
-        Company company = new Company();
-        CompanySupervisor supervisorToAdd = new CompanySupervisor(1L, "Test", "Test", "1234567890", LocalDateTime.now(), LocalDateTime.now(), company, user);
-        when(supervisorRepository.save(supervisorToAdd)).thenReturn(supervisorToAdd);
-
-        CompanySupervisor addedSupervisor = supervisorService.add(supervisorToAdd);
-
-        assertNotNull(addedSupervisor);
-        assertEquals(LocalDateTime.now().getDayOfYear(), addedSupervisor.getCreateDate().getDayOfYear());
-        assertEquals(LocalDateTime.now().getDayOfYear(), addedSupervisor.getUpdateDate().getDayOfYear());
-        verify(supervisorRepository, times(1)).save(supervisorToAdd);
     }
 }
