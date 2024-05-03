@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import tr.edu.ogu.ceng.dao.CompanyRepository;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
+import tr.edu.ogu.ceng.dto.CompanySupervisorDto;
 import tr.edu.ogu.ceng.dto.responses.CompanySupervisorResponseDto;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
 import tr.edu.ogu.ceng.model.Company;
@@ -20,6 +21,7 @@ import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.UserPrincipal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +43,9 @@ public class CompanySupervisorTest {
 
     @InjectMocks
     private CompanySupervisorService supervisorService;
+
+    @Mock
+    private ModelMapper modelMapper;
 
     @Test
     void testGetById() {
@@ -147,5 +152,68 @@ public class CompanySupervisorTest {
         assertEquals(LocalDateTime.now().getDayOfYear(), addedSupervisor.getCreateDate().getDayOfYear());
         assertEquals(LocalDateTime.now().getDayOfYear(), addedSupervisor.getUpdateDate().getDayOfYear());
         verify(supervisorRepository, times(1)).save(supervisorToAdd);
+    }
+
+    @Test
+    void shouldGetCompanySupervisorByCompanyId() {
+        Long companyID = 1L;
+        CompanySupervisor supervisor1 = new CompanySupervisor();
+        supervisor1.setId(1L);
+        supervisor1.setName("Esra");
+        supervisor1.setSurname("Aydın");
+        supervisor1.setPhoneNumber("968441989");
+        supervisor1.setCreateDate(LocalDateTime.parse("2024-04-09T18:03:43.541342"));
+        supervisor1.setUpdateDate(LocalDateTime.parse("2024-04-09T18:03:43.541342"));
+
+        List<CompanySupervisor> mockCompanySupervisors = new ArrayList<>();
+        mockCompanySupervisors.add(supervisor1);
+
+        when(supervisorRepository.findAllByCompanyId(companyID)).thenReturn(mockCompanySupervisors);
+
+        CompanySupervisorDto dto = new CompanySupervisorDto();
+        when(modelMapper.map(supervisor1, CompanySupervisorDto.class)).thenReturn(dto);
+
+        List<CompanySupervisorDto> result = supervisorService.getCompanySupervisorsByCompanyId(companyID);
+
+        // Assertionlar
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(dto, result.get(0));
+    }
+
+    @Test
+    void shouldGetCompanySupervisorByUserId() {
+        // Test verisi hazırlama
+        Long userId = 1L;
+        CompanySupervisor supervisor = new CompanySupervisor();
+        supervisor.setId(userId);
+        supervisor.setName("Esra");
+        supervisor.setSurname("Aydın");
+        supervisor.setPhoneNumber("968441989");
+        supervisor.setCreateDate(LocalDateTime.now());
+        supervisor.setUpdateDate(LocalDateTime.now());
+
+        // Repository metodunu simüle et
+        when(supervisorRepository.findCompanySupervisorByUserId(userId)).thenReturn(supervisor);
+
+        // ModelMapper'ı simüle et
+        CompanySupervisorDto dto = new CompanySupervisorDto();
+        dto.setId(supervisor.getId());
+        dto.setName(supervisor.getName());
+        dto.setSurname(supervisor.getSurname());
+        dto.setPhoneNumber(supervisor.getPhoneNumber());
+        when(modelMapper.map(supervisor, CompanySupervisorDto.class)).thenReturn(dto);
+
+        // Metodu test et
+        CompanySupervisorDto result = supervisorService.getCompanySupervisorByUserId(userId);
+
+        // Doğrulamalar
+        assertNotNull(result);
+        assertEquals(supervisor.getName(), result.getName());
+        assertEquals(supervisor.getSurname(), result.getSurname());
+
+        // Mockito ile metodun çağrıldığını doğrula
+        verify(supervisorRepository).findCompanySupervisorByUserId(userId);
+        verify(modelMapper).map(supervisor, CompanySupervisorDto.class);
     }
 }
