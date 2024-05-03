@@ -2,6 +2,7 @@ package tr.edu.ogu.ceng.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +46,8 @@ import tr.edu.ogu.ceng.model.CompanySupervisor;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
+
+import java.util.Collections;
 import java.util.List;
 
 
@@ -261,6 +264,20 @@ public class InternshipJournalTest {
         assertEquals(modelInternshipJournal.getUnitName(), actual.getUnitName());
         assertEquals(modelInternshipJournal.getJournal(), actual.getJournal());
         assertEquals(modelInternshipJournal.getOperationTime(), actual.getOperationTime());
+    }
+
+    @Test
+    public void testGetAllInternshipJournalsById_EmptyList() {
+        Long internshipId = 1L;
+
+        // Mock empty list
+        when(internshipJournalsRepository.findAllJournalByInternshipId(internshipId)).thenReturn(Collections.emptyList());
+
+        // Test the service method
+        var actual = internshipJournalsService.getAllInternshipJournalsByInternshipId(internshipId);
+
+        // Assert empty list and log message
+        assertTrue(actual.isEmpty());
     }
 
 }
