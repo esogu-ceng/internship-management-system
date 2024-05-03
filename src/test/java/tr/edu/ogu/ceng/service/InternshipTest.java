@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
@@ -45,7 +46,10 @@ public class InternshipTest {
 
 	@Mock
 	FacultySupervisorRepository facultySupervisorRepository;
-
+	
+	@InjectMocks
+    InternshipEvaluateFormService internshipEvaluateFormService;
+	
 	@Mock
 	InternshipService internshipService;
 
@@ -267,8 +271,75 @@ public class InternshipTest {
 
 
 	}
+	
+	@Test
+    public void testGetByInternshipId() {
+        // Mock data
+        Long internshipId = 1L;
+        InternshipEvaluateForm internshipEvaluateForm = new InternshipEvaluateForm();
+        when(internshipEvaluateFormRepository.findByInternshipId(internshipId)).thenReturn(internshipEvaluateForm);
 
+        // Test
+        InternshipEvaluateForm result = internshipEvaluateFormService.getByInternshipId(internshipId);
 
+        // Assertion
+        assertEquals(internshipEvaluateForm, result);
+    }
 
+	@Test
+	public void testMapEntityToDto() {
+	    // Mock data
+	    InternshipEvaluateForm form = new InternshipEvaluateForm();
+	    form.setId(1L);
+	    form.setQuestion1(5);
+	    form.setQuestion2(3);
+	    form.setQuestion3(4);
+	    form.setQuestion4(2);
+	    form.setQuestion5(5);
+	    form.setQuestion6(4);
+	    form.setQuestion7(3);
+	    form.setQuestion8(2);
+
+	    // Test
+	    InternshipEvaluateFormDto dto = internshipEvaluateFormService.mapEntityToDto(form);
+
+	    // Assertion
+	    assertEquals(form.getId(), dto.getId());
+	    assertEquals(form.getInternship(), dto.getInternship());
+	    assertEquals(form.getCompany(), dto.getCompany());
+	    assertEquals(form.getQuestion1(), dto.getQuestion1());
+	    assertEquals(form.getQuestion2(), dto.getQuestion2());
+	    assertEquals(form.getQuestion3(), dto.getQuestion3());
+	    assertEquals(form.getQuestion4(), dto.getQuestion4());
+	    assertEquals(form.getQuestion5(), dto.getQuestion5());
+	    assertEquals(form.getQuestion6(), dto.getQuestion6());
+	    assertEquals(form.getQuestion7(), dto.getQuestion7());
+	    assertEquals(form.getQuestion8(), dto.getQuestion8());
 	}
+	
+    @Test
+    public void testSaveInternshipEvalForm() {
+        // Mock data
+        InternshipEvaluateFormDto formDto = new InternshipEvaluateFormDto();
+        formDto.setId(1L);
+        formDto.setQuestion1(5);
+        // Set other fields as necessary
+
+        InternshipEvaluateForm existingForm = new InternshipEvaluateForm();
+        existingForm.setId(1L);
+        existingForm.setQuestion1(3);
+        // Set other fields as necessary
+
+        when(internshipEvaluateFormRepository.findById(formDto.getId())).thenReturn(Optional.of(existingForm));
+        when(internshipEvaluateFormRepository.save(any(InternshipEvaluateForm.class))).thenReturn(existingForm);
+
+        // Test
+        InternshipEvaluateFormDto result = internshipEvaluateFormService.saveInternshipEvalForm(formDto);
+
+        // Assertion
+        assertEquals(existingForm.getId(), result.getId());
+        assertEquals(formDto.getQuestion1(), result.getQuestion1());
+        // Check other fields as well
+    }
+}
 
