@@ -2,15 +2,20 @@ package tr.edu.ogu.ceng.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -19,7 +24,9 @@ import org.springframework.data.domain.Pageable;
 
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
+import tr.edu.ogu.ceng.dto.requests.FacultyRequestDto;
 import tr.edu.ogu.ceng.model.Faculty;
+import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 public class FacultyTest {
 
@@ -50,6 +57,63 @@ public class FacultyTest {
 		assertNotNull(actual);
 		assertEquals(modelFaculty.getId(), actual.getId());
 		assertEquals(modelFaculty.getName(), actual.getName());
+	}
+	
+	@Test
+	public void is_faculty_updated_successfully() {
+	    LocalDateTime now = LocalDateTime.now();
+	    Long facultyId = 1L;
+	    FacultyRequestDto facultyRequestDto = FacultyRequestDto.builder()
+	            .id(facultyId)
+	            .name("New Faculty Name")
+	            .build();
+	    Faculty faculty = new Faculty(facultyId, "Old Faculty Name", now.minusDays(1), now.minusDays(1));
+
+	    FacultyRepository facultyRepository = Mockito.mock(FacultyRepository.class);
+	    when(facultyRepository.findById(facultyId)).thenReturn(Optional.of(faculty));
+	    when(facultyRepository.getById(facultyId)).thenReturn(faculty);
+	    when(facultyRepository.save(any(Faculty.class))).thenAnswer(invocation -> invocation.getArgument(0));
+	    ModelMapper modelMapper = new ModelMapper();
+	    FacultyService facultyService = new FacultyService(facultyRepository, modelMapper);
+
+	    FacultyDto updatedFacultyDto = facultyService.updateFaculty(facultyRequestDto);
+	    Faculty updatedFaculty = modelMapper.map(updatedFacultyDto, Faculty.class);
+	    
+	    assertNotNull(updatedFacultyDto);
+	    assertEquals(facultyId, updatedFacultyDto.getId());
+	    assertEquals(facultyRequestDto.getName(), updatedFacultyDto.getName());
+	    assertEquals(faculty.getCreateDate(), updatedFacultyDto.getCreateDate());
+	    assertTrue(updatedFacultyDto.getUpdateDate().isAfter(updatedFacultyDto.getCreateDate()));
+	    verify(facultyRepository).getById(facultyId);
+	    verify(facultyRepository).save(updatedFaculty);
+	}
+
+	@Test
+	public void updateFaculty_with_null_id_should_throw_exception() {
+	    FacultyRequestDto requestDto = FacultyRequestDto.builder()
+                .name("New Faculty Name")
+	            .build();
+
+	    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+                facultyService.updateFaculty(requestDto);
+	    });
+	    assertEquals("Faculty Id cannot be null", exception.getMessage());
+	}
+	    
+	@Test
+	public void updateFaculty_with_nonexistent_id_should_throw_exception() {
+	    Long nonExistentId = 999L;
+	    FacultyRequestDto requestDto = FacultyRequestDto.builder()
+	            .id(nonExistentId)
+	            .name("New Faculty Name")
+	            .build();
+
+	    when(facultyRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+
+	    EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+	    	facultyService.updateFaculty(requestDto);
+	    });
+	    assertEquals("Faculty not found!", exception.getMessage());
 	}
 	
 	@Test
