@@ -99,5 +99,49 @@ public class StudentTest {
 		assertEquals(student.getAddress(), actual.getAddress());
 
 	}
+	@Test
+	void should_return_count_of_students() {
+		// Given
+		long expectedCount = 10L;
+		when(studentRepository.count()).thenReturn(expectedCount);
+
+		// When
+		Long actualCount = studentService.countStudents();
+
+		// Then
+		assertEquals(expectedCount, actualCount);
+	}
+	@Test
+	void testGetStudentByUserId() {
+		// Given
+		Long userId = 1L;
+		User user = new User();
+		user.setEmail("test@example.com"); // assuming User entity has an email field
+		Student student = new Student();
+		student.setId(1L);
+		student.setUser(user);
+
+		when(studentRepository.findByUserId(any(Long.class))).thenReturn(student);
+
+		// When
+		Student result = studentService.getStudentByUserId(userId);
+
+		// Then
+		assertNotNull(result);
+		assertEquals(1L, result.getId());
+		assertEquals("test@example.com", result.getUser().getEmail());
+	}
+
+	@Test
+	void testGetStudentByUserId_Exception() {
+		// Given
+		Long userId = 1L;
+
+		when(studentRepository.findByUserId(any(Long.class))).thenThrow(new RuntimeException("Database connection failed"));
+
+		// When / Then
+		RuntimeException exception = assertThrows(RuntimeException.class, () -> studentService.getStudentByUserId(userId));
+		assertEquals("Database connection failed", exception.getMessage());
+	}
 
 }
