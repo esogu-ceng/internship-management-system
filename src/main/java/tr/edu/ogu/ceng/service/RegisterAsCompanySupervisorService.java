@@ -55,7 +55,7 @@ public class RegisterAsCompanySupervisorService {
 		return response;
 	}
 
-	private void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorRequestDto request) {
+	public void checkIfPasswordsMatchingValidation(RegisterAsCompanySupervisorRequestDto request) {
 		if (!request.getPassword().toString().equals(request.getConfirmPassword().toString())){
 			log.error("Passwords are not matching");
 			throw new PasswordsNotMatchedException();
@@ -65,7 +65,7 @@ public class RegisterAsCompanySupervisorService {
 		}
 	}
 
-	private void checkIfSupervisorEmailAddressMatchingConfirmedCompanyEmailAddress(RegisterAsCompanySupervisorRequestDto request) {
+	public void checkIfSupervisorEmailAddressMatchingConfirmedCompanyEmailAddress(RegisterAsCompanySupervisorRequestDto request) {
 		UserDto userDto = mapper.map(request, UserDto.class);
 		CompanyDto companyDto = companyService.getCompany(request.getCompany().getId());
 
