@@ -17,7 +17,7 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 @AllArgsConstructor
 public class CompanySupervisorController2 {
 
-	InternshipService internshipService;
+	private InternshipService internshipService;
 
 	@GetMapping("/internships")
 	public Page<InternshipResponseDto> getInternships(@RequestParam(defaultValue = "0") Integer pageNo,

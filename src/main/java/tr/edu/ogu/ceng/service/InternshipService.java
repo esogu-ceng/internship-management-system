@@ -7,21 +7,16 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.CompanySupervisorRepository;
-import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.FacultySupervisorRepository;
 import tr.edu.ogu.ceng.dao.InternshipEvaluateFormRepository;
 import tr.edu.ogu.ceng.dao.InternshipRepository;
-import tr.edu.ogu.ceng.dao.StudentRepository;
-import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseCompanyDto;
@@ -40,16 +35,11 @@ import tr.edu.ogu.ceng.security.AuthService;
 @Slf4j
 @Service
 @AllArgsConstructor
-@Builder
 public class InternshipService {
-	@Autowired
 	private InternshipRepository internshipRepository;
-	private StudentRepository studentRepository;
 	private CompanySupervisorRepository companySupervisorRepository;
 	private FacultySupervisorRepository facultySupervisorRepository;
-	private UserRepository userRepository;
-	private FacultyRepository facultyRepository;
-	private final ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 	private MessageResource messageResource;
 	private AuthService authService;
 	private InternshipEvaluateFormRepository internshipEvaluateFormRepository;

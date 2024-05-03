@@ -6,7 +6,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,14 +35,12 @@ import tr.edu.ogu.ceng.service.Exception.UserAlreadyExistsException;
 @Service
 public class CompanySupervisorService {
 
-	private final CompanySupervisorRepository repository;
-	private final CompanyRepository companyRepository;
-	private final ModelMapper mapper;
-	private final UserService userService;
-	private final CompanyService companyService;
-	private final EmailService emailService;
-
-	@Autowired
+	private CompanySupervisorRepository repository;
+	private CompanyRepository companyRepository;
+	private ModelMapper mapper;
+	private UserService userService;
+	private CompanyService companyService;
+	private EmailService emailService;
 	private MessageResource messageResource;
 
 	public Page<CompanySupervisorResponseDto> getAll(Pageable pageable) {

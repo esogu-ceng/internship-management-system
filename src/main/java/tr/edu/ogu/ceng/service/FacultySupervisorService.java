@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -31,8 +30,6 @@ public class FacultySupervisorService {
 	private FacultySupervisorRepository facultySupervisorRepository;
 	private UserService userService;
 	private ModelMapper modelMapper;
-
-	@Autowired
 	private MessageResource messageResource;
 
 	/**
@@ -109,10 +106,10 @@ public class FacultySupervisorService {
 
 	public boolean deleteFacultySupervisor(long id) {
 		try {
-			if(facultySupervisorRepository.existsById(id)) {
+			if (facultySupervisorRepository.existsById(id)) {
 				facultySupervisorRepository.deleteById(id);
 				log.info("Faculty supervisor deleted with id: {}", id);
-			}		
+			}
 		} catch (DataIntegrityViolationException e) {
 			log.warn("Cannot delete faculty supervisor with ID {} due to integrity violation", id);
 		} catch (EmptyResultDataAccessException e) {
@@ -137,16 +134,10 @@ public class FacultySupervisorService {
 		}
 	}
 
-	public FacultySupervisorResponseDto getFacultySupervisorByUserId(Long userId) {
-		try {
-			ModelMapper modelMapper = new ModelMapper();
-			FacultySupervisor facultysupervisor = facultySupervisorRepository.findByUserId(userId);
-			log.info("Faculty supervisor found with user ID: {}", userId);
-			return modelMapper.map(facultysupervisor, FacultySupervisorResponseDto.class);
-		} catch (Exception e) {
-			log.error("An error occurred while getting facultySupervisor with given user ID", e.getMessage());
-			throw e;
-		}
+	public FacultySupervisor getFacultySupervisorByUserId(Long userId) {
+		FacultySupervisor facultySupervisor = facultySupervisorRepository.findByUserId(userId);
+		log.info("Faculty supervisor found with user ID: {}", userId);
+		return facultySupervisor;
 	}
 
 }

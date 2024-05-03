@@ -1,6 +1,5 @@
 package tr.edu.ogu.ceng.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.requests.InternshipRegistryRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipRegistryResponseDto;
 import tr.edu.ogu.ceng.service.InternshipRegistryService;
 import tr.edu.ogu.ceng.util.PageableUtil;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/internshipregistry")
 public class InternshipRegistryController {
 
-	@Autowired
 	private InternshipRegistryService internshipRegistryService;
 
 	@GetMapping("/getInternshipRegistiriesById")
