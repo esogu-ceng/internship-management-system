@@ -17,6 +17,7 @@ import tr.edu.ogu.ceng.dto.*;
 
 import tr.edu.ogu.ceng.dto.requests.InternshipRequestDto;
 import tr.edu.ogu.ceng.dto.responses.InternshipResponseDto;
+import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.InternshipStatus;
 import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.internationalization.MessageResource;
@@ -56,6 +57,7 @@ public class InternshipTest {
 	@Mock
 	InternshipEvaluateFormRepository internshipEvaluateFormRepository;
 
+	@Mock
 	MessageResource messageResource;
 
 
@@ -341,5 +343,94 @@ public class InternshipTest {
         assertEquals(formDto.getQuestion1(), result.getQuestion1());
         // Check other fields as well
     }
+    
+    @Test
+	 public void testChangeInternshipStatus_NotFound() {
+	        Long internshipId = 1L;
+	        InternshipStatus newStatus = InternshipStatus.SUCCESS;
+
+	        when(internshipRepository.existsById(internshipId)).thenReturn(false);
+	        when(messageResource.getMessage("internshipRegistryNotFound")).thenReturn("Internship not found");
+
+	        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+	            internshipService.chanceInternshipStatus(internshipId, newStatus);
+	        });
+
+	        assertEquals("Internship not found", exception.getMessage());
+	    }
+
+	    @Test
+	    public void testChangeInternshipStatus_Success() {
+	        Long internshipId = 1L;
+	        InternshipStatus newStatus = InternshipStatus.SUCCESS;
+	        LocalDateTime now = LocalDateTime.now();
+	        Internship internship = new Internship();
+	        internship.setId(internshipId);
+
+	        when(internshipRepository.existsById(internshipId)).thenReturn(true);
+	        when(internshipRepository.findById(internshipId)).thenReturn(java.util.Optional.of(internship));
+
+	        InternshipStatus result = internshipService.chanceInternshipStatus(internshipId, newStatus);
+
+	        assertEquals(newStatus, result);
+	        assertEquals(newStatus, internship.getStatus());
+	        assertTrue(internship.getUpdateDate().isAfter(now.minusSeconds(1)));
+	        verify(internshipRepository, times(1)).save(internship);
+	    }
+
+	    @Test
+	    public void testGetStudentByInternshipId_Success() {
+	       
+	    	LocalDateTime now = LocalDateTime.now();
+
+	        
+	        Student student = new Student();
+	        student.setId(1L);
+	        student.setName("John");
+	        student.setSurname("Doe");
+	        student.setStudentNo("1001");
+	        student.setPhoneNumber("123-456-7890");
+	        student.setBirthPlace("City");
+	        student.setBirthDate(Timestamp.valueOf("2000-01-01 00:00:00"));
+
+	        
+	        Internship internship = new Internship();
+	        internship.setId(1L);
+	        internship.setStudent(student);
+
+	        
+	        when(internshipRepository.existsById(1L)).thenReturn(true);
+	        when(internshipRepository.findById(1L)).thenReturn(Optional.of(internship));
+
+	        
+	        StudentResponseDto studentResponseDto = new StudentResponseDto();
+	        studentResponseDto.setName(student.getName());
+	        studentResponseDto.setSurname(student.getSurname());
+	        
+
+	        when(modelMapper.map(student, StudentResponseDto.class)).thenReturn(studentResponseDto);
+
+	        StudentResponseDto result = internshipService.getStudentByInternshipId(1L);
+
+	        assertNotNull(result);
+	        assertEquals("John", result.getName());
+	        assertEquals("Doe", result.getSurname());
+
+	        verify(internshipRepository, times(1)).existsById(1L);
+	        verify(internshipRepository, times(1)).findById(1L);
+	    }
+
+	    @Test
+	    public void testGetStudentByInternshipId_ThrowsEntityNotFoundException() {
+	        
+	        Long nonExistentId = 999L;
+	        when(internshipRepository.existsById(nonExistentId)).thenReturn(false);
+
+	       
+	        assertThrows(javax.persistence.EntityNotFoundException.class, () -> {
+	           internshipService.getStudentByInternshipId(nonExistentId);
+	        });
+	    }
+
 }
 
