@@ -10,15 +10,22 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.List;
+import java.time.temporal.ChronoUnit;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import tr.edu.ogu.ceng.dao.FacultyRepository;
 import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
@@ -147,6 +154,82 @@ public class StudentTest {
 		// When / Then
 		RuntimeException exception = assertThrows(RuntimeException.class, () -> studentService.getStudentByUserId(userId));
 		assertEquals("Database connection failed", exception.getMessage());
+	}
+
+	@Test
+	public void testGetStudentWhenExists() {
+		// Prepare
+		long studentId = 1L;
+		Student student = new Student();
+		student.setId(studentId);
+		student.setStudentNo("12345");
+		student.setName("John");
+		student.setSurname("Doe");
+
+		when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+
+		// Execute
+		Student result = studentService.getStudent(studentId);
+
+		// Verify
+		assertNotNull(result);
+		assertEquals(studentId, result.getId());
+		assertEquals("12345", result.getStudentNo());
+		assertEquals("John", result.getName());
+		assertEquals("Doe", result.getSurname());
+	}
+
+	@Test
+	public void testGetStudentWhenNotExists() {
+		// Prepare
+		long studentId = 1L;
+		when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+
+		// Verify
+		assertThrows(EntityNotFoundException.class, () -> {
+			studentService.getStudent(studentId);
+		});
+	}
+	@Test
+	public void testGetAllStudents() {
+		// Prepare
+		Pageable pageable = Pageable.unpaged();
+		Student student1 = new Student();
+		Student student2 = new Student();
+		Page<Student> studentsPage = new PageImpl<>(List.of(student1, student2));
+
+		when(studentRepository.findAll(pageable)).thenReturn(studentsPage);
+
+		// Execute
+		Page<Student> result = studentService.getAllStudents(pageable);
+
+		// Verify
+		assertNotNull(result);
+		assertEquals(2, result.getContent().size());
+	}
+
+	@Test
+	public void testAddStudent() {
+		// Prepare
+		LocalDateTime now = LocalDateTime.now();
+		Student student = new Student();
+		student.setName("Jane");
+		student.setSurname("Doe");
+		student.setCreateDate(now);
+		student.setUpdateDate(now);
+
+		when(studentRepository.save(any(Student.class))).thenReturn(student);
+
+		// Execute
+		Student result = studentService.addStudent(student);
+
+		// Verify
+		assertNotNull(result);
+		assertEquals("Jane", result.getName());
+		assertEquals("Doe", result.getSurname());
+
+		assertEquals(now.truncatedTo(ChronoUnit.SECONDS), result.getCreateDate().truncatedTo(ChronoUnit.SECONDS));
+		assertEquals(now.truncatedTo(ChronoUnit.SECONDS), result.getUpdateDate().truncatedTo(ChronoUnit.SECONDS));
 	}
 
 	@Test

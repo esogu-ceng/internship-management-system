@@ -81,6 +81,9 @@ public class StudentService {
 	@Transactional
 	public Student addStudent(Student student) {
 		LocalDateTime now = LocalDateTime.now();
+		if (student.getUser() == null) {
+			student.setUser(new User());
+		}
 		student.setCreateDate(now);
 		student.setUpdateDate(now);
 		student.getUser().setUserType(UserType.STUDENT);
@@ -107,7 +110,6 @@ public class StudentService {
 
 			emailService.sendEmail(savedStudent.getUser().getEmail(), emailSubject, emailBody);
 		}
-
 		return savedStudent;
 
 	}
