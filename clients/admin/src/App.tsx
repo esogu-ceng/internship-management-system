@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import AdminDashboard from "./components/AdminDashboard";
+
 import GetSettings from "./components/GetSettings";
 import Students from "./components/Students";
 import CompanySupervisors from "./components/CompanySupervisors";
@@ -17,6 +17,8 @@ import FacultySupervisors from "./components/FacultySupervisors";
 import Companies from "./components/Companies";
 
 import CompanySupervisorDetail from "./components/CompanySupervisorDetail";
+import AdminDashboard from "./components/AdminDashboard";
+
 const root_path: string | undefined = process.env.PUBLIC_URL;
 function App() {
   return (
@@ -32,7 +34,10 @@ function App() {
               path={`${root_path}/companySupervisors`}
               element={<CompanySupervisors />}
             />
-            <Route path={`${root_path}/companySupervisors/:id`} element={<CompanySupervisorDetail />} />
+            <Route
+              path={`${root_path}/companySupervisors/:id`}
+              element={<CompanySupervisorDetail />}
+            />
 
             <Route
               path={`${root_path}/facultySupervisors`}

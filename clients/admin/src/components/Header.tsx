@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 // ** Constants
 import { routes } from "../constants";
+import HamburgerMenu from "./hamburger-menu";
 
 function Header() {
   const root_path: string | undefined = process.env.PUBLIC_URL;
@@ -17,9 +18,9 @@ function Header() {
           <h1 className="header-title">Staj Yönetim Sistemi</h1>
         </Link>
 
-        <div className="header-buttons">
+        <div className="header-buttons ">
           {routes.map((route) => (
-            <Link to={route.href} className="header-button">
+            <Link key={route.text} to={route.href} className="header-button">
               {route.text}
             </Link>
           ))}
@@ -32,6 +33,7 @@ function Header() {
             Çıkış
           </button>
         </div>
+        <HamburgerMenu rootPath={root_path} handleLogout={handleLogout} />
       </div>
     </header>
   );
