@@ -1,5 +1,9 @@
-import React from "react";
+// ** Router Dom Imports
 import { Link } from "react-router-dom";
+
+// ** Constants
+import { routes } from "../constants";
+
 function Header() {
   const root_path: string | undefined = process.env.PUBLIC_URL;
   const handleLogout = () => {
@@ -14,6 +18,11 @@ function Header() {
         </Link>
 
         <div className="header-buttons">
+          {routes.map((route) => (
+            <Link to={route.href} className="header-button">
+              {route.text}
+            </Link>
+          ))}
           <button className="header-button">
             <Link to={`${root_path}/profile`}>
               <h2>Profil</h2>
