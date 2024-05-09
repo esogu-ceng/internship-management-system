@@ -23,16 +23,16 @@ const CircleItem: FC<Props> = (props) => {
                     a 15.9155 15.9155 0 0 1 0 31.831"
           fill="none"
           stroke="#e6e6e6"
-          stroke-width="3.8"
+          strokeWidth="3.8"
         />
         <path
           className="circle"
-          stroke-dasharray={`${percentage! / 2}, 100`}
+          strokeDasharray={`${percentage! / 2}, 100`}
           d="M18 2.0845
                     a 15.9155 15.9155 0 0 1 0 31.831"
           fill="none"
           stroke="#0078d4"
-          stroke-width="3.8"
+          strokeWidth="3.8"
         />
       </svg>
       <div className="percentage-container">

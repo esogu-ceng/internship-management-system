@@ -49,7 +49,7 @@ const HamburgerMenu: FC<Props> = (props) => {
             {/* Nav Items */}
             <ul className={styles.navList}>
               {routes.map(({ href, text }) => (
-                <li onClick={() => setIsMenuOpen(false)}>
+                <li key={text} onClick={() => setIsMenuOpen(false)}>
                   <Link to={href} className={styles.listItem}>
                     {text}
                   </Link>

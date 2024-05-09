@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
+import tr.edu.ogu.ceng.dto.requests.UserTypeAndCountDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
 import tr.edu.ogu.ceng.model.Language;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.UserService;
 import tr.edu.ogu.ceng.util.PageableUtil;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -71,6 +74,11 @@ public class UserController {
 	@GetMapping(value = { "/admin/auth", "/student/auth", "/company-supervisor/auth", "/faculty-supervisor/auth" })
 	public UserDto getLoggedInUser() {
 		return userService.getLoggedInUser();
+	}
+
+	@GetMapping("/userCounts")
+	public List<UserTypeAndCountDto> getUserCounts() {
+		return userService.countByUserType();
 	}
 
 }

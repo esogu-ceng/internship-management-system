@@ -1,6 +1,8 @@
 package tr.edu.ogu.ceng.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -16,7 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.UserDto;
 import tr.edu.ogu.ceng.dto.requests.UserRequestDto;
+import tr.edu.ogu.ceng.dto.requests.UserTypeAndCountDto;
 import tr.edu.ogu.ceng.dto.responses.UserResponseDto;
+import tr.edu.ogu.ceng.enums.UserType;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.UserPrincipal;
 import tr.edu.ogu.ceng.service.Exception.InvalidArgumentException;
@@ -168,5 +172,16 @@ public class UserService {
 		User user = userRepository.getById(UserId);
 		log.info("Getting user by id: {}", UserId);
 		return user;
+	}
+
+	public List<UserTypeAndCountDto> countByUserType(){
+		log.info("Counting users by user type");
+		return userRepository.countByUserType().stream()
+				.map(objects -> {
+					UserTypeAndCountDto dto = new UserTypeAndCountDto(((UserType) objects[0]).name(), (Long) objects[1]);
+					dto.translateUserType();
+					return dto;
+				})
+				.collect(Collectors.toList());
 	}
 }
