@@ -80,9 +80,9 @@ function GetSettings() {
         });
 
         if (response.ok) {
-          toast.success('Başarıyla güncellendi!');
+          toast.success("Başarıyla güncellendi!");
         } else {
-          toast.error('Güncelleme sırasında hata oluştu!');
+          toast.error("Güncelleme sırasında hata oluştu!");
         }
       } catch (error) {
         console.log(error);
@@ -149,7 +149,8 @@ function GetSettings() {
                         maxWidth: "400px",
                         minWidth: "400px",
                         wordWrap: "break-word",
-                      }}>
+                      }}
+                    >
                       {setting.value ? setting.value.value : ""}
                     </div>
                   )}
@@ -159,13 +160,15 @@ function GetSettings() {
                     {setting.value && setting.value.editable ? (
                       <button
                         onClick={() => handleSave(index)}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24">
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
+                      >
                         Kaydet
                       </button>
                     ) : (
                       <button
                         onClick={() => handleEdit(index)}
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24">
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md mr-2 focus:outline-none w-24"
+                      >
                         Düzenle
                       </button>
                     )}

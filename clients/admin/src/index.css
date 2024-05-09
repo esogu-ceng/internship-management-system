@@ -86,6 +86,7 @@ h6 {
   isolation: isolate;
 }
 footer {
+  margin-top: 50px;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -117,13 +118,21 @@ header {
   font-size: 32px;
   text-align: center;
 }
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+@media (max-width: 1200px) {
+  .header-buttons {
+    display: none;
+  }
+}
 .header-button {
   background-color: #3583d6;
   color: #fff;
   border: none;
   border-radius: 5px;
   padding: 8px 16px;
-  margin-left: 10px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -137,64 +146,14 @@ header {
   flex-wrap: wrap;
   margin-top: 50px;
 }
-.dashboard-card {
-  background-color: #f6f6f6; /* kart arka plan rengi */
-  border: none;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  border-radius: 15px;
-  width: 300px;
-  height: 200px;
-  margin: 20px;
-  transition: transform 0.3s ease-in-out;
-}
-.dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-}
-.dashboard-card:nth-child(1) {
-  background-color: #ff6363;
-}
-.dashboard-card:nth-child(2) {
-  background-color: #76d7c4;
-}
-.dashboard-card:nth-child(3) {
-  background-color: #f7dc6f;
-}
-.dashboard-card:nth-child(4) {
-  background-color: #59b8bf;
-}
-.dashboard-card:nth-child(5) {
-  background-color: #3583d6;
-}
+
 @media (max-width: 768px) {
   .app-container {
     flex-direction: column;
     align-items: center;
   }
 }
-.dashboard-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.dashboard-card h2 {
-  margin: 0;
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-}
-.dashboard-card p {
-  margin: 0;
-  font-size: 16px;
-  color: #666;
-}
-.dashboard-card:hover {
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-  background-color: #eabce5;
-}
+
 .link {
   text-decoration: none;
 }
@@ -382,7 +341,6 @@ tr:hover {
   cursor: pointer;
   height: 50px;
   margin-top: 20px;
-
 }
 
 /* Cancel Button */
@@ -737,4 +695,54 @@ tr:hover {
   margin-bottom: 10px;
   width: 18%;
   margin-left: 69%;
+}
+
+.memory-meter {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+.circular-chart {
+  position: absolute;
+  top: 50%;
+  width: 200px;
+  height: 200px;
+  transform: translateY(-50%);
+}
+
+.circle-bg,
+.circle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.percentage-container {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #555;
+}
+
+.percentage {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.circle-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #666;
+}
+
+.memory-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #666;
 }
