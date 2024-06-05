@@ -1,11 +1,15 @@
 package tr.edu.ogu.ceng.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,7 +33,6 @@ import tr.edu.ogu.ceng.model.InternshipEvaluateForm;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.security.AuthService;
-import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 
 public class InternshipTest {
 	@Mock
@@ -232,9 +235,10 @@ public class InternshipTest {
 		when(internshipRepository.findById(internshipId)).thenReturn(Optional.empty());
 
 		// Call the method and assert exception
-		assertThrows(EntityNotFoundException.class, () -> {
-			internshipService.updateInternship(internshipDto);
+		assertThrows(tr.edu.ogu.ceng.service.Exception.EntityNotFoundException.class, () -> {
+    	internshipService.updateInternship(internshipDto);
 		});
+
 
 		// Verify interactions
 		verify(internshipRepository, times(1)).findById(internshipId);
