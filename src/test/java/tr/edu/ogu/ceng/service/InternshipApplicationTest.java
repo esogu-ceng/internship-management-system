@@ -2,30 +2,46 @@ package tr.edu.ogu.ceng.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import tr.edu.ogu.ceng.controller.StudentController;
+import tr.edu.ogu.ceng.dao.CompanyRepository;
+import tr.edu.ogu.ceng.dao.InternshipApplicationRepository;
+import tr.edu.ogu.ceng.dao.StudentRepository;
 import tr.edu.ogu.ceng.dto.CompanyDto;
 import tr.edu.ogu.ceng.dto.InternshipApplicationDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
+import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
+import tr.edu.ogu.ceng.model.InternshipApplication;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
 import tr.edu.ogu.ceng.service.FacultySupervisorService;
@@ -35,82 +51,130 @@ import tr.edu.ogu.ceng.util.PageableUtil;
 @ExtendWith(MockitoExtension.class)
 public class InternshipApplicationTest {
 
-    @Mock
     private StudentService studentService;
-
-    @Mock
-    private FacultySupervisorService facultySupervisorService;
-
-    @InjectMocks
-    private StudentController studentController;
-
-    private Student student;
-    private FacultySupervisor facultySupervisor;
-    private List<InternshipApplicationDto> applications;
+    private StudentRepository studentRepository;
+    private CompanyRepository companyRepository;
+    private InternshipApplicationRepository internshipApplicationRepository;
+    private ModelMapper modelMapper;
 
     @BeforeEach
     void setUp() {
-        student = new Student();
-        student.setId(1L);
-        student.setName("John");
-        student.setSurname("Doe");
-        student.setTckn("12345678901");
-        student.setStudentNo("S12345");
-        student.setGrade("A");
-        student.setPhoneNumber("1234567890");
-        student.setBirthPlace("City");
-        student.setBirthDate(Timestamp.valueOf(LocalDateTime.now()));
-        student.setCreateDate(LocalDateTime.now());
-        student.setUpdateDate(LocalDateTime.now());
-        student.setAddress("Address");
-
-        User user = new User();
-        user.setId(1L);
-        student.setUser(user);
-
-        facultySupervisor = new FacultySupervisor();
-        facultySupervisor.setId(1L);
-        facultySupervisor.setName("Jane");
-        facultySupervisor.setSurname("Smith");
-        facultySupervisor.setPhoneNumber("0987654321");
-        facultySupervisor.setSupervisorNo("F12345");
-        facultySupervisor.setCreateDate(LocalDateTime.now());
-        facultySupervisor.setUpdateDate(LocalDateTime.now());
-
-        applications = new ArrayList<>();
-        InternshipApplicationDto application1 = new InternshipApplicationDto();
-        application1.setId(1L);
-        application1.setStudentId(student.getId());
-        application1.setCompanyId(1L);
-        InternshipApplicationDto application2 = new InternshipApplicationDto();
-        application2.setId(2L);
-        application2.setStudentId(student.getId());
-        application2.setCompanyId(2L);
-        applications.add(application1);
-        applications.add(application2);
+        studentRepository = mock(StudentRepository.class);
+        companyRepository = mock(CompanyRepository.class);
+        internshipApplicationRepository = mock(InternshipApplicationRepository.class);
+        modelMapper = new ModelMapper();
+        studentService = new StudentService(studentRepository, null, null, companyRepository, internshipApplicationRepository, null, null, modelMapper, null, null);
     }
 
     @Test
     void testApplyForInternship() {
+        // Mock data
         Long studentId = 1L;
-        Long companyId = 1L;
+        Long companyId = 2L;
+        Student student = new Student();
+        student.setId(studentId);
+        Company company = new Company();
+        company.setId(companyId);
+        InternshipApplication savedApplication = new InternshipApplication();
+        savedApplication.setId(1L);
 
-        when(studentService.applyForInternship(studentId, companyId)).thenReturn(applications.get(0));
+        // Mock repository responses
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+        when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
+        when(internshipApplicationRepository.save(any())).thenReturn(savedApplication);
 
-        InternshipApplicationDto applicationDto = studentController.applyForInternship(studentId, companyId);
-        assertNotNull(applicationDto);
-        assertEquals(studentId, applicationDto.getStudentId());
-        assertEquals(companyId, applicationDto.getCompanyId());
+        // Call the method
+        InternshipApplicationDto result = studentService.applyForInternship(studentId, companyId);
+
+        // Verify interactions and assert result
+        verify(studentRepository, times(1)).findById(studentId);
+        verify(companyRepository, times(1)).findById(companyId);
+        verify(internshipApplicationRepository, times(1)).save(any());
+        assertEquals(savedApplication.getId(), result.getId());
+    }
+
+    @Test
+    void testApplyForInternship_ThrowEntityNotFoundExceptionForStudent() {
+        // Mock data
+        Long studentId = 1L;
+        Long companyId = 2L;
+
+        // Mock repository responses
+        when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+
+        // Call the method and assert exception
+        assertThrows(tr.edu.ogu.ceng.service.Exception.EntityNotFoundException.class, () -> {
+            studentService.applyForInternship(studentId, companyId);
+        });
+
+        // Verify interactions
+        verify(studentRepository, times(1)).findById(studentId);
+        verifyNoMoreInteractions(studentRepository);
+        verifyNoInteractions(companyRepository, internshipApplicationRepository);
+    }
+
+    @Test
+    void testApplyForInternship_ThrowEntityNotFoundExceptionForCompany() {
+        // Mock data
+        Long studentId = 1L;
+        Long companyId = 2L;
+        Student student = new Student();
+        student.setId(studentId);
+
+        // Mock repository responses
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+        when(companyRepository.findById(companyId)).thenReturn(Optional.empty());
+
+        // Call the method and assert exception
+        assertThrows(tr.edu.ogu.ceng.service.Exception.EntityNotFoundException.class, () -> {
+            studentService.applyForInternship(studentId, companyId);
+        });
+
+        // Verify interactions
+        verify(studentRepository, times(1)).findById(studentId);
+        verify(companyRepository, times(1)).findById(companyId);
+        verifyNoMoreInteractions(studentRepository, companyRepository);
+        verifyNoInteractions(internshipApplicationRepository);
     }
 
     @Test
     void testGetStudentApplications() {
+        // Mock data
+        Long studentId = 1L;
+        InternshipApplication application1 = new InternshipApplication();
+        application1.setId(1L);
+        InternshipApplication application2 = new InternshipApplication();
+        application2.setId(2L);
+        List<InternshipApplication> applications = new ArrayList<>();
+        applications.add(application1);
+        applications.add(application2);
+
+        // Mock repository responses
+        when(internshipApplicationRepository.findByStudentId(studentId)).thenReturn(applications);
+
+        // Call the method
+        List<InternshipApplicationDto> result = studentService.getStudentApplications(studentId);
+
+        // Verify interactions and assert result
+        verify(internshipApplicationRepository, times(1)).findByStudentId(studentId);
+        assertEquals(2, result.size());
+        assertEquals(application1.getId(), result.get(0).getId());
+        assertEquals(application2.getId(), result.get(1).getId());
+    }
+
+    @Test
+    void testGetStudentApplications_EmptyList() {
+        // Mock data
         Long studentId = 1L;
 
-        when(studentService.getStudentApplications(studentId)).thenReturn(applications);
+        // Mock repository responses
+        when(internshipApplicationRepository.findByStudentId(studentId)).thenReturn(new ArrayList<>());
 
-        List<InternshipApplicationDto> resultApplications = studentController.getStudentApplications(studentId);
-        assertNotNull(resultApplications);
-        assertEquals(applications.size(), resultApplications.size());
+        // Call the method
+        List<InternshipApplicationDto> result = studentService.getStudentApplications(studentId);
+
+        // Verify interactions and assert result
+        verify(internshipApplicationRepository, times(1)).findByStudentId(studentId);
+        assertEquals(0, result.size());
     }
 }
