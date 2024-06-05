@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -17,17 +19,22 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.edu.ogu.ceng.dao.SettingRepository;
 import tr.edu.ogu.ceng.dao.StudentRepository;
+import tr.edu.ogu.ceng.dao.CompanyRepository;
+import tr.edu.ogu.ceng.dao.InternshipApplicationRepository;
 import tr.edu.ogu.ceng.dao.UserRepository;
 import tr.edu.ogu.ceng.dto.FacultyDto;
+import tr.edu.ogu.ceng.dto.InternshipApplicationDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.responses.FacultySupervisorResponseDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
 import tr.edu.ogu.ceng.enums.UserType;
+import tr.edu.ogu.ceng.model.Company;
 import tr.edu.ogu.ceng.model.Faculty;
 import tr.edu.ogu.ceng.model.FacultySupervisor;
 import tr.edu.ogu.ceng.model.Setting;
 import tr.edu.ogu.ceng.model.Student;
 import tr.edu.ogu.ceng.model.User;
+import tr.edu.ogu.ceng.model.InternshipApplication;
 import tr.edu.ogu.ceng.service.Exception.EntityNotFoundException;
 import tr.edu.ogu.ceng.service.Exception.IllegalArgumentException;
 
@@ -38,6 +45,8 @@ public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
 	private final UserService userService;
+	private final CompanyRepository companyRepository;
+	private final InternshipApplicationRepository internshipApplicationRepository;
 
 	private final FacultyService facultyService;
 	private final FacultySupervisorService facultySupervisorService;
@@ -275,4 +284,28 @@ public class StudentService {
 		return cv;
 	}
 
+	public InternshipApplicationDto applyForInternship(Long studentId, Long companyId) {
+		Student student = studentRepository.findById(studentId)
+            .orElseThrow(() -> new EntityNotFoundException("Student not found!"));
+
+		Company company = companyRepository.findById(companyId)
+						.orElseThrow(() -> new EntityNotFoundException("Company not found!"));
+
+		InternshipApplication internshipApplication = new InternshipApplication();
+		internshipApplication.setStudent(student);
+		internshipApplication.setCompany(company);
+		internshipApplication.setApplicationDate(LocalDateTime.now());
+
+		InternshipApplication savedApplication = internshipApplicationRepository.save(internshipApplication);
+		log.info("Internship application saved with ID: {}", savedApplication.getId());
+
+		return modelMapper.map(savedApplication, InternshipApplicationDto.class);
+	}
+
+	public List<InternshipApplicationDto> getStudentApplications(Long studentId) {
+		List<InternshipApplication> applications = internshipApplicationRepository.findByStudentId(studentId);
+		return applications.stream()
+					.map(application -> modelMapper.map(application, InternshipApplicationDto.class))
+					.collect(Collectors.toList());
+  }
 }
