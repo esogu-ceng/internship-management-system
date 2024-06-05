@@ -1,6 +1,7 @@
 package tr.edu.ogu.ceng.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tr.edu.ogu.ceng.dto.CompanyDto;
+import tr.edu.ogu.ceng.dto.InternshipApplicationDto;
 import tr.edu.ogu.ceng.dto.StudentDto;
 import tr.edu.ogu.ceng.dto.requests.StudentRequestDto;
 import tr.edu.ogu.ceng.dto.responses.StudentResponseDto;
@@ -154,5 +157,15 @@ public class StudentController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaType.valueOf("application/pdf"))
 				.body(cvData);
+	}
+
+	@PostMapping("/applyForInternship")
+	public InternshipApplicationDto applyForInternship(@RequestParam Long studentId, @RequestParam Long companyId) {
+			return studentService.applyForInternship(studentId, companyId);
+	}
+
+	@GetMapping("/applications")
+	public List<InternshipApplicationDto> getStudentApplications(@RequestParam Long studentId) {
+			return studentService.getStudentApplications(studentId);
 	}
 }
